@@ -19,9 +19,6 @@
     "css-brunch": ">= 1.0 < 1.8",
     "less-brunch": ">= 1.7",
 
-    "jade": "*",
-    "jade-angularjs-brunch": "*",
-
     "uglify-js-brunch": ">= 1.0 < 1.8",
     "clean-css-brunch": ">= 1.0 < 1.8"
   },

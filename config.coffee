@@ -8,5 +8,3 @@ exports.config =
     stylesheets:
       joinTo:
         'css/app.css': /^(app|vendor|bower_components)/
-    templates:
-      joinTo: 'templates/app.js'

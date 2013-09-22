@@ -19,5 +19,8 @@ exports.config = {
         'css/app.css': /^(app|vendor|bower_components)/
       }
     }
-	}
+	},
+    paths:{
+        public: '../backend/public/'
+    }
 }

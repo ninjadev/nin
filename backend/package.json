@@ -1,0 +1,14 @@
+{
+  "name": "nin-backend",
+  "description": "nin is ninjatool",
+  "author": "Ninjadev",
+  "version": "0.0.1",
+  "repository": "",
+  "dependencies": {
+      "express": "*",
+      "connect": "*",
+      "chokidar": "*"
+  },
+  "devDependencies": {
+  }
+}

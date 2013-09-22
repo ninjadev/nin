@@ -1,7 +1,7 @@
 {
-  "name": "your-app",
-  "description": "Description",
-  "author": "Your Name",
+  "name": "nin",
+  "description": "nin is ninjatool",
+  "author": "Ninjadev",
   "version": "0.0.1",
   "repository": "",
   "scripts": {

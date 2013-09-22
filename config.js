@@ -1,5 +1,12 @@
 exports.config = {
   // See http://brunch.io/#documentation for docs.
+    conventions: {
+        assets: /^app\/assets/
+    },
+   modules: {
+    definition: false,
+    wrapper: false
+    },
   files: {
     javascripts: {
       joinTo: {

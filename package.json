@@ -22,6 +22,7 @@
     "jade": "*",
 
     "uglify-js-brunch": ">= 1.0 < 1.8",
+    "jade-angularjs-brunch": "*",
     "clean-css-brunch": ">= 1.0 < 1.8"
   },
   "devDependencies": {

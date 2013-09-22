@@ -1,0 +1,31 @@
+{
+  "name": "your-app",
+  "description": "Description",
+  "author": "Your Name",
+  "version": "0.0.1",
+  "repository": "",
+  "scripts": {
+    "start": "brunch watch --server",
+    "test": "brunch test"
+  },
+  "dependencies": {
+    "brunch": "*",
+    "auto-reload-brunch": ">= 1.0 < 1.8",
+
+    "javascript-brunch": ">= 1.0 < 1.8",
+    "coffee-script": "*",
+
+    "css-brunch": ">= 1.0 < 1.8",
+    "less-brunch": ">= 1.7",
+
+    "jade-brunch": "*",
+    "jade": "*",
+
+    "uglify-js-brunch": ">= 1.0 < 1.8",
+    "clean-css-brunch": ">= 1.0 < 1.8"
+  },
+  "devDependencies": {
+    "mocha": "1.2.2",
+    "chai": "1.1.0"
+  }
+}

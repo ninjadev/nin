@@ -1,6 +1,9 @@
-# Brunch app
+# nin
 
-This is HTML5 application, built with [Brunch](http://brunch.io).
+> nin is ninjatool
+
+Nin is Ninjadev's internal demo tool.
+It is a tool for easing development of browser-based WebGL demos.
 
 ## Setting up dev environment
 

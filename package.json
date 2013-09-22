@@ -18,11 +18,10 @@
     "css-brunch": ">= 1.0 < 1.8",
     "less-brunch": ">= 1.7",
 
-    "jade-brunch": "*",
     "jade": "*",
+    "jade-angularjs-brunch": "*",
 
     "uglify-js-brunch": ">= 1.0 < 1.8",
-    "jade-angularjs-brunch": "*",
     "clean-css-brunch": ">= 1.0 < 1.8"
   },
   "devDependencies": {

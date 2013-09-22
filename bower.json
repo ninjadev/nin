@@ -2,6 +2,12 @@
   "name": "your-app",
   "version": "0.0.1",
   "main": "public/app.js",
-  "dependencies": {},
+  "ignore": [
+  	"node_modules"
+  ],
+  "dependencies": {
+  	"angular": "*",
+  	"jquery": "*"
+  },
   "overrides": {}
 }

@@ -7,11 +7,8 @@ html(lang="en", ng-app="application")
     meta(name="viewport", content="width=device-width", initial-scale="1.0")
 
 body
-  script(src="javascripts/vendor.js")
-  script(src="javascripts/app.js")
-  script(src="//cdnjs.cloudflare.com/ajax/libs/three.js/r58/three.min.js")
-  script(src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.16.0/codemirror.min.js")
-  script(src="//codemirror.net/keymap/vim.js")
+  script.(src="javascripts/vendor.js")
+  script.(src="javascripts/app.js")
 
   .container-fluid
     #upper-row.row-fluid
@@ -32,7 +29,7 @@ body
           span.name {{ layer.name }}
         .col-xs-10
 
-  script
+  script.
     var textArea = document.getElementById("text-area")
     var codeMirror = CodeMirror.fromTextArea(textArea, {
         mode: "javascript",

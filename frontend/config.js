@@ -18,6 +18,16 @@ exports.config = {
       joinTo: {
         'css/app.css': /^(app|vendor|bower_components)/
       }
+    },
+    templates: {
+      joinTo: {
+        'js/templates.js': /.+\.jade$/
+      }
     }
-	}
+	},
+  plugins: {
+    jade: {
+      pretty: true
+    }
+  }
 }

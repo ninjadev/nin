@@ -13,6 +13,7 @@ body
   .container-fluid
     #upper-row.row-fluid
       #inspector.col-xs-6.pane
+        textarea#text-area(name="content")
       #preview.col-xs-6.pane
         canvas#preview-canvas
 
@@ -27,3 +28,10 @@ body
         .meta.col-xs-2
           span.name {{ layer.name }}
         .col-xs-10
+
+  script.
+    var textArea = document.getElementById("text-area")
+    var codeMirror = CodeMirror.fromTextArea(textArea, {
+        mode: "javascript",
+        keyMap: "vim"
+      })

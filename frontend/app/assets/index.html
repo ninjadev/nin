@@ -11,7 +11,9 @@
   <script src="javascripts/app.js"></script>
   <div class="container-fluid">
     <div id="upper-row" class="row-fluid">
-      <div id="inspector" class="col-xs-6 pane"></div>
+      <div id="inspector" class="col-xs-6 pane">
+        <textarea id="text-area" name="content"></textarea>
+      </div>
       <div id="preview" class="col-xs-6 pane">
         <canvas id="preview-canvas"></canvas>
       </div>
@@ -27,4 +29,11 @@
       </div>
     </div>
   </div>
+  <script>
+    var textArea = document.getElementById("text-area")
+    var codeMirror = CodeMirror.fromTextArea(textArea, {
+        mode: "javascript",
+        keyMap: "vim"
+    })
+  </script>
 </body>

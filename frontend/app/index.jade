@@ -10,10 +10,13 @@ body
   script(src="javascripts/vendor.js")
   script(src="javascripts/app.js")
   script(src="//cdnjs.cloudflare.com/ajax/libs/three.js/r58/three.min.js")
+  script(src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.16.0/codemirror.min.js")
+  script(src="//codemirror.net/keymap/vim.js")
 
   .container-fluid
     #upper-row.row-fluid
       #inspector.col-xs-6.pane
+        textarea#text-area(name="content")
       #preview.col-xs-6.pane
         canvas#preview-canvas
 
@@ -28,3 +31,10 @@ body
         .meta.col-xs-2
           span.name {{ layer.name }}
         .col-xs-10
+
+  script
+    var textArea = document.getElementById("text-area")
+    var codeMirror = CodeMirror.fromTextArea(textArea, {
+        mode: "javascript",
+        keyMap: "vim"
+      })

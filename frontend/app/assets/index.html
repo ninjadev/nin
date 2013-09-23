@@ -1,43 +1,30 @@
 <!DOCTYPE html>
-<html lang="en" ng-app>
-<head>
-  <title>nin</title>
-  <link rel="stylesheet" type="text/css" href="css/app.css">
-  <meta name="viewport" content="width=device-width" initial-scale="1.0">
-</head>
-<body>
-  <script src='javascripts/vendor.js'></script>
-  <script src='javascripts/app.js'></script>
-
-  <div class=container-fluid>
-      <div id=upper-row class="row-fluid">
-          <div id=inspector class="col-xs-6 pane">
-          </div>
-
-          <div id=preview class="col-xs-6 pane">
-            <canvas id=preview-canvas></canvas>
-          </div>
-      </div>
-
-      <div ng-controller=LayerController id=timeline class="row-fluid pane">
-
-        <div class="song row-fluid">
-            <div class="meta col-xs-2">
-                <span class="name">Music</span>
-            </div>
-            <div class="col-xs-10">
-            </div>
-        </div>
-
-        <div class="layer row-fluid" ng-repeat="layer in layers">
-            <div class="meta col-xs-2">
-                <span class="name">{{ layer.name }}</span>
-            </div>
-            <div class="col-xs-10">
-            </div>
-        </div>
-      </div>
-  </div>
-
-</body>
+<html lang="en" ng-app="application">
+  <head>
+    <title></title>
+    <link rel="stylesheet" href="css/app.css">
+    <meta name="viewport" content="width=device-width" initial-scale="1.0">
+  </head>
 </html>
+<body>
+  <script src="javascripts/vendor.js"></script>
+  <script src="javascripts/app.js"></script>
+  <div class="container-fluid">
+    <div id="upper-row" class="row-fluid">
+      <div id="inspector" class="col-xs-6 pane"></div>
+      <div id="preview" class="col-xs-6 pane">
+        <canvas id="preview-canvas"></canvas>
+      </div>
+    </div>
+    <div id="timeline" ng-controller="LayerController" class="row-fluid pane">
+      <div class="song row-fluid">
+        <div class="meta col-xs-2"><span class="name">Music</span></div>
+        <div class="col-xs-10"></div>
+      </div>
+      <div ng-repeat="layer in layers" class="layer row-fluid">
+        <div class="meta col-xs-2"><span class="name">{{ layer.name }}</span></div>
+        <div class="col-xs-10"></div>
+      </div>
+    </div>
+  </div>
+</body>

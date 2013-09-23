@@ -1,0 +1,1 @@
+Partial files not named index.html go here, and are compiled and put into assets/partials by brunch.

@@ -1,4 +1,5 @@
-function LayerController($scope) {
+angular.module('stuff', [])
+.controller("LayerController", function LayerController($scope) {
     $scope.layers = [
         {
             "name": "Background",
@@ -16,4 +17,4 @@ function LayerController($scope) {
             "name": "noise",
         }
     ];
-};
+});

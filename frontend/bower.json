@@ -8,7 +8,9 @@
   "dependencies": {
   	"angular": "*",
   	"jquery": "*",
-    "bootstrap": "*"
+    "bootstrap": "*",
+    "codemirror": "*",
+    "threejs": "*"
   },
   "overrides": {}
 }

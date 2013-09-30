@@ -1,0 +1,5 @@
+A JSON file that keeps a list of which layers play when.
+This file is primarily for use by nin, not by humans.
+When a project is edited in the nin gui, this file gets changed accordingly.
+When this files changes through other means, the gui updates accordingly.
+When the project is compiled to a prod, this file is used by the player.

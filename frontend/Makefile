@@ -27,4 +27,4 @@ run:
 
 .PHONY: clean
 clean:
-	rm -rf bower_components node_modules .patch-bower-dependencies vendor/external-dependencies
+	rm -rf bower_components node_modules .patch-bower-dependencies vendor/external-dependencies public

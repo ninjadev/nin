@@ -4,12 +4,18 @@ all: update
 update:
 	npm install
 	bower install
-	make patch-bower-dependencies
+	make .patch-bower-dependencies
+	make external-dependencies
 
-.PHONY: patch-bower-dependencies
-patch-bower-dependencies:
+.patch-bower-dependencies:
 	sed -i 's/"lib\/codemirror.css"/"lib\/codemirror.css","keymap\/vim.js"/g' bower_components/codemirror/.bower.json
 	sed -i '/"name":/a "main":["build/three.min.js"],' bower_components/threejs/.bower.json
+	touch .patch-bower-dependencies
+
+.PHONY: external-dependencies
+external-dependencies:
+	mkdir -p vendor/external-dependencies
+	wget http://waveformjs.org/waveform.js -O vendor/external-dependencies/waveform.js
 
 .PHONY: setup
 setup:
@@ -21,4 +27,4 @@ run:
 
 .PHONY: clean
 clean:
-	rm -rf bower_components node_modules
+	rm -rf bower_components node_modules .patch-bower-dependencies vendor/external-dependencies public

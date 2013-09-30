@@ -6,4 +6,4 @@ update:
 
 .PHONY: run
 run:
-	node main.js
+	node main.js test-project

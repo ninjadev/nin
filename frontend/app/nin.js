@@ -1,6 +1,6 @@
 function nin(){
     initTextArea();
-    var musicUrl = "TODO: this needs to be something";
+    var musicUrl = "http://localhost:9999/res/music.ogg";
     initWaveform(musicUrl);
 }
 

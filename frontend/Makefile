@@ -15,3 +15,7 @@ setup:
 .PHONY: run
 run:
 	brunch watch --server
+
+.PHONY: clean
+clean:
+	rm -rf bower_components node_modules

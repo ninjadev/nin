@@ -21,19 +21,14 @@
     <div id="timeline" ng-controller="LayerController" class="row-fluid pane">
       <div class="song row-fluid">
         <div class="meta col-xs-2"><span class="name">Music</span></div>
-        <div class="col-xs-10"></div>
+        <div id="music-container" class="col-xs-10"></div>
       </div>
       <div ng-repeat="layer in layers" class="layer row-fluid">
         <div class="meta col-xs-2"><span class="name">{{ layer.name }}</span></div>
         <div class="col-xs-10"></div>
       </div>
     </div>
+    <audio id="music"></audio>
   </div>
-  <script>
-    var textArea = document.getElementById("text-area")
-    var codeMirror = CodeMirror.fromTextArea(textArea, {
-        mode: "javascript",
-        keyMap: "vim"
-    })
-  </script>
+  <script>nin();</script>
 </body>

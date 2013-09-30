@@ -22,16 +22,14 @@ body
         .meta.col-xs-2
           span.name.
             Music
-        .col-xs-10
+        #music-container.col-xs-10
 
       .layer.row-fluid(ng-repeat="layer in layers")
         .meta.col-xs-2
           span.name {{ layer.name }}
         .col-xs-10
 
+    audio#music
+
   script.
-    var textArea = document.getElementById("text-area")
-    var codeMirror = CodeMirror.fromTextArea(textArea, {
-        mode: "javascript",
-        keyMap: "vim"
-      })
+    nin();

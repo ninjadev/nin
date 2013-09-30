@@ -29,5 +29,8 @@ exports.config = {
     jade: {
       pretty: true
     }
-  }
+	},
+    paths:{
+        public: '../backend/public/'
+    }
 }

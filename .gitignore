@@ -30,3 +30,9 @@ public/
 
 # Bower stuff.
 bower_components/
+
+# generic vendor stuff
+vendor/
+
+# dotfiles!
+.*

@@ -11,8 +11,13 @@ exports.config = {
     javascripts: {
       joinTo: {
         'javascripts/app.js': /^app/,
-        'javascripts/vendor.js': /^vendor/
-      }
+        'javascripts/vendor.js': /^vendor/,
+      },
+      order: {
+        before: [
+          'vendor/ghetto-bower/jquery-2.0.3.min.js',
+        ]
+      },
     },
     stylesheets: {
       joinTo: {
@@ -31,6 +36,6 @@ exports.config = {
     }
 	},
     paths:{
-        public: '../backend/public/'
+        public: 'public/'
     }
 }

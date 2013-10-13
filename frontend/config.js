@@ -36,6 +36,6 @@ exports.config = {
     }
 	},
     paths:{
-        public: '../backend/public/'
+        public: 'public/'
     }
 }

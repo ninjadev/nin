@@ -12,7 +12,8 @@ ghetto-bower:
 
 .PHONY: setup
 setup:
-	sudo npm install -g brunch bower
+	sudo npm install -g brunch
+	make update
 
 .PHONY: run
 run:

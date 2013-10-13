@@ -1,7 +1,6 @@
-nin
-===
+# nin
 
-*nin is ninjatool*
+> nin is ninjatool
 
 This project is divided into two parts:
 
@@ -43,4 +42,4 @@ chrome.exe --disable-web-security
 
 You will need to have node and npm installed.
 
-Run `make` in the `frontend` and the `backend` folder.
+Run `make setup` in the `frontend` folder and `make` in the `backend` folder.

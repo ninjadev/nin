@@ -11,12 +11,12 @@ exports.config = {
     javascripts: {
       joinTo: {
         'javascripts/app.js': /^app/,
-        'javascripts/vendor.js': /^(bower_components|vendor)/
+        'javascripts/vendor.js': /^vendor/
       }
     },
     stylesheets: {
       joinTo: {
-        'css/app.css': /^(app|vendor|bower_components)/
+        'css/app.css': /^(app|vendor)/
       }
     },
     templates: {
@@ -29,5 +29,8 @@ exports.config = {
     jade: {
       pretty: true
     }
-  }
+	},
+    paths:{
+        public: '../backend/public/'
+    }
 }

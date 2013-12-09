@@ -1,3 +1,3 @@
 angular.module('application', 
-  ['stuff']
+  ['nin']
 );

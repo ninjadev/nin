@@ -12,22 +12,27 @@ body
 
   .container-fluid
     #upper-row.row-fluid
-      #inspector.col-xs-6.pane
-        textarea#text-area(name="content")
+      #inspector.col-xs-6.pane(ng-controller="OptionsController")
+        .row-fluid(ng-repeat="option in options")
+          label
+            {{ option.name }}
+            input(ng-model="option.value", ng-change="save({{ index }})")
       #preview.col-xs-6.pane
-        canvas#preview-canvas
 
     #timeline.row-fluid.pane(ng-controller="LayerController")
       .song.row-fluid
         .meta.col-xs-2
-          span.name.
+          span.name
             Music
         #music-container.col-xs-10
+        #music-container-overlay
 
-      .layer.row-fluid(ng-repeat="layer in layers")
+      .layer.row-fluid(ng-repeat="layer in layers", data-i="{{ layer.i }}")
         .meta.col-xs-2
-          span.name {{ layer.name }}
-        .col-xs-10
+          .display-name {{ layer.displayName }}
+          .name {{ layer.name }}
+        .col-xs-10(style="height:100%;padding:0;margin:0;")
+          div.layer-box(style="width:{{ layer.cssWidth }}%;left:{{ layer.cssLeft }}%;")
 
     audio#music
         source(src="http://localhost:9999/res/music.mp3")

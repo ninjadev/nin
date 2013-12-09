@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="application">
+  <head>
+    <title></title>
+    <link rel="stylesheet" href="css/app.css">
+    <meta name="viewport" content="width=device-width" initial-scale="1.0">
+  </head>
+</html>
+<body>
+  <script src="javascripts/vendor.js"></script>
+  <script src="javascripts/app.js"></script>
+  <div class="container-fluid">
+    <div id="upper-row" class="row-fluid">
+      <div id="inspector" ng-controller="OptionsController" class="col-xs-6 pane">
+        <div ng-repeat="option in options" class="row-fluid">
+          <label>{{ option.name }}
+            <input ng-model="option.value" ng-change="save({{ index }})">
+          </label>
+        </div>
+      </div>
+      <div id="preview" class="col-xs-6 pane"></div>
+    </div>
+    <div id="timeline" ng-controller="LayerController" class="row-fluid pane">
+      <div class="song row-fluid">
+        <div class="meta col-xs-2"><span class="name">
+            <Music></Music></span></div>
+        <div id="music-container" class="col-xs-10"></div>
+        <div id="music-container-overlay"></div>
+      </div>
+      <div ng-repeat="layer in layers" data-i="{{ layer.i }}" class="layer row-fluid">
+        <div class="meta col-xs-2">
+          <div class="display-name">{{ layer.displayName }}</div>
+          <div class="name">{{ layer.name }}</div>
+        </div>
+        <div style="height:100%;padding:0;margin:0;" class="col-xs-10">
+          <div style="width:{{ layer.cssWidth }}%;left:{{ layer.cssLeft }}%;" class="layer-box"></div>
+        </div>
+      </div>
+    </div>
+    <audio id="music">
+      <source src="http://localhost:9999/res/music.mp3">
+      <source src="http://localhost:9999/res/music.ogg">
+    </audio>
+  </div>
+  <script>nin();</script>
+</body>

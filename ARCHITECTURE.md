@@ -7,23 +7,23 @@ This document contains a tentative draft of the architecture for `nin`.
 
 `nin`
     
-    Serves the current directory as a nin project.
+Serves the current directory as a nin project.
 
 
 `nin init [FOLDER]`
     
-    Starts a new nin project in FOLDER, or in the current directory if FOLDER
-    is not specified.
+Starts a new nin project in FOLDER, or in the current directory if FOLDER is
+not specified.
 
 
 `nin compile`
     
-    Compiles the project to the `bin/` folder.
+Compiles the project to the `bin/` folder.
 
 
 `nin clean`
     
-    Deletes the `bin/` folder.
+Deletes the `bin/` folder.
 
 
 

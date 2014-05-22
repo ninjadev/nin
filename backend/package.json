@@ -1,0 +1,8 @@
+{
+  "name": "nin",
+  "version": "0.0.1",
+  "dependencies":
+  {
+    "commander": "2.2.x"
+  }
+}

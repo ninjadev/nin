@@ -8,34 +8,6 @@ This project is divided into two parts:
 
 **Backend** contains a command line utility called `nin`, and functions as the server for the client side app in `frontend`.
 
-## Running it
-
-Run frontend and backend at the same time:
-
-In the frontend folder:
-
-```
-make run
-````
-
-In the backend folder:
-
-```
-make run
-```
-
-Open your browser (which is google chrome, btw) with the --disable-web-security flag.
-
-#### Mac OS X:
-
-```
-open /Applications/Google\ Chrome.app/ --args --disable-web-security
-```
-
-#### Windows:
-
-```
-chrome.exe --disable-web-security
 ```
 
 ## Setup

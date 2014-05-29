@@ -5,7 +5,9 @@
   {
     "commander": "2.2.x",
     "walk":  "2.2.x",
-    "crc": "2.2.x",
-    "express": "4.3.x"
+    "crc": "2.x",
+    "express": "4.3.x",
+    "sockjs": "0.3.x",
+    "rbytes": "*"
   }
 }

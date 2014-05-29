@@ -1,6 +1,7 @@
 var exec = require('child_process').exec;
 var express = require('express');
 var fs = require('fs');
+var socket = require('./socket').socket;
 
 var serve = function () {
   exec('mkdir -p test-project/gen/ && cat dasBoot/**.js > test-project/gen/dasBoot.js',
@@ -8,6 +9,11 @@ var serve = function () {
     var frontend = express();
     frontend.use(express.static(__dirname + '/frontend'));
     frontend.listen(8000);
+
+    var sockets = express();
+    var sockets_server = require('http').createServer(sockets);
+    socket.installHandlers(sockets_server, {prefix: '/socket'});
+    sockets_server.listen(1337);
 
     var files = express();
     files.use(express.static(__dirname + '/test-project'));

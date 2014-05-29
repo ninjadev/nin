@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var fs = require('fs');
+
+var compile = require('./compile').compile,
+    serve   = require('./serve');
+
+program
+  .version('0.0.1')
+  .option('compile', 'Compile the nin project')
+  .parse(process.argv);
+
+
+(function main () {
+	if(program.compile) {
+    console.log('compiling...');
+    compile(function(compiled){
+        fs.writeFileSync('test-project/bin/test-project.png.html', compiled);
+        console.log('compiling complete!');
+    
+    });
+  } else {
+    serve.serve();
+  } 
+})();

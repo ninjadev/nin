@@ -22,7 +22,7 @@ function chunk(type, data) {
 }
 
 
-function compress(payload) {
+function compress(payload, callback) {
 
   while(payload.length % 3) {
     payload += ' ';  
@@ -76,16 +76,15 @@ function compress(payload) {
       new Buffer(positiveNumberToBytes(+('0x' + crc(scanlinesBuffer.toString('binary'))), 4), 'binary')
     ]);
     var IDATChunk = chunk('IDAT', IDATData.toString('binary'));
-    var f = fs.createWriteStream('output.png.html');
-    f.write(fileSignature);
-    f.write(IHDRChunk);
-    f.write(htMlChunk);
-    f.write(IDATChunk);
-    f.write(IENDChunk);
-    f.end();
+    callback(Buffer.concat([
+      fileSignature,
+      IHDRChunk,
+      htMlChunk,
+      IDATChunk,
+      IENDChunk
+    ]));
   });
 }
 
-fs.readFile('HONEYCOMB.html', function read(err, data) {
-  compress(data.toString('binary'));
-});
+
+module.exports['compress'] = compress;

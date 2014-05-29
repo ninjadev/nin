@@ -13,8 +13,17 @@ program
 
 
 (function main () {
+  console.log('mordi');
 	if (program.compile){
-    compile.compile();
+    console.log('compiling...');
+    compile.compile(function(compiled){
+      console.log(compiled);
+      fs.writeFileSync('test-project/bin/test-project.png.html',
+                       compiled, function(err){
+        console.log(err);
+      });
+      console.log('compiling complete!');  
+    });
   } 
 	else if (program.run){
     run.run();

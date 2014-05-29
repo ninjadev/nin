@@ -1,0 +1,18 @@
+[
+    {
+        "type": "BlankLayer",
+        "displayName": "Clear",
+        "startFrame": 0,
+        "endFrame": 10000,
+        "position": 0,
+        "offset": 1.2
+    },
+    {
+        "type": "BlankLayer",
+        "displayName": "Blinking square",
+        "startFrame": 12,
+        "endFrame": 7400000,
+        "position": 1,
+        "offset": 0
+    }
+]

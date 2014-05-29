@@ -27,6 +27,9 @@ function BlankLayer(config) {
 BlankLayer.prototype.start = function() {
 };
 
+BlankLayer.prototype.end = function() {
+};
+
 BlankLayer.prototype.render = function(renderer, interpolation) {
   renderer.render(this.scene, this.camera);
 };

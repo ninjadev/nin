@@ -1,49 +1,57 @@
-function bootstrap() {
+function bootstrap(options) {
+  options = options || {};
+  options.container = options.container || document.body;
 
-  var renderer = new THREE.WebGLRenderer({maxLights: 10, antialias: true});
-  renderer.setClearColor(0x000000, 1);
-  renderer.sortObjects = false;
-  renderer.autoClear = false;
+  var demo = {};
 
-  var lm;
+  demo.renderer = new THREE.WebGLRenderer({maxLights: 10, antialias: true});
+  demo.renderer.setClearColor(0x000000, 1);
+  demo.renderer.sortObjects = false;
+  demo.renderer.autoClear = false;
 
+  Loader.setRootPath(options.rootPath || '');
+
+  demo.lm = new LayerManager();
+
+  /*
   Loader.loadAjax('res/layers.json', function(layers) {
-    lm = new LayerManager(JSON.parse(layers));
     lm.initialize();
   });
+  */
 
-  function update(frame) {
-    lm.update(frame);
+  demo.update = function(frame) {
+    demo.lm.update(frame);
   }
 
-  function render(renderer, interpolation) {
+  demo.render = function(renderer, interpolation) {
     renderer.clear();
-    lm.render(renderer, interpolation);
+    demo.lm.render(renderer, interpolation);
   }
 
   function resize() {
-    if(window.innerWidth / window.innerHeight > 16 / 9){
-      GU = (window.innerHeight / 9);
+    var rect = options.container.getBoundingClientRect();
+    if(rect.width / rect.height > 16 / 9){
+      GU = (rect.height / 9);
     }else{
-      GU = (window.innerWidth / 16);
+      GU = (rect.width / 16);
     }
-    renderer.setSize(16 * GU, 9 * GU);
-    renderer.domElement.style.zIndex = 10;
-    renderer.domElement.style.position = 'absolute';
-    renderer.domElement.style.margin = ((window.innerHeight - 9 * GU) / 2) +
-      "px 0 0 " + ((window.innerWidth - 16 * GU) / 2) + "px";
+    demo.renderer.setSize(16 * GU, 9 * GU);
+    demo.renderer.domElement.style.zIndex = 10;
+    demo.renderer.domElement.style.position = 'absolute';
+    demo.renderer.domElement.style.margin = ((rect.height - 9 * GU) / 2) +
+      "px 0 0 " + ((rect.width - 16 * GU) / 2) + "px";
   };
 
   window.addEventListener('resize', resize);
 
-  var music = document.createElement('audio');
-  Loader.load('res/music.mp3', music); 
+  demo.music = document.createElement('audio');
+  Loader.load('res/music.mp3', demo.music); 
 
-  var loop = createLoop({
-    render: render,
-    update: update,
-    renderer: renderer,
-    music: music
+  demo.loop = createLoop({
+    render: demo.render,
+    update: demo.update,
+    renderer: demo.renderer,
+    music: demo.music
   });  
 
   resize();
@@ -54,9 +62,11 @@ function bootstrap() {
     console.log('finished loading :)');  
   });
 
-  return function start() {
-    document.body.appendChild(renderer.domElement);
-    music.play();
-    loop();
+  demo.start = function() {
+    (options.container || document.body).appendChild(demo.renderer.domElement);
+    demo.music.play();
+    demo.loop();
   }
+
+  return demo;
 }

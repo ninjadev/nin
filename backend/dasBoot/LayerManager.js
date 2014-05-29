@@ -1,34 +1,32 @@
 /**
  * @constructor
  */
-function LayerManager(layers) {
-  this.layers = layers; 
+function LayerManager() {
+  this.layers = [];
   this.startFrames = {}; 
   this.endFrames = {};
   this.activeLayers = [];
-
-  for(var i = 0; i < this.layers.length; i++) {
-    var layer = this.layers[i];
-
-    if(!this.startFrames[layer.startFrame]){
-      this.startFrames[layer.startFrame] = [];
-    }
-    this.startFrames[layer.startFrame].push(layer);
-
-    if(!this.endFrames[layer.endFrame]){
-      this.endFrames[layer.endFrame] = [];
-    }
-    this.endFrames[layer.endFrame].push(layer);
-  }
 }
 
-LayerManager.prototype.initialize = function() {
-  for(var i = 0; i < this.layers.length; i++) {
-    this.layers[i].instance = new window[this.layers[i].type](this.layers[i]);
+LayerManager.prototype.loadLayer = function(layer) {
+
+  this.layers.push(layer);
+
+  if(!this.startFrames[layer.startFrame]){
+    this.startFrames[layer.startFrame] = [];
   }
-};
+  this.startFrames[layer.startFrame].push(layer);
+
+  if(!this.endFrames[layer.endFrame]){
+    this.endFrames[layer.endFrame] = [];
+  }
+  this.endFrames[layer.endFrame].push(layer);
+
+  layer.instance = new window[layer.type](layer);
+}
 
 LayerManager.prototype.update = function(frame) {
+  console.log(frame);
   this.updateActiveLayersList(frame);
   for(var i = 0; i < this.activeLayers.length; i++) {
     this.activeLayers[i].instance.update(frame);

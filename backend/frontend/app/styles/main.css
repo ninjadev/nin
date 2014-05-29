@@ -1,0 +1,64 @@
+html, body {
+    height: 100%;
+}
+
+.container-fluid {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+}
+
+.extra-container {
+    position: fixed;
+    background: yellow;
+    width: 33.333333%;
+    height: 50%;
+    left: 0;
+    top: 0;
+}
+
+.demo-container {
+    position: fixed;
+    width: 66.666666%;
+    height: 50%;
+    right: 0;
+    top: 0;
+    background: black;
+}
+
+.layer-list-container {
+    position: fixed;
+    background: green;
+    width: 100%;
+    height: 50%;
+    left: 0;
+    bottom: 0;
+}
+
+.timeline {
+    width: 100%;
+    height: 50px;
+}
+
+.layer-list {
+    display: table;
+    width: 100%;
+}
+
+.layer {
+    display: table-cell;
+    vertical-align: middle;
+    width: 100%;
+    height: 30px;
+    background: pink;
+}
+
+.layer .name {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0 10px;
+    width: 150px;
+    height: 30px;
+    background: maroon;
+    color: white;
+}

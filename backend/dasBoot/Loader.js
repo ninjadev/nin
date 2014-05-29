@@ -5,7 +5,11 @@ var Loader = (function(){
   };
   var itemsToAjax = [];
   var itemsToLoad = [];
+  var rootPath = '';
   return {
+    setRootPath: function(path){
+      rootPath = path;
+    },
     loadAjax: function(filepath, callback) {
       itemsToAjax.push({
         filepath: filepath,
@@ -36,12 +40,12 @@ var Loader = (function(){
           item.callback && item.callback(); 
           registerAsLoaded(item); 
         });
-        item.element.src = item.filepath;
+        item.element.src = rootPath + item.filepath;
       });
       itemsToAjax.forEach(function(item) {
         var response = null;
         var request = new XMLHttpRequest();
-        request.open('GET', item.filepath, 1);
+        request.open('GET', rootPath + item.filepath, 1);
         request.onload = function() {
           item.callback(request.responseText);
           registerAsLoaded(item);

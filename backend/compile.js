@@ -37,8 +37,9 @@ var compile = function(callback) {
     compiled.push(data); 
     if(compiled.length == 2) {
       compress(compiled.join(';'), function(data) {
-        exec('mkdir -p test-project/bin/');
-        fs.writeFileSync('test-project/bin/test-project.png.html', data);
+        exec('mkdir -p test-project/bin/', function (){
+      		fs.writeFileSync('test-project/bin/test-project.png.html', data);
+      	});
         console.log('Success!');
       });
     }

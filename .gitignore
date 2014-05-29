@@ -36,3 +36,7 @@ vendor/
 
 # dotfiles!
 .*
+
+# compile output folders
+backend/test-project/bin
+backend/test-project/gen

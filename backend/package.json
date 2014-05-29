@@ -8,6 +8,7 @@
     "crc": "2.x",
     "express": "4.3.x",
     "sockjs": "0.3.x",
-    "rbytes": "*"
+    "rbytes": "*",
+    "chokidar": "0.8.x"
   }
 }

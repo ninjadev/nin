@@ -1,8 +1,0 @@
-https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js -O angular.min.js
-http://waveformjs.org/waveform.js -O waveform.js
-http://code.jquery.com/jquery-2.0.3.min.js -O jquery-2.0.3.min.js
-http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css -O bootstrap.min.css
-http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js -O bootstrap.min.js
-http://cdnjs.cloudflare.com/ajax/libs/codemirror/3.16.0/codemirror.min.js -O codemirror.min.js
-http://cdnjs.cloudflare.com/ajax/libs/codemirror/3.16.0/codemirror.min.css -O codemirror.min.css
-http://cdnjs.cloudflare.com/ajax/libs/codemirror/3.16.0/keymap/vim.min.js -O vim.min.js

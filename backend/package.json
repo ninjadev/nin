@@ -4,8 +4,8 @@
   "dependencies":
   {
     "commander": "2.2.x",
-    "walk":  "*",
-    "crc": "*",
-    "express": "*"
+    "walk":  "2.2.x",
+    "crc": "2.2.x",
+    "express": "4.3.x"
   }
 }

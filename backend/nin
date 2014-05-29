@@ -9,6 +9,7 @@ var compile = require('./compile').compile,
 program
   .version('0.0.1')
   .option('compile', 'Compile the nin project')
+  .option('run', 'Run the backend project')
   .parse(process.argv);
 
 
@@ -20,6 +21,8 @@ program
         console.log('compiling complete!');
     
     });
+  } else if(program.run){
+    serve.serve();
   } else {
     serve.serve();
   } 

@@ -16,6 +16,10 @@ var serve = function () {
     sockets_server.listen(1337, '0.0.0.0');
 
     var files = express();
+    files.use(function(req, res, next) {
+      res.setHeader("Access-Control-Allow-Origin", "*");
+      return next();
+    });
     files.use(express.static(__dirname + '/test-project'));
     files.listen(9999);
 

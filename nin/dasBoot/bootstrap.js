@@ -27,7 +27,7 @@ function bootstrap(options) {
     demo.lm.render(renderer, interpolation);
   }
 
-  function resize() {
+  demo.resize = function() {
     var rect = container.getBoundingClientRect();
     if(rect.width / rect.height > 16 / 9){
       GU = (rect.height / 9);
@@ -41,7 +41,7 @@ function bootstrap(options) {
       "px 0 0 " + ((rect.width - 16 * GU) / 2) + "px";
   };
 
-  window.addEventListener('resize', resize);
+  window.addEventListener('resize', demo.resize);
 
   demo.music = document.createElement('audio');
   Loader.load('res/music.mp3', demo.music); 
@@ -61,7 +61,7 @@ function bootstrap(options) {
 
   demo.start = function() {
     container.appendChild(demo.renderer.domElement);
-    resize();
+    demo.resize();
     demo.music.play();
     demo.loop();
   }

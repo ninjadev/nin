@@ -3,6 +3,15 @@
 angular.module('nin')
   .controller('MainCtrl', function ($scope, $http, ScriptReloader, socket, demo) {
 
+    var keybindings = {
+      '32': function() {
+        demo.music.paused ? demo.music.play() : demo.music.pause();
+      }
+    };
+
+    document.addEventListener('keypress', function(event) {
+      keybindings[event.which]();
+    });
 
     $scope.demo = demo;
 

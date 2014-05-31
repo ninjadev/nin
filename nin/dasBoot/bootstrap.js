@@ -18,7 +18,10 @@ function bootstrap(options) {
     container = c;
   }
 
+  var currentFrame = 0;
+
   demo.update = function(frame) {
+    currentFrame = frame;
     demo.lm.update(frame);
   }
 
@@ -52,6 +55,10 @@ function bootstrap(options) {
     renderer: demo.renderer,
     music: demo.music
   });  
+
+  demo.getCurrentFrame = function() {
+    return currentFrame;    
+  };
 
   Loader.start(function progress(percent){
     console.log(percent, 'percent complete!');

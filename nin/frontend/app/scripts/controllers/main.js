@@ -37,9 +37,7 @@ angular.module('nin')
         var path = event.data.split(' ')[1];
         /* 'test-project' hack, to be removed later */
         path = path.slice(12);
-        ScriptReloader.reload('//localhost:9999/' + path, function() {
-          console.log('BlankLayer should now be loaded, yo!');
-        });
+        ScriptReloader.reload('//localhost:9999/' + path);
       }
     };
 

@@ -5,7 +5,7 @@ angular.module('nin')
         var script = document.createElement('script');
         document.body.appendChild(script);
         script.onload = function() {
-          callback();
+          callback && callback();
         };
         script.src = path;
       }

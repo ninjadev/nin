@@ -6,7 +6,12 @@
   </div>
 </div>
 
-  <div class=layers-bar-container>
+  <div class=layers-bar-container scrollcallback="onBottomScroll">
+    <div
+      class=marker-line
+      ng-hide="hideMarker"
+      style="margin-left: {{ currentFrame - bottomScrollOffset }}px"
+      ></div>
     <div
       ng-repeat="layer in layers"
       dragresizable

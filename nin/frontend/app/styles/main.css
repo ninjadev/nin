@@ -61,3 +61,11 @@ main-window, main-window > div {
     border-left: 1px solid #888;
     border-right: 1px solid #888;
 }
+
+.marker-line {
+    position: absolute;
+    z-index: 100;
+    width: 1px;
+    background: red;
+    height: calc(100% - 8px);
+}

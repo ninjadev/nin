@@ -1,4 +1,4 @@
-angular.module('nin').directive('demo', function(demo) {
+angular.module('nin').directive('demo', function($interval, demo) {
   return {
     restrict: 'E',
     template: '<div class=demo-container></div>',
@@ -6,13 +6,17 @@ angular.module('nin').directive('demo', function(demo) {
       demo.setContainer(element[0].children[0]);
 
       var rect = element[0].children[0].getBoundingClientRect();
-      setInterval(function() {
+      $interval(function() {
         var newRect = element[0].children[0].getBoundingClientRect();
         if(newRect.width != rect.width || newRect.height != rect.height) {
           rect = newRect;
           demo.resize();
         }
       }, 100);
+
+      $interval(function() {
+        scope.currentFrame = demo.getCurrentFrame();
+      }, 1000 / 60);
 
       setTimeout(function(){
         demo.start();

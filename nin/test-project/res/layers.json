@@ -2,10 +2,10 @@
   {
     "type": "BlankLayer",
     "displayName": "Clear",
-    "startFrame": 0,
+    "startFrame": 1000,
     "endFrame": 10000,
     "position": 0,
-    "offset": 1.2
+    "offset": 1.7
   },
   {
     "type": "BlankLayer",

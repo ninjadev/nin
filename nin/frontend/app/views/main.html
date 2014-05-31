@@ -1,33 +1,12 @@
-<div class=extra-container>
-  Some kind of panel.
+<ui-layout options="{ flow : 'row' }">
+
+<div>
+  hello
 </div>
 
-<demo>
-</demo>
-
-<div class=layer-list-container>
-
-  <div class=timeline>
-    Timeline
-  </div>
-
-  <div class=layer-list>
-    <div class=layer ng-repeat="layer in layers">
-      <div class=name>
-        {{ layer.name }}
-      </div>
-      <div
-        style="
-        position: relative;
-        height: 30px;
-        margin-top: -30px;
-        margin-left: calc({{ layer.offset }}% + 150px);
-        width: {{ layer.width }}%;
-        background: orange;
-        "
-        >
-        &nbsp;
-      </div>
-    </div>
-  </div>
+<div
+  ng-include="'views/bottom-panel.html'"
+  ng-controller="BottomCtrl">
 </div>
+
+</ui-layout>

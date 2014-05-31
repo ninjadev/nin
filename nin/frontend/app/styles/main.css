@@ -3,18 +3,8 @@ html, body {
 }
 
 .container-fluid {
-    position: fixed;
     height: 100%;
     width: 100%;
-}
-
-.extra-container {
-    position: fixed;
-    background: yellow;
-    width: 33.333333%;
-    height: 50%;
-    left: 0;
-    top: 0;
 }
 
 .demo-container {
@@ -26,39 +16,37 @@ html, body {
     background: black;
 }
 
-.layer-list-container {
-    position: fixed;
-    background: green;
+main-window, main-window > div {
     width: 100%;
-    height: 50%;
-    left: 0;
-    bottom: 0;
+    height: 100%;
+    display: block;
 }
 
-.timeline {
-    width: 100%;
-    height: 50px;
-}
-
-.layer-list {
-    display: table;
-    width: 100%;
+.bottom {
+    margin-top: 8px;
 }
 
 .layer {
-    display: table-cell;
-    vertical-align: middle;
-    width: 100%;
-    height: 30px;
-    background: pink;
+    height: 50px;
+    border: 1px solid #888;
 }
 
-.layer .name {
-    display: table-cell;
-    vertical-align: middle;
-    padding: 0 10px;
+.layer-label {
+    height: 100%;
     width: 150px;
-    height: 30px;
-    background: maroon;
-    color: white;
+    float: left;
+    border-right: 1px solid #888;
+}
+
+.layer-bar-container {
+    height: 100%;
+    margin-left: 150px;
+    width: calc(100% - 150px);
+}
+
+.layer-bar {
+    height: 100%;
+    background: yellow;
+    display: inline-block;
+    width: auto;
 }

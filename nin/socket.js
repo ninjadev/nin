@@ -2,7 +2,7 @@ var sock = require('sockjs')
   , chokidar = require('chokidar')
   , jf = require('jsonfile');
 
-var watcher = chokidar.watch('test-project/src', {ignored: /[\/\\]\./, persistent: true});
+
 
 
 var echo = sock.createServer();
@@ -10,10 +10,22 @@ connections = {};
 
 echo.on('connection', function (conn) {
   connections[conn.id] = conn;
+  console.log('connection!');
 
   conn.on('close', function () {
     delete connections[conn.id];
+    console.log('lost connection');
   });
+
+  var watcher = chokidar.watch('test-project/src/', {
+    ignored: /[\/\\]\./,
+    persistent: true,
+    ignoreInitial: false
+  });
+
+  /* an empty 'add' handler is needed to
+   * trigger intial callbacks for all files */
+  watcher.on('add', function(){});
 
   watcher.on('all', function (event, path) {
     if (event === 'unlink') event = 'delete';

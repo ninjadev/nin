@@ -1,8 +1,9 @@
 function bootstrap(options) {
   options = options || {};
-  options.container = options.container || document.body;
 
   var demo = {};
+
+  var container = document.body;
 
   demo.renderer = new THREE.WebGLRenderer({maxLights: 10, antialias: true});
   demo.renderer.setClearColor(0x000000, 1);
@@ -13,11 +14,9 @@ function bootstrap(options) {
 
   demo.lm = new LayerManager();
 
-  /*
-  Loader.loadAjax('res/layers.json', function(layers) {
-    lm.initialize();
-  });
-  */
+  demo.setContainer = function(c) {
+    container = c;
+  }
 
   demo.update = function(frame) {
     demo.lm.update(frame);
@@ -29,7 +28,7 @@ function bootstrap(options) {
   }
 
   function resize() {
-    var rect = options.container.getBoundingClientRect();
+    var rect = container.getBoundingClientRect();
     if(rect.width / rect.height > 16 / 9){
       GU = (rect.height / 9);
     }else{
@@ -54,8 +53,6 @@ function bootstrap(options) {
     music: demo.music
   });  
 
-  resize();
-
   Loader.start(function progress(percent){
     console.log(percent, 'percent complete!');
   }, function finished(){
@@ -63,7 +60,8 @@ function bootstrap(options) {
   });
 
   demo.start = function() {
-    (options.container || document.body).appendChild(demo.renderer.domElement);
+    container.appendChild(demo.renderer.domElement);
+    resize();
     demo.music.play();
     demo.loop();
   }

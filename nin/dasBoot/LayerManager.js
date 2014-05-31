@@ -22,20 +22,25 @@ LayerManager.prototype.loadLayer = function(layer) {
   }
   this.endFrames[layer.endFrame].push(layer);
 
-  layer.instance = new window[layer.type](layer);
+  (function() {
+    if(layer.type in window) {
+      layer.instance = new window[layer.type](layer);
+    } else {
+      setTimeout(arguments.callee, 100);
+    }
+  })();
 }
 
 LayerManager.prototype.update = function(frame) {
-  console.log(frame);
   this.updateActiveLayersList(frame);
   for(var i = 0; i < this.activeLayers.length; i++) {
-    this.activeLayers[i].instance.update(frame);
+    this.activeLayers[i].instance && this.activeLayers[i].instance.update(frame);
   }
 };
 
 LayerManager.prototype.render = function(renderer, interpolation) {
   for(var i = 0; i < this.activeLayers.length; i++) {
-    this.activeLayers[i].instance.render(renderer, interpolation);
+    this.activeLayers[i].instance && this.activeLayers[i].instance.render(renderer, interpolation);
   }
 };
 
@@ -60,7 +65,7 @@ LayerManager.prototype.updateActiveLayersList = function(frame) {
     for(var i = 0; i < this.startFrames[frame].length; i++) {
       var layer = this.startFrames[frame][i];
       this.activeLayers.push(layer);
-      layer.instance.start();
+      layer.instance && layer.instance.start();
     }
   }
   if(frame in this.endFrames) {

@@ -22,31 +22,44 @@ main-window, main-window > div {
     display: block;
 }
 
-.bottom {
-    margin-top: 8px;
+.ui-splitbar {
+    background: #888;
 }
 
-.layer {
-    height: 50px;
-    border: 1px solid #888;
+.bottom {
+    margin-top: 8px;
+    height: calc(100% - 8px);
+}
+
+.layers-label-container {
+    width: 150px;
+    height: 100%;
+    float: left;
 }
 
 .layer-label {
-    height: 100%;
-    width: 150px;
+    width: 100%;
+    height: 30px;
     float: left;
-    border-right: 1px solid #888;
+    border: 1px solid #888;
+}
+
+.layers-bar-container {
+    overflow: scroll;
+    width: calc(100% - 150px);
+    height: 100%;
+    float: left;
 }
 
 .layer-bar-container {
-    height: 100%;
-    margin-left: 150px;
-    width: calc(100% - 150px);
+    border: 1px solid #888;
 }
 
 .layer-bar {
-    height: 100%;
+    height: 30px;
     background: yellow;
     display: inline-block;
     width: auto;
+    border-left: 1px solid #888;
+    border-right: 1px solid #888;
 }

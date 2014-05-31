@@ -1,14 +1,22 @@
 <div class=bottom ng-controller="BottomCtrl">
 
-  <div class=layer ng-repeat="layer in layers">
-    <div class=layer-label>
-      {{ layer.name }} 
-    </div>
-    <div class=layer-bar-container>
-      <div dragresizable class=layer-bar>
-        Yo
-      </div>
+<div class=layers-label-container>
+  <div class=layer-label ng-repeat="layer in layers">
+      {{ layer.displayName }} 
   </div>
+</div>
+
+  <div class=layers-bar-container>
+    <div
+      ng-repeat="layer in layers"
+      dragresizable
+      class=layer-bar
+      style="
+        width:{{ layer.endFrame - layer.startFrame}}px;
+        left:{{ layer.startFrame }}px;
+      ">
+      &nbsp;
+    </div>
   </div>
 
 </div>

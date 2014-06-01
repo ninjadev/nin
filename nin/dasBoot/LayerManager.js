@@ -54,7 +54,7 @@ LayerManager.prototype.reset = function() {
 LayerManager.prototype.jumpToFrame = function(frame) {
   this.reset();
   for(var i = 0; i < frame; i++) {
-    this.updateActiveLayersList(frame);
+    this.updateActiveLayersList(i);
   }
 };
 

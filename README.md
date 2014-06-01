@@ -14,6 +14,12 @@ This project is divided into two parts:
 
 You will need to have node and npm installed.
 
-Run `make setup` in the `frontend` folder and `make` in the `backend` folder.
+Run `make setup` in the `frontend` folder and `make` in the `nin` folder.
 
 *See the README in the frontend folder for more details.*
+
+
+## Commands to try if it does not work:
+
+sudo apt-get install g++
+sudo npm install -g grunt-cli

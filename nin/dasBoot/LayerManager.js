@@ -51,6 +51,15 @@ LayerManager.prototype.reset = function() {
   }
 };
 
+LayerManager.prototype.refresh = function(layerName) {
+  for(var i = 0;i < this.layers.length; i++) {
+    var layer = this.layers[i];  
+    if(layer.type == layerName) {
+      layer.instance = new window[layerName](layer);
+    }
+  }
+};
+
 LayerManager.prototype.jumpToFrame = function(frame) {
   this.reset();
   for(var i = 0; i < frame; i++) {

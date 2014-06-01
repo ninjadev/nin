@@ -2,16 +2,15 @@
  * @constructor
  */
 function BlankLayer(config) {
-  console.log(config.offset);
   this.offset = config.offset;
   this.scene = new THREE.Scene();
   this.camera = new THREE.PerspectiveCamera(45, 16 / 9, 1, 10000);
-  this.cube = new THREE.Mesh(new THREE.BoxGeometry(50, 50, 50),
+  this.cube = new THREE.Mesh(new THREE.BoxGeometry(50, 5, 5),
                              new THREE.ShaderMaterial(exampleShader));
 
   this.cube.position.x = 45 * this.offset;
   this.scene.add(this.cube);
-  this.camera.position.z = 300;
+  this.camera.position.z = 30;
 
   var light = new THREE.PointLight( 0xffffff, 1, 100 );
   light.position.set( -50, -50, -50 );

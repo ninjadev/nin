@@ -75,3 +75,15 @@ main-window, main-window > div {
     background: purple;
     height: 50px;
 }
+
+.musiclayer canvas {
+    display: block;
+}
+
+.musiclayer .over {
+    margin-top: -50px;   
+    overflow: hidden;
+}
+
+.musiclayer .under {
+}

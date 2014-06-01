@@ -68,6 +68,8 @@ function bootstrap(options) {
     demo.looper.deltaTime = 0;
     demo.looper.currentFrame = frame;
     demo.lm.jumpToFrame(frame);
+    demo.update(frame);
+    demo.render(demo.renderer, 0);
   };
 
   Loader.start(function progress(percent){

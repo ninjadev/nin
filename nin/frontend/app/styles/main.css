@@ -72,7 +72,7 @@ main-window, main-window > div {
 }
 
 .musiclayer {
-    background: purple;
+    background: #444;
     height: 50px;
 }
 
@@ -81,8 +81,9 @@ main-window, main-window > div {
 }
 
 .musiclayer .over {
-    margin-top: -50px;   
     overflow: hidden;
+    position: relative;
+    top: -50px;
 }
 
 .musiclayer .under {

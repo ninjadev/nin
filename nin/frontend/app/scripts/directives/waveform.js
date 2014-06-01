@@ -7,10 +7,6 @@ angular.module('nin').directive('waveform', function() {
               '<div class=over style="width:{{ currentFrame }}px"></div>',
     link: function(scope, element, attrs) {
 
-      scope.$watch('currentFrame', function(value) {
-        console.log('currfram!', value);
-      });
-
       window.AudioContext = window.AudioContext || window.webkitAudioContext;
       var context = new AudioContext();
 

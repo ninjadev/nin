@@ -1,6 +1,8 @@
 var sock = require('sockjs')
   , chokidar = require('chokidar')
-  , jf = require('jsonfile');
+  , jf = require('jsonfile')
+  , sg = require('./shadergen')
+  ;
 
 
 
@@ -28,9 +30,16 @@ echo.on('connection', function (conn) {
   watcher.on('add', function(){});
 
   watcher.on('all', function (event, path) {
+    var pathParts = path.split('/');
     if (event === 'unlink') event = 'delete';
-    console.log('Change in project detected: ' + event + ', ' + path)
-    conn.write(event + ' ' + path);
+    if(pathParts.indexOf('shaders') !== -1) {
+      sg.shaderGen(function() {
+        conn.write('shaders!');
+      });
+    } else {
+      console.log('Change in project detected: ' + event + ', ' + path)
+      conn.write(event + ' ' + path);
+    }
   });
 
   conn.on('data', function (message) {

@@ -16,6 +16,7 @@ angular.module('nin').directive('demo', function($interval, demo) {
 
       $interval(function() {
         scope.currentFrame = demo.getCurrentFrame();
+        scope.duration = demo.music.duration * 60;
       }, 1000 / 60);
 
       setTimeout(function(){

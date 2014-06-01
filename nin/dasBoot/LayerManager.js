@@ -51,7 +51,7 @@ LayerManager.prototype.reset = function() {
   }
 };
 
-LayerManager.prototype.skipToFrame = function(frame) {
+LayerManager.prototype.jumpToFrame = function(frame) {
   this.reset();
   for(var i = 0; i < frame; i++) {
     this.updateActiveLayersList(frame);

@@ -12,6 +12,14 @@
       ng-hide="hideMarker"
       style="margin-left: {{ currentFrame - bottomScrollOffset }}px"
       ></div>
+
+    <div
+      class="layer musiclayer"
+      ng-click="musicLayerClick($event)"
+      style="width: {{ duration }}px">
+      &nbsp;
+    </div>
+
     <div
       ng-repeat="layer in layers"
       dragresizable

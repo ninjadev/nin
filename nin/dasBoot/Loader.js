@@ -36,10 +36,12 @@ var Loader = (function(){
       }
       itemsToLoad.forEach(function(item) {
         var eventName = eventNames[item.element.tagName];
-        item.element.addEventListener(eventName, function() {
+        item.element.addEventListener(eventName, listener);
+        function listener() {
+          item.element.removeEventListener(eventName, listener);
           item.callback && item.callback(); 
           registerAsLoaded(item); 
-        });
+        };
         item.element.src = rootPath + item.filepath;
       });
       itemsToAjax.forEach(function(item) {

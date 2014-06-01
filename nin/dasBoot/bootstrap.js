@@ -49,7 +49,7 @@ function bootstrap(options) {
   demo.music = document.createElement('audio');
   Loader.load('res/music.mp3', demo.music); 
 
-  demo.loop = createLoop({
+  demo.looper = createLoop({
     render: demo.render,
     update: demo.update,
     renderer: demo.renderer,
@@ -58,6 +58,16 @@ function bootstrap(options) {
 
   demo.getCurrentFrame = function() {
     return currentFrame;    
+  };
+
+  demo.jumpToFrame = function(frame) {
+    var time = frame / 60 * 1000;
+    demo.music.currentTime = time / 1000;
+    demo.looper.time = time;
+    demo.looper.oldTime = time;
+    demo.looper.deltaTime = 0;
+    demo.looper.currentFrame = frame;
+    demo.lm.jumpToFrame(frame);
   };
 
   Loader.start(function progress(percent){
@@ -70,7 +80,7 @@ function bootstrap(options) {
     container.appendChild(demo.renderer.domElement);
     demo.resize();
     demo.music.play();
-    demo.loop();
+    demo.looper.loop();
   }
 
   return demo;

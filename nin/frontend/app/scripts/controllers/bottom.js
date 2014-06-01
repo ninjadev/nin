@@ -10,6 +10,10 @@ angular.module('nin')
       $scope.bottomScrollOffset = event.target.scrollLeft;
     };
 
+    $scope.musicLayerClick = function($event) {
+      $scope.demo.jumpToFrame($event.offsetX);
+    };
+
     $interval(function(){
       $scope.hideMarker = false;
       if(!linesContainer) {

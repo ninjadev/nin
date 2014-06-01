@@ -31,7 +31,8 @@ main-window, main-window > div {
 
 .layers-label-container {
     width: 150px;
-    height: 100%;
+    height: calc(100% - 50px);
+    margin-top: 50px;
     float: left;
 }
 
@@ -68,4 +69,9 @@ main-window, main-window > div {
     width: 1px;
     background: red;
     height: calc(100% - 8px);
+}
+
+.musiclayer {
+    background: purple;
+    height: 50px;
 }

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('nin')
-  .controller('BottomCtrl', function ($scope, $interval, $q) {
+  .controller('BottomCtrl', function ($scope, $interval) {
 
     var linesContainer = null;
 
@@ -20,7 +20,7 @@ angular.module('nin')
         return;
       }
       if(linesContainer.scrollLeft > $scope.currentFrame ||
-        $scope.currentFrame >= linesContainer.scrollLeft + $q(linesContainer).width()) {
+        $scope.currentFrame >= linesContainer.scrollLeft + $(linesContainer).width()) {
         $scope.hideMarker = true;
       } else {
         $scope.hideMarker = false;

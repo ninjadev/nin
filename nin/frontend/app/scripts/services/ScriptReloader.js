@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('nin')
   .factory('ScriptReloader', function () {
     return {
@@ -10,4 +12,4 @@ angular.module('nin')
         script.src = path;
       }
     };
-});
+  });

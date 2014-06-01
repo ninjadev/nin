@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('nin').directive('dragresizable', function () {
 
   var resizableConfig = {
@@ -16,15 +18,15 @@ angular.module('nin').directive('dragresizable', function () {
     scope: {
       callback: '&onDragResize'
     },
-    link: function postLink(scope, element, attrs) {
+    link: function postLink(scope, element) {
       /* seems to be buggy when both draggable and resizable */
       //element.draggable(draggableConfig);
       element.resizable(resizableConfig);
-      element.on('resizestop dragstop', function (evt, ui) {
+      element.on('resizestop dragstop', function() {
         if(scope.callback) {
           scope.callback();
         }
       });
     }
-    };
+  };
 });

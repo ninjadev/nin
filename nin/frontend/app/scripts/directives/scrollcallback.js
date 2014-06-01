@@ -1,4 +1,6 @@
-angular.module('nin').directive('scrollcallback', function($interval, demo) {
+'use strict';
+
+angular.module('nin').directive('scrollcallback', function(demo) {
   return {
     restrict: 'A',
     link: function(scope, element, attrs) {

@@ -1,8 +1,10 @@
+'use strict';
+
 angular.module('nin').directive('demo', function($interval, demo) {
   return {
     restrict: 'E',
     template: '<div class=demo-container></div>',
-    link: function(scope, element, attrs) {
+    link: function(scope, element) {
       demo.setContainer(element[0].children[0]);
 
       var rect = element[0].children[0].getBoundingClientRect();

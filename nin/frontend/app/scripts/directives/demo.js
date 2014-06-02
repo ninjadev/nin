@@ -16,6 +16,17 @@ angular.module('nin').directive('demo', function($interval, demo) {
         }
       }, 100);
 
+
+      scope.$watch('fullscreen', function (toFullscreen){
+        if (toFullscreen) {
+          // go to fullscreen
+          element[0].children[0].classList.add('fullscreen')
+        } else {
+          // exit fullscreen
+          element[0].children[0].classList.remove('fullscreen')
+        }
+      })
+
       $interval(function() {
         scope.currentFrame = demo.getCurrentFrame();
         scope.duration = demo.music.duration * 60;

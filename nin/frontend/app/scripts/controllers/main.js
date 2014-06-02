@@ -6,6 +6,9 @@ angular.module('nin')
     var keybindings = {
       '32': function() {
         demo.music.paused ? demo.music.play() : demo.music.pause();
+      },
+      '102': function() {
+        $scope.fullscreen ? $scope.fullscreen = false : $scope.fullscreen = true;
       }
     };
 
@@ -14,6 +17,7 @@ angular.module('nin')
     });
 
     $scope.demo = demo;
+    $scope.fullscreen = false;
 
     socket.onopen = function() {
       console.log('nin socket connection established', arguments);

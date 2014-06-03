@@ -1,5 +1,36 @@
+@font-face {
+    font-family: 'lane';
+    src: url('/fonts/LANENAR_-webfont.eot');
+    src: url('/fonts/LANENAR_-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/LANENAR_-webfont.woff') format('woff'),
+         url('/fonts/LANENAR_-webfont.ttf') format('truetype'),
+         url('/fonts/LANENAR_-webfont.svg#lane_-_narrowregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+    background: #3d464b;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #5f686d;
+    -webkit-border-radius: 3px;
+    -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
+}
+
+::-webkit-scrollbar-corner {
+    background: #5f686d;
+}
+
 html, body {
     height: 100%;
+    background: #5f686d;
+    color: #d3dde3;
+    font-family: 'lane', sans-serif;
+    font-size: 14px;
 }
 
 .container-fluid {
@@ -38,16 +69,26 @@ main-window, main-window > div {
 
 .layers-label-container {
     width: 150px;
-    height: calc(100% - 50px);
-    margin-top: 50px;
+    height: 100%;
+    padding-top: 50px;
     float: left;
+    border-right: 1px solid #3b4449;
+    box-shadow: 1px 0px 3px 1px rgba(59, 68, 73, 0.3);
 }
 
 .layer-label {
+    display: table;
     width: 100%;
     height: 30px;
     float: left;
-    border: 1px solid #888;
+    padding: 5px 10px 5px 5px;
+    text-align: right;
+    border-left: 5px solid transparent;
+}
+
+.layer-label span {
+    display: table-cell;
+    vertical-align: middle;
 }
 
 .layers-bar-container {
@@ -55,6 +96,7 @@ main-window, main-window > div {
     width: calc(100% - 150px);
     height: 100%;
     float: left;
+    background: #3d464b;
 }
 
 .layer-bar-container {
@@ -63,23 +105,29 @@ main-window, main-window > div {
 
 .layer-bar {
     height: 30px;
-    background: yellow;
+    background: #888;
     display: inline-block;
     width: auto;
-    border-left: 1px solid #888;
-    border-right: 1px solid #888;
 }
 
 .marker-line {
     position: absolute;
     z-index: 100;
+    background: transparent;
     width: 1px;
-    background: red;
     height: calc(100% - 8px);
+    border-right: 1px solid #f3c656;
+}
+
+.marker-line .glow {
+    width: 20px;
+    height: 100%;
+    margin-left: -20px;
+    box-shadow: inset -10px 0px 20px -3px rgba(243, 198, 86, 0.13);
 }
 
 .musiclayer {
-    background: #444;
+    background: #888;
     height: 50px;
 }
 

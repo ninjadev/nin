@@ -23,8 +23,8 @@ angular.module('nin').directive('waveform', function() {
             height: 50,
             width: attrs.duration,
             interpolate: true,
-            innerColor: '#888',
-            outerColor: '#444',
+            innerColor: '#3b4449',
+            outerColor: '#888',
             data: channelData
           });
             waveformOverlay = new Waveform({
@@ -32,8 +32,8 @@ angular.module('nin').directive('waveform', function() {
             height: 50,
             width: attrs.duration,
             interpolate: true,
-            innerColor: '#0f0',
-            outerColor: '#222',
+            innerColor: '#f3c656',
+            outerColor: '#283136',
             data: channelData
           });
         });

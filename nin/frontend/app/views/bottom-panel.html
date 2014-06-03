@@ -1,8 +1,15 @@
 <div class=bottom ng-controller="BottomCtrl">
 
 <div class=layers-label-container>
-  <div class=layer-label ng-repeat="layer in layers">
+  <div
+    class=layer-label
+    ng-repeat="layer in layers"
+    style="
+      border-color: {{ layer.color }};
+    ">
+    <span class=name >
       {{ layer.displayName }} 
+    </span>
   </div>
 </div>
 
@@ -11,7 +18,10 @@
       class=marker-line
       ng-hide="hideMarker"
       style="margin-left: {{ currentFrame - bottomScrollOffset }}px"
-      ></div>
+      >
+      <div class=glow>
+        </div>
+    </div>
 
     <div
       waveform
@@ -27,6 +37,7 @@
       dragresizable
       class=layer-bar
       style="
+        background: {{ layer.color }};
         width:{{ layer.endFrame - layer.startFrame}}px;
         left:{{ layer.startFrame }}px;
       ">

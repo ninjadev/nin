@@ -7,6 +7,7 @@ var serve = function () {
   exec('mkdir -p test-project/gen/ && find dasBoot/ -type f -name "*.js" | sort |xargs cat > test-project/gen/dasBoot.js',
 
        function(error, stdout, stderr){
+
     var frontend = express();
     frontend.use(express.static(__dirname + '/frontend'));
     frontend.listen(8000);

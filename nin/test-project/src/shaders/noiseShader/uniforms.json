@@ -1,0 +1,7 @@
+{
+    tDiffuse: { type: 't', value: null },
+    time: { type: 'f', value: null },
+    amount: { type: 'f', value: 0},
+    width: { type: 'f', value: null},
+    height: { type: 'f', value: null}
+}

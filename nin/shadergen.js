@@ -8,14 +8,18 @@ var shaderGen = function(cb) {
   var directories = [];
 
   walker.on('directories', function(root, stat, next) {
-    directories.push(stat[0].name);
+    for(var i = 0; i < stat.length; i++) {
+      directories.push(stat[i].name);
+    }
     next();
   });
 
   walker.on('end', function() {
     /* compile to gen */
+    var out = '';
     for(var i = 0; i < directories.length; i++) {
-      var out = 'var ' + directories[i] + ' = {';
+      console.log('compiling shader', directories[i]);
+      out += 'var ' + directories[i] + ' = {';
       var tmpData = fs.readFileSync('test-project/src/shaders/' + directories[i] + '/uniforms.json', 'utf8');
       out += 'uniforms: ' + tmpData + ',';
       tmpData = fs.readFileSync('test-project/src/shaders/' + directories[i] + '/vertex.glsl', 'utf8');

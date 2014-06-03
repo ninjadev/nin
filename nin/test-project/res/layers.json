@@ -16,5 +16,14 @@
     "color": "#521b59",
     "position": 1,
     "offset": 0
+  },
+  {
+    "type": "NoiseFXLayer",
+    "displayName": "Noise fx",
+    "startFrame": 500,
+    "endFrame": 8200,
+    "color": "#1b592f",
+    "position": 2,
+    "offset": 0
   }
 ]

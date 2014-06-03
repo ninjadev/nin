@@ -8,6 +8,5 @@ function ClearPass() {
 };
 
 ClearPass.prototype.render = function(renderer, writeBuffer, readBuffer) {
-    console.log('clear!');
     renderer.render(this.scene, this.camera, readBuffer, true);
 };

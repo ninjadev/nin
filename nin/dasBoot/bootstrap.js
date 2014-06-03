@@ -10,9 +10,24 @@ function bootstrap(options) {
   demo.renderer.sortObjects = false;
   demo.renderer.autoClear = false;
 
+  demo.effectComposer = new THREE.EffectComposer(demo.renderer);
+
   Loader.setRootPath(options.rootPath || '');
 
-  demo.lm = new LayerManager();
+  demo.lm = new LayerManager(demo);
+
+  var clearPass = new ClearPass();
+  var toScreenPass = new THREE.ShaderPass(THREE.CopyShader);
+  toScreenPass.renderToScreen = true;
+  demo.rebuildEffectComposer = function(passes) {
+    console.log(passes);
+    demo.effectComposer = new THREE.EffectComposer(demo.renderer);
+    demo.effectComposer.addPass(clearPass);
+    for(var i = 0; i < passes.length; i++) {
+      demo.effectComposer.addPass(passes[i]);
+    }
+    demo.effectComposer.addPass(toScreenPass);
+  }
 
   demo.setContainer = function(c) {
     container = c;
@@ -27,7 +42,7 @@ function bootstrap(options) {
 
   demo.render = function(renderer, interpolation) {
     renderer.clear();
-    demo.lm.render(renderer, interpolation);
+    demo.effectComposer.render();
   }
 
   demo.resize = function() {

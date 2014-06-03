@@ -4,7 +4,8 @@ var fs = require('fs');
 var socket = require('./socket').socket;
 
 var serve = function () {
-  exec('mkdir -p test-project/gen/ && cat dasBoot/**.js > test-project/gen/dasBoot.js',
+  exec('mkdir -p test-project/gen/ && find dasBoot/ -type f -name "*.js" | sort |xargs cat > test-project/gen/dasBoot.js',
+
        function(error, stdout, stderr){
     var frontend = express();
     frontend.use(express.static(__dirname + '/frontend'));

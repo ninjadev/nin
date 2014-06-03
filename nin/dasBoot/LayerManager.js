@@ -1,11 +1,12 @@
 /**
  * @constructor
  */
-function LayerManager() {
+function LayerManager(demo) {
   this.layers = [];
   this.startFrames = {}; 
   this.endFrames = {};
   this.activeLayers = [];
+  this.demo = demo;
 }
 
 LayerManager.prototype.loadLayer = function(layer) {
@@ -58,6 +59,7 @@ LayerManager.prototype.refresh = function(layerName) {
       layer.instance = new window[layerName](layer);
     }
   }
+  this.rebuildEffectComposer();
 };
 
 LayerManager.prototype.jumpToFrame = function(frame) {
@@ -67,7 +69,7 @@ LayerManager.prototype.jumpToFrame = function(frame) {
   }
 };
 
-LayerManager.prototype.updateActiveLayersList = function(frame) {
+LayerManager.prototype.updateActiveLayersList = function(frame, forceUpdate) {
   var activeLayersChanged = false;
   if(frame in this.startFrames) {
     activeLayersChanged = true;
@@ -85,9 +87,17 @@ LayerManager.prototype.updateActiveLayersList = function(frame) {
       layer.instance.end();
     }
   }
-  if(activeLayersChanged) {
+  if(activeLayersChanged || forceUpdate) {
     this.activeLayers.sort(function(a, b) {
       return a.position - b.position;
     });
+
+    this.rebuildEffectComposer();
   }
+};
+
+LayerManager.prototype.rebuildEffectComposer = function() {
+  this.demo.rebuildEffectComposer(this.activeLayers.map(function(el) {
+    return el.instance.getEffectComposerPass();
+  }));
 };

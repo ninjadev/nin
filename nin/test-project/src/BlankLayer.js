@@ -10,7 +10,7 @@ function BlankLayer(config) {
 
   this.cube.position.x = 45 * this.offset;
   this.scene.add(this.cube);
-  this.camera.position.z = 30;
+  this.camera.position.z = 200;
 
   var light = new THREE.PointLight( 0xffffff, 1, 100 );
   light.position.set( -50, -50, -50 );
@@ -21,7 +21,13 @@ function BlankLayer(config) {
   pointLight.position.y = 50;
   pointLight.position.z = 130;
   this.scene.add(pointLight);
+
+  this.renderPass = new THREE.RenderPass(this.scene, this.camera);
 }
+
+BlankLayer.prototype.getEffectComposerPass = function() {
+  return this.renderPass;
+};
 
 BlankLayer.prototype.start = function() {
 };

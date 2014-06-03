@@ -9,6 +9,9 @@ angular.module('nin')
       },
       '102': function() {
         $scope.fullscreen ? $scope.fullscreen = false : $scope.fullscreen = true;
+      },
+      '70': function() {
+        $scope.fullscreen ? $scope.fullscreen = false : $scope.fullscreen = true;
       }
     };
 

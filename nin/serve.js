@@ -2,6 +2,7 @@ var exec = require('child_process').exec;
 var express = require('express');
 var fs = require('fs');
 var socket = require('./socket').socket;
+var sg = require('./shadergen');
 
 var serve = function () {
   exec('mkdir -p test-project/gen/ && find dasBoot/ -type f -name "*.js" | sort |xargs cat > test-project/gen/dasBoot.js',
@@ -26,6 +27,8 @@ var serve = function () {
     files.listen(9999);
 
     console.log('serving nin on http://localhost:8000');
+
+    sg.shaderGen(function() { console.log("Shaders compiled"); });
   });
 }
 

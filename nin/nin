@@ -4,8 +4,7 @@ var program = require('commander');
 var fs = require('fs');
 
 var compile = require('./compile').compile,
-    serve   = require('./serve'),
-    sg = require('./shadergen');
+    serve   = require('./serve');
 
 program
   .version('0.0.1')
@@ -15,18 +14,16 @@ program
 
 
 (function main () {
-  sg.shaderGen(function() {
-    console.log('Shader compiled, continuing');
-    if(program.compile) {
-      console.log('compiling...');
-      compile(function(compiled){
-        fs.writeFileSync('test-project/bin/test-project.png.html', compiled);
-        console.log('compiling complete!');
-      });
-    } else if(program.run){
-      serve.serve();
-    } else {
-      serve.serve();
-    }
-  });
+  console.log('Shader compiled, continuing');
+  if(program.compile) {
+    console.log('compiling...');
+    compile(function(compiled){
+      fs.writeFileSync('test-project/bin/test-project.png.html', compiled);
+      console.log('compiling complete!');
+    });
+  } else if(program.run){
+    serve.serve();
+  } else {
+    serve.serve();
+  }
 })();

@@ -1,0 +1,41 @@
+<div class=top-panel ng-controller="TopCtrl" ui-layout="{ flow : 'column' }" >
+
+  <div ng-show=inspectedLayer>
+
+    <div class=layer-title>
+      {{ inspectedLayer.displayName }}
+    </div>
+
+    <tabset justified="true">
+
+      <tab heading="Twyk">
+        <div class=tweak-panel>
+          <div class=form-horizontal>
+            <div
+              class="param form-group row"
+              ng-repeat="(key, value) in inspectedLayer">
+              <label class="tweak-label col-xs-2">
+                {{ key }}
+              </label>
+              <div class=col-xs-9>
+                <input ng-model="value" class=form-control>
+              </div>
+            </div>
+          </div>
+        </div>
+        </tab>
+
+        <tab heading="Something else">
+          Yo  
+        </tab>
+
+        <tab heading="A third tab">
+          Yo  
+        </tab>
+
+    </tabset>
+  </div>
+
+  <demo></demo>
+
+</div>

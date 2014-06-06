@@ -21,6 +21,7 @@ angular.module('nin')
 
     $scope.demo = demo;
     $scope.fullscreen = false;
+    $scope.inspectedLayer = null;
 
     socket.onopen = function() {
       console.log('nin socket connection established', arguments);

@@ -33,7 +33,7 @@ angular.module('nin').directive('waveform', function() {
             width: attrs.duration,
             interpolate: true,
             innerColor: '#f3c656',
-            outerColor: '#283136',
+            outerColor: '#161f24',
             data: channelData
           });
         });

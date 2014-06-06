@@ -1,4 +1,4 @@
 'use strict';
 
 angular
-  .module('nin', ['ui.layout']);
+  .module('nin', ['ui.bootstrap', 'ui.layout']);

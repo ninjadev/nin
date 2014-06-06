@@ -4,6 +4,8 @@
   <div
     class=layer-label
     ng-repeat="layer in layers"
+    ng-click="layerLabelClick(layer)"
+    ng-class="(layer==inspectedLayer) ? 'inspected' : ''"
     style="
       border-color: {{ layer.color }};
     ">

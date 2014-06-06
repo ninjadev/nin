@@ -14,6 +14,12 @@ angular.module('nin')
       $scope.demo.jumpToFrame($event.offsetX);
     };
 
+    $scope.layerLabelClick = function(layer) {
+      $scope.$parent.$parent.inspectedLayer = $scope.inspectedLayer == layer
+                                            ? null
+                                            : layer;
+    };
+
     $interval(function(){
       $scope.hideMarker = false;
       if(!linesContainer) {

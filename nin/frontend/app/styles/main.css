@@ -30,7 +30,12 @@ html, body {
     background: #5f686d;
     color: #d3dde3;
     font-family: 'lane', sans-serif;
-    font-size: 14px;
+    font-size: 15px;
+    user-select: none;
+}
+
+* {
+    border-radius: 0 !important;
 }
 
 .container-fluid {
@@ -47,6 +52,8 @@ html, body {
 
 .fullscreen {
     position: fixed;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
     z-index: 10000000000000;
@@ -84,6 +91,11 @@ main-window, main-window > div {
     padding: 5px 10px 5px 5px;
     text-align: right;
     border-left: 5px solid transparent;
+    cursor: default;
+}
+
+.layer-label.inspected {
+    background: #161f24;
 }
 
 .layer-label span {
@@ -142,4 +154,57 @@ main-window, main-window > div {
 }
 
 .musiclayer .under {
+}
+
+.top-panel {
+    background: #3d464b;
+}
+
+.top-panel .layer-title {
+    font-size: 40px;
+    padding: 5px 15px;
+    background: #161f24;
+}
+
+.tweak-panel {
+    padding-top: 20px;
+}
+
+.tweak-panel .tweak-label {
+    text-align: right;
+    padding: 6px;
+    font-weight: normal;
+}
+
+.tweak-panel input {
+    background: #161f24;
+    border: 1px solid #414a4f;
+    color: #d3dde3;
+    outline: 0;
+    font-family: monospace;
+}
+
+.nav-tabs > li > a {
+    background: #161f24;
+    color: #888;
+    cursor: pointer;
+}
+
+.nav-tabs.nav-justified > li > a,
+.nav-tabs.nav-justified > li.active > a,
+.nav-tabs.nav-justified > li > a:hover,
+.nav-tabs.nav-justified > li.active > a:hover {
+    border: 0;
+    outline: 0;
+}
+
+.nav-tabs.nav-justified > li > a:hover {
+    background: #5f686d;
+    color: #d3dde3;
+}
+
+.nav-tabs.nav-justified > li.active > a,
+.nav-tabs.nav-justified > li.active > a:hover {
+    background: #3d464b;
+    color: #d3dde3;
 }

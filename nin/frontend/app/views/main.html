@@ -1,10 +1,11 @@
 <ui-layout options="{ flow : 'row' }" >
 
-<demo></demo>
+<div
+  ng-include="'views/top-panel.html'">
+</div>
 
 <div
-  ng-include="'views/bottom-panel.html'"
-  ng-controller="BottomCtrl">
+  ng-include="'views/bottom-panel.html'">
 </div>
 
 </ui-layout>

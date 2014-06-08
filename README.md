@@ -25,6 +25,11 @@ Every project has its own shader folder.
 This folder has a folder for each shader.
 These shaders will be compiled into the global object `SHADERS`, so to access a shader one would write for instance `SHADERS.example`.
 
+If your shader only needs for instance a vertex shader but not a fragment shader NIN will fall back to a default set of shaders.
+The only rules you need to oblige is that:
+- The uniform file needs to include `tDiffuse`
+- The vertex shader needs to pass on vUv (uv)
+
 # Keyboard shortcuts
 
 | key | function |

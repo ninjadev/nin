@@ -20,7 +20,6 @@ function bootstrap(options) {
   var toScreenPass = new THREE.ShaderPass(THREE.CopyShader);
   toScreenPass.renderToScreen = true;
   demo.rebuildEffectComposer = function(passes) {
-    console.log(passes);
     demo.effectComposer = new THREE.EffectComposer(demo.renderer);
     demo.effectComposer.addPass(clearPass);
     for(var i = 0; i < passes.length; i++) {

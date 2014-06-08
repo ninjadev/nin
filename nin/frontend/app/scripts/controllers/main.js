@@ -20,6 +20,10 @@ angular.module('nin')
       '44': function() {
         //One second back (comma)
         $scope.demo.jumpToFrame(demo.getCurrentFrame() - 60);
+      },
+      '13': function() {
+        // go back to start of demo
+        $scope.demo.jumpToFrame(0);
       }
     };
 

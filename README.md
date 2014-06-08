@@ -33,3 +33,4 @@ These shaders will be compiled into the global object `SHADERS`, so to access a 
 | f/F |fullscreen|
 |  .  |skip one second ahead|
 |  ,  |skip one second back |
+|return| rewind to start of demo|

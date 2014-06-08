@@ -19,6 +19,10 @@ Run `make setup` in the `frontend` folder and `make` in the `nin` folder.
 sudo apt-get install g++
 sudo npm install -g grunt-cli
 
+## Linting
+This projects uses the Google Closure Linter, please see this link for installation information.
+`https://developers.google.com/closure/utilities/docs/linter_howto`
+
 ## Shaders
 
 Every project has its own shader folder.

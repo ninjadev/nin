@@ -24,3 +24,12 @@ sudo npm install -g grunt-cli
 Every project has its own shader folder.
 This folder has a folder for each shader.
 These shaders will be compiled into the global object `SHADERS`, so to access a shader one would write for instance `SHADERS.example`.
+
+# Keyboard shortcuts
+
+| key | function |
+| ----|:--------:|
+|space|play/pause|
+| f/F |fullscreen|
+|  .  |skip one second ahead|
+|  ,  |skip one second back |

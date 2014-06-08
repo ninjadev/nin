@@ -12,11 +12,21 @@ angular.module('nin')
       },
       '70': function() {
         $scope.fullscreen ? $scope.fullscreen = false : $scope.fullscreen = true;
+      },
+      '46': function() {
+        //One second forward (dot)
+        $scope.demo.jumpToFrame(demo.getCurrentFrame() + 60);
+      },
+      '44': function() {
+        //One second back (comma)
+        $scope.demo.jumpToFrame(demo.getCurrentFrame() - 60);
       }
     };
 
     document.addEventListener('keypress', function(event) {
-      keybindings[event.which]();
+      try {
+        keybindings[event.which]();
+      } catch (TypeError) { }
     });
 
     $scope.demo = demo;

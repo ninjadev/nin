@@ -43,3 +43,5 @@ The only rules you need to oblige is that:
 |  .  |skip one second ahead|
 |  ,  |skip one second back |
 |return| rewind to start of demo|
+|  >  |skip one frame ahead|
+|  <  |skip one frame back|

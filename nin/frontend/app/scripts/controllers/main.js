@@ -5,25 +5,44 @@ angular.module('nin')
 
     var keybindings = {
       '32': function() {
+        // play/pause
+        // 'space'
         demo.music.paused ? demo.music.play() : demo.music.pause();
       },
       '102': function() {
+        // Fullscreen
+        // 'F'
         $scope.fullscreen ? $scope.fullscreen = false : $scope.fullscreen = true;
       },
       '70': function() {
+        // Fullscreen
+        // 'f'
         $scope.fullscreen ? $scope.fullscreen = false : $scope.fullscreen = true;
       },
       '46': function() {
-        //One second forward (dot)
+        //One second forward
+        // '.'
         $scope.demo.jumpToFrame(demo.getCurrentFrame() + 60);
       },
       '44': function() {
-        //One second back (comma)
+        //One second back
+        // ','
         $scope.demo.jumpToFrame(demo.getCurrentFrame() - 60);
       },
       '13': function() {
         // go back to start of demo
+        // 'return'
         $scope.demo.jumpToFrame(0);
+      },
+      '62': function() {
+        // skip one frame
+        // '>'
+        $scope.demo.jumpToFrame(demo.getCurrentFrame() + 1);
+      },
+      '60': function() {
+        // rewind one frame
+        // '<'
+        $scope.demo.jumpToFrame(demo.getCurrentFrame() - 1);
       }
     };
 

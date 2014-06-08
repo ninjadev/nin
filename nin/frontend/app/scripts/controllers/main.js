@@ -43,6 +43,16 @@ angular.module('nin')
         // rewind one frame
         // '<'
         $scope.demo.jumpToFrame(demo.getCurrentFrame() - 1);
+      },
+      '58': function() {
+        // skip one frame
+        // '>'
+        $scope.demo.jumpToFrame(demo.getCurrentFrame() + 1);
+      },
+      '59': function() {
+        // rewind one frame
+        // '<'
+        $scope.demo.jumpToFrame(demo.getCurrentFrame() - 1);
       }
     };
 

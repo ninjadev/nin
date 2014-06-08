@@ -16,10 +16,10 @@ var shaderGen = function(cb) {
 
   walker.on('end', function() {
     /* compile to gen */
-    var out = '';
+    var out = 'SHADERS={};';
     for(var i = 0; i < directories.length; i++) {
       console.log('compiling shader', directories[i]);
-      out += 'var ' + directories[i] + ' = {';
+      out += 'SHADERS.' + directories[i] + ' = {';
       var tmpData = fs.readFileSync('test-project/src/shaders/' + directories[i] + '/uniforms.json', 'utf8');
       out += 'uniforms: ' + tmpData + ',';
       tmpData = fs.readFileSync('test-project/src/shaders/' + directories[i] + '/vertex.glsl', 'utf8');

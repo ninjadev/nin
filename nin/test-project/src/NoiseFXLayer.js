@@ -3,7 +3,7 @@
  */
 function NoiseFXLayer(config) {
   this.config = config;
-  this.shaderPass = new THREE.ShaderPass(noiseShader);
+  this.shaderPass = new THREE.ShaderPass(SHADERS.noise);
 }
 
 NoiseFXLayer.prototype.getEffectComposerPass = function() {

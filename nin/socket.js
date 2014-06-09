@@ -14,6 +14,13 @@ echo.on('connection', function (conn) {
   connections[conn.id] = conn;
   console.log('connection!');
 
+  conn.send = function(event, data) {
+    conn.write(JSON.stringify({
+      type: event,
+      data: data
+    }));
+  };
+
   conn.on('close', function () {
     delete connections[conn.id];
     console.log('lost connection');
@@ -37,8 +44,13 @@ echo.on('connection', function (conn) {
         conn.write('shaders!');
       });
     } else {
+      if(event == 'addDir') {
+        return;
+      }
       console.log('Change in project detected: ' + event + ', ' + path)
-      conn.write(event + ' ' + path);
+      conn.send(event, {
+        path: path
+      });
     }
   });
 

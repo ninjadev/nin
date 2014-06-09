@@ -81,19 +81,14 @@ angular.module('nin')
       }
     });
 
-    socket.onmessage = function(event) {
-      var eventType = event.data.split(' ')[0];
-      if(eventType == 'add' || eventType == 'change') {
-        var path = event.data.split(' ')[1];
-        /* 'test-project' hack, to be removed later */
-        path = path.slice(12);
-        ScriptReloader.reload('//localhost:9999/' + path, function() {
-          var splitted = path.split('/');
-          var layerName = splitted[splitted.length - 1].split('.')[0];
-          demo.lm.refresh(layerName);
-        });
-      }
-    };
+    socket.on('add change', function(e) {
+      e.path = e.path.slice(12);
+      ScriptReloader.reload('//localhost:9999/' + e.path, function() {
+        var splitted = e.path.split('/');
+        var layerName = splitted[splitted.length - 1].split('.')[0];
+        demo.lm.refresh(layerName);
+      });
+    });
 
     socket.onclose = function(e) {
       console.log('nin socket connection closed', e);

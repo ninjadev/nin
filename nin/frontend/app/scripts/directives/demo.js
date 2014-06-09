@@ -25,6 +25,7 @@ angular.module('nin').directive('demo', function($interval, demo) {
           // exit fullscreen
           element[0].children[0].classList.remove('fullscreen')
         }
+        demo.resize();
       })
 
       $interval(function() {

@@ -1,70 +1,15 @@
 'use strict';
 
 angular.module('nin')
-  .controller('MainCtrl', function ($scope, $http, ScriptReloader, socket, demo) {
-
-    var keybindings = {
-      '32': function() {
-        // play/pause
-        // 'space'
-        demo.music.paused ? demo.music.play() : demo.music.pause();
-      },
-      '102': function() {
-        // Fullscreen
-        // 'F'
-        $scope.fullscreen ? $scope.fullscreen = false : $scope.fullscreen = true;
-      },
-      '70': function() {
-        // Fullscreen
-        // 'f'
-        $scope.fullscreen ? $scope.fullscreen = false : $scope.fullscreen = true;
-      },
-      '46': function() {
-        //One second forward
-        // '.'
-        $scope.demo.jumpToFrame(demo.getCurrentFrame() + 60);
-      },
-      '44': function() {
-        //One second back
-        // ','
-        $scope.demo.jumpToFrame(demo.getCurrentFrame() - 60);
-      },
-      '13': function() {
-        // go back to start of demo
-        // 'return'
-        $scope.demo.jumpToFrame(0);
-      },
-      '62': function() {
-        // skip one frame
-        // '>'
-        $scope.demo.jumpToFrame(demo.getCurrentFrame() + 1);
-      },
-      '60': function() {
-        // rewind one frame
-        // '<'
-        $scope.demo.jumpToFrame(demo.getCurrentFrame() - 1);
-      },
-      '58': function() {
-        // skip one frame
-        // '>'
-        $scope.demo.jumpToFrame(demo.getCurrentFrame() + 1);
-      },
-      '59': function() {
-        // rewind one frame
-        // '<'
-        $scope.demo.jumpToFrame(demo.getCurrentFrame() - 1);
-      }
-    };
-
-    document.addEventListener('keypress', function(event) {
-      try {
-        keybindings[event.which]();
-      } catch (TypeError) { }
-    });
+  .controller('MainCtrl', function ($scope, $http, ScriptReloader, socket, demo, commands) {
 
     $scope.demo = demo;
     $scope.fullscreen = false;
     $scope.inspectedLayer = null;
+
+    commands.on('toggleFullscreen', function() {
+      $scope.fullscreen = !$scope.fullscreen;
+    });
 
     socket.onopen = function() {
       console.log('nin socket connection established', arguments);

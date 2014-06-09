@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('nin')
-  .controller('BottomCtrl', function ($scope, $interval) {
+  .controller('BottomCtrl', function ($scope, $interval, socket) {
 
     var linesContainer = null;
 
@@ -18,6 +18,20 @@ angular.module('nin')
       $scope.$parent.$parent.inspectedLayer = $scope.inspectedLayer == layer
                                             ? null
                                             : layer;
+    };
+
+    $scope.dragResizeLayer = function(event, ui, layer) {
+      console.log(event, ui, layer);
+      socket.sendEvent('set', {
+        id: layer.position,
+        field: 'startFrame',
+        value: ui.position.left
+      });
+      socket.sendEvent('set', {
+        id: layer.position,
+        field: 'endFrame',
+        value: ui.position.left + ui.size.width
+      });
     };
 
     $interval(function(){

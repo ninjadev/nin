@@ -29,12 +29,19 @@ angular.module('nin').factory('socket', function() {
   };
 
   socket.onmessage = function(message) {
+    console.log(message);
     var event = JSON.parse(message.data);
-    console.log(event);
     for(var i = 0; i < handlers[event.type].length; i++) {
       handlers[event.type][i](event.data);
     }
   };
+
+  socket.sendEvent = function(event, data) {
+    socket.send(JSON.stringify({
+      type: event,
+      data: data
+    }));
+  }
 
   return socket;
 });

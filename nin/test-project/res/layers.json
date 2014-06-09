@@ -11,8 +11,8 @@
   {
     "type": "BlankLayer",
     "displayName": "Blinking square",
-    "startFrame": 12,
-    "endFrame": 8200,
+    "startFrame": 353,
+    "endFrame": 743,
     "color": "#521b59",
     "position": 1,
     "offset": 0

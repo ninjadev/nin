@@ -1,6 +1,6 @@
 var sock = require('sockjs')
   , chokidar = require('chokidar')
-  , jf = require('jsonfile')
+  , fs = require('fs')
   , sg = require('./shadergen')
   ;
 
@@ -58,15 +58,19 @@ echo.on('connection', function (conn) {
   conn.on('data', function (message) {
     // expecting a message of layerid, the field, and the value
     // if you do something else, you are a horrible person.
-    message = message.split(' ');
-    var id = message[0], field = message[1], value = message[2];
-    jf.readFile('test-project/res/layers.json', function (err, layerlist) {
-      layerlist[id][field] = value;
-      jf.writeFile('test-project/res/layers.json', layerlist, function (err) {
-        if (err) console.log(err);
-        conn.write('layers.json updated')
+
+    console.log(message);
+    var event = JSON.parse(message);
+    if(event.type == 'set') {
+      event = event.data;
+      fs.readFile('test-project/res/layers.json', function (err, data) {
+        var layers = JSON.parse(data);
+        layers[event.id][event.field] = event.value;
+        fs.writeFile('test-project/res/layers.json', JSON.stringify(layers, null, '  '), function (err) {
+
+        })
       })
-    })
+    }
   });
 })
 

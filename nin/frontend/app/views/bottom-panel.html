@@ -37,6 +37,7 @@
     <div
       ng-repeat="layer in layers"
       dragresizable
+      on-drag-resize="dragResizeLayer(event, ui, layer)"
       class=layer-bar
       style="
         background: {{ layer.color }};

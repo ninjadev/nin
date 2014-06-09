@@ -22,9 +22,9 @@ angular.module('nin').directive('dragresizable', function () {
       /* seems to be buggy when both draggable and resizable */
       //element.draggable(draggableConfig);
       element.resizable(resizableConfig);
-      element.on('resizestop dragstop', function() {
+      element.on('resizestop dragstop', function(event, ui) {
         if(scope.callback) {
-          scope.callback();
+          scope.callback({event: event, ui: ui});
         }
       });
     }

@@ -89,7 +89,7 @@ LayerManager.prototype.updateActiveLayersList = function(frame, forceUpdate) {
     activeLayersChanged = true;
     for(var i = 0; i < this.endFrames[frame].length; i++) {
       var layer = this.endFrames[frame][i];
-      this.activeLayers.push(layer);
+      Array.removeObject(this.activeLayers, layer);
       layer.instance.end();
     }
   }

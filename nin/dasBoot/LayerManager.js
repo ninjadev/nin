@@ -47,9 +47,13 @@ LayerManager.prototype.render = function(renderer, interpolation) {
 
 LayerManager.prototype.reset = function() {
   this.activeLayers = [];
-  for(var i = 0; i < this.layers.length; i++){
-    this.layers[i].instance.end();
-  }
+};
+
+LayerManager.prototype.hardReset = function() {
+  this.reset();
+  this.layers = [];
+  this.startFrames = {};
+  this.endFrames = {};
 };
 
 LayerManager.prototype.refresh = function(layerName) {
@@ -67,6 +71,8 @@ LayerManager.prototype.jumpToFrame = function(frame) {
   for(var i = 0; i < frame; i++) {
     this.updateActiveLayersList(i);
   }
+  this.rebuildEffectComposer();
+  this.update(frame);
 };
 
 LayerManager.prototype.updateActiveLayersList = function(frame, forceUpdate) {

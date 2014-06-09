@@ -15,19 +15,25 @@ angular.module('nin')
       console.log('nin socket connection established', arguments);
     };
 
-    $http({
-      method: 'GET',
-      url: '//localhost:9999/res/layers.json'
-    }).success(function(layers) {
-      $scope.layers = layers;
-      for(var i = 0; i < layers.length; i++) {
-        var layer = layers[i];
-        demo.lm.loadLayer(layer);
-      }
-    });
-
     socket.on('add change', function(e) {
       e.path = e.path.slice(12);
+
+      if(e.path == '/res/layers.json') {
+        $http({
+          method: 'GET',
+          url: '//localhost:9999/res/layers.json'
+        }).success(function(layers) {
+          $scope.layers = layers;
+          demo.lm.hardReset();
+          for(var i = 0; i < layers.length; i++) {
+            var layer = layers[i];
+            console.log(layer);
+            demo.lm.loadLayer(layer);
+          }
+          demo.lm.jumpToFrame(demo.getCurrentFrame());
+        });
+      }
+
       ScriptReloader.reload('//localhost:9999/' + e.path, function() {
         var splitted = e.path.split('/');
         var layerName = splitted[splitted.length - 1].split('.')[0];

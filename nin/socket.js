@@ -5,8 +5,6 @@ var sock = require('sockjs')
   ;
 
 
-
-
 var echo = sock.createServer();
 connections = {};
 
@@ -26,17 +24,20 @@ echo.on('connection', function (conn) {
     console.log('lost connection');
   });
 
-  var watcher = chokidar.watch('test-project/src/', {
+  var watcher = chokidar.watch(
+    ['test-project/src/', 'test-project/res/layers.json'], {
     ignored: /[\/\\]\./,
     persistent: true,
     ignoreInitial: false
   });
 
+
   /* an empty 'add' handler is needed to
    * trigger intial callbacks for all files */
-  watcher.on('add', function(){});
+  watcher.on('add', function(){ });
 
   watcher.on('all', function (event, path) {
+    console.log('event!', event, path);
     var pathParts = path.split('/');
     if (event === 'unlink') event = 'delete';
     if(pathParts.indexOf('shaders') !== -1) {

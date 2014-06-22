@@ -1,4 +1,4 @@
-function bootstrap(options) {
+window['bootstrap'] = function(options) {
   options = options || {};
 
   var demo = {};
@@ -26,6 +26,16 @@ function bootstrap(options) {
       demo.effectComposer.addPass(passes[i]);
     }
     demo.effectComposer.addPass(toScreenPass);
+  }
+
+  Loader.setRootPath(options.rootPath || '');
+
+  demo.lm = new LayerManager(demo);
+  if(options.layers) {
+    for(var i = 0; i < options.layers.length; i++) {
+      demo.lm.loadLayer(options.layers[i]);
+    }
+    demo.lm.jumpToFrame(0);
   }
 
   demo.setContainer = function(c) {

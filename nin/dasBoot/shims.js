@@ -1,4 +1,4 @@
-window.requestAnimFrame = (function() {
+var requestAnimFrame = (function() {
   return window.requestAnimationFrame || 
     window.webkitRequestAnimationFrame || 
     window.mozRequestAnimationFrame || 
@@ -9,7 +9,7 @@ window.requestAnimFrame = (function() {
     };
 })();
 
-window.makeFullscreen = function(elem) {
+var makeFullscreen = function(elem) {
   if (elem.requestFullscreen) {
     elem.requestFullscreen();
   } else if (elem.mozRequestFullScreen) {

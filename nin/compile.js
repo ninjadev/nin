@@ -2,14 +2,15 @@ var walk = require('walk');
 var fs = require('fs');
 var exec = require('child_process').exec;
 var compress = require('./compress').compress;
-
+var shaderGen = require('./shadergen').shaderGen;
 
 function res(callback) {
   var walker = walk.walk('test-project/res/' , {followLinks: false});
   var files = [];
   walker.on('file', function(root, stat, next) {
     var file = fs.readFileSync(root + stat.name);
-    files.push('FILES[\'' + root + stat.name + '\']=\'' +
+    /* slice 13 is a test-project hack */
+    files.push('FILES[\'' + root.slice(13) + stat.name + '\']=\'' +
                file.toString('base64') + '\'');
     next();
   });
@@ -49,11 +50,14 @@ var compile = function(callback) {
     exec('rm -rf test-project/gen/', function(){
       exec('mkdir test-project/gen/', function(){
         fs.writeFileSync('test-project/gen/files.js', new Buffer(data));
-        exec('java -jar compiler.jar -O ADVANCED --language_in ECMASCRIPT5 --debug --logging_level INFO test-project/src/*.js test-project/gen/*.js',
-             function(error, stdout, stderr){
-          stderr && console.log(stderr);
-          collect(stdout);
-        });
+        shaderGen(function() {
+          exec('java -jar compiler.jar -O SIMPLE --language_in ECMASCRIPT5 --debug --logging_level INFO test-project/src/*.js test-project/gen/*.js dasBoot/*.js dasBoot/lib/*.js',
+               {encoding: 'binary', maxBuffer: 1024 * 1024 * 1024},
+               function(error, stdout, stderr){
+            stderr && console.log(stderr);
+            collect(stdout);
+          });
+        }); 
       });
     });
   });

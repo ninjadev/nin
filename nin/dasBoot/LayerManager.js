@@ -72,11 +72,10 @@ LayerManager.prototype.refresh = function(layerName) {
 
 LayerManager.prototype.jumpToFrame = function(frame) {
   this.reset();
-  for(var i = 0; i < frame; i++) {
+  for(var i = 0; i <= frame; i++) {
     this.updateActiveLayersList(i);
   }
   this.rebuildEffectComposer();
-  this.update(frame);
 };
 
 LayerManager.prototype.updateActiveLayersList = function(frame, forceUpdate) {

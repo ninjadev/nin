@@ -5,8 +5,9 @@
     "startFrame": 1000,
     "endFrame": 3000,
     "color": "#1b592f",
-    "position": 0,
-    "offset": 1.7
+    "config": {
+      "offset": 1.7
+    }
   },
   {
     "type": "BlankLayer",
@@ -14,8 +15,9 @@
     "startFrame": 353,
     "endFrame": 743,
     "color": "#521b59",
-    "position": 1,
-    "offset": 0
+    "config": {
+      "offset": 0
+    }
   },
   {
     "type": "NoiseFXLayer",
@@ -23,7 +25,8 @@
     "startFrame": 500,
     "endFrame": 8200,
     "color": "#1b592f",
-    "position": 2,
-    "offset": 0
+    "config": {
+      "offset": 0
+    }
   }
 ]

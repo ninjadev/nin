@@ -27,7 +27,7 @@ angular.module('nin')
           demo.lm.hardReset();
           for(var i = 0; i < layers.length; i++) {
             var layer = layers[i];
-            console.log(layer);
+            layer.position = i;
             demo.lm.loadLayer(layer);
           }
           demo.lm.jumpToFrame(demo.getCurrentFrame());

@@ -46,7 +46,7 @@ function compress(payload, callback) {
     positiveNumberToBytes(0, 1) +
     positiveNumberToBytes(0, 1));
   var html = '<!DOCTYPE html><meta charset="utf-8">' +
-    '<style>*{display:none} html,body{display:block;overflow:hidden;background:#000;padding:0;margin:0;border:0;outline:0;}canvas{position:fixed;display:block;background:#000;}.hide{display:none}</style></style>' +
+    '<head><title>Ninjadev</title><style>*{display:none} html,body{display:block;overflow:hidden;background:#000;padding:0;margin:0;border:0;outline:0;}canvas{position:fixed;display:block;background:#000;}.hide{display:none}</style></head>' +
     '<body>' +
     '<script>' +
     'function z(){' +
@@ -59,15 +59,19 @@ function compress(payload, callback) {
         's+=String.fromCharCode(d[i+1]);' +
         's+=String.fromCharCode(d[i+2]);' +
       '}' +
-      's = s.replace(/\\0/g, ";");' +
+      's=s.replace(/\\0/g, " ");' +
+      'document.body.innerHTML="";' +
       '(1,eval)(s);' +
+      'var layers = JSON.parse(atob(FILES["res/layers.json"]));' +
+      'demo=bootstrap({layers:layers});' +
+      'demo.start();' +
     '}</script><canvas class=hide height='+ height + ' width=' + width + '></canvas><img src=# onload=z()><!--';
   var htMlChunk = chunk('htMl', html);
   var IENDChunk = chunk('IEND', '');
 
-  var scanlines = payload.match(new RegExp('.{1,' + (width * 3) + '}', 'g'));
+  var scanlines = payload.match(new RegExp('[\\s\\S]{1,' + (width * 3) + '}', 'g'));
   var scanlinesBuffer = Buffer.concat(scanlines.map(function(scanline){
-    return new Buffer('\0' + scanline, 'utf8');
+    return new Buffer('\0' + scanline, 'binary');
   }));
 
   zlib.deflate(scanlinesBuffer.toString('binary'), function(err, buffer){

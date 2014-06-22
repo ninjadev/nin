@@ -42,7 +42,11 @@ var Loader = (function(){
           item.callback && item.callback(); 
           registerAsLoaded(item); 
         };
-        item.element.src = rootPath + item.filepath;
+        if(window.FILES) {
+          item.element.src = 'data:audio/mp3;base64,' + FILES[item.filepath];
+        } else {
+          item.element.src = rootPath + item.filepath;
+        }
       });
       itemsToAjax.forEach(function(item) {
         var response = null;

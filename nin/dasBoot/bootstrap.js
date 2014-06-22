@@ -1,4 +1,4 @@
-function bootstrap(options) {
+window['bootstrap'] = function(options) {
   options = options || {};
 
   var demo = {};
@@ -7,25 +7,30 @@ function bootstrap(options) {
 
   demo.renderer = new THREE.WebGLRenderer({maxLights: 10, antialias: true});
   demo.renderer.setClearColor(0x000000, 1);
-  demo.renderer.sortObjects = false;
+  demo.renderer.sortObjects = true;
   demo.renderer.autoClear = false;
 
   demo.effectComposer = new THREE.EffectComposer(demo.renderer);
-
-  Loader.setRootPath(options.rootPath || '');
-
-  demo.lm = new LayerManager(demo);
-
-  var clearPass = new ClearPass();
-  var toScreenPass = new THREE.ShaderPass(THREE.CopyShader);
-  toScreenPass.renderToScreen = true;
   demo.rebuildEffectComposer = function(passes) {
+    var clearPass = new ClearPass();
+    var toScreenPass = new THREE.ShaderPass(THREE.CopyShader);
+    toScreenPass.renderToScreen = true;
     demo.effectComposer = new THREE.EffectComposer(demo.renderer);
     demo.effectComposer.addPass(clearPass);
     for(var i = 0; i < passes.length; i++) {
       demo.effectComposer.addPass(passes[i]);
     }
     demo.effectComposer.addPass(toScreenPass);
+  }
+
+  Loader.setRootPath(options.rootPath || '');
+
+  demo.lm = new LayerManager(demo);
+  if(options.layers) {
+    for(var i = 0; i < options.layers.length; i++) {
+      demo.lm.loadLayer(options.layers[i]);
+    }
+    demo.lm.jumpToFrame(0);
   }
 
   demo.setContainer = function(c) {
@@ -40,7 +45,7 @@ function bootstrap(options) {
   }
 
   demo.render = function(renderer, interpolation) {
-    renderer.clear();
+    renderer.clear(true, true, true);
     demo.effectComposer.render();
   }
 

@@ -7,6 +7,7 @@ function LayerManager(demo) {
   this.endFrames = {};
   this.activeLayers = [];
   this.demo = demo;
+  this.lastUpdatedActiveLayers = -1;
 }
 
 LayerManager.prototype.loadLayer = function(layer) {
@@ -35,7 +36,9 @@ LayerManager.prototype.loadLayer = function(layer) {
 LayerManager.prototype.update = function(frame) {
   this.updateActiveLayersList(frame);
   for(var i = 0; i < this.activeLayers.length; i++) {
-    this.activeLayers[i].instance && this.activeLayers[i].instance.update(frame);
+    var relativeFrame = frame - this.activeLayers[i].startFrame;
+    this.activeLayers[i].instance && this.activeLayers[i].instance.update(
+        frame, relativeFrame);
   }
 };
 
@@ -47,6 +50,7 @@ LayerManager.prototype.render = function(renderer, interpolation) {
 
 LayerManager.prototype.reset = function() {
   this.activeLayers = [];
+  this.lastUpdatedActiveLayers = -1;
 };
 
 LayerManager.prototype.hardReset = function() {
@@ -68,21 +72,24 @@ LayerManager.prototype.refresh = function(layerName) {
 
 LayerManager.prototype.jumpToFrame = function(frame) {
   this.reset();
-  for(var i = 0; i < frame; i++) {
+  for(var i = 0; i <= frame; i++) {
     this.updateActiveLayersList(i);
   }
   this.rebuildEffectComposer();
-  this.update(frame);
 };
 
 LayerManager.prototype.updateActiveLayersList = function(frame, forceUpdate) {
+  if(this.lastUpdatedActiveLayers == frame) {
+    return;
+  }
+  this.lastUpdatedActiveLayers = frame;
   var activeLayersChanged = false;
   if(frame in this.startFrames) {
     activeLayersChanged = true;
     for(var i = 0; i < this.startFrames[frame].length; i++) {
       var layer = this.startFrames[frame][i];
       this.activeLayers.push(layer);
-      layer.instance && layer.instance.start();
+      layer.instance && layer.instance.start && layer.instance.start();
     }
   }
   if(frame in this.endFrames) {
@@ -90,7 +97,7 @@ LayerManager.prototype.updateActiveLayersList = function(frame, forceUpdate) {
     for(var i = 0; i < this.endFrames[frame].length; i++) {
       var layer = this.endFrames[frame][i];
       Array.removeObject(this.activeLayers, layer);
-      layer.instance.end();
+      layer.instance.end && layer.instance.end();
     }
   }
   if(activeLayersChanged || forceUpdate) {

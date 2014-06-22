@@ -36,7 +36,9 @@ LayerManager.prototype.loadLayer = function(layer) {
 LayerManager.prototype.update = function(frame) {
   this.updateActiveLayersList(frame);
   for(var i = 0; i < this.activeLayers.length; i++) {
-    this.activeLayers[i].instance && this.activeLayers[i].instance.update(frame);
+    var relativeFrame = frame - this.activeLayers[i].startFrame;
+    this.activeLayers[i].instance && this.activeLayers[i].instance.update(
+        frame, relativeFrame);
   }
 };
 

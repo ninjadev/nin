@@ -1,8 +1,8 @@
 /**
  * @constructor
  */
-function BlankLayer(config) {
-  this.offset = config.offset;
+function BlankLayer(layer) {
+  this.offset = layer.config.offset;
   this.scene = new THREE.Scene();
   this.camera = new THREE.PerspectiveCamera(45, 16 / 9, 1, 10000);
   this.cube = new THREE.Mesh(new THREE.BoxGeometry(50, 5, 5),

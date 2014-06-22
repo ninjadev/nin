@@ -1,0 +1,7 @@
+{
+    tDiffuse: { type: 't', value: null },
+    amount: { type: 'f', value: 0},
+    r: { type: 'f', value: 0},
+    g: { type: 'f', value: 0},
+    b: { type: 'f', value: 0}
+}

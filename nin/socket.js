@@ -42,7 +42,6 @@ echo.on('connection', function (conn) {
     if (event === 'unlink') event = 'delete';
     if(pathParts.indexOf('shaders') !== -1) {
       sg.shaderGen(function() {
-        conn.write('shaders!');
       });
     } else {
       if(event == 'addDir') {

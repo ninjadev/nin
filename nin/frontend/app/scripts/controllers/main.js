@@ -32,13 +32,21 @@ angular.module('nin')
           }
           demo.lm.jumpToFrame(demo.getCurrentFrame());
         });
+      } else if (e.path == '/res/camerapaths.json') {
+        $http.get('//localhost:9999/res/camerapaths.json')
+          .success(function(camerapaths) {
+            CameraController.paths = camerapaths;
+            for (var index in CameraController.layers) {
+              CameraController.layers[index].parseCameraPath(camerapaths);
+            };
+          });
+      } else {
+        ScriptReloader.reload('//localhost:9999/' + e.path, function() {
+          var splitted = e.path.split('/');
+          var layerName = splitted[splitted.length - 1].split('.')[0];
+          demo.lm.refresh(layerName);
+        });
       }
-
-      ScriptReloader.reload('//localhost:9999/' + e.path, function() {
-        var splitted = e.path.split('/');
-        var layerName = splitted[splitted.length - 1].split('.')[0];
-        demo.lm.refresh(layerName);
-      });
     });
 
     socket.onclose = function(e) {

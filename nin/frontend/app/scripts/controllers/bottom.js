@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('nin')
-  .controller('BottomCtrl', function ($scope, $interval, socket) {
+  .controller('BottomCtrl', function ($scope, $interval, socket, camera) {
 
     var linesContainer = null;
 
@@ -18,6 +18,7 @@ angular.module('nin')
       $scope.$parent.$parent.inspectedLayer = $scope.inspectedLayer == layer
                                             ? null
                                             : layer;
+      camera.startEdit(layer);
     };
 
     $scope.dragResizeLayer = function(event, ui, layer) {

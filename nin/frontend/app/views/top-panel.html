@@ -25,10 +25,39 @@
         </div>
         </tab>
 
-        <tab heading="Something else">
-          Yo  
-        </tab>
 
+        <tab heading="Camera">
+          <div class=camera-panel>
+            <div class=form-horizontal>
+              <div class="form-group row">
+                <input type="text" id="camera-pos-field" class="col-xs-7">
+                <button
+                    id="camera-pos"
+                    class="col-xs-4"
+                    ng-click="displayValue('camera-pos-field', getCameraPosition());">
+                    Camera position
+                </button>
+              </div>
+              <div class="form-group row">
+                <input type="text" id="camera-lookat-field" class="col-xs-7">
+                <button
+                    id="camera-lookat"
+                    class="col-xs-4"
+                    ng-click="displayValue('camera-lookat-field', getCameraLookat());">
+                    Camera look-at
+                </button>
+              </div>
+              <div class="form-group row">
+                  <button
+                      id="fly-mode"
+                      class="col-xs-6"
+                      ng-click="toggleFlyAroundMode();">
+                      Fly-around mode
+                  </button>
+              </div>
+            </div>
+          </div>
+        </tab>
         <tab heading="A third tab">
           Yo  
         </tab>

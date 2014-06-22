@@ -1,17 +1,10 @@
 angular.module('nin').directive('keybinding', function(commands) {
 
   var keybindings = {
-    '32': function() {
+    '32': function(e) {
       // 'space'
       commands.playPause();
-    },
-    '102': function() {
-      // 'F'
-      commands.toggleFullscreen();
-    },
-    '70': function() {
-      // 'f'
-      commands.toggleFullscreen();
+      e.preventDefault();
     },
     '46': function() {
       // '.'
@@ -21,9 +14,13 @@ angular.module('nin').directive('keybinding', function(commands) {
       // ','
       commands.jog(-60);
     },
-    '13': function() {
+    '13': function(e) {
       // 'return'
-      commands.jumpToFrame(0);
+      if (e.altKey) {
+        commands.toggleFullscreen();
+      } else {
+        commands.jumpToFrame(0);
+      }
     },
     '62': function() {
       // '>'
@@ -40,6 +37,15 @@ angular.module('nin').directive('keybinding', function(commands) {
     '59': function() {
       // '<'
       commands.jog(-1);
+    },
+    '112': function(e) {
+      // 'p'
+      commands.getCameraPosition();
+      e.preventDefault();
+    },
+    '108': function(e) {
+      commands.getCameraLookat();
+      e.preventDefault();
     }
   };
 
@@ -47,7 +53,7 @@ angular.module('nin').directive('keybinding', function(commands) {
     type: 'A',
     link: function() {
       document.addEventListener('keypress', function(event) {
-        keybindings[event.which] && keybindings[event.which]();
+        keybindings[event.which] && keybindings[event.which](event);
       });
     }
   };

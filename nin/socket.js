@@ -25,7 +25,7 @@ echo.on('connection', function (conn) {
   });
 
   var watcher = chokidar.watch(
-    ['test-project/src/', 'test-project/res/layers.json'], {
+    ['test-project/src/', 'test-project/res/layers.json', 'test-project/res/camerapaths.json'], {
     ignored: /[\/\\]\./,
     persistent: true,
     ignoreInitial: false

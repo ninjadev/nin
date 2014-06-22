@@ -7,6 +7,7 @@ function LayerManager(demo) {
   this.endFrames = {};
   this.activeLayers = [];
   this.demo = demo;
+  this.lastUpdatedActiveLayers = -1;
 }
 
 LayerManager.prototype.loadLayer = function(layer) {
@@ -47,6 +48,7 @@ LayerManager.prototype.render = function(renderer, interpolation) {
 
 LayerManager.prototype.reset = function() {
   this.activeLayers = [];
+  this.lastUpdatedActiveLayers = -1;
 };
 
 LayerManager.prototype.hardReset = function() {
@@ -76,6 +78,10 @@ LayerManager.prototype.jumpToFrame = function(frame) {
 };
 
 LayerManager.prototype.updateActiveLayersList = function(frame, forceUpdate) {
+  if(this.lastUpdatedActiveLayers == frame) {
+    return;
+  }
+  this.lastUpdatedActiveLayers = frame;
   var activeLayersChanged = false;
   if(frame in this.startFrames) {
     activeLayersChanged = true;

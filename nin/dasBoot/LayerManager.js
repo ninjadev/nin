@@ -89,7 +89,7 @@ LayerManager.prototype.updateActiveLayersList = function(frame, forceUpdate) {
     for(var i = 0; i < this.startFrames[frame].length; i++) {
       var layer = this.startFrames[frame][i];
       this.activeLayers.push(layer);
-      layer.instance && layer.instance.start();
+      layer.instance && layer.instance.start && layer.instance.start();
     }
   }
   if(frame in this.endFrames) {
@@ -97,7 +97,7 @@ LayerManager.prototype.updateActiveLayersList = function(frame, forceUpdate) {
     for(var i = 0; i < this.endFrames[frame].length; i++) {
       var layer = this.endFrames[frame][i];
       Array.removeObject(this.activeLayers, layer);
-      layer.instance.end();
+      layer.instance.end && layer.instance.end();
     }
   }
   if(activeLayersChanged || forceUpdate) {

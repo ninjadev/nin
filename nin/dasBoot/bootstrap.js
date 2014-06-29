@@ -18,7 +18,7 @@ window['bootstrap'] = function(options) {
     demo.effectComposer = new THREE.EffectComposer(demo.renderer);
     demo.effectComposer.addPass(clearPass);
     for(var i = 0; i < passes.length; i++) {
-      demo.effectComposer.addPass(passes[i]);
+      passes[i] && demo.effectComposer.addPass(passes[i]);
     }
     demo.effectComposer.addPass(toScreenPass);
   }

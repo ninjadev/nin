@@ -34,15 +34,12 @@ bower_components/
 # generic vendor stuff
 vendor/
 
-# gen
+# compile output folders
+bin/
 gen/
 
 # dotfiles!
 .*
-
-# compile output folders
-backend/test-project/bin
-backend/test-project/gen
 
 # project files
 *.iml

@@ -24,9 +24,11 @@ LayerManager.prototype.loadLayer = function(layer) {
   }
   this.endFrames[layer.endFrame].push(layer);
 
+  var that = this;
   (function() {
     if(layer.type in window) {
       layer.instance = new window[layer.type](layer);
+      that.rebuildEffectComposer();
     } else {
       setTimeout(arguments.callee, 100);
     }
@@ -111,6 +113,8 @@ LayerManager.prototype.updateActiveLayersList = function(frame, forceUpdate) {
 
 LayerManager.prototype.rebuildEffectComposer = function() {
   this.demo.rebuildEffectComposer(this.activeLayers.map(function(el) {
-    return el.instance.getEffectComposerPass();
+    if (el.instance) {
+      return el.instance.getEffectComposerPass();
+    }
   }));
 };

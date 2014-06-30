@@ -21,17 +21,19 @@ angular.module('nin')
     };
 
     $scope.dragResizeLayer = function(event, ui, layer) {
-      console.log(event, ui, layer);
-      socket.sendEvent('set', {
-        id: layer.position,
-        field: 'startFrame',
-        value: ui.position.left
-      });
-      socket.sendEvent('set', {
-        id: layer.position,
-        field: 'endFrame',
-        value: ui.position.left + ui.size.width
-      });
+      if (ui.position.left != layer.startFrame) {
+        socket.sendEvent('set', {
+          id: layer.position,
+          field: 'startFrame',
+          value: ui.position.left
+        });
+      } else {
+        socket.sendEvent('set', {
+          id: layer.position,
+          field: 'endFrame',
+          value: ui.position.left + ui.size.width
+        });
+      }
     };
 
     $interval(function(){

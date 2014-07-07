@@ -10,6 +10,9 @@
 *~
 *.sass-cache
 
+# working project
+test-project/
+
 # OS or Editor folders
 .DS_Store
 .cache

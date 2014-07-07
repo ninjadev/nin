@@ -6,17 +6,16 @@ This project has a node backend that keeps track of all files and compiles files
 The frontend of this project is written in Angular and displays among other the layers that the demo consists of.
 
 ## How it works
-Make a folder in `nin` named `test-project`, along side and `dasBoot`. This is now your working directory.
-If you want to use a github repo as working directory, clone the repo down first, and rename the folder to `test-projecet`.
+Make a folder in `nin` named `test-project`, alongside `dasBoot`. This is now your working directory.
+If you want to use a github repo as working directory, clone the repo down first, and rename the folder to `test-project`.
 
 ## Setup
 
 You will need to have node and npm installed.
 
-Run `make setup` in the `frontend` folder and `make` in the `nin` folder.
+Run `make` in the `frontend` folder and `make` in the `nin` folder.
 
-*See the README in the frontend folder for more details.*
-
+You will also need to have bower installed, and run `bower install` in the frontend folder.
 
 ### Commands to try if it does not work:
 

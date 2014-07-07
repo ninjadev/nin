@@ -10,7 +10,7 @@ angular.module('nin').service('commands', function() {
 
   var commands = {
     on: function(command, handler) {
-      if(!(command in handler)) {
+      if(!(command in handlers)) {
         handlers[command] = [];
         if(command in commands) {
           throw 'command name not allowed.';

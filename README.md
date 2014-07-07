@@ -5,6 +5,10 @@
 This project has a node backend that keeps track of all files and compiles files as they are edited.
 The frontend of this project is written in Angular and displays among other the layers that the demo consists of.
 
+## How it works
+Make a folder in `nin` named `test-project`, along side and `dasBoot`. This is now your working directory.
+If you want to use a github repo as working directory, clone the repo down first, and rename the folder to `test-projecet`.
+
 ## Setup
 
 You will need to have node and npm installed.

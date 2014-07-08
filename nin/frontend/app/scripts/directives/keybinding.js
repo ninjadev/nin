@@ -55,6 +55,10 @@ angular.module('nin').directive('keybinding', function(commands) {
     '99': function(e) {
       // 'c'
       commands.toggleFlyAroundMode();
+    },
+    '103': function(e) {
+      // 'g'
+      commands.setCuePoint();
     }
   };
 

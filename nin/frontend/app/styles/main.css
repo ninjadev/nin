@@ -34,6 +34,10 @@ html, body {
     user-select: none;
 }
 
+.selectable-contents {
+    user-select: text;
+}
+
 * {
     border-radius: 0 !important;
 }

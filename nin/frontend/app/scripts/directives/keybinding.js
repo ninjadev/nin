@@ -41,12 +41,10 @@ angular.module('nin').directive('keybinding', function(commands) {
     '112': function(e) {
       // 'p'
       commands.getCameraPosition();
-      e.preventDefault();
     },
     '108': function(e) {
       // 'l'
       commands.getCameraLookat();
-      e.preventDefault();
     },
     '122': function(e) {
       // 'z'

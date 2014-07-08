@@ -1,8 +1,11 @@
 angular.module('nin').controller('TopCtrl', function($scope, camera, commands) {
   $scope.displayValue = function(id, val) {
     var el = document.getElementById(id);
-    el.value = val;
-    el.select();
+    el.innerText = val;
+    var range = document.createRange();
+    range.selectNodeContents(el);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
   };
 
   $scope.getCameraPosition = function() {

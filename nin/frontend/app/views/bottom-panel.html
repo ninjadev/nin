@@ -17,11 +17,29 @@
 
   <div class=layers-bar-container scrollcallback="onBottomScroll">
     <div
-      class=marker-line
+      class="marker-line yellow"
       ng-hide="hideMarker"
       style="margin-left: {{ currentFrame - bottomScrollOffset }}px"
       >
-      <div class=glow>
+      <div class="glow glow-yellow">
+        </div>
+    </div>
+
+    <div
+      class="marker-line green"
+      ng-show="loopStart"
+      style="margin-left: {{ loopStart - bottomScrollOffset }}px"
+      >
+      <div class="glow glow-green">
+        </div>
+    </div>
+
+    <div
+      class="marker-line green"
+      ng-show="loopEnd"
+      style="margin-left: {{ loopEnd - bottomScrollOffset }}px"
+      >
+      <div class="glow glow-green">
         </div>
     </div>
 

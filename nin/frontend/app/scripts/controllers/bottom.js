@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('nin')
-  .controller('BottomCtrl', function ($scope, $interval, socket, camera) {
+  .controller('BottomCtrl', function ($scope, $interval, socket, camera, commands) {
 
     var linesContainer = null;
 
@@ -36,6 +36,30 @@ angular.module('nin')
         });
       }
     };
+
+    commands.on('setCuePoint', function() {
+      if (!$scope.loopStart) {
+        $scope.loopStart = $scope.currentFrame;
+      } else if (!$scope.loopEnd) {
+        if ($scope.loopStart > $scope.currentFrame) {
+          $scope.loopEnd = $scope.loopStart;
+          $scope.loopStart = $scope.currentFrame;
+        } else {
+          $scope.loopEnd = $scope.currentFrame;
+        }
+        $scope.loopActive = true;
+      } else {
+        $scope.loopStart = null;
+        $scope.loopEnd = null;
+        $scope.loopActive = false;
+      }
+    });
+
+    $scope.$watch('currentFrame', function (nextFrame) {
+      if ($scope.loopActive && nextFrame >= $scope.loopEnd) {
+        $scope.demo.jumpToFrame($scope.loopStart);
+      }
+    });
 
     $interval(function(){
       $scope.hideMarker = false;

@@ -133,14 +133,29 @@ main-window, main-window > div {
     background: transparent;
     width: 1px;
     height: calc(100% - 8px);
+}
+
+.marker-line.yellow {
     border-right: 1px solid #f3c656;
 }
 
-.marker-line .glow {
+.marker-line.green {
+    border-right: 5px solid rgb(76, 184, 73);
+    height: 50px;
+}
+
+.glow {
     width: 20px;
     height: 100%;
     margin-left: -20px;
+}
+
+.glow .glow-yellow {
     box-shadow: inset -10px 0px 20px -3px rgba(243, 198, 86, 0.13);
+}
+
+.glow .glow-green {
+    box-shadow: inset -10px 0px 20px -3px rgba(76, 184, 73, 0.13);
 }
 
 .musiclayer {

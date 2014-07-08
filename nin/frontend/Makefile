@@ -1,3 +1,6 @@
+PATH := node_module/.bin:$(PATH)
+
+
 .PHONY: all
 all:
 	npm install

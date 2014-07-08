@@ -43,11 +43,11 @@ The only rules you need to oblige is that:
 |------------|-------------------------|
 | space      | play/pause              |
 | m          | fullscreen              |
-|  .         | skip one second ahead   |
-|  ,         | skip one second back    |
+| .          | skip one second ahead   |
+| ,          | skip one second back    |
 | return     | rewind to start of demo |
-|  >/:       | skip one frame ahead    |
-|  </;       | skip one frame back     |
+| >/:        | skip one frame ahead    |
+| </;        | skip one frame back     |
 
 ## Camera controls
 

@@ -100,6 +100,12 @@ angular.module('nin')
           demo.renderer.domElement.parentElement.removeEventListener("click", mouseclick);
         }
       },
+      resetFlyFlightDynamics: function resetFlyFlightDynamics() {
+        if (cc) {
+          cc.camera.rotation.x = 0;
+          cc.camera.rotation.z = 0;
+        }
+      },
       startEdit: function(newLayer) {
         if (layer) {
           demo.renderer.domElement.parentElement.removeEventListener("click", mouseclick);

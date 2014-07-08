@@ -44,8 +44,17 @@ angular.module('nin').directive('keybinding', function(commands) {
       e.preventDefault();
     },
     '108': function(e) {
+      // 'l'
       commands.getCameraLookat();
       e.preventDefault();
+    },
+    '122': function(e) {
+      // 'z'
+      commands.resetFlyFlightDynamics();
+    },
+    '99': function(e) {
+      // 'c'
+      commands.toggleFlyAroundMode();
     }
   };
 

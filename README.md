@@ -17,10 +17,11 @@ Run `make` in the `frontend` folder and `make` in the `nin` folder.
 
 You will also need to have bower installed, and run `bower install` in the frontend folder.
 
+To use grunt, you need to install the command line utility globally, by running `sudo npm install -g grunt-cli`
+
 ### Commands to try if it does not work:
 
 sudo apt-get install g++
-sudo npm install -g grunt-cli
 
 ## Linting
 This projects uses the Google Closure Linter, please see this link for installation information.

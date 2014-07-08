@@ -54,11 +54,11 @@ angular.module('nin')
     return {
       getCameraPosition: function() {
         var camera = cc.camera;
-        return [
+        return JSON.stringify([
           roundify(camera.position.x, 2),
           roundify(camera.position.y, 2),
           roundify(camera.position.z, 2)
-        ];
+        ]) + ',';
       },
       getCameraLookat: function() {
         var camera = layer.instance.camera;
@@ -78,11 +78,11 @@ angular.module('nin')
           var distance = - camera.position.z / dir_vector.z;
           point = camera.position.clone().add(dir_vector.multiplyScalar(distance));
         }
-        return [
+        return JSON.stringify([
           roundify(point.x, 2),
           roundify(point.y, 2),
           roundify(point.z, 2)
-        ];
+        ]) + ',';
       },
       toggleFlyAroundMode: function() {
         cc.pause = !cc.pause;

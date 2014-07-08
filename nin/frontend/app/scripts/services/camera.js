@@ -89,8 +89,8 @@ angular.module('nin')
         if (cc.pause) {
           var camera = layer.instance.camera;
           controls = new THREE.FlyControls(camera, demo.renderer.domElement.parentElement);
-          controls.movementSpeed = 50;
-          controls.rollSpeed = Math.PI / 24;
+          controls.movementSpeed = 400;
+          controls.rollSpeed = Math.PI / 4;
           controls.autoForward = false;
           controls.dragToLook = true;
           requestAnimFrame(updateCallback);

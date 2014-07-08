@@ -42,7 +42,7 @@ The only rules you need to oblige is that:
 | key        | function                |
 |------------|-------------------------|
 | space      | play/pause              |
-| alt+return | fullscreen              |
+| m          | fullscreen              |
 |  .         | skip one second ahead   |
 |  ,         | skip one second back    |
 | return     | rewind to start of demo |

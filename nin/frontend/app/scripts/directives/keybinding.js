@@ -14,13 +14,13 @@ angular.module('nin').directive('keybinding', function(commands) {
       // ','
       commands.jog(-60);
     },
+    '109': function() {
+      // 'M'
+      commands.toggleFullscreen();
+    },
     '13': function(e) {
       // 'return'
-      if (e.altKey) {
-        commands.toggleFullscreen();
-      } else {
-        commands.jumpToFrame(0);
-      }
+      commands.jumpToFrame(0);
     },
     '62': function() {
       // '>'

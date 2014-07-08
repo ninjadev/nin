@@ -20,9 +20,19 @@
     }
   },
   {
+    "type": "MountainLayer",
+    "displayName": "Mountain scene",
+    "startFrame": 0,
+    "endFrame": 4370,
+    "color": "#025bff",
+    "config": {
+      "offset": 0
+    }
+  },
+  {
     "type": "NoiseFXLayer",
     "displayName": "Noise fx",
-    "startFrame": 500,
+    "startFrame": 4150,
     "endFrame": 8200,
     "color": "#1b592f",
     "config": {

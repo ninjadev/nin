@@ -4,13 +4,14 @@
 function BlankLayer(layer) {
   this.offset = layer.config.offset;
   this.scene = new THREE.Scene();
-  this.camera = new THREE.PerspectiveCamera(45, 16 / 9, 1, 10000);
+
+  this.cameraController = new CameraController(layer.position);
+  this.camera = this.cameraController.camera;
   this.cube = new THREE.Mesh(new THREE.BoxGeometry(50, 5, 5),
                              new THREE.ShaderMaterial(SHADERS.example));
 
   this.cube.position.x = 45 * this.offset;
   this.scene.add(this.cube);
-  this.camera.position.z = 200;
 
   var light = new THREE.PointLight( 0xffffff, 1, 100 );
   light.position.set( -50, -50, -50 );
@@ -39,7 +40,9 @@ BlankLayer.prototype.render = function(renderer, interpolation) {
   renderer.render(this.scene, this.camera);
 };
 
-BlankLayer.prototype.update = function(frame) {
+BlankLayer.prototype.update = function(frame, relativeFrame) {
   this.cube.rotation.x = Math.sin(frame / 10 + this.offset);
   this.cube.rotation.y = Math.cos(frame / 10 + this.offset);
+
+  this.cameraController.updateCamera(relativeFrame);
 };

@@ -16,6 +16,20 @@ var Loader = (function(){
         callback: callback
       });
     },
+    loadTexture: function(filepath, callback) {
+      var image = new Image();
+      image.crossOrigin = "Anonymous";
+      var texture = new THREE.Texture();
+      texture.image = image;
+      texture.sourceFile = filepath;
+      Loader.load(filepath, image, function() {
+        texture.needsUpdate = true;
+        if (typeof callback === 'function') {
+          callback();
+        }
+      });
+      return texture;
+    },
     load: function(filepath, element, callback) {
       console.log('starting to load', filepath);
       itemsToLoad.push({

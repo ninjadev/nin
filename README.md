@@ -39,12 +39,24 @@ The only rules you need to oblige is that:
 
 # Keyboard shortcuts
 
-| key | function |
-| ----|:--------:|
-|space|play/pause|
-| f/F |fullscreen|
-|  .  |skip one second ahead|
-|  ,  |skip one second back |
-|return| rewind to start of demo|
-|  >/:|skip one frame ahead|
-|  </;|skip one frame back|
+| key        | function                |
+|------------|-------------------------|
+| space      | play/pause              |
+| alt+return | fullscreen              |
+|  .         | skip one second ahead   |
+|  ,         | skip one second back    |
+| return     | rewind to start of demo |
+|  >/:       | skip one frame ahead    |
+|  </;       | skip one frame back     |
+
+## Camera controls
+
+| key       | function                      |
+|-----------|-------------------------------|
+| a/w/s/d   | camera horizontal position    |
+| arrows    | camera pitch/yaw              |
+| q/e       | camera roll                   |
+| r/f       | camera vertical position      |
+| p         | log camera position           |
+| l         | log camera lookat             |
+| mouse click on demo | lookat click target |

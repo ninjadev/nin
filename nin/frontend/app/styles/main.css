@@ -177,6 +177,7 @@ main-window, main-window > div {
     font-weight: normal;
 }
 
+.camera-panel input,
 .tweak-panel input {
     background: #161f24;
     border: 1px solid #414a4f;
@@ -208,4 +209,8 @@ main-window, main-window > div {
 .nav-tabs.nav-justified > li.active > a:hover {
     background: #3d464b;
     color: #d3dde3;
+}
+
+#copy-stasher {
+    visibility: hidden;
 }

@@ -22,12 +22,13 @@ var Loader = (function(){
       var texture = new THREE.Texture();
       texture.image = image;
       texture.sourceFile = filepath;
-      Loader.load(filepath, image, function() {
+      image.addEventListener('load', function(){
         texture.needsUpdate = true;
         if (typeof callback === 'function') {
           callback();
         }
       });
+      image.src = rootPath + filepath;
       return texture;
     },
     load: function(filepath, element, callback) {

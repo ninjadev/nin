@@ -16,8 +16,10 @@ angular.module('nin')
     };
 
     socket.on('add change', function(e) {
-      e.path = e.path.slice(12);
-
+      if (e.path.indexOf("test-project") !== -1) {
+        e.path = e.path.slice(12);
+      }
+      e.path = e.path.replace(/\\/g, '/');
       if(e.path == '/res/layers.json') {
         $http({
           method: 'GET',

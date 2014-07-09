@@ -27,6 +27,9 @@ LayerManager.prototype.loadLayer = function(layer) {
   var that = this;
   (function() {
     if(layer.type in window) {
+      if (!that.checkDependencies(layer)) {
+        return setTimeout(arguments.callee, 100);
+      }
       layer.instance = new window[layer.type](layer);
       that.rebuildEffectComposer();
     } else {
@@ -62,11 +65,13 @@ LayerManager.prototype.hardReset = function() {
   this.endFrames = {};
 };
 
-LayerManager.prototype.refresh = function(layerName) {
+LayerManager.prototype.refresh = function(className) {
   for(var i = 0;i < this.layers.length; i++) {
-    var layer = this.layers[i];  
-    if(layer.type == layerName) {
-      layer.instance = new window[layerName](layer);
+    var layer = this.layers[i];
+    if(layer.type == className || (layer.dependencies && layer.dependencies.indexOf(className) != -1)) {
+      if (layer.type in window && this.checkDependencies(layer)) {
+        layer.instance = new window[layer.type](layer);
+      }
     }
   }
   this.rebuildEffectComposer();
@@ -117,4 +122,15 @@ LayerManager.prototype.rebuildEffectComposer = function() {
       return el.instance.getEffectComposerPass();
     }
   }));
+};
+
+LayerManager.prototype.checkDependencies = function(layer) {
+  if (!layer.dependencies) return true;
+
+  for (var j=0; j < layer.dependencies.length; j++) {
+    if (!(layer.dependencies[j] in window)) {
+      return false;
+    }
+  }
+  return true;
 };

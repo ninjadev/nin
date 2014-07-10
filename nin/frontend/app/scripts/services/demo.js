@@ -5,6 +5,8 @@ angular.module('nin').factory('demo', function(commands){
     rootPath: '//localhost:9999/',
   });
 
+  window.demo = demo;
+
   commands.on('playPause', function() {
     demo.music.paused ? demo.music.play() : demo.music.pause();
   });

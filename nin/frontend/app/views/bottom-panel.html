@@ -2,14 +2,27 @@
 
 <div class=layers-label-container>
   <div
+    class=global-frame
+    title="Global frame for demo" >
+    {{ demo.getCurrentFrame() }}
+  </div>
+
+  <div
     class=layer-label
     ng-repeat="layer in layers"
-    ng-click="layerLabelClick(layer)"
     ng-class="(layer==inspectedLayer) ? 'inspected' : ''"
-    style="
-      border-color: {{ layer.color }};
-    ">
-    <span class=name >
+    style="border-color: {{ layer.color }};" >
+
+    <span
+      class=current-frame
+      title="Relative frame for this layer"
+      ng-click="demo.jumpToFrame(layer.startFrame)" >
+      {{ demo.getCurrentFrame() - layer.startFrame }}
+    </span>
+
+    <span
+      class=name
+      ng-click="layerLabelClick(layer)">
       {{ layer.displayName }} 
     </span>
   </div>

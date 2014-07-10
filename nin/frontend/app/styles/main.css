@@ -82,10 +82,22 @@ main-window, main-window > div {
 .layers-label-container {
     width: 150px;
     height: 100%;
-    padding-top: 50px;
     float: left;
     border-right: 1px solid #3b4449;
     box-shadow: 1px 0px 3px 1px rgba(59, 68, 73, 0.3);
+}
+
+.layers-label-container .global-frame {
+    height: 50px;
+    padding: 15px 5px;
+    border-left: 5px solid transparent;
+    border-color: #161F24;
+}
+
+.layers-label-container .current-frame, .layers-label-container .global-frame {
+    text-align: left;
+    font-weight: bold;
+    color: white;
 }
 
 .layer-label {

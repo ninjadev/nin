@@ -6,9 +6,14 @@ angular.module('nin')
     $scope.demo = demo;
     $scope.fullscreen = false;
     $scope.inspectedLayer = null;
+    $scope.mute = false;
 
     commands.on('toggleFullscreen', function() {
       $scope.fullscreen = !$scope.fullscreen;
+    });
+
+    commands.on('toggleMusic', function() {
+      $scope.mute = !$scope.mute;
     });
 
     socket.onopen = function() {

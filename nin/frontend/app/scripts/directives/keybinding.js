@@ -14,6 +14,10 @@ angular.module('nin').directive('keybinding', function(commands) {
       // ','
       commands.jog(-60);
     },
+    '106': function() {
+      // j
+      commands.toggleMusic();
+    },
     '75': function() {
       // K
       commands.jog(-60 * 10);
@@ -23,7 +27,7 @@ angular.module('nin').directive('keybinding', function(commands) {
       commands.jog(60 * 10);
     },
     '109': function() {
-      // 'M'
+      // 'm'
       commands.toggleFullscreen();
     },
     '13': function(e) {

@@ -15,8 +15,8 @@ var shaderGen = function(cb) {
     return data;
   }
 
-  function traversePath(path, callback) {
-    var walker = walk.walk(path, {followLinks: false});
+  function traversePath(pathPrefix, callback) {
+    var walker = walk.walk(pathPrefix, {followLinks: false});
     walker.on('directories', function(root, stat, next) {
       for(var i = 0; i < stat.length; i++) {
         directories.push(stat[i].name);
@@ -33,17 +33,17 @@ var shaderGen = function(cb) {
         out += 'SHADERS.' + directories[i] + ' = {';
 
         type = '/uniforms.json';
-        path = 'test-project/src/shaders/' + directories[i] + type;
+        path = pathPrefix + directories[i] + type;
         tmpData = getShaderData(path, type);
         out += 'uniforms: ' + tmpData + ',';
 
         type = '/vertex.glsl';
-        path = 'test-project/src/shaders/' + directories[i] + type;
+        path = pathPrefix + directories[i] + type;
         tmpData = getShaderData(path, type);
         out += 'vertexShader: ' + JSON.stringify(tmpData) + ',';
 
         type = '/fragment.glsl';
-        path = 'test-project/src/shaders/' + directories[i] + type;
+        path = pathPrefix + directories[i] + type;
         tmpData = getShaderData(path, type);
         out += 'fragmentShader: ' + JSON.stringify(tmpData) + '';
 

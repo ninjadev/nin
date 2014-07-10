@@ -61,6 +61,7 @@ window['bootstrap'] = function(options) {
     demo.renderer.domElement.style.position = 'absolute';
     demo.renderer.domElement.style.margin = ((rect.height - 9 * GU) / 2) +
       "px 0 0 " + ((rect.width - 16 * GU) / 2) + "px";
+    demo.effectComposer.setSize(16 * GU, 9 * GU);
   };
 
   window.addEventListener('resize', demo.resize);

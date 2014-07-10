@@ -15,13 +15,14 @@
 
     <span
       class=current-frame
-      title="Relative frame for this layer"
+      title="Relative frame for this layer (click to go to the start of this layer)"
       ng-click="demo.jumpToFrame(layer.startFrame)" >
       {{ demo.getCurrentFrame() - layer.startFrame }}
     </span>
 
     <span
       class=name
+      title="Click to select this layer"
       ng-click="layerLabelClick(layer)">
       {{ layer.displayName }} 
     </span>

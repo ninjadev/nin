@@ -45,7 +45,8 @@ CameraController.prototype.parse3Dkeyframes = function(keyframes) {
     var this_pos = {
       type: keyframes[i].type,
       startFrame: keyframes[i].startFrame,
-      endFrame: keyframes[i].endFrame
+      endFrame: keyframes[i].endFrame,
+      easing: keyframes[i].easing
     };
     if (this_pos.type == "spline") {
       var points = [];
@@ -72,7 +73,8 @@ CameraController.prototype.parseKeyframes = function(keyframes) {
     var current = {
       type: keyframes[i].type,
       startFrame: keyframes[i].startFrame,
-      endFrame: keyframes[i].endFrame
+      endFrame: keyframes[i].endFrame,
+      easing: keyframes[i].easing
     };
     if (current.type == "transition") {
       current.from = keyframes[i].from;
@@ -139,7 +141,12 @@ CameraController.prototype.get3Dpoint = function(keyframes, frame) {
       return current.points.points[current.points.points.length-1];
     }
     var spline_duration = current.endFrame - current.startFrame;
-    var s_t = (frame - current.startFrame) / spline_duration;
+    var t = (frame - current.startFrame) / spline_duration;
+    if (current.easing == "smoothstep") {
+      var s_t = smoothstep(0, 1, t);
+    } else {
+      var s_t = t;
+    }
     return current.points.getPointAt(s_t);
   }
   return current.point;
@@ -154,6 +161,9 @@ CameraController.prototype.getPoint = function(keyframes, frame) {
     }
     var duration = current.endFrame - current.startFrame;
     var t = (frame - current.startFrame) / duration;
+    if (current.easing == "smoothstep") {
+      return smoothstep(current.from, current.to, t);
+    }
     return lerp(current.from, current.to, t);
   }
   return current.value;

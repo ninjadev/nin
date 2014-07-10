@@ -9,6 +9,15 @@ window['bootstrap'] = function(options) {
   demo.renderer.setClearColor(0x000000, 1);
   demo.renderer.sortObjects = true;
   demo.renderer.autoClear = false;
+  demo.renderer.shadowMapEnabled = true;
+  demo.renderer.shadowCameraNear = 1;
+  demo.renderer.shadowCameraFar = 10000;
+  demo.renderer.shadowCameraFov = 50;
+
+  demo.renderer.shadowMapBias = 0.0039;
+  demo.renderer.shadowMapDarkness = 0.5;
+  demo.renderer.shadowMapWidth = 1024;
+  demo.renderer.shadowMapHeight = 1024;
 
   demo.effectComposer = new THREE.EffectComposer(demo.renderer);
   demo.rebuildEffectComposer = function(passes) {

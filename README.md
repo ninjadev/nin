@@ -44,6 +44,7 @@ The only rules you need to oblige is that:
 |------------|-------------------------|
 | space      | play/pause              |
 | m          | fullscreen              |
+| j          | toggle mute music       |
 | .          | skip one second ahead   |
 | ,          | skip one second back    |
 | L          | skip ten seconds ahead  |

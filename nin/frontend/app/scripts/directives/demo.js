@@ -26,7 +26,15 @@ angular.module('nin').directive('demo', function($interval, demo) {
           element[0].children[0].classList.remove('fullscreen')
         }
         demo.resize();
-      })
+      });
+
+      scope.$watch('mute', function (toMute) {
+        if (toMute) {
+          demo.music.volume = 0;
+        } else {
+          demo.music.volume = 1;
+        }
+      });
 
       $interval(function() {
         scope.$parent.$parent.currentFrame = demo.getCurrentFrame();

@@ -45,8 +45,8 @@ angular.module('nin')
       } else {
         ScriptReloader.reload('//localhost:9999/' + e.path, function() {
           var splitted = e.path.split('/');
-          var layerName = splitted[splitted.length - 1].split('.')[0];
-          demo.lm.refresh(layerName);
+          var className = splitted[splitted.length - 1].split('.')[0];
+          demo.lm.refresh(className);
         });
       }
     });

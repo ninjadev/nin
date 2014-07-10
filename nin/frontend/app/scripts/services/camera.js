@@ -84,6 +84,12 @@ angular.module('nin')
           roundify(point.z, 2)
         ]) + ',';
       },
+      getCameraRoll: function() {
+        return roundify(cc.camera.rotation.z, 2);
+      },
+      getCameraFov: function() {
+        return roundify(cc.camera.fov, 2);
+      },
       toggleFlyAroundMode: function() {
         cc.pause = !cc.pause;
         if (cc.pause) {
@@ -104,6 +110,12 @@ angular.module('nin')
         if (cc) {
           cc.camera.rotation.x = 0;
           cc.camera.rotation.z = 0;
+        }
+      },
+      deltaFov: function deltaFov(delta) {
+        if (cc) {
+          cc.camera.fov += delta;
+          cc.camera.updateProjectionMatrix();
         }
       },
       startEdit: function(newLayer) {

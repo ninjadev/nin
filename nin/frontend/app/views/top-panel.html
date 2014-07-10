@@ -28,23 +28,43 @@
         <div class=camera-panel>
           <div class=form-horizontal>
             <div class="form-group row">
-              <span id="camera-pos-field" class="col-xs-7 selectable-contents"></span>
               <button
                   id="camera-pos"
                   class="col-xs-4"
                   ng-click="displayValue('camera-pos-field', getCameraPosition());">
                   Camera position
               </button>
+              <span id="camera-pos-field" class="col-xs-7 selectable-contents"></span>
             </div>
 
             <div class="form-group row">
-              <span id="camera-lookat-field" class="col-xs-7 selectable-contents"></span>
               <button
                   id="camera-lookat"
                   class="col-xs-4"
                   ng-click="displayValue('camera-lookat-field', getCameraLookat());">
                   Camera look-at
               </button>
+              <span id="camera-lookat-field" class="col-xs-7 selectable-contents"></span>
+            </div>
+
+            <div class="form-group row">
+              <button
+                  id="camera-roll"
+                  class="col-xs-4"
+                  ng-click="displayValue('camera-roll-field', getCameraRoll());">
+                  Camera roll
+              </button>
+              <span id="camera-roll-field" class="col-xs-7 selectable-contents"></span>
+            </div>
+
+            <div class="form-group row">
+              <button
+                  id="camera-fov"
+                  class="col-xs-4"
+                  ng-click="displayValue('camera-fov-field', getCameraFov());">
+                  Camera fov
+              </button>
+              <span id="camera-fov-field" class="col-xs-7 selectable-contents"></span>
             </div>
 
             <div class="form-group row">

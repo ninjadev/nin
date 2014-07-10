@@ -15,6 +15,12 @@ angular.module('nin').controller('TopCtrl', function($scope, camera, commands) {
   $scope.getCameraLookat = function() {
     return camera.getCameraLookat();
   };
+  $scope.getCameraRoll = function () {
+    return camera.getCameraRoll();
+  };
+  $scope.getCameraFov = function () {
+    return camera.getCameraFov();
+  };
 
   $scope.toggleFlyAroundMode = function() {
     return camera.toggleFlyAroundMode();
@@ -38,5 +44,13 @@ angular.module('nin').controller('TopCtrl', function($scope, camera, commands) {
 
   commands.on('resetFlyFlightDynamics', function() {
     camera.resetFlyFlightDynamics();
+  });
+  commands.on('increaseCameraZoom', function() {
+    camera.deltaFov(-.5);
+    $scope.displayValue('camera-fov-field', $scope.getCameraFov());
+  });
+  commands.on('decreaseCameraZoom', function() {
+    camera.deltaFov(.5);
+    $scope.displayValue('camera-fov-field', $scope.getCameraFov());
   });
 });

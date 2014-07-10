@@ -20,9 +20,23 @@ CameraController.paths = [];
 
 CameraController.prototype.parseCameraPath = function(camera_paths) {
   var raw_path = camera_paths[this.layer_id];
+  if (!raw_path) {
+    console.warn("No camera path for layer %d", this.layer_id);
+    return;
+  }
 
-  this.position = this.parse3Dkeyframes(raw_path.position);
-  this.lookAt = this.parse3Dkeyframes(raw_path.lookAt);
+  if (raw_path.position) {
+    this.position = this.parse3Dkeyframes(raw_path.position);
+  }
+  if (raw_path.lookAt) {
+    this.lookAt = this.parse3Dkeyframes(raw_path.lookAt);
+  }
+  if (raw_path.roll) {
+    this.roll = this.parseKeyframes(raw_path.roll);
+  }
+  if (raw_path.fov) {
+    this.fov = this.parseKeyframes(raw_path.fov);
+  }
 };
 
 CameraController.prototype.parse3Dkeyframes = function(keyframes) {
@@ -52,27 +66,51 @@ CameraController.prototype.parse3Dkeyframes = function(keyframes) {
   }
   return parsed;
 };
+CameraController.prototype.parseKeyframes = function(keyframes) {
+  var parsed = [];
+  for (var i=0; i < keyframes.length; i++) {
+    var current = {
+      type: keyframes[i].type,
+      startFrame: keyframes[i].startFrame,
+      endFrame: keyframes[i].endFrame
+    };
+    if (current.type == "transition") {
+      current.from = keyframes[i].from;
+      current.to = keyframes[i].to;
+    } else if (current.type == "fixed") {
+      current.value = keyframes[i].value;
+    }
+    parsed[i] = current;
+  }
+  return parsed;
+};
 
 CameraController.prototype.updateCamera = function(frame) {
   if (this.pause) return;
 
-  var pos = this.get3Dpoint(this.position, frame);
-  this.camera.position = pos;
+  if (this.position) {
+    var pos = this.get3Dpoint(this.position, frame);
+    this.camera.position = pos;
+  }
 
-  var lookAt = this.get3Dpoint(this.lookAt, frame);
-  this.camera.lookAt(lookAt);
+  if (this.lookAt) {
+    var lookAt = this.get3Dpoint(this.lookAt, frame);
+    this.camera.lookAt(lookAt);
+  }
 
-  /* TODO: Implement the rest of this
-  var rotation = this.rotSpline.getPointAt(relativeT/30000).x;
-  this.camera.rotateOnAxis(this.rotVector, rotation);
+  if (this.roll) {
+    var roll = this.getPoint(this.roll, frame);
+    this.camera.rotateOnAxis(this.rotVector, roll);
+  }
 
-  var fov = this.fovSpline.getPointAt(relativeT/30000).x;
-  this.camera.fov = fov;
-  this.camera.updateProjectionMatrix();
-  */
+  if (this.fov) {
+    var fov = this.getPoint(this.fov, frame);
+    this.camera.fov = fov;
+    this.camera.updateProjectionMatrix();
+  }
 };
 
-CameraController.prototype.get3Dpoint = function(keyframes, frame) {
+CameraController.prototype.getCurrentPath = function(keyframes, frame) {
   var current;
   for (var i=0; i<keyframes.length; i++) {
     if (frame >= keyframes[i].startFrame && frame <= keyframes[i].endFrame) {
@@ -86,7 +124,15 @@ CameraController.prototype.get3Dpoint = function(keyframes, frame) {
         current = keyframes[i];
       }
     }
+    if (current === undefined) {
+      current = keyframes[0];
+    }
   }
+  return current;
+};
+
+CameraController.prototype.get3Dpoint = function(keyframes, frame) {
+  var current = this.getCurrentPath(keyframes, frame);
 
   if (current.type == "spline") {
     if (frame > current.endFrame) {
@@ -97,4 +143,18 @@ CameraController.prototype.get3Dpoint = function(keyframes, frame) {
     return current.points.getPointAt(s_t);
   }
   return current.point;
+};
+
+CameraController.prototype.getPoint = function(keyframes, frame) {
+  var current = this.getCurrentPath(keyframes, frame);
+
+  if (current.type == "transition") {
+    if (frame > current.endFrame) {
+      return current.to;
+    }
+    var duration = current.endFrame - current.startFrame;
+    var t = (frame - current.startFrame) / duration;
+    return lerp(current.from, current.to, t);
+  }
+  return current.value;
 };

@@ -46,6 +46,8 @@ The only rules you need to oblige is that:
 | m          | fullscreen              |
 | .          | skip one second ahead   |
 | ,          | skip one second back    |
+| L          | skip ten seconds ahead  |
+| K          | skip ten seconds back   |
 | return     | rewind to start of demo |
 | >/:        | skip one frame ahead    |
 | </;        | skip one frame back     |

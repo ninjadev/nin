@@ -38,9 +38,9 @@ angular.module('nin')
     };
 
     commands.on('setCuePoint', function() {
-      if (!$scope.loopStart) {
+      if ($scope.loopStart == null) {
         $scope.loopStart = $scope.currentFrame;
-      } else if (!$scope.loopEnd) {
+      } else if ($scope.loopEnd == null) {
         if ($scope.loopStart > $scope.currentFrame) {
           $scope.loopEnd = $scope.loopStart;
           $scope.loopStart = $scope.currentFrame;

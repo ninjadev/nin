@@ -100,6 +100,10 @@ main-window, main-window > div {
     color: white;
 }
 
+.layers-label-container .current-frame, .name {
+    cursor: pointer;
+}
+
 .layer-label {
     display: table;
     width: 100%;

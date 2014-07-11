@@ -46,8 +46,16 @@ function compress(payload, callback) {
     positiveNumberToBytes(0, 1) +
     positiveNumberToBytes(0, 1));
   var html = '<!DOCTYPE html><meta charset="utf-8">' +
-    '<head><title>Ninjadev</title><style>*{display:none} html,body{display:block;overflow:hidden;background:#000;padding:0;margin:0;border:0;outline:0;}canvas{position:fixed;display:block;background:#000;}.hide{display:none}</style></head>' +
+    '<head><title>Ninjadev</title><style>button{border:0;outline:0;margin:80px auto;background: black;}.small{font-size:20px}*{font-family:sans-serif;display:none}.visible, .visible *{display:block}.loading{width:600px;left:50%;margin-left:-340px;position:absolute;z-index:9999999999;color:white;font-size: 80px;text-align:center; padding: 40px}html,body{display:block;overflow:hidden;background:#000;padding:0;margin:0;border:0;outline:0;}canvas{position:fixed;display:block;background:#000;}.hide{display:none}</style></head>' +
     '<body>' +
+    '<div class="loading visible">' +
+    '<p>Inakuwa Oasis</p>' +
+    '<p class=small>by</p>' +
+    '<p>Ninjadev</p>' +
+    '<p class=small>The inaugural demo of our new demo tool \'nin\' (open source!).</p>' +
+    '<p class=small>Presented at Solskogen 2014.</p>' +
+    '<button onclick=start() class=loading style="position:relative;font-size:80px;color:white;padding:80px;margin-left:-300px;border:0;outline:0;" id=start-button disabled>Loading...</button>' +
+    '</div>' +
     '<script>' +
     'function z(){' +
       'x=document.querySelector("canvas").getContext("2d");' +
@@ -60,11 +68,26 @@ function compress(payload, callback) {
         's+=String.fromCharCode(d[i+2]);' +
       '}' +
       's=s.replace(/\\0/g, " ");' +
-      'document.body.innerHTML="";' +
       '(1,eval)(s);' +
       'var layers = JSON.parse(atob(FILES["res/layers.json"]));' +
-      'demo=bootstrap({layers:layers});' +
+      'var camerapaths = JSON.parse(atob(FILES["res/camerapaths.json"]));' +
+      'demo=bootstrap({layers:layers, camerapaths:camerapaths, onprogress: function(percent){}, oncomplete: function(){ var el=document.querySelector("#start-button");el.style.cursor="pointer";el.disabled = false;el.innerText = "Start"; document.querySelector("button").style.background = "white"; document.querySelector("button").style.color="black"; } });' +
+      
+      'start=function(){' +
+      'var opacity = 1;' +
+      'function fadeOut(){' +
+        'document.querySelector(".visible").style.opacity = opacity;' +
+        'console.log(opacity, document.querySelector(".visible").style.opacity);' + 
+         'if(opacity > 0) {' +
+           'opacity -= 0.005;' +
+           'setTimeout(fadeOut, 10);' +
+         '} else {' +
+          'document.querySelector(".visible").classList.remove("visible");' +
+         '}' +
+      '}' +
+      'fadeOut();' +
       'demo.start();' +
+      '}' +
     '}</script><canvas class=hide height='+ height + ' width=' + width + '></canvas><img src=# onload=z()><!--';
   var htMlChunk = chunk('htMl', html);
   var IENDChunk = chunk('IEND', '');

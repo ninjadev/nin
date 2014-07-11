@@ -22,13 +22,10 @@ var Loader = (function(){
       var texture = new THREE.Texture();
       texture.image = image;
       texture.sourceFile = filepath;
-      image.addEventListener('load', function(){
+      Loader.load(filepath, image, function() {
         texture.needsUpdate = true;
-        if (typeof callback === 'function') {
-          callback();
-        }
+        callback && callback();
       });
-      image.src = rootPath + filepath;
       return texture;
     },
     load: function(filepath, element, callback) {
@@ -57,8 +54,16 @@ var Loader = (function(){
           item.callback && item.callback(); 
           registerAsLoaded(item); 
         };
+
         if(window.FILES) {
-          item.element.src = 'data:audio/mp3;base64,' + FILES[item.filepath];
+          var prefix = {
+            'jpg': 'data:image/jpg;base64,',
+            'jpeg': 'data:image/jpg;base64,',
+            'png': 'data:image/png;base64,',
+            'mp3': 'data:audio/mp3;base64,',
+          }[item.filepath.slice(-3)];
+          console.log('yo', item.filepath, prefix, (''+FILES[item.filepath]).slice(0, 10));
+          item.element.src = prefix + FILES[item.filepath];
         } else {
           item.element.src = rootPath + item.filepath;
         }

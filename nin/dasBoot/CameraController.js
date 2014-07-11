@@ -37,6 +37,9 @@ CameraController.prototype.parseCameraPath = function(camera_paths) {
   if (raw_path.fov) {
     this.fov = this.parseKeyframes(raw_path.fov);
   }
+  if (raw_path.shake) {
+    this.shake = this.parseKeyframes(raw_path.shake);
+  }
 };
 
 CameraController.prototype.parse3Dkeyframes = function(keyframes) {
@@ -109,6 +112,15 @@ CameraController.prototype.updateCamera = function(frame) {
     var fov = this.getPoint(this.fov, frame);
     this.camera.fov = fov;
     this.camera.updateProjectionMatrix();
+  }
+
+  if (this.shake) {
+    var shake = this.getPoint(this.shake, frame);
+    this.camera.position.add(new THREE.Vector3(
+      (Math.random() - .5) * shake,
+      (Math.random() - .5) * shake,
+      (Math.random() - .5) * shake
+    ));
   }
 };
 

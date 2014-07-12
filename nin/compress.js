@@ -46,7 +46,7 @@ function compress(payload, callback) {
     positiveNumberToBytes(0, 1) +
     positiveNumberToBytes(0, 1));
   var html = '<!DOCTYPE html><meta charset="utf-8">' +
-    '<head><title>Ninjadev</title><style>button{border:0;outline:0;margin:80px auto;background: black;}.small{font-size:20px}*{font-family:sans-serif;display:none}.visible, .visible *{display:block}.loading{width:600px;left:50%;margin-left:-340px;position:absolute;z-index:9999999999;color:white;font-size: 80px;text-align:center; padding: 40px}html,body{display:block;overflow:hidden;background:#000;padding:0;margin:0;border:0;outline:0;}canvas{position:fixed;display:block;background:#000;}.hide{display:none}</style></head>' +
+    '<head><title>Ninjadev</title><style>button{border:0;outline:0;margin:40px auto;background: black;}.small{font-size:20px}*{font-family:sans-serif;display:none}.visible, .visible *{display:block}.loading{width:600px;left:50%;margin-left:-340px;position:absolute;z-index:9999999999;color:white;font-size: 40px;text-align:center; padding: 20px}html,body{display:block;overflow:hidden;background:#000;padding:0;margin:0;border:0;outline:0;}canvas{position:fixed;display:block;background:#000;}.hide{display:none}</style></head>' +
     '<body>' +
     '<div class="loading visible">' +
     '<p>Inakuwa Oasis</p>' +
@@ -54,7 +54,7 @@ function compress(payload, callback) {
     '<p>Ninjadev</p>' +
     '<p class=small>The inaugural demo of our new demo tool \'nin\' (open source!).</p>' +
     '<p class=small>Presented at Solskogen 2014.</p>' +
-    '<button onclick=start() class=loading style="position:relative;font-size:80px;color:white;padding:80px;margin-left:-300px;border:0;outline:0;" id=start-button disabled>Loading...</button>' +
+    '<button onclick=start() class=loading style="position:relative;font-size:40px;color:white;padding:40px;margin-left:-300px;border:0;outline:0;" id=start-button disabled>Loading...</button>' +
     '</div>' +
     '<script>' +
     'function z(){' +

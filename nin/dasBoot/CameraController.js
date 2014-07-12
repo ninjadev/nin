@@ -156,6 +156,10 @@ CameraController.prototype.get3Dpoint = function(keyframes, frame) {
     var t = (frame - current.startFrame) / spline_duration;
     if (current.easing == "smoothstep") {
       var s_t = smoothstep(0, 1, t);
+    } else if (current.easing == "easeIn") {
+      var s_t = easeIn(0, 1, t);
+    } else if (current.easing == "easeOut") {
+      var s_t = easeOut(0, 1, t);
     } else {
       var s_t = t;
     }
@@ -175,6 +179,10 @@ CameraController.prototype.getPoint = function(keyframes, frame) {
     var t = (frame - current.startFrame) / duration;
     if (current.easing == "smoothstep") {
       return smoothstep(current.from, current.to, t);
+    } else if (current.easing == "easeOut") {
+      return easeOut(current.from, current.to, t);
+    } else if (current.easing == "easeIn") {
+      return easeIn(current.from, current.to, t);
     }
     return lerp(current.from, current.to, t);
   }

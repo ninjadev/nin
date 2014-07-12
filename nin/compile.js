@@ -70,7 +70,7 @@ var compile = function(callback) {
         fs.writeFileSync('test-project/gen/files.js', new Buffer(data));
         shaderGen(function() {
           console.log('Running closure compiler...');
-          exec('java -jar compiler.jar -O SIMPLE --language_in ECMASCRIPT5 --debug --logging_level INFO dasBoot/lib/*.js dasBoot/*.js test-project/src/*.js test-project/gen/*.js',
+          exec('java -jar compiler.jar -O SIMPLE --language_in ECMASCRIPT5 --debug --logging_level INFO dasBoot/lib/*.js dasBoot/*.js test-project/gen/*.js test-project/src/*.js',
                {encoding: 'binary', maxBuffer: 1024 * 1024 * 1024},
                function(error, stdout, stderr){
             stderr && console.log(stderr);

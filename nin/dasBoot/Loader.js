@@ -62,21 +62,26 @@ var Loader = (function(){
             'png': 'data:image/png;base64,',
             'mp3': 'data:audio/mp3;base64,',
           }[item.filepath.slice(-3)];
-          console.log('yo', item.filepath, prefix, (''+FILES[item.filepath]).slice(0, 10));
+          console.log(item.filepath, prefix + (FILES[item.filepath] && FILES[item.filepath].slice(0, 10)));
           item.element.src = prefix + FILES[item.filepath];
         } else {
           item.element.src = rootPath + item.filepath;
         }
       });
       itemsToAjax.forEach(function(item) {
-        var response = null;
-        var request = new XMLHttpRequest();
-        request.open('GET', rootPath + item.filepath, 1);
-        request.onload = function() {
-          item.callback(request.responseText);
-          registerAsLoaded(item);
+        if(window.FILES) {
+          item.callback(FILES[item.filepath]);
+          registerAsLoaded(item); 
+        } else {
+          var response = null;
+          var request = new XMLHttpRequest();
+          request.open('GET', rootPath + item.filepath, 1);
+          request.onload = function() {
+            item.callback(request.responseText);
+            registerAsLoaded(item);
+          }
+          request.send();
         }
-        request.send();
       });
     }
   };

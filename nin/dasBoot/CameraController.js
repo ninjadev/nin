@@ -1,4 +1,5 @@
 function CameraController(layer_id) {
+  console.log('started CC', layer_id);
   if (layer_id in CameraController.layers) {
     return CameraController.layers[layer_id];
   }

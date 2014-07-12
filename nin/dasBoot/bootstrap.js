@@ -37,8 +37,17 @@ window['bootstrap'] = function(options) {
   demo.lm = new LayerManager(demo);
   if(options.layers) {
     for(var i = 0; i < options.layers.length; i++) {
-      demo.lm.loadLayer(options.layers[i]);
+      var layer = options.layers[i];
+      layer.position = i;
+      demo.lm.loadLayer(layer);
     }
+    demo.lm.jumpToFrame(0);
+  }
+  if(options.camerapaths) {
+    CameraController.paths = options.camerapaths;
+    for (var index in CameraController.layers) {
+      CameraController.layers[index].parseCameraPath(options.camerapaths);
+    };
     demo.lm.jumpToFrame(0);
   }
 
@@ -109,14 +118,14 @@ window['bootstrap'] = function(options) {
     demo.render(demo.renderer, 0);
   };
 
-  Loader.start(function progress(percent){
+  Loader.start(options.onprogress || function progress(percent){
     console.log(percent, 'percent complete!');
-  }, function finished(){
+  }, options.oncomplete || function finished(){
     console.log('finished loading :)');  
   });
 
   demo.start = function() {
-    container.appendChild(demo.renderer.domElement);
+    container.insertBefore(demo.renderer.domElement, container.firstChild);
     demo.resize();
     demo.music.play();
     demo.looper.loop();

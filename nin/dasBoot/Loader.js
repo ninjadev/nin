@@ -70,7 +70,8 @@ var Loader = (function(){
       });
       itemsToAjax.forEach(function(item) {
         if(window.FILES) {
-          item.callback(FILES[item.filepath]);
+          console.log(item.filepath, FILES[item.filepath] && atob(FILES[item.filepath]).slice(0, 10));
+          item.callback(atob(FILES[item.filepath]));
           registerAsLoaded(item); 
         } else {
           var response = null;

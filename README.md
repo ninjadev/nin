@@ -56,7 +56,7 @@ The only rules you need to oblige is that:
 | </;        | skip one frame back     |
 
 ## Camera controls
-See [the wiki page](/ninjadev/nin/wiki/Camera-Controller) for more information on the Camera Controller.
+See [the wiki page](https://github.com/ninjadev/nin/wiki/Camera-Controller) for more information on the Camera Controller.
 
 | key       | function                      |
 |-----------|-------------------------------|

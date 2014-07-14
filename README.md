@@ -2,7 +2,7 @@
 
 > nin is ninjatool
 
-[http://nin.sexy/](nin) is Ninjadev's internal demo tool. It is a tool for easing development of browser-based WebGL demos.
+[nin](http://nin.sexy/) is Ninjadev's internal demo tool. It is a tool for easing development of browser-based WebGL demos.
 
 This project has a node backend that keeps track of all files and compiles files as they are edited.
 The frontend of this project is written in Angular and displays among other the layers that the demo consists of.

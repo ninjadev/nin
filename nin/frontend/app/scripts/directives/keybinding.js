@@ -1,4 +1,4 @@
-angular.module('nin').directive('keybinding', function(commands) {
+angular.module('nin').directive('keybinding', function(commands, render) {
 
   var keybindings = {
     '32': function(e) {
@@ -91,7 +91,10 @@ angular.module('nin').directive('keybinding', function(commands) {
     },
     '103': function(e) {
       // 'g'
-      commands.setCuePoint();
+      //commands.setCuePoint();
+      demo.jumpToFrame(0);
+      demo.resize(1920, 1080);
+      render();
     }
   };
 

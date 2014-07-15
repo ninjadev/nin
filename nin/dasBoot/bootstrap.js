@@ -71,18 +71,22 @@ window['bootstrap'] = function(options) {
     demo.effectComposer.render();
   }
 
-  demo.resize = function() {
-    var rect = container.getBoundingClientRect();
-    if(rect.width / rect.height > 16 / 9){
-      GU = (rect.height / 9);
+  demo.resize = function(width, height) {
+    if(!width || !height) {
+      var rect = container.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+    }
+    if(width / height > 16 / 9){
+      GU = (height / 9);
     }else{
-      GU = (rect.width / 16);
+      GU = (width / 16);
     }
     demo.renderer.setSize(16 * GU, 9 * GU);
     demo.renderer.domElement.style.zIndex = 10;
     demo.renderer.domElement.style.position = 'absolute';
-    demo.renderer.domElement.style.margin = ((rect.height - 9 * GU) / 2) +
-      "px 0 0 " + ((rect.width - 16 * GU) / 2) + "px";
+    demo.renderer.domElement.style.margin = ((height - 9 * GU) / 2) +
+      "px 0 0 " + ((width - 16 * GU) / 2) + "px";
     demo.effectComposer.setSize(16 * GU, 9 * GU);
     demo.lm.resize();
     demo.update(currentFrame);

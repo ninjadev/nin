@@ -57,9 +57,9 @@ var shaderGen = function(cb) {
   var directories = [];
   var out = 'SHADERS={};';
 
-  traversePath('test-project/src/shaders/', function() {
+  traversePath(pathPrefix + 'src/shaders/', function() {
     traversePath('dasBoot/shaders/', function() {
-      fs.writeFileSync('test-project/gen/shaders.js', out);
+      fs.writeFileSync(pathPrefix + 'gen/shaders.js', out);
       cb();
     });
   });

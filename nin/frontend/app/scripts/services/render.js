@@ -1,7 +1,10 @@
 angular.module('nin').service('render', function(demo, socket) { 
 
+  var currentFrame;
+
   function render(i) {
     i = i || 0;
+    currentFrame = i;
     demo.update(i);
     demo.render(demo.renderer, 0);
     var image = demo.renderer.domElement.toDataURL('image/png');
@@ -10,9 +13,11 @@ angular.module('nin').service('render', function(demo, socket) {
       image: image,
       frame: i
     }));
-
-    setTimeout(function() { render(i + 1); }, 0);
   }
+
+  socket.on('frame-received', function() {
+    render(currentFrame + 1);
+  });
 
   return render;
 });

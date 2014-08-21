@@ -92,9 +92,10 @@ angular.module('nin').directive('keybinding', function(commands, render) {
     '103': function(e) {
       // 'g'
       //commands.setCuePoint();
-      demo.jumpToFrame(0);
+      var startFrame = 3200;
+      demo.jumpToFrame(startFrame);
       demo.resize(1920, 1080);
-      render();
+      render(startFrame);
     }
   };
 

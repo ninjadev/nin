@@ -28,7 +28,7 @@ angular.module('nin')
       if(e.path == '/res/layers.json') {
         $http({
           method: 'GET',
-          url: '//localhost:9999/res/layers.json'
+          url: '//localhost:9000/res/layers.json'
         }).success(function(layers) {
           $scope.layers = layers;
           demo.lm.hardReset();
@@ -40,7 +40,7 @@ angular.module('nin')
           demo.lm.jumpToFrame(demo.getCurrentFrame());
         });
       } else if (e.path == '/res/camerapaths.json') {
-        $http.get('//localhost:9999/res/camerapaths.json')
+        $http.get('//localhost:9000/res/camerapaths.json')
           .success(function(camerapaths) {
             CameraController.paths = camerapaths;
             for (var index in CameraController.layers) {
@@ -48,7 +48,7 @@ angular.module('nin')
             };
           });
       } else {
-        ScriptReloader.reload('//localhost:9999/' + e.path, function() {
+        ScriptReloader.reload('//localhost:9000/' + e.path, function() {
           var splitted = e.path.split('/');
           var className = splitted[splitted.length - 1].split('.')[0];
           demo.lm.refresh(className);

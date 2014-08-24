@@ -2,7 +2,7 @@
 
 angular.module('nin').factory('demo', function(commands){
   var demo = bootstrap({
-    rootPath: '//localhost:9999/',
+    rootPath: '//localhost:9000/',
   });
 
   window.demo = demo;

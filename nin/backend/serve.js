@@ -18,16 +18,17 @@ var serve = function(projectPath) {
 
     var sockets = express();
     var sockets_server = require('http').createServer(sockets);
-    socket.installHandlers(sockets_server, {prefix: '/socket'});
+    var sock = socket(projectPath);
+    sock.installHandlers(sockets_server, {prefix: '/socket'});
     sockets_server.listen(1337, '0.0.0.0');
 
     var files = express();
+    files.use(express.static(projectPath));
     files.use(function(req, res, next) {
       res.setHeader("Access-Control-Allow-Origin", "*");
-      return next();
+      next();
     });
-    files.use(express.static(projectPath));
-    files.listen(9999);
+    files.listen(9000);
 
     console.log('serving nin on http://localhost:8000');
 

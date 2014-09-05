@@ -6,7 +6,7 @@ angular.module('nin')
     $scope.demo = demo;
     $scope.fullscreen = false;
     $scope.inspectedLayer = null;
-    $scope.mute = false;
+    $scope.mute = localStorage.getItem('nin-mute') ? true : false;
 
     commands.on('toggleFullscreen', function() {
       $scope.fullscreen = !$scope.fullscreen;
@@ -14,6 +14,11 @@ angular.module('nin')
 
     commands.on('toggleMusic', function() {
       $scope.mute = !$scope.mute;
+      if ($scope.mute) {
+        localStorage.setItem("nin-mute", 1);
+      } else {
+        localStorage.removeItem("nin-mute");
+      }
     });
 
     socket.onopen = function() {

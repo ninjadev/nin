@@ -1,5 +1,6 @@
 var Loader = (function(){
   var eventNames = {
+    VIDEO: 'canplaythrough',
     AUDIO: 'canplaythrough',
     IMG: 'load'
   };
@@ -9,6 +10,7 @@ var Loader = (function(){
   return {
     setRootPath: function(path){
       rootPath = path;
+      rootPath = 'http://localhost:9000/';
     },
     loadAjax: function(filepath, callback) {
       itemsToAjax.push({
@@ -18,7 +20,6 @@ var Loader = (function(){
     },
     loadTexture: function(filepath, callback) {
       var image = new Image();
-      image.crossOrigin = "Anonymous";
       var texture = new THREE.Texture();
       texture.image = image;
       texture.sourceFile = filepath;
@@ -41,14 +42,18 @@ var Loader = (function(){
       var waitingCount = maxWaitingCount;
       function registerAsLoaded(item) {
         onprogress(100 - waitingCount / maxWaitingCount * 100);
-        console.log('finished loading', item.filepath);
+        console.log('finished loading', waitingCount, item.filepath);
         if(!--waitingCount) {
           oncomplete();  
         }
       }
       itemsToLoad.forEach(function(item) {
         var eventName = eventNames[item.element.tagName];
-        item.element.addEventListener(eventName, listener);
+        if(eventName) {
+          item.element.addEventListener(eventName, listener);
+        } else {
+          setTimeout(listener, 0);
+        }
         function listener() {
           item.element.removeEventListener(eventName, listener);
           item.callback && item.callback(); 
@@ -61,11 +66,14 @@ var Loader = (function(){
             'jpeg': 'data:image/jpg;base64,',
             'png': 'data:image/png;base64,',
             'mp3': 'data:audio/mp3;base64,',
+            'mp4': 'data:video/mp4;base64,',
+            'svg': 'data:image/svg+xml;base64,',
           }[item.filepath.slice(-3)];
           console.log(item.filepath, prefix + (FILES[item.filepath] && FILES[item.filepath].slice(0, 10)));
           item.element.src = prefix + FILES[item.filepath];
         } else {
-          item.element.src = rootPath + item.filepath;
+          item.element.crossOrigin = 'Anonymous';
+          item.element.src = rootPath + item.filepath + '?_=' + Math.random();
         }
       });
       itemsToAjax.forEach(function(item) {

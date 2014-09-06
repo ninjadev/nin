@@ -2,14 +2,14 @@ var fs = require('fs');
 var walk = require('walk');
 
 
-var shaderGen = function(cb) {
+var shaderGen = function(pathPrefix, cb) {
 
   function getShaderData(path, type) {
     var data = '';
     if(fs.existsSync(path)) {
       data = fs.readFileSync(path, 'utf8');
     } else {
-      data = fs.readFileSync('dasBoot/shaders/default/' + type, 'utf8');
+      data = fs.readFileSync('/home/sigveseb/nin/nin/dasBoot/shaders/default' + type, 'utf8');
     }
 
     return data;
@@ -57,9 +57,9 @@ var shaderGen = function(cb) {
   var directories = [];
   var out = 'SHADERS={};';
 
-  traversePath(pathPrefix + 'src/shaders/', function() {
-    traversePath('dasBoot/shaders/', function() {
-      fs.writeFileSync(pathPrefix + 'gen/shaders.js', out);
+  traversePath(pathPrefix + '/src/shaders/', function() {
+    traversePath('/home/sigveseb/nin/nin/dasBoot/shaders/', function() {
+      fs.writeFileSync(pathPrefix + '/gen/shaders.js', out);
       cb();
     });
   });

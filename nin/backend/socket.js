@@ -45,7 +45,7 @@ function socket(projectPath) {
       var pathParts = path.split('/');
       if (event === 'unlink') event = 'delete';
       if(pathParts.indexOf('shaders') !== -1) {
-        sg.shaderGen(function() {
+        sg.shaderGen(projectPath, function() {
         });
       } else {
         if(event == 'addDir') {

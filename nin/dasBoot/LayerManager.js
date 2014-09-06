@@ -10,6 +10,13 @@ function LayerManager(demo) {
   this.lastUpdatedActiveLayers = -1;
 }
 
+LayerManager.prototype.resize = function() {
+  for(var i = 0; i < this.layers.length; i++) {
+    var layer = this.layers[i];
+    layer.instance && layer.instance.resize && layer.instance.resize();
+  }
+};
+
 LayerManager.prototype.loadLayer = function(layer) {
 
   this.layers.push(layer);

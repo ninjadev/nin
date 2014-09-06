@@ -12,8 +12,8 @@ THREE.FlyControls = function ( object, domElement ) {
   // API
 
   this.movementSpeed = 1.0;
-  this.movementSpeedMultiplier = 1.0;
-  this.rollSpeed = 0.005;
+  this.movementSpeedMultiplier = .1;
+  this.rollSpeed = 1;
 
   this.dragToLook = false;
   this.autoForward = false;
@@ -50,7 +50,7 @@ THREE.FlyControls = function ( object, domElement ) {
 
     switch ( event.keyCode ) {
 
-      case 16: /* shift */ this.movementSpeedMultiplier = .01; break;
+      case 16: /* shift */ this.movementSpeedMultiplier = 0.0005; break;
 
       case 87: /*W*/ this.moveState.forward = 1; break;
       case 83: /*S*/ this.moveState.back = 1; break;
@@ -81,7 +81,7 @@ THREE.FlyControls = function ( object, domElement ) {
 
     switch( event.keyCode ) {
 
-      case 16: /* shift */ this.movementSpeedMultiplier = 0.1; break;
+      case 16: /* shift */ this.movementSpeedMultiplier = 0.01; break;
 
       case 87: /*W*/ this.moveState.forward = 0; break;
       case 83: /*S*/ this.moveState.back = 0; break;
@@ -112,7 +112,7 @@ THREE.FlyControls = function ( object, domElement ) {
   this.update = function( delta ) {
 
     var moveMult = delta * this.movementSpeed * this.movementSpeedMultiplier;
-    var rotMult = delta * this.rollSpeed;
+    var rotMult = delta * this.rollSpeed * this.movementSpeedMultiplier;
 
     this.object.translateX( this.moveVector.x * moveMult );
     this.object.translateY( this.moveVector.y * moveMult );

@@ -5,12 +5,16 @@ window['bootstrap'] = function(options) {
 
   var container = document.body;
 
-  demo.renderer = new THREE.WebGLRenderer({maxLights: 10, antialias: true});
+  demo.renderer = new THREE.WebGLRenderer({
+    maxLights: 10,
+    antialias: true
+  });
   demo.renderer.setClearColor(0x000000, 1);
   demo.renderer.sortObjects = true;
   demo.renderer.autoClear = false;
   demo.renderer.shadowMapEnabled = true;
-  demo.renderer.shadowCameraNear = 1;
+  demo.renderer.shadowMapSoft = true;
+  demo.renderer.shadowCameraNear = 0.1;
   demo.renderer.shadowCameraFar = 10000;
   demo.renderer.shadowCameraFov = 50;
 
@@ -80,9 +84,13 @@ window['bootstrap'] = function(options) {
     demo.renderer.domElement.style.margin = ((rect.height - 9 * GU) / 2) +
       "px 0 0 " + ((rect.width - 16 * GU) / 2) + "px";
     demo.effectComposer.setSize(16 * GU, 9 * GU);
+    demo.lm.resize();
+    demo.update(currentFrame);
+    demo.render(demo.renderer, 0);
   };
 
   window.addEventListener('resize', demo.resize);
+  demo.resize();
 
   demo.music = document.createElement('audio');
   Loader.load('res/music.mp3', demo.music); 

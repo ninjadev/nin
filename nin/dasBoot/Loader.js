@@ -65,7 +65,7 @@ var Loader = (function(){
           console.log(item.filepath, prefix + (FILES[item.filepath] && FILES[item.filepath].slice(0, 10)));
           item.element.src = prefix + FILES[item.filepath];
         } else {
-          item.element.src = rootPath + item.filepath;
+          item.element.src = rootPath + item.filepath + '?_=' + Math.random();
         }
       });
       itemsToAjax.forEach(function(item) {

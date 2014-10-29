@@ -1,5 +1,6 @@
 var Loader = (function(){
   var eventNames = {
+    VIDEO: 'canplaythrough',
     AUDIO: 'canplaythrough',
     IMG: 'load'
   };

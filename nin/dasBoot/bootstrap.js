@@ -80,9 +80,13 @@ window['bootstrap'] = function(options) {
     demo.renderer.domElement.style.margin = ((rect.height - 9 * GU) / 2) +
       "px 0 0 " + ((rect.width - 16 * GU) / 2) + "px";
     demo.effectComposer.setSize(16 * GU, 9 * GU);
+    demo.lm.resize();
+    demo.update(currentFrame);
+    demo.render(demo.renderer, 0);
   };
 
   window.addEventListener('resize', demo.resize);
+  demo.resize();
 
   demo.music = document.createElement('audio');
   Loader.load('res/music.mp3', demo.music); 

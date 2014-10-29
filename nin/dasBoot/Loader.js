@@ -61,6 +61,8 @@ var Loader = (function(){
             'jpeg': 'data:image/jpg;base64,',
             'png': 'data:image/png;base64,',
             'mp3': 'data:audio/mp3;base64,',
+            'mp4': 'data:video/mp4;base64,',
+            'svg': 'data:image/svg+xml;base64,',
           }[item.filepath.slice(-3)];
           console.log(item.filepath, prefix + (FILES[item.filepath] && FILES[item.filepath].slice(0, 10)));
           item.element.src = prefix + FILES[item.filepath];

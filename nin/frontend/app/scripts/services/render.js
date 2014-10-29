@@ -6,13 +6,15 @@ angular.module('nin').service('render', function(demo, socket) {
     i = i || 0;
     currentFrame = i;
     demo.update(i);
-    demo.render(demo.renderer, 0);
-    var image = demo.renderer.domElement.toDataURL('image/png');
-    socket.send(JSON.stringify({
-      type: 'render-frame',
-      image: image,
-      frame: i
-    }));
+    setTimeout(function(){
+      demo.render(demo.renderer, 0);
+      var image = demo.renderer.domElement.toDataURL('image/png');
+      socket.send(JSON.stringify({
+        type: 'render-frame',
+        image: image,
+        frame: i
+      }));
+    }, 1000);
   }
 
   socket.on('frame-received', function() {

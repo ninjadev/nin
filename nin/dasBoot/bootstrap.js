@@ -61,8 +61,21 @@ window['bootstrap'] = function(options) {
 
   var currentFrame = 0;
 
+  var BPM = 105;
+  window.BEAT = false;
+  window.BEAN = 0;
+  var FPB = 1 / (BPM / 60 / (options.frameRateInHz || 60));
+  var subdivisor = 6;
+
   demo.update = function(frame) {
     currentFrame = frame;
+    var beatOffset = 8.5;
+    if(((currentFrame + beatOffset) / (FPB / subdivisor) | 0) > BEAN) {
+      BEAT = true;
+    } else {
+      BEAT = false;
+    }
+    BEAN = ((currentFrame + beatOffset) / (FPB / subdivisor)) | 0;
     demo.lm.update(frame);
   }
 

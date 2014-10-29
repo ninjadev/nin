@@ -60,7 +60,17 @@ function socket(projectPath) {
 
     conn.on('data', function (message) {
       var event = JSON.parse(message);
-      if(event.type == 'set') {
+      if(event.type == 'render-frame') {
+        var filename = '' + event.frame;
+        while(filename.length < 7) {
+          filename = '0' + filename;
+        }
+        filename += '.png';
+        console.log(filename, event.image.slice(0, 22));
+        var buffer = new Buffer(event.image.slice(22), 'base64');
+        fs.writeFileSync(projectPath + '/bin/render/' + filename, buffer);
+        conn.send('frame-received', {});
+      } else if(event.type == 'set') {
         event = event.data;
         fs.readFile(projectPath + '/res/layers.json', function (err, data) {
           var layers = JSON.parse(data);

@@ -5,7 +5,8 @@ var fs = require('fs');
 var path = require('path');
 
 var compile = require('./compile'),
-    serve   = require('./serve');
+    serve   = require('./serve'),
+    render  = require('./render');
 
 program
   .command('compile [project]')
@@ -14,6 +15,17 @@ program
     project = path.resolve(process.cwd(), project || '');
     console.log('compiling project');
     compile.compile(project);
+  });
+
+program
+  .command('render [project]')
+  .description('Renders the nin project. At this point, this assumes ' + 
+               'you have already generated png frames, and simply need ' +
+               'to stitch them together.' )
+  .action(function(project){
+    project = path.resolve(process.cwd(), project || '');
+    console.log('rendering project');
+    render.render(project);
   });
 
 program

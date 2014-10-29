@@ -21,6 +21,7 @@ var serve = function () {
     var files = express();
     files.use(function(req, res, next) {
       res.setHeader("Access-Control-Allow-Origin", "*");
+      res.setHeader("Origin", "*");
       return next();
     });
     files.use(express.static(__dirname + '/test-project'));

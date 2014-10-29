@@ -19,5 +19,9 @@ angular.module('nin').factory('demo', function(commands){
     demo.jumpToFrame(frame);
   });
 
+  commands.on('setPlaybackRate', function(rate) {
+    demo.music.playbackRate = rate;
+  });
+
   return demo;
 });

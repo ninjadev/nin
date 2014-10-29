@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="bower_components/angular-ui-layout/ui-layout.css"/>
     <link rel="stylesheet" href="bower_components/angular-ui/build/angular-ui.css"/>
     <!-- endbuild -->
-    <!-- build:css({.tmp,app}) styles/main.css -->
-    <link rel=stylesheet href=styles/main.css>
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
   <body ng-app=nin>
@@ -23,6 +23,9 @@
       ng-include="'views/main.html'"
       ng-controller="MainCtrl">
     </div>
+
+    <script src="//localhost:9000/gen/dasBoot.js"></script>
+    <script src="//localhost:9000/gen/shaders.js"></script>
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
@@ -39,6 +42,7 @@
     <!-- endbower -->
     <script src="bower_components/angular-ui/build/angular-ui.js"></script>
     <script src="lib/waveform.js"></script>
+    <script src="lib/FlyControls.js"></script>
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -57,10 +61,6 @@
     <script src="scripts/directives/waveform.js"></script>
     <script src="scripts/directives/keybinding.js"></script>
     <!-- endbuild -->
-    <script src="//localhost:9999/gen/dasBoot.js"></script>
-    <script src="//localhost:9999/gen/shaders.js"></script>
 
-    <!-- depends on THREE.js -->
-    <script src="lib/FlyControls.js"></script>
   </body>
 </html>

@@ -96,7 +96,7 @@ CameraController.prototype.updateCamera = function(frame) {
 
   if (this.position) {
     var pos = this.get3Dpoint(this.position, frame);
-    this.camera.position = pos;
+    this.camera.position.set(pos.x, pos.y, pos.z);
   }
 
   if (this.lookAt) {

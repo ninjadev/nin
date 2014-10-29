@@ -49,7 +49,7 @@ echo.on('connection', function (conn) {
       }
       console.log('Change in project detected: ' + event + ', ' + path)
       conn.send(event, {
-        path: path
+        path: path.slice(projectPath.length)
       });
     }
   });

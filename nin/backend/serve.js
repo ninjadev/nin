@@ -4,13 +4,15 @@ var fs = require('fs');
 var socket = require('./socket').socket;
 var sg = require('./shadergen');
 
-var serve = function () {
-  exec('mkdir -p test-project/gen/ && find dasBoot/ -type f -name "*.js" | sort |xargs cat > test-project/gen/dasBoot.js',
-
+var serve = function(projectPath) {
+  exec('mkdir -p ' + projectPath + '/gen/ && ' +
+       'find ' + __dirname + '/../dasBoot/ -type f -name "*.js" | ' +
+       ' sort | xargs cat > ' + projectPath + '/gen/dasBoot.js',
        function(error, stdout, stderr){
 
+         console.log(__dirname);
     var frontend = express();
-    frontend.use(express.static(__dirname + '/frontend'));
+    frontend.use(express.static(__dirname + '/../frontend/dist/'));
     frontend.listen(8000);
 
     var sockets = express();
@@ -24,12 +26,10 @@ var serve = function () {
       res.setHeader("Origin", "*");
       return next();
     });
-    files.use(express.static(__dirname + '/test-project'));
+    files.use(express.static(projectPath));
     files.listen(9999);
 
     console.log('serving nin on http://localhost:8000');
-
-    sg.shaderGen(function() { console.log("Shaders compiled"); });
   });
 }
 

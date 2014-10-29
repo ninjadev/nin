@@ -13,7 +13,7 @@ angular.module('nin').directive('waveform', function() {
       var waveform;
       var waveformOverlay;
       var request = new XMLHttpRequest();
-      request.open('GET', '//localhost:9999/res/music.mp3', true);
+      request.open('GET', '//localhost:9000/res/music.mp3', true);
       request.responseType = 'arraybuffer';
       request.onload = function() {
         context.decodeAudioData(request.response, function(buffer) {

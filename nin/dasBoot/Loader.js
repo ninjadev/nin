@@ -19,7 +19,6 @@ var Loader = (function(){
     },
     loadTexture: function(filepath, callback) {
       var image = new Image();
-      image.crossOrigin = "Anonymous";
       var texture = new THREE.Texture();
       texture.image = image;
       texture.sourceFile = filepath;
@@ -68,6 +67,7 @@ var Loader = (function(){
           console.log(item.filepath, prefix + (FILES[item.filepath] && FILES[item.filepath].slice(0, 10)));
           item.element.src = prefix + FILES[item.filepath];
         } else {
+          item.element.crossOrigin = 'Anonymous';
           item.element.src = rootPath + item.filepath + '?_=' + Math.random();
         }
       });

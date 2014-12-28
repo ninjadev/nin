@@ -74,6 +74,26 @@ angular.module('nin').directive('keybinding', function(commands) {
       // 'Z'
       commands.increaseCameraZoom();
     },
+    '49': function() {
+      // '1'
+      commands.setPlaybackRate(0.25);
+    },
+    '50': function() {
+      // '2'
+      commands.setPlaybackRate(0.5);
+    },
+    '51': function() {
+      // '3'
+      commands.setPlaybackRate(1);
+    },
+    '52': function() {
+      // '4'
+      commands.setPlaybackRate(2);
+    },
+    '53': function() {
+      // '5'
+      commands.setPlaybackRate(4);
+    },
     '103': function(e) {
       // 'g'
       commands.setCuePoint();

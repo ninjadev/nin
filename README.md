@@ -42,19 +42,24 @@ The only rules you need to oblige is that:
 
 # Keyboard shortcuts
 
-| key        | function                |
-|------------|-------------------------|
-| space      | play/pause              |
-| m          | fullscreen              |
-| j          | toggle mute music       |
-| g          | set/unset loop points   |
-| .          | skip one second ahead   |
-| ,          | skip one second back    |
-| L          | skip ten seconds ahead  |
-| K          | skip ten seconds back   |
-| return     | rewind to start of demo |
-| >/:        | skip one frame ahead    |
-| </;        | skip one frame back     |
+| key        | function                 |
+|------------|--------------------------|
+| space      | play/pause               |
+| m          | fullscreen               |
+| j          | toggle mute music        |
+| g          | set/unset loop points    |
+| .          | skip one second ahead    |
+| ,          | skip one second back     |
+| L          | skip ten seconds ahead   |
+| K          | skip ten seconds back    |
+| return     | rewind to start of demo  |
+| >/:        | skip one frame ahead     |
+| </;        | skip one frame back      |
+| 1          | set playback rate to .25 |
+| 2          | set playback rate to .5  |
+| 3          | set playback rate to 1   |
+| 4          | set playback rate to 2   |
+| 5          | set playback rate to 4   |
 
 ## Camera controls
 See [the wiki page](https://github.com/ninjadev/nin/wiki/Camera-Controller) for more information on the Camera Controller.

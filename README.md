@@ -47,6 +47,7 @@ The only rules you need to oblige is that:
 | space      | play/pause              |
 | m          | fullscreen              |
 | j          | toggle mute music       |
+| g          | set/unset loop points   |
 | .          | skip one second ahead   |
 | ,          | skip one second back    |
 | L          | skip ten seconds ahead  |
@@ -66,4 +67,8 @@ See [the wiki page](https://github.com/ninjadev/nin/wiki/Camera-Controller) for 
 | r/f       | camera vertical position      |
 | p         | log camera position           |
 | l         | log camera lookat             |
+| x         | reset flight dynamics         |
+| c         | toggle fly around mode        |
+| z         | decrease camera zoom          |
+| Z         | increase camera zoom          |
 | mouse click on demo | lookat click target |

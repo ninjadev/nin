@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var fs = require('fs');
+var path = require('path');
+
+var compile = require('./compile'),
+    serve   = require('./serve');
+
+program
+  .command('compile [project]')
+  .description('Compile the nin project')
+  .action(function(project){
+    project = path.resolve(process.cwd(), project || '');
+    console.log('compiling project');
+    compile.compile(project);
+  });
+
+program
+  .command('run [project]')
+  .description('Run the backend project')
+  .action(function(project) {
+    project = path.resolve(process.cwd(), project || '');
+    serve.serve(project);
+  });
+
+program.parse(process.argv);
+
+if(!process.argv.slice(2).length) {
+    program.outputHelp();
+}

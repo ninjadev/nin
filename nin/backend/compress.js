@@ -46,7 +46,7 @@ function compress(payload, callback) {
     positiveNumberToBytes(0, 1) +
     positiveNumberToBytes(0, 1));
   var html = '<!DOCTYPE html><meta charset="utf-8">' +
-    '<head><title>Ninjadev</title><style>button{border:0;outline:0;margin:40px auto;background: black;}.small{font-size:20px}*{font-family:sans-serif;display:none}.visible, .visible *{display:block}.loading{width:600px;left:50%;margin-left:-340px;position:absolute;z-index:9999999999;color:white;font-size: 40px;text-align:center; padding: 20px}html,body{display:block;overflow:hidden;background:#000;padding:0;margin:0;border:0;outline:0;}canvas{position:fixed;display:block;background:#000;}.hide{display:none}</style></head>' +
+    '<head><title>Ninjadev</title><style>button{border:0;outline:0;margin:40px auto;background: black;}.small{font-size:20px}*{font-family:sans-serif;display:none}.visible, .visible *{display:block}.loading{width:600px;left:50%;margin-left:-340px;position:absolute;z-index:9999999999;color:white;font-size: 40px;text-align:center; padding: 20px}html,body{width:100%;height:100%;display:block;overflow:hidden;background:#000;padding:0;margin:0;border:0;outline:0;}canvas{position:fixed;display:block;background:#000;}.hide{display:none}</style></head>' +
     '<body>' +
     '<div class="loading visible">' +
     '<p>Inakuwa Oasis</p>' +
@@ -62,31 +62,35 @@ function compress(payload, callback) {
       'x.drawImage(document.querySelector("img"),0,0);' +
       'd=x.getImageData(0,0,' + width + ' ,' + height + ').data;' +
       's="";' +
-      'for(i=0;i<d.length;i+=4){' +
-        's+=String.fromCharCode(d[i]);' +
-        's+=String.fromCharCode(d[i+1]);' +
-        's+=String.fromCharCode(d[i+2]);' +
-      '}' +
-      's=s.replace(/\\0/g, " ");' +
-      '(1,eval)(s);' +
-      'var layers = JSON.parse(atob(FILES["res/layers.json"]));' +
-      'var camerapaths = JSON.parse(atob(FILES["res/camerapaths.json"]));' +
-      'demo=bootstrap({layers:layers, camerapaths:camerapaths, onprogress: function(percent){}, oncomplete: function(){ var el=document.querySelector("#start-button");el.style.cursor="pointer";el.disabled = false;el.innerText = "Start"; document.querySelector("button").style.background = "white"; document.querySelector("button").style.color="black"; } });' +
-      
-      'start=function(){' +
-      'var opacity = 1;' +
-      'function fadeOut(){' +
-        'document.querySelector(".visible").style.opacity = opacity;' +
-        'console.log(opacity, document.querySelector(".visible").style.opacity);' + 
-         'if(opacity > 0) {' +
-           'opacity -= 0.005;' +
-           'setTimeout(fadeOut, 10);' +
-         '} else {' +
+      'var buf=[];' +
+      'var stride = 1000000;' +
+      'console.log("total length", d.length);' +
+      'l(0);' + 
+      'function l(offset) {' +
+        'console.log("L", offset);' +
+        'for(i=offset;i < offset + stride && i<d.length;i+=4){' +
+          'buf.push(String.fromCharCode(d[i]));' +
+          'buf.push(String.fromCharCode(d[i+1]));' +
+          'buf.push(String.fromCharCode(d[i+2]));' +
+        '}' +
+        'if(offset < d.length) {' +
+          'setTimeout(function(){l(offset + stride);}, 0);' +
+        '} else {' +
+          's=buf.join("").replace(/\\0/g, " ");' +
+          'console.log("howdyo", s.slice(0, 1000));' +
+          'GU=1;' + /* hack to make sure GU exisits from the get-go */
+          'BEAN=0;' + 
+          'BEAT=false;' +
+          '(1,eval)(s);' +
+          'var layers = JSON.parse(atob(FILES["res/layers.json"]));' +
+          'var camerapaths = JSON.parse(atob(FILES["res/camerapaths.json"]));' +
+          'demo=bootstrap({layers:layers, camerapaths:camerapaths, onprogress: function(percent){}, oncomplete: function(){ var el=document.querySelector("#start-button");el.style.cursor="pointer";el.disabled = false;el.innerText = "Start"; document.querySelector("button").style.background = "white"; document.querySelector("button").style.color="black"; } });' +
+          
+          'start=function(){' +
           'document.querySelector(".visible").classList.remove("visible");' +
-         '}' +
-      '}' +
-      'fadeOut();' +
-      'demo.start();' +
+          'demo.start();' +
+          '}' +
+        '}' +
       '}' +
     '}</script><canvas class=hide height='+ height + ' width=' + width + '></canvas><img src=# onload=z()><!--';
   var htMlChunk = chunk('htMl', html);

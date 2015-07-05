@@ -9,7 +9,7 @@ var shaderGen = function(pathPrefix, cb) {
     if(fs.existsSync(path)) {
       data = fs.readFileSync(path, 'utf8');
     } else {
-      data = fs.readFileSync('../dasBoot/shaders/default' + type, 'utf8');
+      data = fs.readFileSync(__dirname + '/../dasBoot/shaders/default' + type, 'utf8');
     }
 
     return data;
@@ -58,7 +58,7 @@ var shaderGen = function(pathPrefix, cb) {
   var out = 'SHADERS={};';
 
   traversePath(pathPrefix + '/src/shaders/', function() {
-    traversePath('../dasBoot/shaders/', function() {
+    traversePath(__dirname + '/../dasBoot/shaders/', function() {
       fs.writeFileSync(pathPrefix + '/gen/shaders.js', out);
       cb();
     });

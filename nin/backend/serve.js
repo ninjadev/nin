@@ -22,12 +22,13 @@ var serve = function(projectPath) {
     sockets_server.listen(1337, '0.0.0.0');
 
     var files = express();
-    files.use(express.static(projectPath));
     files.use(function(req, res, next) {
       res.setHeader("Access-Control-Allow-Origin", "*");
-      res.setHeader("Origin", "*");
+      res.header("Access-Control-Allow-Headers",
+                 "Origin, X-Requested-With, Content-Type, Accept");
       next();
     });
+    files.use(express.static(projectPath));
     files.listen(9000);
 
     console.log('serving nin on http://localhost:8000');

@@ -5,7 +5,7 @@ function BlankLayer(layer) {
   this.offset = layer.config.offset;
   this.scene = new THREE.Scene();
 
-  this.cameraController = new CameraController(layer.position);
+  this.cameraController = new CameraController(layer.type);
   this.camera = this.cameraController.camera;
   this.cube = new THREE.Mesh(new THREE.BoxGeometry(50, 5, 5),
                              new THREE.ShaderMaterial(SHADERS.example));

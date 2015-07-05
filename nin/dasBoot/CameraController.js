@@ -1,6 +1,9 @@
 function CameraController(layer_id) {
   console.log('started CC', layer_id);
   if (layer_id in CameraController.layers) {
+    if (!CameraController.layers[layer_id].loaded && Object.keys(CameraController.paths).length > 0) {
+      this.parseCameraPath(CameraController.paths);
+    }
     return CameraController.layers[layer_id];
   }
   CameraController.layers[layer_id] = this;
@@ -11,15 +14,16 @@ function CameraController(layer_id) {
   this.rotVector = new THREE.Vector3(0, 0, -1);
   this.pause = false;
 
-  if (CameraController.paths.length > 0) {
+  if (Object.keys(CameraController.paths).length > 0) {
     this.parseCameraPath(CameraController.paths);
   }
-};
+}
 
 CameraController.layers = {};
-CameraController.paths = [];
+CameraController.paths = {};
 
 CameraController.prototype.parseCameraPath = function(camera_paths) {
+  this.loaded = true;
   var raw_path = camera_paths[this.layer_id];
   if (!raw_path) {
     console.warn("No camera path for layer %d", this.layer_id);

@@ -11,7 +11,11 @@ angular.module('nin')
     };
 
     $scope.musicLayerClick = function($event) {
-      $scope.demo.jumpToFrame($event.offsetX);
+      var target = $event.target || $event.srcElement,
+        rect = target.getBoundingClientRect(),
+        offsetX = $event.clientX - rect.left;
+
+      $scope.demo.jumpToFrame(offsetX);
     };
 
     $scope.layerLabelClick = function(layer) {

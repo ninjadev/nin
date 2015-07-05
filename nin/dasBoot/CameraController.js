@@ -31,165 +31,52 @@ CameraController.prototype.parseCameraPath = function(camera_paths) {
   }
 
   if (raw_path.position) {
-    this.position = this.parse3Dkeyframes(raw_path.position);
+    this.position = new PathController(raw_path.position, '3D');
   }
   if (raw_path.lookAt) {
-    this.lookAt = this.parse3Dkeyframes(raw_path.lookAt);
+    this.lookAt = new PathController(raw_path.lookAt, '3D');
   }
   if (raw_path.roll) {
-    this.roll = this.parseKeyframes(raw_path.roll);
+    this.roll = new PathController(raw_path.roll, '1D');
   }
   if (raw_path.fov) {
-    this.fov = this.parseKeyframes(raw_path.fov);
+    this.fov = new PathController(raw_path.fov, '1D');
   }
   if (raw_path.shake) {
-    this.shake = this.parseKeyframes(raw_path.shake);
+    this.shake = new PathController(raw_path.shake, '1D');
   }
-};
-
-CameraController.prototype.parse3Dkeyframes = function(keyframes) {
-  var parsed = [];
-  for (var i=0; i<keyframes.length; i++) {
-    var this_pos = {
-      type: keyframes[i].type,
-      startFrame: keyframes[i].startFrame,
-      endFrame: keyframes[i].endFrame,
-      easing: keyframes[i].easing
-    };
-    if (this_pos.type == "spline") {
-      var points = [];
-      for (var j=0; j<keyframes[i].points.length; j++) {
-        var point = keyframes[i].points[j];
-        points[j] = new THREE.Vector3(point[0], point[1], point[2]);
-      }
-      this_pos.points = new THREE.SplineCurve3(points);
-    } else if (this_pos.type == "point") {
-      var point = new THREE.Vector3(
-          keyframes[i].point[0],
-          keyframes[i].point[1],
-          keyframes[i].point[2]
-          );
-      this_pos.point = point;
-    }
-    parsed[i] = this_pos;
-  }
-  return parsed;
-};
-CameraController.prototype.parseKeyframes = function(keyframes) {
-  var parsed = [];
-  for (var i=0; i < keyframes.length; i++) {
-    var current = {
-      type: keyframes[i].type,
-      startFrame: keyframes[i].startFrame,
-      endFrame: keyframes[i].endFrame,
-      easing: keyframes[i].easing
-    };
-    if (current.type == "transition") {
-      current.from = keyframes[i].from;
-      current.to = keyframes[i].to;
-    } else if (current.type == "fixed") {
-      current.value = keyframes[i].value;
-    }
-    parsed[i] = current;
-  }
-  return parsed;
 };
 
 CameraController.prototype.updateCamera = function(frame) {
   if (this.pause) return;
 
   if (this.position) {
-    var pos = this.get3Dpoint(this.position, frame);
-    this.camera.position.set(pos.x, pos.y, pos.z);
+    var pos = this.position.get3Dpoint(frame);
+    this.camera.position.copy(pos);
   }
 
   if (this.lookAt) {
-    var lookAt = this.get3Dpoint(this.lookAt, frame);
+    var lookAt = this.lookAt.get3Dpoint(frame);
     this.camera.lookAt(lookAt);
   }
 
   if (this.roll) {
-    var roll = this.getPoint(this.roll, frame);
+    var roll = this.roll.getPoint(frame);
     this.camera.rotateOnAxis(this.rotVector, roll);
   }
 
   if (this.fov) {
-    var fov = this.getPoint(this.fov, frame);
+    var fov = this.fov.getPoint(frame);
     this.camera.fov = fov;
     this.camera.updateProjectionMatrix();
   }
 
   if (this.shake) {
-    var shake = this.getPoint(this.shake, frame);
+    var shake = this.shake.getPoint(frame);
     this.camera.position.add(new THREE.Vector3(
-      (Math.random() - .5) * shake,
-      (Math.random() - .5) * shake,
-      (Math.random() - .5) * shake
+      (Math.random() - 0.5) * shake,
+      (Math.random() - 0.5) * shake,
+      (Math.random() - 0.5) * shake
     ));
   }
-};
-
-CameraController.prototype.getCurrentPath = function(keyframes, frame) {
-  var current;
-  for (var i=0; i<keyframes.length; i++) {
-    if (frame >= keyframes[i].startFrame && frame <= keyframes[i].endFrame) {
-      current = keyframes[i];
-      break;
-    }
-  }
-  if (current === undefined) {
-    for (var i=0; i < keyframes.length; i++) {
-      if (frame > keyframes[i].startFrame) {
-        current = keyframes[i];
-      }
-    }
-    if (current === undefined) {
-      current = keyframes[0];
-    }
-  }
-  return current;
-};
-
-CameraController.prototype.get3Dpoint = function(keyframes, frame) {
-  var current = this.getCurrentPath(keyframes, frame);
-
-  if (current.type == "spline") {
-    if (frame > current.endFrame) {
-      return current.points.points[current.points.points.length-1];
-    }
-    var spline_duration = current.endFrame - current.startFrame;
-    var t = (frame - current.startFrame) / spline_duration;
-    if (current.easing == "smoothstep") {
-      var s_t = smoothstep(0, 1, t);
-    } else if (current.easing == "easeIn") {
-      var s_t = easeIn(0, 1, t);
-    } else if (current.easing == "easeOut") {
-      var s_t = easeOut(0, 1, t);
-    } else {
-      var s_t = t;
-    }
-    return current.points.getPointAt(s_t);
-  }
-  return current.point;
-};
-
-CameraController.prototype.getPoint = function(keyframes, frame) {
-  var current = this.getCurrentPath(keyframes, frame);
-
-  if (current.type == "transition") {
-    if (frame > current.endFrame) {
-      return current.to;
-    }
-    var duration = current.endFrame - current.startFrame;
-    var t = (frame - current.startFrame) / duration;
-    if (current.easing == "smoothstep") {
-      return smoothstep(current.from, current.to, t);
-    } else if (current.easing == "easeOut") {
-      return easeOut(current.from, current.to, t);
-    } else if (current.easing == "easeIn") {
-      return easeIn(current.from, current.to, t);
-    }
-    return lerp(current.from, current.to, t);
-  }
-  return current.value;
 };

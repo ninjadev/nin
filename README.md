@@ -8,18 +8,25 @@ This project has a node backend that keeps track of all files and compiles files
 The frontend of this project is written in Angular and displays among other the layers that the demo consists of.
 
 ## How it works
-Make a folder in `nin` named `test-project`, alongside `dasBoot`. This is now your working directory.
-If you want to use a github repo as working directory, clone the repo down first, and rename the folder to `test-project`.
+Create a new project with a structure like the one seen in the directory `example-project`.
+It may be stored anywhere on your disk.
+In the root folder of your project, execute `nin run`, and visit http://localhost:8000 in your browser to use nin.
 
 ## Setup
 
 You will need to have node and npm installed.
 
-Run `make` in the `frontend` folder and `make` in the `nin` folder.
-
-You will also need to have bower installed, and run `bower install` in the frontend folder.
+Run `make` in the `frontend` and `backend` folders.
 
 To use grunt, you need to install the command line utility globally, by running `sudo npm install -g grunt-cli`
+
+Run `grunt build` in the `frontend` folder.
+
+To make nin available as a global command line utility, the easiest way is to add an alias to your `.bashrc` like this:
+
+```
+alias nin='~/path/to/nin-project/backend/nin'
+```
 
 ### Commands to try if it does not work:
 

@@ -20,6 +20,8 @@ var serve = function(projectPath) {
     var sock = socket(projectPath);
     sock.installHandlers(sockets_server, {prefix: '/socket'});
     sockets_server.listen(1337, '0.0.0.0');
+	
+    sg.shaderGen(projectPath, function() {});
 
     var files = express();
     files.use(function(req, res, next) {

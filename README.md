@@ -14,7 +14,7 @@ In the root folder of your project, execute `nin run`, and visit http://localhos
 
 ## Setup
 
-You will need to have node and npm installed.
+You will need to have node, npm and bower installed.
 
 Run `make` in the `frontend` and `backend` folders.
 

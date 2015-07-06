@@ -9,7 +9,7 @@ function MountainLayer(layer) {
   /* do loady stuff here */
 
   this.scene = new THREE.Scene();
-  this.cameraController = new CameraController(layer.position);
+  this.cameraController = new CameraController(layer.type);
   this.camera = this.cameraController.camera;
   this.scene.add(this.camera);
 

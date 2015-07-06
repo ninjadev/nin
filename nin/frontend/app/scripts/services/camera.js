@@ -126,7 +126,7 @@ angular.module('nin')
 
         layer = newLayer;
 
-        cc = CameraController.layers[layer.position];
+        cc = CameraController.layers[layer.type];
       }
     };
   });

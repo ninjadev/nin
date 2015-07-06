@@ -1,5 +1,5 @@
-[
-    {
+{
+    "BlankLayer": {
         "position": [
         {
             "type": "spline",
@@ -23,31 +23,7 @@
         "roll": [],
         "fov": []
     },
-    {
-        "position": [
-        {
-            "type": "spline",
-            "startFrame": 0,
-            "endFrame": 390,
-            "points": [
-                [0, 0, 200],
-                [0, 200, 100],
-                [0, 200, 150]
-            ]
-        }
-        ],
-        "lookAt": [
-        {
-            "type": "point",
-            "startFrame": 0,
-            "endFrame": 390,
-            "point": [0, 0, 0]
-        }
-        ],
-        "roll": [],
-        "fov": []
-    },
-    {
+    "MountainLayer": {
         "position": [
         {
             "type": "spline",
@@ -154,4 +130,4 @@
         "roll": [],
         "fov": []
     }
-]
+}

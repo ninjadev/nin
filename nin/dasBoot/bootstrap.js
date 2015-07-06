@@ -43,11 +43,12 @@ window['bootstrap'] = function(options) {
     }
     demo.lm.jumpToFrame(0);
   }
+
   if(options.camerapaths) {
     CameraController.paths = options.camerapaths;
     for (var index in CameraController.layers) {
       CameraController.layers[index].parseCameraPath(options.camerapaths);
-    };
+    }
     demo.lm.jumpToFrame(0);
   }
 

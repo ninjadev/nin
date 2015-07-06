@@ -65,7 +65,7 @@ function socket(projectPath) {
         fs.readFile(projectPath + '/res/layers.json', function (err, data) {
           var layers = JSON.parse(data);
           layers[event.id][event.field] = event.value;
-          fs.writeFile(projectPath + '/res/layers.json', JSON.stringify(layers, null, '  '), function (err) {
+          fs.writeFile(projectPath + '/res/layers.json', JSON.stringify(layers, null, '  ') + '\n', function (err) {
 
           })
         })

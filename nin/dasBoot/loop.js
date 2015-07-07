@@ -19,7 +19,6 @@ function createLoop(options) {
     var beatsPerSecond = beatsPerMinute / 60;
     var framesPerSecond = 60;
     var framesPerBeat = framesPerSecond / beatsPerSecond;
-    var frameSyncOffset = 0;
 
     var that = this;
     this.loop = function() {
@@ -28,11 +27,11 @@ function createLoop(options) {
       that.oldTime = that.time;
       while(that.deltaTime >= frameLength) {
         BEAT = false;
-        if((((that.currentFrame + frameSyncOffset - 1) / framesPerBeat) | 0) >
-            ((that.currentFrame + frameSyncOffset - 2) / framesPerBeat) | 0) {
+        if((((that.currentFrame + 1.5) / framesPerBeat) | 0) >
+            ((that.currentFrame + 0.5) / framesPerBeat) | 0) {
           BEAT = true;
         }
-        BEAN = that.currentFrame / framesPerBeat | 0;
+        BEAN = (that.currentFrame + 1.5) / framesPerBeat | 0;
         update(that.currentFrame++);
         that.deltaTime -= frameLength;
       }

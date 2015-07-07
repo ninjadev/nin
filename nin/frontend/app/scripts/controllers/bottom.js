@@ -13,7 +13,7 @@ angular.module('nin')
     $scope.musicLayerClick = function($event) {
       var target = $event.target || $event.srcElement,
         rect = target.getBoundingClientRect(),
-        offsetX = $event.clientX - rect.left;
+        offsetX = ($event.clientX - rect.left) | 0;
 
       $scope.demo.jumpToFrame(offsetX);
     };

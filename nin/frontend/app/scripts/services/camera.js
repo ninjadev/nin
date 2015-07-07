@@ -6,6 +6,7 @@ angular.module('nin')
     var cc;
     var layer;
     var clock = new THREE.Clock();
+    var active = false;
 
     var mouseclick = function(e) {
       var camera = layer.instance.camera;
@@ -39,7 +40,7 @@ angular.module('nin')
     };
 
     var updateCallback = function() {
-      if (!cc.pause) return;
+      if (!active) return;
 
       var delta = clock.getDelta();
       controls.update(delta);
@@ -53,7 +54,7 @@ angular.module('nin')
 
     return {
       getCameraPosition: function() {
-        var camera = cc.camera;
+        var camera = layer.instance.camera;
         return JSON.stringify([
           roundify(camera.position.x, 2),
           roundify(camera.position.y, 2),
@@ -85,14 +86,17 @@ angular.module('nin')
         ]) + ',';
       },
       getCameraRoll: function() {
-        return roundify(cc.camera.rotation.z, 2);
+        return roundify(layer.instance.camera.rotation.z, 2);
       },
       getCameraFov: function() {
-        return roundify(cc.camera.fov, 2);
+        return roundify(layer.instance.camera.fov, 2);
       },
       toggleFlyAroundMode: function() {
-        cc.pause = !cc.pause;
-        if (cc.pause) {
+        active = !active;
+        if (cc) {
+          cc.pause = !cc.pause;
+        }
+        if (active) {
           var camera = layer.instance.camera;
           controls = new THREE.FlyControls(camera, demo.renderer.domElement.parentElement);
           controls.movementSpeed = 400;
@@ -102,26 +106,27 @@ angular.module('nin')
           requestAnimFrame(updateCallback);
           demo.renderer.domElement.parentElement.addEventListener("click", mouseclick);
         } else {
-          cc.updateCamera(demo.looper.currentFrame - layer.startFrame);
+          if (cc) {
+            cc.updateCamera(demo.looper.currentFrame - layer.startFrame);
+          }
           demo.renderer.domElement.parentElement.removeEventListener("click", mouseclick);
         }
       },
       resetFlyFlightDynamics: function resetFlyFlightDynamics() {
-        if (cc) {
-          cc.camera.rotation.x = 0;
-          cc.camera.rotation.z = 0;
-        }
+        layer.instance.camera.rotation.x = 0;
+        layer.instance.camera.rotation.z = 0;
       },
       deltaFov: function deltaFov(delta) {
-        if (cc) {
-          cc.camera.fov += delta;
-          cc.camera.updateProjectionMatrix();
-        }
+        layer.instance.camera.fov += delta;
+        layer.instance.camera.updateProjectionMatrix();
       },
       startEdit: function(newLayer) {
         if (layer) {
+          active = false;
+          if (cc) {
+            cc.pause = false;
+          }
           demo.renderer.domElement.parentElement.removeEventListener("click", mouseclick);
-          cc.pause = false;
         }
 
         layer = newLayer;

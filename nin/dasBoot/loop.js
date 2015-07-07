@@ -38,7 +38,11 @@ function createLoop(options) {
       render(renderer, that.deltaTime / frameLength);
       requestAnimFrame(that.loop);
     };
-  };
+
+    BEAN_FOR_FRAME = function(frame) {
+      return (frame + 1.5) / framesPerBeat | 0;
+    };
+  }
 
   return new Looper();
 }

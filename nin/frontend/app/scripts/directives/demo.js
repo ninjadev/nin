@@ -32,8 +32,12 @@ angular.module('nin').directive('demo', function($interval, demo) {
         if (toMute) {
           demo.music.volume = 0;
         } else {
-          demo.music.volume = 1;
+          demo.music.volume = scope.volume;
         }
+      });
+
+      scope.$watch('volume', function(volume) {
+        demo.music.volume = volume;
       });
 
       $interval(function() {

@@ -97,7 +97,16 @@ angular.module('nin').directive('keybinding', function(commands) {
     '103': function(e) {
       // 'g'
       commands.setCuePoint();
+    },
+    '43': function(e) {
+      // '+'
+      commands.volumeDelta(0.1);
+    },
+    '45': function(e) {
+      // '-'
+      commands.volumeDelta(-0.1);
     }
+
   };
 
   return {

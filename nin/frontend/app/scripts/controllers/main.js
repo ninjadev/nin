@@ -7,6 +7,7 @@ angular.module('nin')
     $scope.fullscreen = false;
     $scope.inspectedLayer = null;
     $scope.mute = localStorage.getItem('nin-mute') ? true : false;
+    $scope.volume = localStorage.getItem('nin-volume') || 1;
 
     commands.on('toggleFullscreen', function() {
       $scope.fullscreen = !$scope.fullscreen;
@@ -19,6 +20,11 @@ angular.module('nin')
       } else {
         localStorage.removeItem("nin-mute");
       }
+    });
+
+    commands.on('volumeDelta', function(delta) {
+      $scope.volume = clamp(0, $scope.volume + delta, 1);
+      localStorage.setItem('nin-volume', $scope.volume);
     });
 
     socket.onopen = function() {

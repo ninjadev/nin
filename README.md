@@ -54,6 +54,7 @@ The only rules you need to oblige is that:
 | space      | play/pause               |
 | m          | fullscreen               |
 | j          | toggle mute music        |
+| +/-        | volume up/down           |
 | g          | set/unset loop points    |
 | .          | skip one second ahead    |
 | ,          | skip one second back     |

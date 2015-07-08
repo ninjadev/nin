@@ -7,7 +7,11 @@ angular.module('nin')
     $scope.fullscreen = false;
     $scope.inspectedLayer = null;
     $scope.mute = localStorage.getItem('nin-mute') ? true : false;
-    $scope.volume = localStorage.getItem('nin-volume') || 1;
+    if (localStorage.hasOwnProperty('nin-volume')) {
+      $scope.volume = +localStorage.getItem('nin-volume');
+    } else {
+      $scope.volume = 1;
+    }
 
     commands.on('toggleFullscreen', function() {
       $scope.fullscreen = !$scope.fullscreen;
@@ -23,6 +27,7 @@ angular.module('nin')
     });
 
     commands.on('volumeDelta', function(delta) {
+      $scope.mute = false;
       $scope.volume = clamp(0, $scope.volume + delta, 1);
       localStorage.setItem('nin-volume', $scope.volume);
     });

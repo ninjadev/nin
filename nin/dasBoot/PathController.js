@@ -92,6 +92,10 @@ PathController.prototype.parseKeyframes = function(keyframes) {
         current.value = raw_points[0];
       } else if (raw_points.length == 2) {
         current.type = 'linear';
+        current.from = raw_points[0];
+        current.to = raw_points[1];
+      } else if (keyframes[i].from && keyframes[i].to) {
+        current.type = 'linear';
         current.from = keyframes[i].from;
         current.to = keyframes[i].to;
       } else if (raw_points.length > 2) {

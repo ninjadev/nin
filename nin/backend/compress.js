@@ -49,11 +49,11 @@ function compress(payload, callback) {
     '<head><title>Ninjadev</title><style>button{border:0;outline:0;margin:40px auto;background: black;}.small{font-size:20px}*{font-family:sans-serif;display:none}.visible, .visible *{display:block}.loading{width:600px;left:50%;margin-left:-340px;position:absolute;z-index:9999999999;color:white;font-size: 40px;text-align:center; padding: 20px}html,body{width:100%;height:100%;display:block;overflow:hidden;background:#000;padding:0;margin:0;border:0;outline:0;}canvas{position:fixed;display:block;background:#000;}.hide{display:none}</style></head>' +
     '<body>' +
     '<div class="loading visible">' +
-    '<p>Inakuwa Oasis</p>' +
+    '<p>Everything is Fashion</p>' +
     '<p class=small>by</p>' +
     '<p>Ninjadev</p>' +
-    '<p class=small>The inaugural demo of our new demo tool \'nin\' (open source!).</p>' +
-    '<p class=small>Presented at Solskogen 2014.</p>' +
+    '<p class=small>Created with our demo tool \'nin\'.</p>' +
+    '<p class=small>Presented at Solskogen 2015.</p>' +
     '<button onclick=start() class=loading style="position:relative;font-size:40px;color:white;padding:40px;margin-left:-300px;border:0;outline:0;" id=start-button disabled>Loading...</button>' +
     '</div>' +
     '<script>' +

@@ -14,11 +14,10 @@ function smoothstep(a, b, t) {
 }
 
 function easeIn(a, b, t) {
-  t = clamp(0, t, 1);
-  return b*(t)*t*t*t + a;
+  return lerp(a, b, t*t*t);
 }
 
 function easeOut(a, b, t) {
-  t = clamp(0, t, 1);
-  return -b * ((t-=1)*t*t*t - 1) + a;
+  t = (--t)*t*t+1;
+  return lerp(a, b, t);
 }

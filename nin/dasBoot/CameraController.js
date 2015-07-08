@@ -11,7 +11,7 @@ function CameraController(layer_id) {
   this.layer_id = layer_id;
 
   this.camera = new THREE.PerspectiveCamera(45, 16/9, 1, 50000);
-  this.rotVector = new THREE.Vector3(0, 0, -1);
+  this.rotVector = new THREE.Vector3(0, 0, 1);
   this.pause = false;
 
   if (Object.keys(CameraController.paths).length > 0) {
@@ -62,6 +62,7 @@ CameraController.prototype.updateCamera = function(frame) {
 
   if (this.roll) {
     var roll = this.roll.getPoint(frame);
+    this.camera.rotation.z = 0;
     this.camera.rotateOnAxis(this.rotVector, roll);
   }
 

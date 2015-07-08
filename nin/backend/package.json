@@ -5,7 +5,7 @@
   {
     "commander": "2.2.x",
     "walk":  "2.2.x",
-    "crc": "2.x",
+    "crc": "2.0.0",
     "express": "4.3.x",
     "sockjs": "0.3.x",
     "chokidar": "0.8.x",

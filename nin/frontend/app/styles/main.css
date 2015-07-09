@@ -126,7 +126,7 @@ main-window, main-window > div {
 }
 
 .layers-bar-container {
-    overflow: scroll;
+    overflow-x: scroll;
     width: calc(100% - 150px);
     height: 100%;
     float: left;

@@ -1,16 +1,26 @@
-var exec = require('child_process').exec;
 var express = require('express');
 var fs = require('fs');
 var socket = require('./socket').socket;
 var sg = require('./shadergen');
+var p = require('path');
+var mkdirp = require('mkdirp');
+var readDir = require('readdir');
+var concat = require('concat-files');
 
 var serve = function(projectPath) {
-  exec('mkdir -p ' + projectPath + '/gen/ && ' +
-       'find ' + __dirname + '/../dasBoot/ -type f -name "*.js" | ' +
-       ' sort | xargs cat > ' + projectPath + '/gen/dasBoot.js',
-       function(error, stdout, stderr){
 
-         console.log(__dirname);
+  var genPath = p.join(projectPath, '/gen/');
+  mkdirp.sync(genPath);
+
+  var dasBootSourceDirectoryPath = p.join(__dirname, '/../dasBoot/');
+  var dasBootSourceFilePaths = readDir.readSync(
+    dasBootSourceDirectoryPath,
+    ['**.js'],
+    readDir.ABSOLUTE_PATHS
+  );
+  var dasBootDestinationFilePath = p.join(projectPath, '/gen/dasBoot.js');
+  concat(dasBootSourceFilePaths, dasBootDestinationFilePath, function() {
+    console.log(__dirname);
     var frontend = express();
     frontend.use(express.static(__dirname + '/../frontend/dist/'));
     frontend.listen(8000);
@@ -20,7 +30,7 @@ var serve = function(projectPath) {
     var sock = socket(projectPath);
     sock.installHandlers(sockets_server, {prefix: '/socket'});
     sockets_server.listen(1337, '0.0.0.0');
-	
+
     sg.shaderGen(projectPath, function() {});
 
     var files = express();
@@ -34,7 +44,8 @@ var serve = function(projectPath) {
     files.listen(9000);
 
     console.log('serving nin on http://localhost:8000');
+
   });
-}
+};
 
 module.exports = {serve: serve};

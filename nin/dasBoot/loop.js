@@ -25,9 +25,9 @@ function createLoop(options) {
       that.time = music.currentTime * 1000;
       that.deltaTime += that.time - that.oldTime;
       that.oldTime = that.time;
-      while(that.deltaTime >= frameLength) {
+      while (that.deltaTime >= frameLength) {
         BEAT = false;
-        if((((that.currentFrame + 1.5) / framesPerBeat) | 0) >
+        if ((((that.currentFrame + 1.5) / framesPerBeat) | 0) >
             ((that.currentFrame + 0.5) / framesPerBeat) | 0) {
           BEAT = true;
         }

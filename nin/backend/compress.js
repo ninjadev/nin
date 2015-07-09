@@ -22,7 +22,7 @@ function chunk(type, data) {
 }
 
 
-function compress(payload, callback) {
+function compress(projectPath, payload, callback) {
 
   while(payload.length % 3) {
     payload += ' ';  
@@ -45,17 +45,15 @@ function compress(payload, callback) {
     positiveNumberToBytes(0, 1) +
     positiveNumberToBytes(0, 1) +
     positiveNumberToBytes(0, 1));
-  var html = '<!DOCTYPE html><meta charset="utf-8">' +
-    '<head><title>Ninjadev</title><style>button{border:0;outline:0;margin:40px auto;background: black;}.small{font-size:20px}*{font-family:sans-serif;display:none}.visible, .visible *{display:block}.loading{width:600px;left:50%;margin-left:-340px;position:absolute;z-index:9999999999;color:white;font-size: 40px;text-align:center; padding: 20px}html,body{width:100%;height:100%;display:block;overflow:hidden;background:#000;padding:0;margin:0;border:0;outline:0;}canvas{position:fixed;display:block;background:#000;}.hide{display:none}</style></head>' +
-    '<body>' +
-    '<div class="loading visible">' +
-    '<p>Everything is Fashion</p>' +
-    '<p class=small>by</p>' +
-    '<p>Ninjadev</p>' +
-    '<p class=small>Created with our demo tool \'nin\'.</p>' +
-    '<p class=small>Presented at Solskogen 2015.</p>' +
-    '<button onclick=start() class=loading style="position:relative;font-size:40px;color:white;padding:40px;margin-left:-300px;border:0;outline:0;" id=start-button disabled>Loading...</button>' +
-    '</div>' +
+
+  var customHtml = '';
+  try {
+    customHtml = fs.readFileSync(projectPath + '/index.html', {encoding: 'utf8'});
+  } catch(e) {
+    customHtml = fs.readFileSync(__dirname + '/index.html', {encoding: 'utf8'});
+  }
+  var html =
+    customHtml +
     '<script>' +
     'function z(){' +
       'x=document.querySelector("canvas").getContext("2d");' +
@@ -86,12 +84,7 @@ function compress(payload, callback) {
           '(1,eval)(s);' +
           'var layers = JSON.parse(atob(FILES["res/layers.json"]));' +
           'var camerapaths = JSON.parse(atob(FILES["res/camerapaths.json"]));' +
-          'demo=bootstrap({layers:layers, camerapaths:camerapaths, onprogress: function(percent){}, oncomplete: function(){ var el=document.querySelector("#start-button");el.style.cursor="pointer";el.disabled = false;el.innerText = "Start"; document.querySelector("button").style.background = "white"; document.querySelector("button").style.color="black"; } });' +
-          
-          'start=function(){' +
-          'document.querySelector(".visible").classList.remove("visible");' +
-          'demo.start();' +
-          '}' +
+          'demo=bootstrap({layers:layers, camerapaths:camerapaths, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +
         '}' +
       '}' +
     '}</script><canvas class=hide height='+ height + ' width=' + width + '></canvas><img src=# onload=z()><!--';

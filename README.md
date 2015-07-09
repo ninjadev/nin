@@ -34,7 +34,8 @@ sudo apt-get install g++
 
 ## Linting
 This projects uses the Google Closure Linter, please see this link for installation information.
-`https://developers.google.com/closure/utilities/docs/linter_howto`
+`https://developers.google.com/closure/utilities/docs/linter_howto`  
+Use the `--nojsdoc` flag.
 
 ## Shaders
 

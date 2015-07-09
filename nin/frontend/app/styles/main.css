@@ -140,7 +140,7 @@ main-window, main-window > div {
 .layer-bar {
     height: 30px;
     background: #888;
-    display: inline-block;
+    display: block;
     width: auto;
 }
 

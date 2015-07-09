@@ -1,8 +1,9 @@
 var fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    utils = require('../utils');
 
 var generate = function(toGenerate, path) {
-  var projectRoot = findRoot(path);
+  var projectRoot = utils.findProjectRoot(path);
   if (projectRoot == '') {
     process.stderr.write('Could not find nin.json in project root\n');
     process.exit(1);
@@ -53,22 +54,6 @@ function addToLayers(layerName, projectRoot) {
   fs.writeFileSync(layersPath, JSON.stringify(layers, null, 2) + '\n');
 
   process.stdout.write('Added ' + layerName + ' to layers.json\n');
-}
-
-function findRoot(currentPath) {
-  var up = '';
-  do {
-    var base = path.join(currentPath, up),
-        manifest = path.join(base, 'nin.json');
-
-    if (fs.existsSync(manifest)) {
-      return base;
-    }
-
-    up += '../';
-  } while (base != path.sep)
-
-  return '';
 }
 
 function endsWith(string, suffix) {

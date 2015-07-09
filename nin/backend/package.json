@@ -9,6 +9,9 @@
     "express": "4.3.x",
     "sockjs": "0.3.x",
     "chokidar": "0.8.x",
-    "jsonfile": "1.1.x"
+    "jsonfile": "1.1.x",
+    "mkdirp": "0.5.x",
+    "readdir": "0.0.x",
+    "concat-files": "0.1.x"
   }
 }

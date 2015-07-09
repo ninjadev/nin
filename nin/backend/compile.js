@@ -54,7 +54,7 @@ var compile = function(projectPath, callback) {
   function collect(data) {
     compiled.push(data); 
     if(compiled.length == 2) {
-      compress(compiled.join(';'), function(data) {
+      compress(projectPath, compiled.join(';'), function(data) {
         exec('mkdir -p ' + projectPath + '/bin/', function (){
       		fs.writeFileSync(projectPath + '/bin/demo.png.html', data);
       	});

@@ -4,8 +4,9 @@ var program = require('commander');
 var fs = require('fs');
 var path = require('path');
 
-var compile = require('./compile'),
-    serve   = require('./serve');
+var compile  = require('./compile'),
+    serve    = require('./serve'),
+    generate = require('./generate/generate');
 
 program
   .command('compile [project]')
@@ -22,6 +23,13 @@ program
   .action(function(project) {
     project = path.resolve(process.cwd(), project || '');
     serve.serve(project);
+  });
+
+program
+  .command('generate [resource]')
+  .description('Generate resources')
+  .action(function(toGenerate) {
+    generate.generate(toGenerate, process.cwd());
   });
 
 program.parse(process.argv);

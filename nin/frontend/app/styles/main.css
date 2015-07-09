@@ -76,7 +76,6 @@ main-window, main-window > div {
 
 .bottom {
     margin-top: 8px;
-    height: calc(100% - 8px);
 }
 
 .layers-label-container {
@@ -113,6 +112,8 @@ main-window, main-window > div {
     text-align: right;
     border-left: 5px solid transparent;
     cursor: default;
+    white-space: nowrap;
+    line-height: 20px;
 }
 
 .layer-label.inspected {

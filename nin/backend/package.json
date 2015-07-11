@@ -12,6 +12,7 @@
     "jsonfile": "1.1.x",
     "mkdirp": "0.5.x",
     "readdir": "0.0.x",
-    "concat-files": "0.1.x"
+    "concat-files": "0.1.x",
+    "rimraf": "2.4.x"
   }
 }

@@ -3,6 +3,9 @@ var fs = require('fs');
 var exec = require('child_process').exec;
 var compress = require('./compress').compress;
 var shaderGen = require('./shadergen').shaderGen;
+var rmdir = require('rimraf');
+var p = require('path');
+var mkdirp = require('mkdirp');
 
 function res(projectPath, callback) {
   var walker = walk.walk(projectPath + '/res/' , {followLinks: false});
@@ -52,34 +55,36 @@ var compile = function(projectPath, callback) {
   console.log('starting to compile');
   var compiled = [];
   function collect(data) {
-    compiled.push(data); 
-    if(compiled.length == 2) {
+    compiled.push(data);
+    if (compiled.length == 2) {
       compress(projectPath, compiled.join(';'), function(data) {
-        exec('mkdir -p ' + projectPath + '/bin/', function (){
-      		fs.writeFileSync(projectPath + '/bin/demo.png.html', data);
-      	});
+        var binPath = p.join(projectPath, '/bin/');
+        mkdirp(binPath, function() {
+          fs.writeFileSync(projectPath + '/bin/demo.png.html', data);
+        });
         console.log('Success!');
       });
     }
   }
   lib(projectPath, collect);
   res(projectPath, function(data) {
-    exec('rm -rf ' + projectPath + '/gen/', function(){
-      exec('mkdir ' + projectPath + '/gen/', function(){
+    var genPath = p.join(projectPath, '/gen/');
+    rmdir(genPath, function(error) {
+      mkdirp(genPath, function(error) {
         fs.writeFileSync(projectPath + '/gen/files.js', new Buffer(data));
         shaderGen(projectPath, function() {
           console.log('Running closure compiler...');
           exec('java -jar -Xmx2048m ' + __dirname + '/compiler.jar -O SIMPLE --language_in ECMASCRIPT5 --debug --logging_level INFO ' + __dirname + '/../dasBoot/lib/*.js ' + __dirname + '/../dasBoot/*.js ' + projectPath + '/gen/*.js ' + projectPath + '/src/*.js',
-               {encoding: 'binary', maxBuffer: 1024 * 1024 * 1024},
-               function(error, stdout, stderr){
-            stderr && console.log(stderr);
-            collect(stdout);
-          });
-        }); 
+            {encoding: 'binary', maxBuffer: 1024 * 1024 * 1024},
+            function(error, stdout, stderr) {
+              stderr && console.log(stderr);
+              collect(stdout);
+            });
+        });
       });
     });
   });
-}
+};
 
 
 module.exports = {compile: compile};

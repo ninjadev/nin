@@ -1,7 +1,7 @@
 angular.module('nin').controller('TopCtrl', function($scope, camera, commands) {
   $scope.displayValue = function(id, val) {
     var el = document.getElementById(id);
-    el.innerText = val;
+    el.textContent = val;
     var range = document.createRange();
     range.selectNodeContents(el);
     window.getSelection().removeAllRanges();

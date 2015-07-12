@@ -44,6 +44,7 @@ var Loader = (function(){
         console.log('finished loading', item.filepath);
         if(!--waitingCount) {
           itemsToLoad.length = 0;
+          itemsToAjax.length = 0;
           oncomplete();  
         }
       }

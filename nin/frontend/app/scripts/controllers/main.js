@@ -69,6 +69,7 @@ angular.module('nin')
           var splitted = e.path.split('/');
           var className = splitted[splitted.length - 1].split('.')[0];
           demo.lm.refresh(className);
+          Loader.start(function() {}, function() {});
         });
       }
     });

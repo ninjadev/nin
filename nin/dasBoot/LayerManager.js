@@ -38,6 +38,7 @@ LayerManager.prototype.loadLayer = function(layer) {
         return setTimeout(arguments.callee, 100);
       }
       layer.instance = new window[layer.type](layer);
+      Loader.start(function() {}, function() {});
       that.rebuildEffectComposer();
     } else {
       setTimeout(arguments.callee, 100);

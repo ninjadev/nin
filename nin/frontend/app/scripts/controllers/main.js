@@ -53,6 +53,7 @@ angular.module('nin')
             layer.position = i;
             demo.lm.loadLayer(layer);
           }
+          Loader.start(function() {}, function() {});
           demo.lm.jumpToFrame(demo.getCurrentFrame());
         });
       } else if (e.path == '/res/camerapaths.json') {

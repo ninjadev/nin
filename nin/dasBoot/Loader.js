@@ -43,6 +43,7 @@ var Loader = (function(){
         onprogress(100 - waitingCount / maxWaitingCount * 100);
         console.log('finished loading', item.filepath);
         if(!--waitingCount) {
+          itemsToLoad.length = 0;
           oncomplete();  
         }
       }

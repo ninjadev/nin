@@ -26,6 +26,15 @@ program
   });
 
 program
+  .command('headless [project]')
+  .description('Run the backend project headlessly')
+  .action(function(project) {
+    project = path.resolve(process.cwd(), project || '');
+    var shouldRunHeadlessly = true;
+    serve.serve(project, shouldRunHeadlessly);
+  });
+
+program
   .command('generate [resource]')
   .description('Generate resources')
   .action(function(toGenerate) {

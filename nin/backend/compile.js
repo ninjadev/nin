@@ -7,26 +7,35 @@ var rmdir = require('rimraf');
 var p = require('path');
 var mkdirp = require('mkdirp');
 
+
+function shouldIncludeResFile(fileName) {
+  if (fileName.match('Thumbs.db')) {
+    return false;
+  }
+  return true;
+}
+
 function res(projectPath, callback) {
   var walker = walk.walk(projectPath + '/res/' , {followLinks: false});
   var files = [];
   console.log('going to walk res');
   walker.on('file', function(root, stat, next) {
+    if (shouldIncludeResFile(stat.name)) {
+      /* hacks to ensure slashes in path are correct.
+       * TODO: is there a bug in walker that causes
+       * these things to happen?  */
+      root += '/';
+      root = root.replace(/\/\//g, '/');
 
-    /* hacks to ensure slashes in path are correct.
-     * TODO: is there a bug in walker that causes
-     * these things to happen?  */
-    root += '/'
-    root = root.replace(/\/\//g, '/');
-
-    var file = fs.readFileSync(root + stat.name);
-    console.log('Assimilating ' + stat.name);
-    files.push('FILES[\'' + root.slice(projectPath.length + 1) + stat.name + '\']=\'' +
-               file.toString('base64') + '\'');
-    console.log('OK');
+      var file = fs.readFileSync(root + stat.name);
+      console.log('Assimilating ' + stat.name);
+      files.push('FILES[\'' + root.slice(projectPath.length + 1) + stat.name + '\']=\'' +
+        file.toString('base64') + '\'');
+      console.log('OK');
+    }
     next();
   });
-  walker.on('end', function(){
+  walker.on('end', function() {
     console.log('Merging assimilated files');
     callback('FILES={};' + files.join(';') + ';');
     console.log('OK');
@@ -44,7 +53,7 @@ function lib(projectPath, callback) {
     console.log('OK');
     next();
   });
-  walker.on('end', function(){
+  walker.on('end', function() {
     console.log('Merging incorporated files');
     callback(files.join(';') + ';');
     console.log('OK');

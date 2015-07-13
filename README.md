@@ -30,6 +30,12 @@ alias nin='~/path/to/nin-project/backend/nin'
 
 sudo apt-get install g++
 
+## Development
+
+When developing on nin, it can be useful to run the backend and frontend separately.
+Instead of executing `nin run` in your project folder, run `nin headless` which will start the backend as usual, but without a frontend connected.
+This allows you to serve a development version of the frontend by running `grunt serve` in the frontend folder.
+
 ## Linting
 This projects uses the Google Closure Linter, please see this link for installation information.
 `https://developers.google.com/closure/utilities/docs/linter_howto`  

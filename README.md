@@ -20,8 +20,6 @@ Run `make` in the nin folder. This is a convenience method that runs `make` in t
 
 To use grunt, you need to install the command line utility globally, by running `sudo npm install -g grunt-cli`
 
-Run `grunt build` in the `frontend` folder.
-
 To make nin available as a global command line utility, the easiest way is to add an alias to your `.bashrc` like this:
 
 ```

@@ -7,7 +7,7 @@ var mkdirp = require('mkdirp');
 var readDir = require('readdir');
 var concat = require('concat-files');
 
-var serve = function(projectPath) {
+var serve = function(projectPath, shouldRunHeadlessly) {
 
   var genPath = p.join(projectPath, '/gen/');
   mkdirp.sync(genPath);
@@ -21,9 +21,11 @@ var serve = function(projectPath) {
   var dasBootDestinationFilePath = p.join(projectPath, '/gen/dasBoot.js');
   concat(dasBootSourceFilePaths, dasBootDestinationFilePath, function() {
     console.log(__dirname);
-    var frontend = express();
-    frontend.use(express.static(__dirname + '/../frontend/dist/'));
-    frontend.listen(8000);
+    if(!shouldRunHeadlessly) {
+      var frontend = express();
+      frontend.use(express.static(__dirname + '/../frontend/dist/'));
+      frontend.listen(8000);
+    }
 
     var sockets = express();
     var sockets_server = require('http').createServer(sockets);
@@ -43,7 +45,11 @@ var serve = function(projectPath) {
     files.use(express.static(projectPath));
     files.listen(9000);
 
-    console.log('serving nin on http://localhost:8000');
+    if(shouldRunHeadlessly) {
+      console.log('running nin headlessly');
+    } else {
+      console.log('serving nin on http://localhost:8000');
+    }
 
   });
 };

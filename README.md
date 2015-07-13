@@ -12,6 +12,12 @@ Create a new project with a structure like the one seen in the directory `exampl
 It may be stored anywhere on your disk.
 In the root folder of your project, execute `nin run`, and visit http://localhost:8000 in your browser to use nin.
 
+### Compiling
+The `nin compile` command will create a single file `bin/demo.png.html` that contains all the code and resources of your demo. Base64 and PNG compression magic is used to achieve this.
+
+### Start screen
+In the compiled result, you can have a start screen that is shown while the demo is being loaded. When compiling, nin will look for an `index.html` file in the root folder of your demo, and use that as start screen. JavaScript functions `ONPROGRESS` and `ONCOMPLETE` should be implemented in `index.html`. After `ONCOMPLETE` is called, `demo.start()` may be called. `index.html` should not include `</body>` or `</html>`.
+
 ## Setup
 
 You will need to have node, npm and bower installed.
@@ -25,6 +31,8 @@ To make nin available as a global command line utility, the easiest way is to ad
 ```
 alias nin='~/path/to/nin-project/backend/nin'
 ```
+
+You must have java installed for the `nin compile` command to work.
 
 ### Commands to try if it does not work:
 

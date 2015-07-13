@@ -44,13 +44,16 @@ function socket(projectPath) {
       console.log('event!', event, path);
       var pathParts = path.split('/');
       if (event === 'unlink') event = 'delete';
+      if (event == 'addDir') {
+        return;
+      }
       if(pathParts.indexOf('shaders') !== -1) {
         sg.shaderGen(projectPath, function() {
+          conn.send(event, {
+            path: path.slice(projectPath.length)
+          });
         });
       } else {
-        if(event == 'addDir') {
-          return;
-        }
         console.log('Change in project detected: ' + event + ', ' + path)
         conn.send(event, {
           path: path.slice(projectPath.length)

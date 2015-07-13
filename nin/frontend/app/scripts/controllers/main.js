@@ -59,16 +59,31 @@ angular.module('nin')
           CameraController.paths = camerapaths;
           for (var index in CameraController.layers) {
             CameraController.layers[index].parseCameraPath(camerapaths);
-          };
+          }
         });
     }
 
+    function updateShaders(path) {
+      var splitted = path.split('/');
+      var shaderName = splitted[splitted.length - 2];
+      ScriptReloader.reload('//localhost:9000/gen/shaders.js', function() {
+        for (var i=0; i < $scope.layers.length; i++) {
+          var layer = $scope.layers[i];
+          if (layer.shaders && layer.shaders.indexOf(shaderName) !== -1) {
+            demo.lm.refresh(layer.type);
+            demo.lm.update(demo.looper.currentFrame);
+          }
+        }
+        Loader.start(function() {}, function() {});
+      });
+    }
+
     function updateSingleLayer(path) {
+      var splitted = path.split('/');
       ScriptReloader.reload('//localhost:9000/' + path, function() {
-        var splitted = path.split('/');
         var className = splitted[splitted.length - 1].split('.')[0];
         demo.lm.refresh(className);
-        console.log('updateSingleLayer', path);
+        demo.lm.update(demo.looper.currentFrame);
         Loader.start(function() {}, function() {});
       });
     }
@@ -80,6 +95,8 @@ angular.module('nin')
         updateLayers();
       } else if (e.path == '/res/camerapaths.json') {
         updateCamerapaths();
+      } else if (e.path.indexOf('/shaders/') !== -1) {
+        updateShaders(e.path);
       } else {
         updateSingleLayer(e.path);
       }
@@ -92,6 +109,8 @@ angular.module('nin')
         updateLayers();
       } else if (e.path == '/res/camerapaths.json') {
         updateCamerapaths();
+      } else if (e.path.indexOf('/shaders/') !== -1) {
+        updateShaders(e.path);
       } else {
         updateSingleLayer(e.path);
       }

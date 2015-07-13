@@ -36,41 +36,64 @@ angular.module('nin')
       console.log('nin socket connection established', arguments);
     };
 
-    socket.on('add change', function(e) {
-      if (e.path.indexOf("test-project") !== -1) {
-        e.path = e.path.slice(12);
-      }
+    function updateLayers() {
+      $http({
+        method: 'GET',
+        url: '//localhost:9000/res/layers.json'
+      }).success(function(layers) {
+        $scope.layers = layers;
+        demo.lm.hardReset();
+        for(var i = 0; i < layers.length; i++) {
+          var layer = layers[i];
+          layer.position = i;
+          demo.lm.loadLayer(layer);
+        }
+        Loader.start(function() {}, function() {});
+        demo.lm.jumpToFrame(demo.getCurrentFrame());
+      });
+    }
+
+    function updateCamerapaths() {
+      $http.get('//localhost:9000/res/camerapaths.json')
+        .success(function(camerapaths) {
+          CameraController.paths = camerapaths;
+          for (var index in CameraController.layers) {
+            CameraController.layers[index].parseCameraPath(camerapaths);
+          };
+        });
+    }
+
+    function updateSingleLayer(path) {
+      ScriptReloader.reload('//localhost:9000/' + path, function() {
+        var splitted = path.split('/');
+        var className = splitted[splitted.length - 1].split('.')[0];
+        demo.lm.refresh(className);
+        console.log('updateSingleLayer', path);
+        Loader.start(function() {}, function() {});
+      });
+    }
+
+    socket.on('add', function(e) {
       e.path = e.path.replace(/\\/g, '/');
+      console.log('add!', e);
       if(e.path == '/res/layers.json') {
-        $http({
-          method: 'GET',
-          url: '//localhost:9000/res/layers.json'
-        }).success(function(layers) {
-          $scope.layers = layers;
-          demo.lm.hardReset();
-          for(var i = 0; i < layers.length; i++) {
-            var layer = layers[i];
-            layer.position = i;
-            demo.lm.loadLayer(layer);
-          }
-          Loader.start(function() {}, function() {});
-          demo.lm.jumpToFrame(demo.getCurrentFrame());
-        });
+        updateLayers();
       } else if (e.path == '/res/camerapaths.json') {
-        $http.get('//localhost:9000/res/camerapaths.json')
-          .success(function(camerapaths) {
-            CameraController.paths = camerapaths;
-            for (var index in CameraController.layers) {
-              CameraController.layers[index].parseCameraPath(camerapaths);
-            };
-          });
+        updateCamerapaths();
       } else {
-        ScriptReloader.reload('//localhost:9000/' + e.path, function() {
-          var splitted = e.path.split('/');
-          var className = splitted[splitted.length - 1].split('.')[0];
-          demo.lm.refresh(className);
-          Loader.start(function() {}, function() {});
-        });
+        updateSingleLayer(e.path);
+      }
+    });
+
+    socket.on('change', function(e) {
+      e.path = e.path.replace(/\\/g, '/');
+      console.log('change!', e);
+      if(e.path == '/res/layers.json') {
+        updateLayers();
+      } else if (e.path == '/res/camerapaths.json') {
+        updateCamerapaths();
+      } else {
+        updateSingleLayer(e.path);
       }
     });
 

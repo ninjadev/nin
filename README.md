@@ -16,7 +16,7 @@ In the root folder of your project, execute `nin run`, and visit http://localhos
 
 You will need to have node, npm and bower installed.
 
-Run `make` in the `frontend` and `backend` folders.
+Run `make` in the root folder. This is a convenience method that runs `make` in the `frontend` and `backend` folders.
 
 To use grunt, you need to install the command line utility globally, by running `sudo npm install -g grunt-cli`
 

@@ -20,8 +20,6 @@ Run `make` in the nin folder. This is a convenience method that runs `make` in t
 
 To use grunt, you need to install the command line utility globally, by running `sudo npm install -g grunt-cli`
 
-Run `grunt build` in the `frontend` folder.
-
 To make nin available as a global command line utility, the easiest way is to add an alias to your `.bashrc` like this:
 
 ```
@@ -31,6 +29,12 @@ alias nin='~/path/to/nin-project/backend/nin'
 ### Commands to try if it does not work:
 
 sudo apt-get install g++
+
+## Development
+
+When developing on nin, it can be useful to run the backend and frontend separately.
+Instead of executing `nin run` in your project folder, run `nin headless` which will start the backend as usual, but without a frontend connected.
+This allows you to serve a development version of the frontend by running `grunt serve` in the frontend folder.
 
 ## Linting
 This projects uses the Google Closure Linter, please see this link for installation information.

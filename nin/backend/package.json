@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "dependencies":
   {
+    "body-parser": "1.13.2",
     "commander": "2.2.x",
     "walk":  "2.2.x",
     "crc": "2.0.0",

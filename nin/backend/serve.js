@@ -6,6 +6,7 @@ var p = require('path');
 var mkdirp = require('mkdirp');
 var readDir = require('readdir');
 var concat = require('concat-files');
+var bodyParser = require('body-parser');
 
 var serve = function(projectPath, shouldRunHeadlessly) {
 
@@ -43,6 +44,20 @@ var serve = function(projectPath, shouldRunHeadlessly) {
       next();
     });
     files.use(express.static(projectPath));
+    files.use(bodyParser.json({limit: '50mb'}));
+    files.post('/', function(req, res){
+      var filename = '' + req.body.frame;
+      while(filename.length < 7) {
+        filename = '0' + filename;
+      }
+      filename += '.png';
+      console.log(filename);
+      var buffer = new Buffer(req.body.image.slice(22), 'base64');
+      fs.writeFile(projectPath + '/bin/render/' + filename, buffer);
+      res.writeHead(200);
+      res.end('OK');
+    });
+    mkdirp.sync(projectPath + '/bin/render/');
     files.listen(9000);
 
     if(shouldRunHeadlessly) {

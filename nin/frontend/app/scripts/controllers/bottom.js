@@ -5,6 +5,8 @@ angular.module('nin')
 
     var linesContainer = null;
 
+    $scope.xScale = 0.5;
+
     $scope.onBottomScroll = function(event) {
       linesContainer = event.target;
       $scope.bottomScrollOffset = event.target.scrollLeft;
@@ -15,7 +17,7 @@ angular.module('nin')
         rect = target.getBoundingClientRect(),
         offsetX = ($event.clientX - rect.left) | 0;
 
-      $scope.demo.jumpToFrame(offsetX);
+      $scope.demo.jumpToFrame(offsetX / $scope.xScale | 0);
     };
 
     $scope.layerLabelClick = function(layer) {
@@ -70,8 +72,8 @@ angular.module('nin')
       if(!linesContainer) {
         return;
       }
-      if(linesContainer.scrollLeft > $scope.currentFrame ||
-        $scope.currentFrame >= linesContainer.scrollLeft + $(linesContainer).width()) {
+      if(linesContainer.scrollLeft > $scope.currentFrame * $scope.xScale ||
+        $scope.currentFrame * $scope.xScale >= linesContainer.scrollLeft + $(linesContainer).width()) {
         $scope.hideMarker = true;
       } else {
         $scope.hideMarker = false;

@@ -15,6 +15,16 @@ In the root folder of your project, execute `nin run`, and visit http://localhos
 ### Compiling
 The `nin compile` command will create a single file `bin/demo.png.html` that contains all the code and resources of your demo. Base64 and PNG compression magic is used to achieve this.
 
+### Rendering to video
+1. `nin run`.
+1. Open nin in your browser, navigate to the frame you want to render from, and press r. This will start dumping single frames as numbered .PNGs in `bin/render/`  in your project folder.
+1. Refresh etc every time WebGL crashes.
+1. When you have rendered all the frames: `nin render`. You need `avconv` installed for this.
+1. The demo is now available at `bin/render/render.mp4`.
+
+Each frame will take up to around 4MB on disk, and the finished .mp4 will be on the order of 1GB when rendered, so make sure you have enough disk space.
+Expect to render maybe a frame or two per second.
+
 ### Start screen
 In the compiled result, you can have a start screen that is shown while the demo is being loaded. When compiling, nin will look for an `index.html` file in the root folder of your demo, and use that as start screen. JavaScript functions `ONPROGRESS` and `ONCOMPLETE` should be implemented in `index.html`. After `ONCOMPLETE` is called, `demo.start()` may be called. `index.html` should not include `</body>` or `</html>`.
 

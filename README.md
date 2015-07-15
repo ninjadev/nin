@@ -81,6 +81,7 @@ The only rules you need to oblige is that:
 | 3          | set playback rate to 1   |
 | 4          | set playback rate to 2   |
 | 5          | set playback rate to 4   |
+| r          | start rendering frames   |
 
 ## Camera controls
 See [the wiki page](https://github.com/ninjadev/nin/wiki/Camera-Controller) for more information on the Camera Controller.

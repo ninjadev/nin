@@ -118,7 +118,9 @@ angular.module('nin').directive('keybinding', function(commands, render, demo) {
     type: 'A',
     link: function() {
       document.addEventListener('keypress', function(event) {
-        keybindings[event.which] && keybindings[event.which](event);
+        if(keybindings[event.which]) {
+          keybindings[event.which](event);
+        }
       });
     }
   };

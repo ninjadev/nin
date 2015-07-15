@@ -22,9 +22,8 @@
       };
 
       $scope.layerLabelClick = function(layer) {
-        $scope.$parent.$parent.inspectedLayer = $scope.inspectedLayer == layer
-                                              ? null
-                                              : layer;
+        $scope.$parent.$parent.inspectedLayer = $scope.inspectedLayer == layer ? null
+                                                                               : layer;
         camera.startEdit(layer);
       };
 
@@ -44,10 +43,13 @@
         }
       };
 
+      $scope.loopStart = null;
+      $scope.loopEnd = null;
+      $scope.loopActive = false;
       commands.on('setCuePoint', function() {
-        if ($scope.loopStart == null) {
+        if ($scope.loopStart === null) {
           $scope.loopStart = $scope.currentFrame;
-        } else if ($scope.loopEnd == null) {
+        } else if ($scope.loopEnd === null) {
           if ($scope.loopStart > $scope.currentFrame) {
             $scope.loopEnd = $scope.loopStart;
             $scope.loopStart = $scope.currentFrame;

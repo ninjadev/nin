@@ -9,7 +9,11 @@
     window.demo = demo;
 
     commands.on('playPause', function() {
-      demo.music.paused ? demo.music.play() : demo.music.pause();
+      if(demo.music.paused) {
+        demo.music.play();
+      } else {
+        demo.music.pause();
+      }
     });
 
     commands.on('jog', function(amount) {

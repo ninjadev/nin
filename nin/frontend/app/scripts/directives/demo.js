@@ -14,10 +14,10 @@
         scope.$watch('fullscreen', function (toFullscreen){
           if (toFullscreen) {
             // go to fullscreen
-            element[0].children[0].classList.add('fullscreen')
+            element[0].children[0].classList.add('fullscreen');
           } else {
             // exit fullscreen
-            element[0].children[0].classList.remove('fullscreen')
+            element[0].children[0].classList.remove('fullscreen');
           }
           demo.resize();
         });

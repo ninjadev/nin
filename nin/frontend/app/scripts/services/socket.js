@@ -41,7 +41,7 @@
         type: event,
         data: data
       }));
-    }
+    };
 
     return socket;
   });

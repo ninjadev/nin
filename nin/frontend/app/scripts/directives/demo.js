@@ -6,16 +6,9 @@ angular.module('nin').directive('demo', function($interval, demo) {
     template: '<div class=demo-container></div>',
     link: function(scope, element) {
       demo.setContainer(element[0].children[0]);
-
-      var rect = element[0].children[0].getBoundingClientRect();
-      $interval(function() {
-        var newRect = element[0].children[0].getBoundingClientRect();
-        if(newRect.width != rect.width || newRect.height != rect.height) {
-          rect = newRect;
-          demo.resize();
-        }
-      }, 100);
-
+      setTimeout(function() {
+        demo.resize();
+      });
 
       scope.$watch('fullscreen', function (toFullscreen){
         if (toFullscreen) {

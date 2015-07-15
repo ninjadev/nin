@@ -68,12 +68,14 @@ window['bootstrap'] = function(options) {
     demo.effectComposer.render();
   };
 
-  demo.resize = function() {
+  demo.resize = function(width, height) {
     var rect = container.getBoundingClientRect();
-    if (rect.width / rect.height > 16 / 9) {
-      GU = (rect.height / 9);
+    width = width || rect.width;
+    height = height || rect.height;
+    if (width / height > 16 / 9) {
+      GU = (height / 9);
     } else {
-      GU = (rect.width / 16);
+      GU = (width / 16);
     }
     demo.renderer.setSize(16 * GU, 9 * GU);
     demo.renderer.domElement.style.zIndex = 10;
@@ -118,6 +120,17 @@ window['bootstrap'] = function(options) {
     demo.looper.oldTime = time;
     demo.looper.deltaTime = 0;
     demo.looper.currentFrame = frame;
+    var subdivision = 6;
+    var beatsPerMinute = 110 * subdivision;
+    var beatsPerSecond = beatsPerMinute / 60;
+    var framesPerSecond = 60;
+    var framesPerBeat = framesPerSecond / beatsPerSecond;
+    BEAT = false;
+    if ((((frame + 1.5) / framesPerBeat) | 0) >
+        ((frame + 0.5) / framesPerBeat) | 0) {
+      BEAT = true;
+    }
+    BEAN = (frame + 1.5) / framesPerBeat | 0;
     demo.lm.jumpToFrame(frame);
     demo.update(frame);
     demo.render(demo.renderer, 0);

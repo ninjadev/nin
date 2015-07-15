@@ -6,6 +6,7 @@ var path = require('path');
 
 var compile  = require('./compile'),
     serve    = require('./serve'),
+    render    = require('./render'),
     generate = require('./generate/generate');
 
 program
@@ -32,6 +33,14 @@ program
     project = path.resolve(process.cwd(), project || '');
     var shouldRunHeadlessly = true;
     serve.serve(project, shouldRunHeadlessly);
+  });
+
+program
+  .command('render [project]')
+  .description('Render recorded pngs to a video file')
+  .action(function(project) {
+    project = path.resolve(process.cwd(), project || '');
+    render.render(project);
   });
 
 program

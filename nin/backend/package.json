@@ -1,18 +1,18 @@
 {
   "name": "nin",
   "version": "0.0.1",
-  "dependencies":
-  {
+  "dependencies": {
+    "body-parser": "1.13.2",
+    "chokidar": "0.8.x",
     "commander": "2.2.x",
-    "walk":  "2.2.x",
+    "concat-files": "0.1.x",
     "crc": "2.0.0",
     "express": "4.3.x",
-    "sockjs": "0.3.x",
-    "chokidar": "0.8.x",
     "jsonfile": "1.1.x",
     "mkdirp": "0.5.x",
     "readdir": "0.0.x",
-    "concat-files": "0.1.x",
-    "rimraf": "2.4.x"
+    "rimraf": "2.4.x",
+    "sockjs": "0.3.x",
+    "walk": "2.2.x"
   }
 }

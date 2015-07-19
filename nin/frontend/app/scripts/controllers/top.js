@@ -46,11 +46,11 @@ angular.module('nin').controller('TopCtrl', function($scope, camera, commands) {
     camera.resetFlyFlightDynamics();
   });
   commands.on('increaseCameraZoom', function() {
-    camera.deltaFov(-.5);
+    camera.deltaFov(-0.5);
     $scope.displayValue('camera-fov-field', $scope.getCameraFov());
   });
   commands.on('decreaseCameraZoom', function() {
-    camera.deltaFov(.5);
+    camera.deltaFov(0.5);
     $scope.displayValue('camera-fov-field', $scope.getCameraFov());
   });
 });

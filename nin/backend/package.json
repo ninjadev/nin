@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "body-parser": "1.13.2",
-    "chokidar": "0.8.x",
+    "chokidar": "1.0.5",
     "commander": "2.2.x",
     "concat-files": "0.1.x",
     "crc": "2.0.0",

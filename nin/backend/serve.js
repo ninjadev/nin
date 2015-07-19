@@ -1,7 +1,7 @@
 var express = require('express');
 var fs = require('fs');
-var socket = require('./socket').socket;
-var sg = require('./shadergen');
+var socket = require('./socket');
+var watch = require('./watch');
 var p = require('path');
 var mkdirp = require('mkdirp');
 var readDir = require('readdir');
@@ -28,13 +28,21 @@ var serve = function(projectPath, shouldRunHeadlessly) {
       frontend.listen(8000);
     }
 
+    var watcher = watch(projectPath, function(event, data) {
+      sock.broadcast(event, data);
+    });
+
     var sockets = express();
     var sockets_server = require('http').createServer(sockets);
-    var sock = socket(projectPath);
-    sock.installHandlers(sockets_server, {prefix: '/socket'});
+    var sock = socket(projectPath, function(conn) {
+      for (var i in watcher.paths) {
+        conn.send('add', {
+          path: watcher.paths[i]
+        });
+      }
+    });
+    sock.server.installHandlers(sockets_server, {prefix: '/socket'});
     sockets_server.listen(1337, '0.0.0.0');
-
-    sg.shaderGen(projectPath, function() {});
 
     var files = express();
     files.use(function(req, res, next) {

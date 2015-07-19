@@ -29,7 +29,6 @@ var shaderGen = function(pathPrefix, cb) {
       var tmpData = '';
       var type = '';
       for(var i = 0; i < directories.length; i++) {
-        console.log('compiling shader', directories[i]);
         out += 'SHADERS.' + directories[i] + ' = {';
 
         type = '/uniforms.json';
@@ -63,6 +62,6 @@ var shaderGen = function(pathPrefix, cb) {
       cb();
     });
   });
-}
+};
 
 module.exports = { shaderGen: shaderGen };

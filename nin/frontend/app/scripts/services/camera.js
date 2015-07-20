@@ -10,7 +10,7 @@
       var active = false;
 
       var mouseclick = function(e) {
-        var camera = layer.instance.camera;
+        var camera = layer && layer.instance.camera;
         e.preventDefault();
 
         var elem = demo.renderer.domElement;
@@ -54,7 +54,8 @@
 
       return {
         getCameraPosition: function() {
-          var camera = layer.instance.camera;
+          var camera = layer && layer.instance.camera;
+          if (!camera) return;
           return JSON.stringify([
             roundify(camera.position.x, 2),
             roundify(camera.position.y, 2),
@@ -62,7 +63,8 @@
           ]) + ',';
         },
         getCameraLookat: function() {
-          var camera = layer.instance.camera;
+          var camera = layer && layer.instance.camera;
+          if (!camera) return;
           var scene = layer.instance.scene;
           var vector = new THREE.Vector3(0, 0, 0.5);
 
@@ -85,10 +87,14 @@
           ]) + ',';
         },
         getCameraRoll: function() {
-          return roundify(layer.instance.camera.rotation.z, 2);
+          var camera = layer && layer.instance.camera;
+          if (!camera) return;
+          return roundify(camera.rotation.z, 2);
         },
         getCameraFov: function() {
-          return roundify(layer.instance.camera.fov, 2);
+          var camera = layer && layer.instance.camera;
+          if (!camera) return;
+          return roundify(camera.fov, 2);
         },
         toggleFlyAroundMode: function() {
           active = !active;
@@ -112,12 +118,16 @@
           }
         },
         resetFlyFlightDynamics: function resetFlyFlightDynamics() {
-          layer.instance.camera.rotation.x = 0;
-          layer.instance.camera.rotation.z = 0;
+          var camera = layer.instance.camera;
+          if (!camera) return;
+          camera.rotation.x = 0;
+          camera.rotation.z = 0;
         },
         deltaFov: function deltaFov(delta) {
-          layer.instance.camera.fov += delta;
-          layer.instance.camera.updateProjectionMatrix();
+          var camera = layer.instance.camera;
+          if (!camera) return;
+          camera.fov += delta;
+          camera.updateProjectionMatrix();
         },
         startEdit: function(newLayer) {
           if (layer) {

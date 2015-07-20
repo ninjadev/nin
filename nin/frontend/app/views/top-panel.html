@@ -1,4 +1,8 @@
-<div class=top-panel ng-controller="TopCtrl" ui-layout="{ flow : 'column' }" >
+<div
+  class=top-panel
+  ng-controller="TopCtrl"
+  ui-layout="{ flow : 'column' }"
+  >
 
   <div ng-show=inspectedLayer>
 
@@ -6,77 +10,73 @@
       {{ inspectedLayer.displayName }}
     </div>
 
-    <tabset justified="true">
-      <tab heading="Twyk">
-        <div class=tweak-panel>
+    <tabset justified=true>
+
+      <tab heading=Camera>
+        <div class="camera-panel col-sm-12">
           <div class=form-horizontal>
-            <div
-              class="param form-group row"
-              ng-repeat="(key, value) in inspectedLayer">
-              <label class="tweak-label col-xs-2">
-                {{ key }}
+            <div class=form-group>
+              <label class="col-sm-2 control-label">
+                position
               </label>
-              <div class=col-xs-9>
-                <input ng-model="value" class=form-control>
+              <div class="col-sm-10">
+                <input
+                   class=selectable-contents
+                   ng-value=cameraPosition
+                   select-on-click
+                  >
               </div>
             </div>
-          </div>
-        </div>
-      </tab>
 
-      <tab heading="Camera">
-        <div class=camera-panel>
-          <div class=form-horizontal>
-            <div class="form-group row">
-              <button
-                  id="camera-pos"
-                  class="col-xs-4"
-                  ng-click="displayValue('camera-pos-field', getCameraPosition());">
-                  Camera position
-              </button>
-              <span id="camera-pos-field" class="col-xs-7 selectable-contents"></span>
+            <div class=form-group>
+              <label class="col-sm-2 control-label">
+                lookAt
+              </label>
+              <div class="col-sm-10">
+                <input
+                   class=selectable-contents
+                   ng-value=cameraLookat
+                   select-on-click
+                  >
+              </div>
             </div>
 
-            <div class="form-group row">
-              <button
-                  id="camera-lookat"
-                  class="col-xs-4"
-                  ng-click="displayValue('camera-lookat-field', getCameraLookat());">
-                  Camera look-at
-              </button>
-              <span id="camera-lookat-field" class="col-xs-7 selectable-contents"></span>
+            <div class=form-group>
+              <label class="col-sm-2 control-label">
+                roll
+              </label>
+              <div class="col-sm-10">
+                <input
+                   class=selectable-contents
+                   ng-value=cameraRoll
+                   select-on-click
+                  >
+              </div>
             </div>
 
-            <div class="form-group row">
-              <button
-                  id="camera-roll"
-                  class="col-xs-4"
-                  ng-click="displayValue('camera-roll-field', getCameraRoll());">
-                  Camera roll
-              </button>
-              <span id="camera-roll-field" class="col-xs-7 selectable-contents"></span>
+            <div class=form-group>
+              <label class="col-sm-2 control-label">
+                fov
+              </label>
+              <div class="col-sm-10">
+                <input
+                   class=selectable-contents
+                   ng-value=cameraFov
+                   select-on-click
+                  >
+              </div>
             </div>
 
-            <div class="form-group row">
-              <button
-                  id="camera-fov"
-                  class="col-xs-4"
-                  ng-click="displayValue('camera-fov-field', getCameraFov());">
-                  Camera fov
-              </button>
-              <span id="camera-fov-field" class="col-xs-7 selectable-contents"></span>
-            </div>
-
-            <div class="form-group row">
+            <div class=form-group>
               <button
                   id="fly-mode"
-                  class="col-xs-4"
-                  ng-click="toggleFlyAroundMode();">
+                  class="btn btn-default"
+                  ng-click="commands.toggleFlyAroundMode()">
                   Fly-around mode
               </button>
               <button
                   id="reset-fly-flight-dynamics"
-                  class="col-xs-4"
+                  class="btn btn-default"
                   ng-click="resetFlyFlightDynamics();">
                   Reset flight dynamics
               </button>
@@ -85,7 +85,7 @@
         </div>
       </tab>
 
-      <tab heading="A third tab">
+      <tab heading="A second tab">
         Yo
       </tab>
     </tabset>

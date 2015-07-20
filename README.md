@@ -102,8 +102,6 @@ See [the wiki page](https://github.com/ninjadev/nin/wiki/Camera-Controller) for 
 | arrows    | camera pitch/yaw              |
 | q/e       | camera roll                   |
 | r/f       | camera vertical position      |
-| p         | log camera position           |
-| l         | log camera lookat             |
 | x         | reset flight dynamics         |
 | c         | toggle fly around mode        |
 | z         | decrease camera zoom          |

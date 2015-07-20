@@ -17,7 +17,7 @@ The `nin compile` command will create a single file `bin/demo.png.html` that con
 
 ### Rendering to video
 1. `nin run`.
-1. Open nin in your browser, navigate to the frame you want to render from, and press r. This will start dumping single frames as numbered .PNGs in `bin/render/`  in your project folder.
+1. Open nin in your browser, navigate to the frame you want to render from, and press R. This will start dumping single frames as numbered .PNGs in `bin/render/`  in your project folder.
 1. Refresh etc every time WebGL crashes.
 1. When you have rendered all the frames: `nin render`. You need `avconv` installed for this.
 1. The demo is now available at `bin/render/render.mp4`.
@@ -91,7 +91,7 @@ The only rules you need to oblige is that:
 | 3          | set playback rate to 1   |
 | 4          | set playback rate to 2   |
 | 5          | set playback rate to 4   |
-| r          | start rendering frames   |
+| R          | start rendering frames   |
 
 ## Camera controls
 See [the wiki page](https://github.com/ninjadev/nin/wiki/Camera-Controller) for more information on the Camera Controller.

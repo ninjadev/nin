@@ -1,4 +1,4 @@
-angular.module('nin').controller('TopCtrl', function($scope, camera, commands) {
+angular.module('nin').controller('TopCtrl', function($scope, camera, commands, $interval) {
   $scope.displayValue = function(id, val) {
     var el = document.getElementById(id);
     el.textContent = val;
@@ -8,19 +8,21 @@ angular.module('nin').controller('TopCtrl', function($scope, camera, commands) {
     window.getSelection().addRange(range);
   };
 
-  $scope.getCameraPosition = function() {
-    return camera.getCameraPosition();
-  };
+  $scope.flyAroundMode = false;
+  var flyAroundInterval = null;
 
-  $scope.getCameraLookat = function() {
-    return camera.getCameraLookat();
-  };
-  $scope.getCameraRoll = function () {
-    return camera.getCameraRoll();
-  };
-  $scope.getCameraFov = function () {
-    return camera.getCameraFov();
-  };
+  $scope.commands = commands;
+
+  function updateScopeCameraValues() {
+    $scope.cameraPosition = camera.getCameraPosition();
+    $scope.cameraLookat = camera.getCameraLookat();
+    $scope.cameraRoll = camera.getCameraRoll();
+    $scope.cameraFov = camera.getCameraFov();
+  }
+
+  $scope.$watch('currentFrame', function() {
+    updateScopeCameraValues();
+  });
 
   $scope.toggleFlyAroundMode = function() {
     return camera.toggleFlyAroundMode();
@@ -31,15 +33,21 @@ angular.module('nin').controller('TopCtrl', function($scope, camera, commands) {
   };
 
   commands.on('toggleFlyAroundMode', function() {
+    $scope.flyAroundMode = !$scope.flyAroundMode;
     camera.toggleFlyAroundMode();
+    if($scope.flyAroundMode) {
+      flyAroundInterval = $interval(updateScopeCameraValues, 16);
+    } else {
+      stopFlyAroundInterval();
+      flyAroundInterval.cancel();
+      flyAroundInterval = null;
+    }
   });
 
-  commands.on('getCameraPosition', function() {
-    $scope.displayValue('camera-pos-field', $scope.getCameraPosition());
-  });
-
-  commands.on('getCameraLookat', function() {
-    $scope.displayValue('camera-lookat-field', $scope.getCameraLookat());
+  $scope.$on('$destroy', function() {
+    if(flyAroundInterval) {
+      flyAroundInterval.cancel();
+    }
   });
 
   commands.on('resetFlyFlightDynamics', function() {

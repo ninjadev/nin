@@ -50,14 +50,6 @@ angular.module('nin').directive('keybinding', function(commands, render, demo) {
       // '<'
       commands.jog(-1);
     },
-    '112': function(e) {
-      // 'p'
-      commands.getCameraPosition();
-    },
-    '108': function(e) {
-      // 'l'
-      commands.getCameraLookat();
-    },
     '120': function(e) {
       // 'x'
       commands.resetFlyFlightDynamics();

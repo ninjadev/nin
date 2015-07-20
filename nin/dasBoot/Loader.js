@@ -35,7 +35,6 @@ Loader.prototype.loadTexture = function(filepath, callback) {
 };
 
 Loader.prototype.load = function(filepath, element, callback) {
-  console.log(this.id, 'pushing onto load stack', filepath);
   this.itemsToLoad.push({
     filepath: filepath,
     element: element,
@@ -49,11 +48,9 @@ Loader.prototype.start = function(onprogress, oncomplete) {
   var that = this;
   function registerAsLoaded(item) {
     onprogress(100 - waitingCount / maxWaitingCount * 100);
-    console.log(that.id, 'finished loading', item.filepath);
     if(!--waitingCount) {
       that.itemsToLoad.length = 0;
       that.itemsToAjax.length = 0;
-      console.log(that.id, 'all loading finished for this run');
       oncomplete();
     }
   }

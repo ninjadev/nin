@@ -204,7 +204,7 @@ main-window, main-window > div {
 
 .top-panel .layer-title {
     font-size: 40px;
-    padding: 5px 15px;
+    padding: 30px 15px 5px;
     background: #161f24;
 }
 
@@ -354,4 +354,41 @@ input[type=range]:focus::-ms-fill-upper {
 .x-scaler {
     float: right;
     width: 50%;
+}
+
+.top-menu {
+    position: fixed;
+    z-index: 99999999;
+    height: 34px;
+    color: #d3dde3;
+}
+
+.menu-group.selected {
+    background: #161F24;
+}
+
+.menu-group {
+    float: left;
+    position: relative;
+}
+
+.menu-item {
+    cursor: pointer;
+    padding: 6px 12px 6px 6px;
+}
+
+.sub-menu {
+    position: absolute;
+    background: #161F24;
+}
+
+.sub-menu .menu-item {
+    padding: 2px 12px 2px 6px;
+    min-width: 200px;
+}
+
+.sub-menu .menu-item .shortcut {
+    float: right;
+    padding-left: 12px;
+    color: #5f686d;
 }

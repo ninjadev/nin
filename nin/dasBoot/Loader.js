@@ -7,7 +7,7 @@ function Loader() {
   this.itemsToAjax = [];
   this.itemsToLoad = [];
   this.id = Math.random();
-};
+}
 
 Loader.rootPath = '';
 
@@ -35,7 +35,6 @@ Loader.prototype.loadTexture = function(filepath, callback) {
 };
 
 Loader.prototype.load = function(filepath, element, callback) {
-  console.log(this.id, 'pushing onto load stack', filepath);
   this.itemsToLoad.push({
     filepath: filepath,
     element: element,
@@ -47,25 +46,22 @@ Loader.prototype.start = function(onprogress, oncomplete) {
   var maxWaitingCount = this.itemsToAjax.length + this.itemsToLoad.length;
   var waitingCount = maxWaitingCount;
   var that = this;
-  function registerAsLoaded(item) {
+  function registerAsLoaded(item) {
     onprogress(100 - waitingCount / maxWaitingCount * 100);
-    console.log(that.id, 'finished loading', item.filepath);
     if(!--waitingCount) {
       that.itemsToLoad.length = 0;
       that.itemsToAjax.length = 0;
-      console.log(that.id, 'all loading finished for this run');
-      oncomplete();  
+      oncomplete();
     }
   }
-  var that = this;
   this.itemsToLoad.forEach(function(item) {
     var eventName = that.eventNames[item.element.tagName];
     item.element.addEventListener(eventName, listener);
     function listener() {
       item.element.removeEventListener(eventName, listener);
-      item.callback && item.callback(); 
-      registerAsLoaded(item); 
-    };
+      item.callback && item.callback();
+      registerAsLoaded(item);
+    }
 
     if(window.FILES) {
       var prefix = {
@@ -96,7 +92,7 @@ Loader.prototype.start = function(onprogress, oncomplete) {
       request.onload = function() {
         item.callback(request.responseText);
         registerAsLoaded(item);
-      }
+      };
       request.send();
     }
   });

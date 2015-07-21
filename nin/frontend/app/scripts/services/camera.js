@@ -23,8 +23,7 @@
           0.5
         );
 
-        var projector = new THREE.Projector();
-        projector.unprojectVector(vector, camera);
+        vector.unproject(camera);
 
         var dir_vector = vector.sub(camera.position).normalize();
         var raycaster = new THREE.Raycaster(camera.position, dir_vector);
@@ -67,8 +66,7 @@
           var scene = layer.instance.scene;
           var vector = new THREE.Vector3(0, 0, 0.5);
 
-          var projector = new THREE.Projector();
-          projector.unprojectVector(vector, camera);
+          vector.unproject(camera);
           var dir_vector = vector.sub(camera.position).normalize();
           var raycaster = new THREE.Raycaster(camera.position, dir_vector);
           var intersects = raycaster.intersectObjects(scene.children, true);

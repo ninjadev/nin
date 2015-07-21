@@ -92,9 +92,9 @@
       socket.on('add', function(e) {
         e.path = e.path.replace(/\\/g, '/');
         console.log('add!', e);
-        if(e.path == '/res/layers.json') {
+        if(e.path == 'res/layers.json') {
           updateLayers();
-        } else if (e.path == '/res/camerapaths.json') {
+        } else if (e.path == 'res/camerapaths.json') {
           updateCamerapaths();
         } else if (e.path.indexOf('/shaders/') !== -1) {
           updateShaders(e.path);
@@ -106,9 +106,9 @@
       socket.on('change', function(e) {
         e.path = e.path.replace(/\\/g, '/');
         console.log('change!', e);
-        if(e.path == '/res/layers.json') {
+        if(e.path == 'res/layers.json') {
           updateLayers();
-        } else if (e.path == '/res/camerapaths.json') {
+        } else if (e.path == 'res/camerapaths.json') {
           updateCamerapaths();
         } else if (e.path.indexOf('/shaders/') !== -1) {
           updateShaders(e.path);

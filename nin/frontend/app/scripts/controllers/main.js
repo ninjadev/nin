@@ -2,7 +2,28 @@
   'use strict';
 
   angular.module('nin')
-    .controller('MainCtrl', function ($scope, $http, ScriptReloader, socket, demo, commands) {
+    .controller('MainCtrl', function ($scope, $http, $window, ScriptReloader, socket, demo, commands) {
+
+      $scope.menu = [
+        {
+          name: 'File',
+          items: [
+            {name: 'Exit', shortcut: 'ESC', click: function() {}}
+          ]
+        },
+        {
+          name: 'Render',
+          items: [
+            {name: 'Start rendering', shortcut: 'Shift + R', click: function() {}}
+          ]
+        },
+        {
+          name: 'Help',
+          items: [
+            {name: 'Shortcuts', shortcut: '?', click: function() {}}
+          ]
+        },
+      ];
 
       $scope.demo = demo;
       $scope.fullscreen = false;

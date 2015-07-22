@@ -20,8 +20,15 @@
         ng-repeat="item in menuGroup.items"
         ng-click=item.click()
         >
-        {{ item.name }}
-        <span class=shortcut>{{ item.shortcut }}</span>
+        <div ng-show="item.name != '-'">
+          {{ item.name }}
+          <span class=shortcut>{{ item.shortcut }}</span>
+        </div>
+        <div
+          class=separator
+          ng-show="item.name == '-'"
+          >
+        </div>
       </div>
     </div>
   </div>

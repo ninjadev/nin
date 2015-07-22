@@ -392,3 +392,12 @@ input[type=range]:focus::-ms-fill-upper {
     padding-left: 12px;
     color: #5f686d;
 }
+
+.sub-menu .separator {
+    height: 1px;
+    width: 10%;
+    background: #5f686d;
+    opacity: 0.2;
+    margin: 4px 0;
+
+}

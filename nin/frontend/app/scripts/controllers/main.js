@@ -12,6 +12,68 @@
           ]
         },
         {
+          name: 'Playback',
+          items: [
+            {name: 'Rewind to start', shortcut: 'return', click: function() {
+              commands.jumpToFrame(0);
+            }},
+            {name: 'Rewind one second', shortcut: '.', click: function() {
+              commands.jog(-60);
+            }},
+            {name: 'Forward one second', shortcut: ',', click: function() {
+              commands.jog(60);
+            }},
+            {name: 'Rewind 10 seconds', shortcut: 'L', click: function() {
+              commands.jog(-60 * 10);
+            }},
+            {name: 'Foward 10 seconds', shortcut: 'K', click: function() {
+              commands.jog(60 * 10);
+            }},
+            {name: 'Rewind one frame', shortcut: ';', click: function() {
+              commands.jog(-1);
+            }},
+            {name: 'Forward one frame', shortcut: ':', click: function() {
+              commands.jog(1);
+            }},
+            {name: '-'},
+            {name: '0.25x playback rate', shortcut: '1', click: function() {
+              commands.setPlaybackRate(0.25);
+            }},
+            {name: '0.5x playback rate', shortcut: '2', click: function() {
+              commands.setPlaybackRate(0.5);
+            }},
+            {name: '1x playback rate', shortcut: '3', click: function() {
+              commands.setPlaybackRate(1);
+            }},
+            {name: '2x playback rate', shortcut: '4', click: function() {
+              commands.setPlaybackRate(2);
+            }},
+            {name: '4x playback rate', shortcut: '5', click: function() {
+              commands.setPlaybackRate(4);
+            }},
+            {name: '-'},
+            {name: 'Set cue point', shortcut: 'g', click: function() {
+              commands.setCuePoint();
+            }},
+            {name: '-'},
+            {name: 'Toggle fullscreen', shortcut: 'm', click: function() {
+              commands.toggleFullscreen();
+            }},
+            {name: 'Mute', shortcut: 'j', click: function() {
+              commands.toggleMusic();
+            }},
+            {name: 'Volume up', shortcut: '+', click: function() {
+              commands.volumeDelta(0.1);
+            }},
+            {name: 'Volume down', shortcut: '-', click: function() {
+              commands.volumeDelta(-0.1);
+            }},
+            {name: 'Play/pause', shortcut: 'space', click: function() {
+              commands.playPause();
+            }}
+          ]
+        },
+        {
           name: 'Render',
           items: [
             {name: 'Start rendering', shortcut: 'Shift + R', click: function() {

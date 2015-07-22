@@ -1,6 +1,9 @@
 var chalk = require('chalk');
 var chokidar = require('chokidar');
 var sg = require('./shadergen');
+var pathModule = require('path');
+var fs = require('fs');
+var ninjascript = require('./ninjascript');
 
 
 function watch(projectPath, cb) {
@@ -32,6 +35,14 @@ function watch(projectPath, cb) {
   watcher.on('all', function (event, path) {
     if (event === 'unlink') event = 'delete';
     if (event == 'addDir') {
+      return;
+    }
+
+    if(path.slice(-2) == '.n') {
+      var moduleName = pathModule.basename(path).slice(0, -2);
+      var source = fs.readFileSync(path);
+      var js = ninjascript.compile(moduleName, source.toString());
+      fs.writeFileSync(path.slice(0, -2) + '.js', js);
       return;
     }
 

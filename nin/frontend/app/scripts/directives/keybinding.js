@@ -92,7 +92,11 @@ angular.module('nin').directive('keybinding', function(commands, render, demo) {
     },
     '82': function(e) {
       // 'R'
-      commands.render();
+      if(render.isCurrentlyRendering()) {
+        commands.stopRendering();
+      } else {
+        commands.startRendering();
+      }
     },
     '43': function(e) {
       // '+'

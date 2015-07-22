@@ -1,4 +1,4 @@
-angular.module('nin').service('render', function(demo, $http) { 
+angular.module('nin').service('render', function(demo, $http, commands) {
 
   var currentFrame;
 
@@ -18,6 +18,11 @@ angular.module('nin').service('render', function(demo, $http) {
       render(currentFrame + 1);
     }, 0);
   }
+
+  commands.on('render', function() {
+    demo.resize(1920, 1080);
+    render(demo.getCurrentFrame());
+  });
 
   return render;
 });

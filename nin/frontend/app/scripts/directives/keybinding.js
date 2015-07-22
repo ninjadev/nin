@@ -92,8 +92,7 @@ angular.module('nin').directive('keybinding', function(commands, render, demo) {
     },
     '82': function(e) {
       // 'R'
-      demo.resize(1920, 1080);
-      render(demo.getCurrentFrame());
+      commands.render();
     },
     '43': function(e) {
       // '+'

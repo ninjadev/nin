@@ -17,6 +17,7 @@
       >
       <div
         class=menu-item
+        ng-class="{'separator-item': item.name == '-'}"
         ng-repeat="item in menuGroup.items"
         ng-click=item.click()
         >

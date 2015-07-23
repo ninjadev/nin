@@ -380,11 +380,24 @@ input[type=range]:focus::-ms-fill-upper {
 .sub-menu {
     position: absolute;
     background: #161F24;
+    color: #929CA1;
+    padding: 2px;
 }
 
 .sub-menu .menu-item {
-    padding: 2px 12px 2px 6px;
+    padding: 3px 12px 1px 6px;
+    margin: 2px;
     min-width: 200px;
+    font-size: 13px;
+}
+
+.sub-menu .menu-item:hover {
+    background: #3d464b;
+    color: #d3dde3;
+}
+
+.sub-menu .menu-item.separator-item:hover {
+    background: transparent;
 }
 
 .sub-menu .menu-item .shortcut {
@@ -393,11 +406,15 @@ input[type=range]:focus::-ms-fill-upper {
     color: #5f686d;
 }
 
+.sub-menu .menu-item:hover .shortcut {
+    color: #929CA1;
+}
+
 .sub-menu .separator {
     height: 1px;
     width: 10%;
     background: #5f686d;
     opacity: 0.2;
-    margin: 4px 0;
+    margin: 2px 0 4px;
 
 }

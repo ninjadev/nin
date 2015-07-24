@@ -1,6 +1,8 @@
-angular.module('nin').service('render', function(demo, $http) { 
+angular.module('nin').service('render', function(demo, $http, commands) {
 
   var currentFrame;
+  var currentlyRendering = false;
+  var currentTimeout;
 
   function render(i) {
     i = i || 0;
@@ -14,10 +16,28 @@ angular.module('nin').service('render', function(demo, $http) {
         frame: i
       });
 
-    setTimeout(function() {
-      render(currentFrame + 1);
-    }, 0);
+    if(currentlyRendering) {
+      currentTimeout = setTimeout(function() {
+        render(currentFrame + 1);
+      }, 0);
+    }
   }
+
+  render.isCurrentlyRendering = function() {
+    return currentlyRendering;
+  }
+
+  commands.on('startRendering', function() {
+    demo.resize(1920, 1080);
+    currentlyRendering = true;
+    render(demo.getCurrentFrame());
+  });
+
+  commands.on('stopRendering', function() {
+    demo.resize();
+    currentlyRendering = false;
+    cancelTimeout(currentTimeout);
+  });
 
   return render;
 });

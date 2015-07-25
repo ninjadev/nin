@@ -85,6 +85,15 @@
           ]
         },
         {
+          name: 'Generate',
+          items: [
+            {name: 'Simple layer', click: function() {
+              var layerName = window.prompt("Enter a name for the layer:");
+              commands.generate('simpleLayer', layerName);
+            }}
+          ]
+        },
+        {
           name: 'Help',
           items: [
             {name: 'Shortcuts', shortcut: '?', click: function() {}}
@@ -101,6 +110,10 @@
       } else {
         $scope.volume = 1;
       }
+
+      commands.on('generate', function(type, name) {
+        socket.sendEvent('generate', {type: type, name: name});
+      });
 
       commands.on('toggleFullscreen', function() {
         $scope.fullscreen = !$scope.fullscreen;

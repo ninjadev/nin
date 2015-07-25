@@ -9,10 +9,12 @@ var generate = function(type, name) {
     process.exit(1);
   }
 
+  var camelizedName = utils.camelize(name);
+
   switch (type) {
     case 'simpleLayer':
-      generateLayer(name, projectRoot);
-      addToLayers(name, projectRoot);
+      generateLayer(camelizedName, projectRoot);
+      addToLayers(camelizedName, projectRoot);
       break;
 
     default:

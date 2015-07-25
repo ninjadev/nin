@@ -2,16 +2,21 @@ var fs = require('fs'),
     path = require('path'),
     utils = require('../utils');
 
-var generate = function(toGenerate, path) {
-  var projectRoot = utils.findProjectRoot(path);
+var generate = function(type, name) {
+  var projectRoot = utils.findProjectRoot(process.cwd());
   if (projectRoot == '') {
     process.stderr.write('Could not find nin.json in project root\n');
     process.exit(1);
   }
 
-  if (endsWith(toGenerate, 'Layer')) {
-    generateLayer(toGenerate, projectRoot);
-    addToLayers(toGenerate, projectRoot);
+  switch (type) {
+    case 'simpleLayer':
+      generateLayer(name, projectRoot);
+      addToLayers(name, projectRoot);
+      break;
+
+    default:
+      process.stderr.write('Attempted to generate resource without generator:', type, '\n');
   }
 }
 
@@ -54,10 +59,6 @@ function addToLayers(layerName, projectRoot) {
   fs.writeFileSync(layersPath, JSON.stringify(layers, null, 2) + '\n');
 
   process.stdout.write('Added ' + layerName + ' to layers.json\n');
-}
-
-function endsWith(string, suffix) {
-  return string.indexOf(suffix, string.length - suffix.length) !== -1;
 }
 
 module.exports = {generate: generate};

@@ -44,11 +44,9 @@ program
   });
 
 program
-  .command('generate [resource]')
+  .command('generate [resource] [name]')
   .description('Generate resources')
-  .action(function(toGenerate) {
-    generate.generate(toGenerate, process.cwd());
-  });
+  .action(generate.generate);
 
 program.parse(process.argv);
 

@@ -88,7 +88,9 @@ window['bootstrap'] = function(options) {
     demo.render(demo.renderer, 0);
   };
 
-  window.addEventListener('resize', demo.resize);
+  window.addEventListener('resize', function() {
+    demo.resize();
+  });
   demo.resize();
 
   demo.music = document.createElement('audio');

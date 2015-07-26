@@ -13,7 +13,7 @@ var generate = function(type, name) {
   var camelizedName = utils.camelize(name);
 
   switch (type) {
-    case 'simpleLayer':
+    case 'layer':
       generateLayer(camelizedName, 'TemplateLayer.js',
           [[/TemplateLayer/g, camelizedName]],
           projectRoot);

@@ -87,9 +87,9 @@
         {
           name: 'Generate',
           items: [
-            {name: 'Simple layer', click: function() {
+            {name: 'Layer', click: function() {
               var layerName = window.prompt("Enter a name for the layer:");
-              commands.generate('simpleLayer', layerName);
+              commands.generate('layer', layerName);
             }}
           ]
         },

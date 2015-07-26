@@ -7,6 +7,7 @@ var mkdirp = require('mkdirp');
 var readDir = require('readdir');
 var concat = require('concat-files');
 var bodyParser = require('body-parser');
+var projectSettings = require('./projectSettings');
 
 var serve = function(projectPath, shouldRunHeadlessly) {
 
@@ -21,6 +22,8 @@ var serve = function(projectPath, shouldRunHeadlessly) {
   );
   var dasBootDestinationFilePath = p.join(projectPath, '/gen/dasBoot.js');
   concat(dasBootSourceFilePaths, dasBootDestinationFilePath, function() {
+    projectSettings.load(projectPath);
+
     console.log(__dirname);
     if(!shouldRunHeadlessly) {
       var frontend = express();

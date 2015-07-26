@@ -87,7 +87,9 @@
         {
           name: 'Help',
           items: [
-            {name: 'Shortcuts', shortcut: '?', click: function() {}}
+            {name: 'Online wiki', click: function() {
+              window.open('https://github.com/ninjadev/nin/wiki');
+            }}
           ]
         },
       ];

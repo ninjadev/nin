@@ -16,7 +16,7 @@
     };
 
     FRAME_FOR_BEAN = function(bean) {
-      return ((bean - 1.5) * framesPerBeat + 0.5) | 0;
+      return (bean * framesPerBeat - 0.5) | 0;
     };
   };
 

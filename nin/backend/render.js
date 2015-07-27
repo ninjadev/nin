@@ -5,7 +5,6 @@ var render = function(projectPath) {
   '-y',
   '-r', '60',
   '-i', projectPath + '/bin/render/%07d.png',
-  '-itsoffset', '-00:00:00.133',
   '-i', projectPath + '/res/music.mp3',
   '-c:v', 'libx264',
   '-c:a', 'copy',

@@ -1,31 +1,30 @@
 (function() {
-  var framesPerBeat;
+  var framesPerBEAT;
 
   initBeatBean = function() {
     BEAN = 0;
     BEAT = false;
 
-    var subdivision = 6;
-    var beatsPerMinute = 110 * subdivision;
-    var beatsPerSecond = beatsPerMinute / 60;
+    var BEATsPerMinute = PROJECT.music.bpm * PROJECT.music.subdivision;
+    var BEATsPerSecond = BEATsPerMinute / 60;
     var framesPerSecond = 60;
-    framesPerBeat = framesPerSecond / beatsPerSecond;
+    framesPerBEAT = framesPerSecond / BEATsPerSecond;
 
     BEAN_FOR_FRAME = function(frame) {
-      return (frame + 1.5) / framesPerBeat | 0;
+      return (frame + 1.5) / framesPerBEAT | 0;
     };
 
     FRAME_FOR_BEAN = function(bean) {
-      return (bean * framesPerBeat - 0.5) | 0;
+      return (bean * framesPerBEAT - 0.5) | 0;
     };
   };
 
   updateBeatBean = function(frame) {
     BEAT = false;
-    if ((((frame + 1.5) / framesPerBeat) | 0) >
-        ((frame + 0.5) / framesPerBeat) | 0) {
+    if ((((frame + 1.5) / framesPerBEAT) | 0) >
+        ((frame + 0.5) / framesPerBEAT) | 0) {
       BEAT = true;
     }
-    BEAN = (frame + 1.5) / framesPerBeat | 0;
+    BEAN = (frame + 1.5) / framesPerBEAT | 0;
   };
 })();

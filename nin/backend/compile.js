@@ -6,6 +6,7 @@ var shaderGen = require('./shadergen').shaderGen;
 var rmdir = require('rimraf');
 var p = require('path');
 var mkdirp = require('mkdirp');
+var projectSettings = require('./projectSettings');
 
 function res(projectPath, callback) {
   var walker = walk.walk(projectPath + '/res/' , {followLinks: false});
@@ -72,6 +73,7 @@ var compile = function(projectPath, callback) {
     rmdir(genPath, function(error) {
       mkdirp(genPath, function(error) {
         fs.writeFileSync(projectPath + '/gen/files.js', new Buffer(data));
+        projectSettings.load(projectPath);
         shaderGen(projectPath, function() {
           console.log('Running closure compiler...');
           exec('java -jar -Xmx2048m ' + __dirname + '/compiler.jar -O SIMPLE --language_in ECMASCRIPT5 --debug --logging_level INFO ' + __dirname + '/../dasBoot/lib/*.js ' + __dirname + '/../dasBoot/*.js ' + projectPath + '/gen/*.js ' + projectPath + '/src/*.js',

@@ -52,19 +52,46 @@ function lib(projectPath, callback) {
   });
 }
 
-var compile = function(projectPath, callback) {
+var compile = function(projectPath, options) {
   console.log('starting to compile');
   var compiled = [];
   function collect(data) {
     compiled.push(data);
     if (compiled.length == 2) {
-      compress(projectPath, compiled.join(';'), function(data) {
+      function writeDemoToFile(data, filename) {
         var binPath = p.join(projectPath, '/bin/');
         mkdirp(binPath, function() {
-          fs.writeFileSync(projectPath + '/bin/demo.png.html', data);
+          fs.writeFileSync(projectPath + '/bin/' + filename, data);
         });
-        console.log('Success!');
-      });
+      }
+      if(options.pngCompress) {
+        compress(projectPath, compiled.join(';'), function(data) {
+          writeDemoToFile(data, 'demo.png.html');
+          console.log('Successfully compiled demo.png.html!');
+        });
+      } else {
+        var customHtml = '';
+        try {
+          customHtml = fs.readFileSync(projectPath + '/index.html', {encoding: 'utf8'});
+        } catch(e) {
+          customHtml = fs.readFileSync(__dirname + '/index.html', {encoding: 'utf8'});
+        }
+        var html =
+          customHtml +
+          '<script>' +
+          'GU=1;' + /* hack to make sure GU exisits from the get-go */
+          'BEAN=0;' +
+          'BEAT=false;' +
+          'FRAME_FOR_BEAN=function placeholder(){};' +
+          'BEAN_FOR_FRAME=function placeholder(){};' +
+          compiled.join(';') +
+          'var layers = JSON.parse(atob(FILES["res/layers.json"]));' +
+          'var camerapaths = JSON.parse(atob(FILES["res/camerapaths.json"]));' +
+          'demo=bootstrap({layers:layers, camerapaths:camerapaths, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +
+          '</script>';
+        writeDemoToFile(html, 'demo.html') +
+        console.log('Successfully compiled demo.html!');
+      }
     }
   }
   lib(projectPath, collect);

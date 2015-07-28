@@ -88,14 +88,17 @@
           name: 'Generate',
           items: [
             {name: 'Layer', click: function() {
+              commands.pause();
               var layerName = window.prompt("Enter a name for the layer:");
               commands.generate('layer', layerName);
             }},
             {name: 'Shader', click: function() {
+              commands.pause();
               var shaderName = window.prompt("Enter a name for the shader:");
               commands.generate('shader', shaderName);
             }},
             {name: 'Shader with layer', click: function() {
+              commands.pause();
               var shaderName = window.prompt("Enter a name for the shader:");
               commands.generate('shaderWithLayer', shaderName);
             }}

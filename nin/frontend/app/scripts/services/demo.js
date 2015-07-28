@@ -16,6 +16,10 @@
       }
     });
 
+    commands.on('pause', function() {
+      demo.music.pause();
+    });
+
     commands.on('jog', function(amount) {
       demo.jumpToFrame(demo.getCurrentFrame() + amount);
     });

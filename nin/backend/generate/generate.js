@@ -10,6 +10,10 @@ var generate = function(type, name) {
     process.exit(1);
   }
 
+  if (name == "") {
+    return;
+  }
+
   var camelizedName = utils.camelize(name);
 
   switch (type) {

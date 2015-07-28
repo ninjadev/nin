@@ -1,7 +1,7 @@
 var sock = require('sockjs')
   , fs = require('fs')
+  , generate = require('./generate/generate')
   ;
-
 
 function socket(projectPath, onConnectionCallback) {
   var server = sock.createServer();
@@ -35,15 +35,21 @@ function socket(projectPath, onConnectionCallback) {
 
     conn.on('data', function (message) {
       var event = JSON.parse(message);
-      if(event.type == 'set') {
-        event = event.data;
-        fs.readFile(projectPath + '/res/layers.json', function (err, data) {
-          var layers = JSON.parse(data);
-          layers[event.id][event.field] = event.value;
-          fs.writeFile(projectPath + '/res/layers.json', JSON.stringify(layers, null, '  ') + '\n', function (err) {
+      switch (event.type) {
+        case 'set':
+          event = event.data;
+          fs.readFile(projectPath + '/res/layers.json', function (err, data) {
+            var layers = JSON.parse(data);
+            layers[event.id][event.field] = event.value;
+            fs.writeFile(projectPath + '/res/layers.json', JSON.stringify(layers, null, '  ') + '\n', function (err) {
 
+            });
           });
-        });
+          break;
+
+        case 'generate':
+          generate.generate(event.data.type, event.data.name);
+          break;
       }
     });
   });

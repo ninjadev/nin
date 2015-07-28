@@ -85,6 +85,26 @@
           ]
         },
         {
+          name: 'Generate',
+          items: [
+            {name: 'Layer', click: function() {
+              commands.pause();
+              var layerName = window.prompt("Enter a name for the layer:");
+              commands.generate('layer', layerName);
+            }},
+            {name: 'Shader', click: function() {
+              commands.pause();
+              var shaderName = window.prompt("Enter a name for the shader:");
+              commands.generate('shader', shaderName);
+            }},
+            {name: 'Shader with layer', click: function() {
+              commands.pause();
+              var shaderName = window.prompt("Enter a name for the shader:");
+              commands.generate('shaderWithLayer', shaderName);
+            }}
+          ]
+        },
+        {
           name: 'Help',
           items: [
             {name: 'Online wiki', click: function() {
@@ -103,6 +123,10 @@
       } else {
         $scope.volume = 1;
       }
+
+      commands.on('generate', function(type, name) {
+        socket.sendEvent('generate', {type: type, name: name});
+      });
 
       commands.on('toggleFullscreen', function() {
         $scope.fullscreen = !$scope.fullscreen;

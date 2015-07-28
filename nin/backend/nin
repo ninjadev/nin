@@ -7,7 +7,8 @@ var path = require('path');
 var compile  = require('./compile'),
     serve    = require('./serve'),
     render    = require('./render'),
-    generate = require('./generate/generate');
+    generate = require('./generate/generate'),
+    utils = require('./utils');
 
 program
   .command('compile [project]')
@@ -17,7 +18,7 @@ program
     project = path.resolve(process.cwd(), project || '');
     console.log(options);
     console.log('compiling project');
-    compile.compile(project, {
+    compile.compile(utils.findProjectRootOrExit(project), {
         pngCompress: options.pngCompression
     });
   });
@@ -27,7 +28,7 @@ program
   .description('Run the backend project')
   .action(function(project) {
     project = path.resolve(process.cwd(), project || '');
-    serve.serve(project);
+    serve.serve(utils.findProjectRootOrExit(project));
   });
 
 program
@@ -36,7 +37,7 @@ program
   .action(function(project) {
     project = path.resolve(process.cwd(), project || '');
     var shouldRunHeadlessly = true;
-    serve.serve(project, shouldRunHeadlessly);
+    serve.serve(utils.findProjectRootOrExit(project), shouldRunHeadlessly);
   });
 
 program
@@ -44,13 +45,16 @@ program
   .description('Render recorded pngs to a video file')
   .action(function(project) {
     project = path.resolve(process.cwd(), project || '');
-    render.render(project);
+    render.render(utils.findProjectRootOrExit(project));
   });
 
 program
   .command('generate [resource] [name]')
   .description('Generate resources')
-  .action(generate.generate);
+  .action(function(resource, name) {
+    var projectRoot = utils.findProjectRootOrExit(process.cwd());
+    generate.generate(projectRoot, resource, name);
+  });
 
 program.parse(process.argv);
 

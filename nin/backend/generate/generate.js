@@ -4,14 +4,8 @@ var fs = require('fs'),
     layers = require('../layers'),
     mkdirp = require('mkdirp');
 
-var generate = function(type, name) {
-  var projectRoot = utils.findProjectRoot(process.cwd());
-  if (projectRoot == '') {
-    process.stderr.write('Could not find nin.json in project root\n');
-    process.exit(1);
-  }
-
-  if (name == "") {
+var generate = function(projectRoot, type, name) {
+  if (type == '' || name == '') {
     return;
   }
 

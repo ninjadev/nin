@@ -47,7 +47,7 @@ function socket(projectPath, onConnectionCallback) {
           break;
 
         case 'generate':
-          generate.generate(event.data.type, event.data.name);
+          generate.generate(projectPath, event.data.type, event.data.name);
           break;
       }
     });

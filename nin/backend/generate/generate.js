@@ -1,6 +1,7 @@
 var fs = require('fs'),
     path = require('path'),
     utils = require('../utils'),
+    layers = require('../layers'),
     mkdirp = require('mkdirp');
 
 var generate = function(type, name) {
@@ -18,11 +19,22 @@ var generate = function(type, name) {
 
   switch (type) {
     case 'layer':
-      generateLayer(camelizedName, 'TemplateLayer.js',
-          [[/TemplateLayer/g, camelizedName]],
+      var layerName = camelizedName + 'Layer';
+      generateLayer(layerName, 'TemplateLayer.js',
+          [[/TemplateLayer/g, layerName]],
           projectRoot);
 
-      addToLayers(camelizedName, 'red', projectRoot);
+      layers.add(projectRoot, {
+        displayName: name,
+        type: layerName,
+        color: 'red'
+      }, function (err) {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log('Added ' + layerName + ' to layers.json');
+        }
+      });
       break;
 
     case 'shader':
@@ -38,13 +50,23 @@ var generate = function(type, name) {
            [/TemplateShader/g, camelizedName]],
           projectRoot);
 
-      addToLayers(camelizedName + 'Layer', 'pink', projectRoot);
+      layers.add(projectRoot, {
+        displayName: name,
+        type: shaderLayerName,
+        color: 'pink'
+      }, function (err) {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log('Added ' + shaderLayerName + ' to layers.json');
+        }
+      });
       break;
 
     default:
       process.stderr.write('Attempted to generate resource without generator:', type, '\n');
   }
-}
+};
 
 var generateShader = function(shaderName, projectRoot) {
   var targetShaderPath = path.join(projectRoot, 'src', 'shaders', shaderName),
@@ -58,7 +80,7 @@ var generateShader = function(shaderName, projectRoot) {
   });
 
   process.stdout.write('Generated shader ' + shaderName + '\n');
-}
+};
 
 var generateLayer = function(layerName, templateFile, filters, projectRoot) {
   var layerFileName = layerName + '.js';
@@ -69,7 +91,7 @@ var generateLayer = function(layerName, templateFile, filters, projectRoot) {
     process.exit(1);
   }
 
-  var templateFile = path.join(__dirname, templateFile);
+  templateFile = path.join(__dirname, templateFile);
   var templateLayer = fs.readFileSync(templateFile, 'utf-8');
 
   for (var i=0; i<filters.length; i++) {
@@ -80,28 +102,5 @@ var generateLayer = function(layerName, templateFile, filters, projectRoot) {
 
   process.stdout.write('Generated layer ' + layerFileName + '\n');
 };
-
-function addToLayers(layerName, color, projectRoot) {
-  var layersPath = path.join(projectRoot, 'res', 'layers.json');
-
-  if (!fs.existsSync(layersPath)) {
-    process.stderr.write('Could not find layers.json in res folder\n');
-    process.exit(1);
-  }
-
-  var layers = JSON.parse(fs.readFileSync(layersPath, 'utf-8'));
-  layers.unshift({
-    type: layerName,
-    displayName: layerName,
-    startFrame: 0,
-    endFrame: 1000,
-    color: color,
-    config: {}
-  });
-
-  fs.writeFileSync(layersPath, JSON.stringify(layers, null, 2) + '\n');
-
-  process.stdout.write('Added ' + layerName + ' to layers.json\n');
-}
 
 module.exports = {generate: generate};

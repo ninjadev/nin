@@ -1,11 +1,11 @@
 var sock = require('sockjs')
-  , fs = require('fs')
+  , layers = require('./layers')
   , generate = require('./generate/generate')
   ;
 
 function socket(projectPath, onConnectionCallback) {
   var server = sock.createServer();
-  connections = {};
+  var connections = {};
 
   function broadcast(event, data) {
     for (var id in connections) {
@@ -37,13 +37,12 @@ function socket(projectPath, onConnectionCallback) {
       var event = JSON.parse(message);
       switch (event.type) {
         case 'set':
-          event = event.data;
-          fs.readFile(projectPath + '/res/layers.json', function (err, data) {
-            var layers = JSON.parse(data);
-            layers[event.id][event.field] = event.value;
-            fs.writeFile(projectPath + '/res/layers.json', JSON.stringify(layers, null, '  ') + '\n', function (err) {
-
-            });
+          var data = {};
+          data[event.data.field] = event.data.value;
+          layers.update(projectPath, event.data.id, data, function (err) {
+            if (err) {
+              console.log(err);
+            }
           });
           break;
 

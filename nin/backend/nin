@@ -12,10 +12,14 @@ var compile  = require('./compile'),
 program
   .command('compile [project]')
   .description('Compile the nin project')
-  .action(function(project){
+  .option('--no-png-compression', 'Do not use the .png.html compression trick')
+  .action(function(project, options){
     project = path.resolve(process.cwd(), project || '');
+    console.log(options);
     console.log('compiling project');
-    compile.compile(project);
+    compile.compile(project, {
+        pngCompress: options.pngCompression
+    });
   });
 
 program

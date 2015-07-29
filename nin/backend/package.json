@@ -9,6 +9,7 @@
     "concat-files": "0.1.0",
     "crc": "3.4.0",
     "express": "4.13.4",
+    "fluent-ffmpeg": "2.0.1",
     "glob": "7.0.3",
     "mkdirp": "0.5.1",
     "readdir": "0.0.13",

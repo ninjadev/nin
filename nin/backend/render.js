@@ -1,25 +1,44 @@
 var path = require('path');
 var projectSettings = require('./projectSettings');
-var spawn = require('child_process').spawn;
+var ffmpeg = require('fluent-ffmpeg');
 
 
 var render = function(projectPath) {
-  var musicPath = path.join(projectPath, projectSettings.load(projectPath).music.path),
-      avconv = spawn('avconv', [
-  '-y',
-  '-r', '60',
-  '-i', projectPath + '/bin/render/%07d.png',
-  '-i', musicPath,
-  '-c:v', 'libx264',
-  '-c:a', 'copy',
-  '-crf', '16',  
-  projectPath + '/bin/render/render.mp4']);
-  avconv.stdout.on('data', function(data) {
-    console.log(data.toString());
-  });
-  avconv.stderr.on('data', function(data) {
-    console.log(data.toString());
-  });
-}
+  console.time('Total execution time');
+
+  var pngPath = path.join(projectPath, '/bin/render/%07d.png');
+  var musicPath = path.join(projectPath, projectSettings.load(projectPath).music.path);
+  var destination = path.join(projectPath, '/bin/render/render.mp4');
+
+  ffmpeg()
+    .addInput(pngPath)
+    .withInputFps(60)
+
+    .addInput(musicPath)
+    .audioCodec('copy')
+
+    .videoCodec('libx264')
+    .withOutputFps(60)
+    .withOutputOption('-pix_fmt', 'yuv420p') // pixel format
+    .withOutputOption('-crf', '16') // quality (0 to 51, where 0 is finest)
+    .output(destination)
+
+    .on('start', function(commandLine) {
+      console.log('Spawned ffmpeg with command: ' + commandLine);
+    })
+    .on('progress', function(progress) {
+      console.log('Processing: ' + progress.percent.toFixed(2) + '% done');
+    })
+    .on('error', function(err, stdout, stderr) {
+      console.log('Cannot process video: ' + err.message);
+    })
+    .on('end', function() {
+      console.timeEnd('Total execution time');
+      console.log('Finished processing. Enjoy the rendered demo!');
+      console.log('You\'ll find it right here: ' + destination);
+    })
+
+    .run();
+};
 
 module.exports = {render: render};

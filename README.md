@@ -21,7 +21,7 @@ The `nin compile` command will create a single file `bin/demo.png.html` that con
 1. `nin run`.
 1. Open nin in your browser, navigate to the frame you want to render from, and press R. This will start dumping single frames as numbered .PNGs in `bin/render/`  in your project folder.
 1. Refresh etc every time WebGL crashes.
-1. When you have rendered all the frames: `nin render`. You need `avconv` installed for this.
+1. When you have rendered all the frames: `nin render`. You need `ffmpeg` ([ffmpeg.org](http://ffmpeg.org/)) installed for this.
 1. The demo is now available at `bin/render/render.mp4`.
 
 Each frame will take up to around 4MB on disk, and the finished .mp4 will be on the order of 1GB when rendered, so make sure you have enough disk space.

@@ -1,15 +1,13 @@
-var fs = require('fs');
+var FileManager = require('./fileManager');
 var utils = require('./utils');
 
+function getFileManager(projectPath) {
+  return new FileManager(projectPath + '/res/layers.json');
+}
 
 function add(projectPath, layer, callback) {
-  read(projectPath, function (err, layers) {
-    if (err) {
-      if (callback) {
-        callback(err);
-      }
-      return;
-    }
+  var fileManager = getFileManager(projectPath);
+  fileManager.read(function (layers) {
     var defaultLayer = {
       type: '',
       displayName: '',
@@ -19,68 +17,18 @@ function add(projectPath, layer, callback) {
       config: {}
     };
     layers.unshift(utils.mergeOptions(layer, defaultLayer));
-    write(projectPath, layers, function (err) {
-      if (callback) {
-        callback(err);
-      }
-    });
-  });
+    fileManager.write(layers);
+  }, callback);
 }
 
 function update(projectPath, layerId, layer, callback) {
-  read(projectPath, function (err, layers) {
-    if (err) {
-      if (callback) {
-        callback(err);
-      }
-      return;
-    }
+  var fileManager = getFileManager(projectPath);
+  fileManager.read(function (layers) {
     for (var key in layer) {
       layers[layerId][key] = layer[key];
     }
-    write(projectPath, layers, function (err) {
-      if (callback) {
-        callback(err);
-      }
-    });
-  });
-}
-
-var operationQueue = [];
-var activeOperation = null;
-
-function read(projectPath, callback) {
-  operationQueue.push([projectPath, callback]);
-  if (activeOperation === null) {
-    advanceQueue();
-  }
-}
-
-function write(projectPath, layers, callback) {
-  var data = JSON.stringify(layers, null, 2) + '\n';
-  fs.writeFile(projectPath + '/res/layers.json', data, function(err) {
-    advanceQueue();
-    callback(err);
-  });
-}
-
-function advanceQueue() {
-  activeOperation = operationQueue.shift() || null;
-  if (activeOperation) {
-    _read.apply(this, activeOperation);
-  }
-}
-
-function _read(projectPath, callback) {
-  fs.readFile(projectPath + '/res/layers.json', function(err, data) {
-    if (err) {
-      advanceQueue();
-      callback(err);
-    } else {
-      var layers = JSON.parse(data);
-      callback(err, layers);
-    }
-  });
+    fileManager.write(layers);
+  }, callback);
 }
 
 module.exports = {add: add, update: update};

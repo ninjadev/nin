@@ -15,9 +15,13 @@ Loader.setRootPath = function(path) {
       Loader.rootPath = path;
 };
 
-Loader.prototype.loadAjax = function(filepath, callback) {
+Loader.prototype.loadAjax = function(filepath, options, callback) {
+  if(!options) {
+    callback = options;
+  }
   this.itemsToAjax.push({
     filepath: filepath,
+    options: options || {},
     callback: callback
   });
 };
@@ -89,8 +93,12 @@ Loader.prototype.start = function(onprogress, oncomplete) {
       var response = null;
       var request = new XMLHttpRequest();
       request.open('GET', Loader.rootPath + item.filepath, 1);
+      if(item.options.responseType) {
+        request.responseType = item.options.responseType;
+      }
       request.onload = function() {
-        item.callback(request.responseText);
+        item.callback(item.options.responseType == 'arraybuffer' ? request.response
+                                                                 : request.responseText);
         registerAsLoaded(item);
       };
       request.send();
@@ -104,8 +112,8 @@ Loader.load = function(filepath, element, callback) {
   return Loader.nextLoader.load(filepath, element, callback);
 };
 
-Loader.loadAjax = function(filepath, callback) {
-  return Loader.nextLoader.loadAjax(filepath, callback);
+Loader.loadAjax = function(filepath, options, callback) {
+  return Loader.nextLoader.loadAjax(filepath, options, callback);
 };
 
 Loader.loadTexture = function(filepath, callback) {

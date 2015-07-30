@@ -26,7 +26,19 @@ function camelize(str) {
   });
 }
 
+function mergeOptions(input, defaults) {
+  var output = {};
+  for (var key in defaults) {
+    output[key] = defaults[key];
+  }
+  for (var key in input) {
+    output[key] = input[key];
+  }
+  return output;
+}
+
 module.exports = {
   findProjectRoot: findProjectRoot,
-  camelize: camelize
+  camelize: camelize,
+  mergeOptions: mergeOptions
 };

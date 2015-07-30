@@ -12,6 +12,11 @@ function loadMusic() {
   var _gainNode = webAudioContext.createGain();
   _gainNode.gain.value = 1;
   _gainNode.connect(webAudioContext.destination);
+  var _analyserNode = webAudioContext.createAnalyser();
+  _analyserNode.fftSize = 2048;
+  var bufferLength = _analyserNode.frequencyBinCount;
+  var fftBuffer = new Uint8Array(bufferLength);
+  _analyserNode.connect(_gainNode);
 
   var _currentLocalTime = 0;
   var _globalTimeOffset = 0;
@@ -19,6 +24,14 @@ function loadMusic() {
 
   return {
     paused: false,
+
+    _calculateFFT: function() {
+      _analyserNode.getByteTimeDomainData(fftBuffer);
+    },
+
+    getFFT: function() {
+      return fftBuffer;
+    },
 
     setCurrentTime: function(currentTime) {
       _currentLocalTime = currentTime;
@@ -61,7 +74,7 @@ function loadMusic() {
       _bufferSource && _bufferSource.stop();
       _bufferSource = webAudioContext.createBufferSource();
       _bufferSource.buffer = _buffer;
-      _bufferSource.connect(_gainNode);
+      _bufferSource.connect(_analyserNode);
       _bufferSource.start(0, _currentLocalTime);
       _bufferSource.playbackRate.value = _playbackRate;
     },

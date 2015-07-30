@@ -18,6 +18,7 @@ function createLoop(options) {
       that.deltaTime += that.time - that.oldTime;
       that.oldTime = that.time;
       while (that.deltaTime >= frameLength) {
+        demo.music._calculateFFT();
         updateBeatBean(that.currentFrame);
         update(that.currentFrame++);
         that.deltaTime -= frameLength;

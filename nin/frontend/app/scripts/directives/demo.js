@@ -43,6 +43,7 @@
         setTimeout(function(){
           demo.start();
           demo.music.pause();
+          demo.jumpToFrame(0);
         }, 0);
       }
     };

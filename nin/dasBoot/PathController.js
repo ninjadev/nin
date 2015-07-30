@@ -10,7 +10,7 @@ function PathController(raw_path, path_type) {
 
 PathController.prototype.parse3Dkeyframes = function(keyframes) {
   var parsed = [];
-  for (var i=0; i<keyframes.length; i++) {
+  for (var i = 0; i < keyframes.length; i++) {
     var this_pos = {
       type: keyframes[i].type,
       startFrame: keyframes[i].startFrame,
@@ -42,7 +42,7 @@ PathController.prototype.parse3Dkeyframes = function(keyframes) {
             raw_points[0][2]
             );
         this_pos.point = point;
-      } else if (typeof raw_points[0] === "number" && raw_points.length == 3) {
+      } else if (typeof raw_points[0] === 'number' && raw_points.length == 3) {
         this_pos.type = 'point';
         var point = new THREE.Vector3(
             raw_points[0],
@@ -61,7 +61,7 @@ PathController.prototype.parse3Dkeyframes = function(keyframes) {
       } else if (raw_points.length > 2) {
         this_pos.type = 'spline';
         var points = [];
-        for (var j=0; j<raw_points.length; j++) {
+        for (var j = 0; j < raw_points.length; j++) {
           var point = raw_points[j];
           points[j] = new THREE.Vector3(point[0], point[1], point[2]);
         }
@@ -75,16 +75,19 @@ PathController.prototype.parse3Dkeyframes = function(keyframes) {
 
 PathController.prototype.parseKeyframes = function(keyframes) {
   var parsed = [];
-  for (var i=0; i < keyframes.length; i++) {
+  for (var i = 0; i < keyframes.length; i++) {
     var current = {
       type: keyframes[i].type,
       startFrame: keyframes[i].startFrame,
       endFrame: keyframes[i].endFrame,
       easing: keyframes[i].easing
     };
-    var raw_points = keyframes[i].value || keyframes[i].point || keyframes[i].points;
+
+    var raw_points =
+      keyframes[i].value || keyframes[i].point || keyframes[i].points;
+
     if (raw_points) {
-      if (typeof raw_points === "number") {
+      if (typeof raw_points === 'number') {
         current.type = 'value';
         current.value = raw_points;
       } else if (raw_points.length == 1) {
@@ -99,7 +102,7 @@ PathController.prototype.parseKeyframes = function(keyframes) {
         current.from = keyframes[i].from;
         current.to = keyframes[i].to;
       } else if (raw_points.length > 2) {
-        console.warn("A maximum two points is currently supported");
+        console.warn('A maximum two points is currently supported');
       }
     }
     parsed[i] = current;
@@ -111,17 +114,17 @@ PathController.prototype.get3Dpoint = function(frame) {
   var current = this.getCurrentPath(frame);
   var duration = current.endFrame - current.startFrame;
   var t = (frame - current.startFrame) / duration;
-  if (current.easing == "smoothstep") {
+  if (current.easing == 'smoothstep') {
     t = smoothstep(0, 1, t);
-  } else if (current.easing == "easeIn") {
+  } else if (current.easing == 'easeIn') {
     t = easeIn(0, 1, t);
-  } else if (current.easing == "easeOut") {
+  } else if (current.easing == 'easeOut') {
     t = easeOut(0, 1, t);
   }
 
   if (current.type == 'spline') {
     if (frame > current.endFrame) {
-      return current.points.points[current.points.points.length-1];
+      return current.points.points[current.points.points.length - 1];
     }
     return current.points.getPointAt(t);
 
@@ -161,11 +164,11 @@ PathController.prototype.getPoint = function(frame) {
     }
     var duration = current.endFrame - current.startFrame;
     var t = (frame - current.startFrame) / duration;
-    if (current.easing == "smoothstep") {
+    if (current.easing == 'smoothstep') {
       return smoothstep(current.from, current.to, t);
-    } else if (current.easing == "easeOut") {
+    } else if (current.easing == 'easeOut') {
       return easeOut(current.from, current.to, t);
-    } else if (current.easing == "easeIn") {
+    } else if (current.easing == 'easeIn') {
       return easeIn(current.from, current.to, t);
     }
     return lerp(current.from, current.to, t);
@@ -176,14 +179,14 @@ PathController.prototype.getPoint = function(frame) {
 
 PathController.prototype.getCurrentPath = function(frame) {
   var current;
-  for (var i=0; i<this.path.length; i++) {
+  for (var i = 0; i < this.path.length; i++) {
     if (frame >= this.path[i].startFrame && frame <= this.path[i].endFrame) {
       current = this.path[i];
       break;
     }
   }
   if (current === undefined) {
-    for (var i=0; i < this.path.length; i++) {
+    for (var i = 0; i < this.path.length; i++) {
       if (frame > this.path[i].startFrame) {
         current = this.path[i];
       }
@@ -200,7 +203,7 @@ PathController.prototype.getVisualizer = function() {
     this.visualizer = new PathControllerVisualizer(this);
   }
   return this.visualizer;
-}
+};
 
 function PathControllerVisualizer(pathController) {
   this.pathController = pathController;
@@ -220,7 +223,7 @@ function PathControllerVisualizer(pathController) {
 
 PathControllerVisualizer.prototype.getVisualization = function() {
   return this.pathGroup;
-}
+};
 
 PathControllerVisualizer.prototype.generateCube = function(position) {
   var cube = new THREE.Mesh(
@@ -229,7 +232,7 @@ PathControllerVisualizer.prototype.generateCube = function(position) {
   cube.position.copy(position);
 
   this.pathGroup.add(cube);
-}
+};
 
 PathControllerVisualizer.prototype.generateLine = function(from, to) {
   this.generateCube(from);
@@ -240,7 +243,7 @@ PathControllerVisualizer.prototype.generateLine = function(from, to) {
       this.cameraPathMaterial);
 
   this.pathGroup.add(line);
-}
+};
 
 PathControllerVisualizer.prototype.generateSpline = function(spline) {
   for(var i = 0; i < spline.points.length; i++) {
@@ -253,17 +256,17 @@ PathControllerVisualizer.prototype.generateSpline = function(spline) {
       new THREE.Mesh(
         new THREE.TubeGeometry(cp),
         this.cameraPathMaterial));
-}
+};
 
 PathControllerVisualizer.prototype.generateJoinSegments = function(spline) {
   this.cameraPathJoinPoints.pop();
   this.cameraPathJoinPoints.shift();
 
-  for (var i=0; i<this.cameraPathJoinPoints.length - 1; i++) {
+  for (var i = 0; i < this.cameraPathJoinPoints.length - 1; i++) {
     var geometry = new THREE.Geometry();
     geometry.vertices.push(
         this.cameraPathJoinPoints[i],
-        this.cameraPathJoinPoints[i+1]);
+        this.cameraPathJoinPoints[i + 1]);
     geometry.computeLineDistances();
 
     this.pathGroup.add(
@@ -272,10 +275,10 @@ PathControllerVisualizer.prototype.generateJoinSegments = function(spline) {
           this.joinSegmentMaterial,
           THREE.LinePieces));
   }
-}
+};
 
 PathControllerVisualizer.prototype.generateVisualization = function(spline) {
-  for (var i=0; i<this.cameraPath.length; i++) {
+  for (var i = 0; i < this.cameraPath.length; i++) {
     var segment = this.cameraPath[i];
     switch (segment.type) {
       case 'point':
@@ -298,4 +301,4 @@ PathControllerVisualizer.prototype.generateVisualization = function(spline) {
   }
 
   this.generateJoinSegments();
-}
+};

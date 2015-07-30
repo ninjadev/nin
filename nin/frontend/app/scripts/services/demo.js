@@ -32,6 +32,12 @@
       demo.music.setPlaybackRate(rate);
     });
 
+    var showCameraPathVisualizations = false;
+    commands.on('toggleCameraPathVisualizations', function() {
+      var showCameraPathVisualizations = !showCameraPathVisualizations;
+      demo.lm.showCameraPathVisualizations(showCameraPathVisualizations);
+    });
+
     return demo;
   });
 })();

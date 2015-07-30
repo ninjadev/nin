@@ -194,3 +194,108 @@ PathController.prototype.getCurrentPath = function(frame) {
   }
   return current;
 };
+
+PathController.prototype.getVisualizer = function() {
+  if (this.visualizer == undefined) {
+    this.visualizer = new PathControllerVisualizer(this);
+  }
+  return this.visualizer;
+}
+
+function PathControllerVisualizer(pathController) {
+  this.pathController = pathController;
+  this.cameraPath = pathController.path;
+  this.pathGroup = new THREE.Object3D();
+  this.cameraPathJoinPoints = [];
+
+  this.cameraPathMaterial = new THREE.MeshBasicMaterial({color: 0xffff22});
+  this.joinSegmentMaterial = new THREE.LineDashedMaterial({
+    color: 0xeeeeee,
+    dashSize: 3,
+    gapSize: 7
+  });
+  this.pointMaterial = new THREE.MeshBasicMaterial({color: 0x22ff22});
+  this.generateVisualization();
+}
+
+PathControllerVisualizer.prototype.getVisualization = function() {
+  return this.pathGroup;
+}
+
+PathControllerVisualizer.prototype.generateCube = function(position) {
+  var cube = new THREE.Mesh(
+      new THREE.BoxGeometry(5, 5, 5),
+      this.pointMaterial);
+  cube.position.copy(position);
+
+  this.pathGroup.add(cube);
+}
+
+PathControllerVisualizer.prototype.generateLine = function(from, to) {
+  this.generateCube(from);
+  this.generateCube(to);
+
+  var line = new THREE.Mesh(
+      new THREE.TubeGeometry(new THREE.LineCurve(from, to)),
+      this.cameraPathMaterial);
+
+  this.pathGroup.add(line);
+}
+
+PathControllerVisualizer.prototype.generateSpline = function(spline) {
+  for(var i = 0; i < spline.points.length; i++) {
+    this.generateCube(spline.points[i]);
+  }
+
+  var cp = new THREE.CurvePath();
+  cp.add(spline);
+  this.pathGroup.add(
+      new THREE.Mesh(
+        new THREE.TubeGeometry(cp),
+        this.cameraPathMaterial));
+}
+
+PathControllerVisualizer.prototype.generateJoinSegments = function(spline) {
+  this.cameraPathJoinPoints.pop();
+  this.cameraPathJoinPoints.shift();
+
+  for (var i=0; i<this.cameraPathJoinPoints.length - 1; i++) {
+    var geometry = new THREE.Geometry();
+    geometry.vertices.push(
+        this.cameraPathJoinPoints[i],
+        this.cameraPathJoinPoints[i+1]);
+    geometry.computeLineDistances();
+
+    this.pathGroup.add(
+        new THREE.Line(
+          geometry,
+          this.joinSegmentMaterial,
+          THREE.LinePieces));
+  }
+}
+
+PathControllerVisualizer.prototype.generateVisualization = function(spline) {
+  for (var i=0; i<this.cameraPath.length; i++) {
+    var segment = this.cameraPath[i];
+    switch (segment.type) {
+      case 'point':
+        this.generateCube(segment.point);
+        this.cameraPathJoinPoints.push(segment.point, segment.point);
+        break;
+
+      case 'linear':
+        this.generateLine(segment.from, segment.to);
+        this.cameraPathJoinPoints.push(segment.from, segment.to);
+        break;
+
+      case 'spline':
+        this.generateSpline(segment.points);
+        this.cameraPathJoinPoints.push(
+            segment.points.points[0],
+            segment.points.points[2]);
+        break;
+    }
+  }
+
+  this.generateJoinSegments();
+}

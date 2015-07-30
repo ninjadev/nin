@@ -93,8 +93,7 @@ window['bootstrap'] = function(options) {
   });
   demo.resize();
 
-  demo.music = document.createElement('audio');
-  Loader.load('res/music.mp3', demo.music);
+  demo.music = loadMusic();
 
   initBeatBean();
 
@@ -111,15 +110,15 @@ window['bootstrap'] = function(options) {
 
   demo.jumpToFrame = function(frame) {
     var time = (frame / 60) * 1000;
-    if (time > demo.music.duration * 1000) {
-      time = demo.music.duration * 1000;
+    if (time > demo.music.getDuration() * 1000) {
+      time = demo.music.getDuration() * 1000;
       frame = (time / 1000) * 60;
     }
     else if (frame < 0) {
       frame = 0;
       time = 0;
     }
-    demo.music.currentTime = time / 1000;
+    demo.music.setCurrentTime(time / 1000);
     demo.looper.time = time;
     demo.looper.oldTime = time;
     demo.looper.deltaTime = 0;

@@ -29,7 +29,7 @@
     });
 
     commands.on('setPlaybackRate', function(rate) {
-      demo.music.playbackRate = rate;
+      demo.music.setPlaybackRate(rate);
     });
 
     return demo;

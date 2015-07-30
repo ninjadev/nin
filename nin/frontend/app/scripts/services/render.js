@@ -25,7 +25,7 @@ angular.module('nin').service('render', function(demo, $http, commands) {
 
   render.isCurrentlyRendering = function() {
     return currentlyRendering;
-  }
+  };
 
   commands.on('startRendering', function() {
     demo.resize(1920, 1080);

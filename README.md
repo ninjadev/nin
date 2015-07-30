@@ -13,7 +13,7 @@ It may be stored anywhere on your disk.
 In the root folder of your project, execute `nin run`, and visit http://localhost:8000 in your browser to use nin.
 
 ### Compiling
-The `nin compile` command will create a single file `bin/demo.png.html` that contains all the code and resources of your demo. Base64 and PNG compression magic is used to achieve this.
+The `nin compile` command will create a single file `bin/demo.png.html` that contains all the code and resources of your demo. Base64 and PNG compression magic is used to achieve this. To compile without PNG compression, use `nin compile --no-png-compression`. That will yield a slightly larger file, but more browsers will be able to run it.
 
 ### Rendering to video
 1. `nin run`.

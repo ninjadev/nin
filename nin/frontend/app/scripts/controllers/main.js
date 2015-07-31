@@ -154,7 +154,7 @@
       function updateLayers() {
         $http({
           method: 'GET',
-          url: '//localhost:9000/res/layers.json'
+          url: '//localhost:9000/res/layers.json?' + Math.random() * 1e16
         }).success(function(layers) {
           $scope.layers = layers;
           demo.lm.hardReset();

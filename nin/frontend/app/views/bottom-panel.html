@@ -1,49 +1,71 @@
 <div class=bottom ng-controller="BottomCtrl">
 
-<div class=layers-label-container>
-  <div
-    class=global-frame
-    title="Global frame for demo" >
-    {{ demo.getCurrentFrame() }}
-    <div class=x-scaler>
-      <input
-        type=range
-        min=0.1
-        max=2
-        step=0.1
-        ng-model=xScale
+  <div class="frame-panel fixed-panel">
+
+    <label>frame</label>
+    <span
+     class=value
+     title="Global frame for demo"
+      >
+      {{ demo.getCurrentFrame() }}
+    </span>
+
+    <span ng-show=inspectedLayer>
+      <span
+        class=value
+        title="Relative frame for inspected layer"
         >
-    </div>
+      / {{ demo.getCurrentFrame() - inspectedLayer.startFrame }}
+      </span>
+      <label>relative frame</label>
+    </span>
+  </div>
 
+  <div class="beat-bean-panel fixed-panel">
+    <label>BEAN</label>
+    <span
+      class=value
+      title="Global music BEAT number for frame"
+      >
+      {{ $window.BEAN }}
+    </span>
+  </div>
+
+  <div class="bottom-controls">
+    <div class=scalers>
+      <div class=x-scaler>
+        <input
+          type=range
+          min=0.1
+          max=2
+          step=0.1
+          ng-model=xScale
+          >
+      </div>
+      <div class=y-scaler>
+        <input
+          type=range
+          min=0.1
+          max=2
+          step=0.1
+          ng-model=yScale
+          >
+      </div>
+    </div>
   </div>
 
   <div
-    class=layer-label
-    ng-repeat="layer in layers"
-    ng-class="(layer==inspectedLayer) ? 'inspected' : ''"
-    style="border-color: {{ layer.color }};" >
-
-    <span
-      class=current-frame
-      title="Relative frame for this layer (click to go to the start of this layer)"
-      ng-click="demo.jumpToFrame(layer.startFrame)" >
-      {{ demo.getCurrentFrame() - layer.startFrame }}
-    </span>
-
-    <span
-      class=name
-      title="Click to select this layer"
-      ng-click="layerLabelClick(layer)">
-      {{ layer.displayName }} 
-    </span>
-  </div>
-</div>
-
-  <div class=layers-bar-container scrollcallback="onBottomScroll">
+    class=layers-bar-container
+    scrollcallback="onBottomScroll"
+    ng-click="musicLayerClick($event)"
+    >
     <div
       class="marker-line yellow"
       ng-hide="hideMarker"
-      style="margin-left: {{ currentFrame * xScale - bottomScrollOffset }}px"
+      style="
+        margin-left: {{ currentFrame * xScale - bottomScrollOffset }}px;
+        height: {{ (30 * yScale + 1) * layers.length }}px;
+      "
       >
       <div class="glow glow-yellow">
         </div>
@@ -52,7 +74,10 @@
     <div
       class="marker-line green"
       ng-show="loopStart"
-      style="margin-left: {{ loopStart * xScale - bottomScrollOffset }}px"
+      style="
+        margin-left: {{ loopStart * xScale - bottomScrollOffset }}px;
+        height: {{ (30 * yScale + 1) * layers.length }}px;
+      "
       >
       <div class="glow glow-green">
         </div>
@@ -61,7 +86,10 @@
     <div
       class="marker-line green"
       ng-show="loopEnd"
-      style="margin-left: {{ loopEnd * xScale - bottomScrollOffset }}px"
+      style="
+        margin-left: {{ loopEnd * xScale - bottomScrollOffset }}px;
+        height: {{ (30 * yScale + 1) * layers.length }}px;
+      "
       >
       <div class="glow glow-green">
         </div>
@@ -77,16 +105,27 @@
     </div>
 
     <div
+      class="layer-bar-wrapper"
       ng-repeat="layer in layers"
-      dragresizable
-      on-drag-resize="dragResizeLayer(event, ui, layer)"
-      class=layer-bar
+      ng-rightclick="inspectLayer(layer)"
+      ng-class="(layer==inspectedLayer) ? 'inspected' : ''"
       style="
-        background: {{ layer.color }};
-        width:{{ (layer.endFrame - layer.startFrame) * xScale }}px;
-        left:{{ layer.startFrame * xScale }}px;
-      ">
-      &nbsp;
+        height: {{ 30 * yScale }}px;
+        font-size: {{ 30 * 0.5 * yScale }}px;
+      "
+      >
+      <div
+        dragresizable
+        on-drag-resize="dragResizeLayer(event, ui, layer)"
+        class=layer-bar
+        style="
+          background: {{ layer.color }};
+          width:{{ (layer.endFrame - layer.startFrame) * xScale }}px;
+          left:{{ layer.startFrame * xScale }}px;
+        ">
+        <span class="name">{{ layer.displayName }}</span>
+        &nbsp;
+      </div>
     </div>
   </div>
 

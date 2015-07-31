@@ -7,6 +7,7 @@
       var linesContainer = null;
 
       $scope.xScale = 0.5;
+      $scope.yScale = 1;
 
       $scope.onBottomScroll = function(event) {
         linesContainer = event.target;
@@ -14,17 +15,22 @@
       };
 
       $scope.musicLayerClick = function($event) {
-        var target = $event.target || $event.srcElement,
-          rect = target.getBoundingClientRect(),
-          offsetX = ($event.clientX - rect.left) | 0;
-
+        var target = $('.layers-bar-container')[0];
+        var rect = target.getBoundingClientRect();
+        var offsetX = ($event.clientX - rect.left) | 0;
         $scope.demo.jumpToFrame(offsetX / $scope.xScale | 0);
       };
 
-      $scope.layerLabelClick = function(layer) {
+      $scope.$window = window;
+
+      $scope.inspectLayer = function(layer) {
         $scope.$parent.$parent.inspectedLayer = $scope.inspectedLayer == layer ? null
                                                                                : layer;
         camera.startEdit(layer);
+      };
+
+      $scope.toggleMinimized = function(layer) {
+        layer.minimized = !layer.minimized;
       };
 
       $scope.dragResizeLayer = function(event, ui, layer) {

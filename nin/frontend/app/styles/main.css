@@ -78,56 +78,50 @@ main-window, main-window > div {
     margin-top: 8px;
 }
 
-.layers-label-container {
-    width: 150px;
-    height: 100%;
-    float: left;
+.bottom-controls {
+    z-index: 999999;
     border-right: 1px solid #3b4449;
     box-shadow: 1px 0px 3px 1px rgba(59, 68, 73, 0.3);
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    background: #161F24;
 }
 
-.layers-label-container .global-frame {
-    height: 50px;
-    padding: 15px 5px;
-    border-left: 5px solid transparent;
-    border-color: #161F24;
+.frame-panel {
+    left: 15px;
 }
 
-.layers-label-container .current-frame, .layers-label-container .global-frame {
+.fixed-panel {
+    position: fixed;
+    top: calc(50% + 18px);
+    background: #161F24;
+    height: 30px;
+    padding: 3px 6px;
     text-align: left;
-    font-weight: bold;
+    z-index: 999999;
     color: white;
 }
 
-.layers-label-container .current-frame, .name {
-    cursor: pointer;
+.beat-bean-panel {
+    right: 25px;
 }
 
-.layer-label {
-    display: table;
-    width: 100%;
-    height: 30px;
-    float: left;
-    padding: 5px 10px 5px 5px;
-    text-align: right;
-    border-left: 5px solid transparent;
-    cursor: default;
-    white-space: nowrap;
-    line-height: 20px;
+.fixed-panel label {
+    opacity: 0.5;
+    padding: 1px 2px;
+    font-weight: normal;
 }
 
-.layer-label.inspected {
-    background: #161f24;
-}
-
-.layer-label span {
-    display: table-cell;
-    vertical-align: middle;
+.fixed-panel .value {
+    padding: 1px 2px;
+    font-weight: bold;
 }
 
 .layers-bar-container {
     overflow-x: scroll;
-    width: calc(100% - 150px);
+    overflow-y: visible;
+    width: auto;
     height: 100%;
     float: left;
     background: #3d464b;
@@ -138,10 +132,29 @@ main-window, main-window > div {
 }
 
 .layer-bar {
-    height: 30px;
     background: #888;
-    display: block;
-    width: auto;
+    height: 100%;
+    border: 1px solid #161f24;
+    padding: 1px 2px;
+    overflow: hidden;
+}
+
+.layer-bar .name {
+    padding: 2px 5px;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.layer-bar-wrapper {
+    height: 30px;
+    padding: 2px 0;
+}
+
+.layer-bar-wrapper:nth-of-type(2n) {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.layer-bar-wrapper.inspected {
+    background: #161f24;
 }
 
 .marker-line {
@@ -157,8 +170,7 @@ main-window, main-window > div {
 }
 
 .marker-line.green {
-    border-right: 5px solid rgb(76, 184, 73);
-    height: 50px;
+    border-right: 3px solid rgb(76, 184, 73);
 }
 
 .glow {
@@ -167,11 +179,11 @@ main-window, main-window > div {
     margin-left: -20px;
 }
 
-.glow .glow-yellow {
+.glow.glow-yellow {
     box-shadow: inset -10px 0px 20px -3px rgba(243, 198, 86, 0.13);
 }
 
-.glow .glow-green {
+.glow.glow-green {
     box-shadow: inset -10px 0px 20px -3px rgba(76, 184, 73, 0.13);
 }
 
@@ -350,10 +362,16 @@ input[type=range]:focus::-ms-fill-upper {
 
 /* end generated */
 
-
-.x-scaler {
+.scalers {
     float: right;
-    width: 50%;
+    width: 100px;
+    height: 100px;
+}
+
+.x-scaler, .y-scaler {
+    width: 100px;
+    height: 50px;
+    padding: 12px;
 }
 
 .top-menu {
@@ -417,4 +435,8 @@ input[type=range]:focus::-ms-fill-upper {
     opacity: 0.2;
     margin: 2px 0 4px;
 
+}
+
+.beat {
+    font-weight: bold;
 }

@@ -24,25 +24,26 @@
 
         scope.$watch('mute', function (toMute) {
           if (toMute) {
-            demo.music.volume = 0;
+            demo.music.setVolume(0);
           } else {
-            demo.music.volume = scope.volume;
+            demo.music.setVolume(scope.volume);
           }
         });
 
         scope.$watch('volume', function(volume) {
           if (scope.mute) return;
-          demo.music.volume = volume;
+          demo.music.setVolume(volume);
         });
 
         $interval(function() {
           scope.$parent.$parent.currentFrame = demo.getCurrentFrame();
-          scope.$parent.$parent.duration = demo.music.duration * 60;
+          scope.$parent.$parent.duration = demo.music.getDuration() * 60;
         }, 1000 / 60);
 
         setTimeout(function(){
           demo.start();
           demo.music.pause();
+          demo.jumpToFrame(0);
         }, 0);
       }
     };

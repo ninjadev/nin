@@ -14,10 +14,11 @@ function createLoop(options) {
 
     var that = this;
     this.loop = function() {
-      that.time = music.currentTime * 1000;
+      that.time = music.getCurrentTime() * 1000;
       that.deltaTime += that.time - that.oldTime;
       that.oldTime = that.time;
       while (that.deltaTime >= frameLength) {
+        demo.music._calculateFFT();
         updateBeatBean(that.currentFrame);
         update(that.currentFrame++);
         that.deltaTime -= frameLength;

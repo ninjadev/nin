@@ -16,12 +16,13 @@ Loader.setRootPath = function(path) {
 };
 
 Loader.prototype.loadAjax = function(filepath, options, callback) {
-  if(!options) {
+  if(!callback) {
     callback = options;
+    options = {};
   }
   this.itemsToAjax.push({
     filepath: filepath,
-    options: options || {},
+    options: options,
     callback: callback
   });
 };

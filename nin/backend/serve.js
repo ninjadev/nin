@@ -15,13 +15,21 @@ var serve = function(projectPath, shouldRunHeadlessly) {
   mkdirp.sync(genPath);
 
   var dasBootSourceDirectoryPath = p.join(__dirname, '/../dasBoot/');
+
+  var dasBootLibSourceFilePaths = readDir.readSync(
+    dasBootSourceDirectoryPath,
+    ['lib/*.js'],
+    readDir.ABSOLUTE_PATHS
+  ).sort();
   var dasBootSourceFilePaths = readDir.readSync(
     dasBootSourceDirectoryPath,
-    ['**.js'],
+    ['*.js'],
     readDir.ABSOLUTE_PATHS
-  );
+  ).sort();
+
   var dasBootDestinationFilePath = p.join(projectPath, '/gen/dasBoot.js');
-  concat(dasBootSourceFilePaths, dasBootDestinationFilePath, function() {
+  concat(dasBootLibSourceFilePaths.concat(dasBootSourceFilePaths),
+         dasBootDestinationFilePath, function() {
     projectSettings.load(projectPath);
 
     console.log(__dirname);

@@ -47,14 +47,16 @@
       $scope.loopEnd = null;
       $scope.loopActive = false;
       commands.on('setCuePoint', function() {
+        var currentBEAN = BEAN_FOR_FRAME($scope.currentFrame);
+        var currentQuantizedFrame = FRAME_FOR_BEAN(currentBEAN - currentBEAN % PROJECT.music.subdivision);
         if ($scope.loopStart === null) {
-          $scope.loopStart = $scope.currentFrame;
+          $scope.loopStart = currentQuantizedFrame;
         } else if ($scope.loopEnd === null) {
           if ($scope.loopStart > $scope.currentFrame) {
-            $scope.loopEnd = $scope.loopStart;
-            $scope.loopStart = $scope.currentFrame;
+            $scope.loopEnd = currentQuantizedFrame;
+            $scope.loopStart = currentQuantizedFrame;
           } else {
-            $scope.loopEnd = $scope.currentFrame;
+            $scope.loopEnd = currentQuantizedFrame;
           }
           $scope.loopActive = true;
         } else {

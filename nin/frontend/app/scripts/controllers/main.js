@@ -85,6 +85,14 @@
           ]
         },
         {
+          name: 'Camera',
+          items: [
+            {name: 'Toggle camera path visualization', click: function() {
+              commands.toggleCameraPathVisualizations();
+            }}
+          ]
+        },
+        {
           name: 'Generate',
           items: [
             {name: 'Layer', click: function() {

@@ -49,9 +49,13 @@ LayerManager.prototype.loadLayer = function(layer) {
 LayerManager.prototype.update = function(frame) {
   this.updateActiveLayersList(frame);
   for(var i = 0; i < this.activeLayers.length; i++) {
-    var relativeFrame = frame - this.activeLayers[i].startFrame;
-    this.activeLayers[i].instance && this.activeLayers[i].instance.update(
-        frame, relativeFrame);
+    var layer = this.activeLayers[i],
+        li = layer.instance,
+        relativeFrame = frame - layer.startFrame;
+
+    if (li) {
+      li.update(frame, relativeFrame);
+    }
   }
 };
 
@@ -123,6 +127,22 @@ LayerManager.prototype.updateActiveLayersList = function(frame, forceUpdate) {
     this.rebuildEffectComposer();
   }
 };
+
+LayerManager.prototype.showCameraPathVisualizations = function(shouldShow) {
+  for(var i = 0; i < this.layers.length; i++) {
+    var li = this.layers[i].instance;
+    if (li && li.cameraController && li.cameraController.position) {
+      var visualizer = li.cameraController.position.getVisualizer();
+      var visualization = visualizer.getVisualization();
+
+      if (shouldShow) {
+        li.scene.add(visualization);
+      } else {
+        li.scene.remove(visualization);
+      }
+    }
+  }
+}
 
 LayerManager.prototype.rebuildEffectComposer = function() {
   this.demo.rebuildEffectComposer(this.activeLayers.map(function(el) {

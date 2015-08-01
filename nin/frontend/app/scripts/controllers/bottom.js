@@ -72,6 +72,18 @@
         }
       });
 
+      commands.on('multiplyLoopLengthBy', function(amount) {
+        if ($scope.loopEnd === undefined || $scope.loopStart === undefined) {
+          return;
+        }
+
+        var clampedAmount = Math.max(0, amount),
+            loopLength = $scope.loopEnd - $scope.loopStart,
+            newLoopLength = Math.max(1, loopLength * clampedAmount);
+
+        $scope.loopEnd = $scope.loopStart + newLoopLength;
+      });
+
       $scope.$watch('currentFrame', function (nextFrame) {
         if ($scope.loopActive && nextFrame >= $scope.loopEnd) {
           $scope.demo.jumpToFrame($scope.loopStart);

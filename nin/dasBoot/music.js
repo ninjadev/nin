@@ -1,5 +1,5 @@
 function loadMusic() {
-  var webAudioContext = new window.AudioContext();
+  var webAudioContext = new audioContext();
   var _bufferSource;
   var _buffer;
   var _loaded = false;

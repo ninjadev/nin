@@ -71,7 +71,7 @@ function loadMusic() {
       }
       _globalTimeOffset = webAudioContext.currentTime;
       this.paused = false;
-      _bufferSource && _bufferSource.stop();
+      _bufferSource && _bufferSource.stop(0);
       _bufferSource = webAudioContext.createBufferSource();
       _bufferSource.buffer = _buffer;
       _bufferSource.connect(_analyserNode);
@@ -86,7 +86,7 @@ function loadMusic() {
     pause: function() {
       this.setCurrentTime(this.getCurrentTime());
       this.paused = true;
-      _bufferSource && _bufferSource.stop();
+      _bufferSource && _bufferSource.stop(0);
     }
   }
 }

@@ -30,7 +30,7 @@ var serve = function(projectPath, shouldRunHeadlessly) {
   var dasBootDestinationFilePath = p.join(projectPath, '/gen/dasBoot.js');
   concat(dasBootLibSourceFilePaths.concat(dasBootSourceFilePaths),
          dasBootDestinationFilePath, function() {
-    projectSettings.load(projectPath);
+    projectSettings.generate(projectPath);
 
     console.log(__dirname);
     if(!shouldRunHeadlessly) {

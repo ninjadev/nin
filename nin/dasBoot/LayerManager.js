@@ -132,13 +132,19 @@ LayerManager.prototype.showCameraPathVisualizations = function(shouldShow) {
   for(var i = 0; i < this.layers.length; i++) {
     var li = this.layers[i].instance;
     if (li && li.cameraController && li.cameraController.position) {
-      var visualizer = li.cameraController.position.getVisualizer();
-      var visualization = visualizer.getVisualization();
+      var pathVisualization = li.cameraController.position
+        .getVisualizer()
+        .getVisualization();
+
+      var cameraVisualization = li.cameraController
+        .getVisualization();
 
       if (shouldShow) {
-        li.scene.add(visualization);
+        li.scene.add(pathVisualization);
+        li.scene.add(cameraVisualization);
       } else {
-        li.scene.remove(visualization);
+        li.scene.remove(pathVisualization);
+        li.scene.remove(cameraVisualization);
       }
     }
   }

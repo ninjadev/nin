@@ -9,10 +9,6 @@
       $scope.xScale = 0.5;
       $scope.yScale = 1;
 
-      $scope.onBottomScroll = function(event) {
-        linesContainer = event.target;
-        $scope.bottomScrollOffset = event.target.scrollLeft;
-      };
 
       $scope.musicLayerClick = function($event) {
         var target = $('.layers-bar-container')[0];

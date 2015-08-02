@@ -13,7 +13,7 @@
 
         var waveform;
         var request = new XMLHttpRequest();
-        request.open('GET', '//localhost:9000/res/music.mp3', true);
+        request.open('GET', '//localhost:9000/' + PROJECT.music.path, true);
         request.responseType = 'arraybuffer';
         request.onload = function() {
           context.decodeAudioData(request.response, function(buffer) {

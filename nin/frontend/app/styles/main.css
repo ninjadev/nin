@@ -203,11 +203,11 @@ main-window, main-window > div {
     position: relative;
     top: -50px;
     height: 100%;
-    display: none;
 }
 
 .musiclayer .under {
     height: 100%;
+    background: #f3c656;
 }
 
 .top-panel {

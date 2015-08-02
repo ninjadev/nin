@@ -14,7 +14,7 @@ function load(projectPath) {
 }
 
 function write(projectPath, parsedProjectSettings) {
-  var projectSettingsFile = "var PROJECT = " + JSON.stringify(parsedProjectSettings) + ";";
+  var projectSettingsFile = 'var PROJECT = ' + JSON.stringify(parsedProjectSettings) + ';';
   fs.writeFileSync(
     projectPath + '/gen/projectSettings.js',
     new Buffer(projectSettingsFile)

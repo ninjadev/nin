@@ -23,10 +23,10 @@
             {name: 'Forward one second', shortcut: ',', click: function() {
               commands.jog(60);
             }},
-            {name: 'Rewind 10 seconds', shortcut: 'L', click: function() {
+            {name: 'Rewind 10 seconds', shortcut: 'K', click: function() {
               commands.jog(-60 * 10);
             }},
-            {name: 'Foward 10 seconds', shortcut: 'K', click: function() {
+            {name: 'Forward 10 seconds', shortcut: 'L', click: function() {
               commands.jog(60 * 10);
             }},
             {name: 'Rewind one frame', shortcut: ';', click: function() {

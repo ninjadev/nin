@@ -1,5 +1,5 @@
 function loadMusic() {
-  var webAudioContext = new window.AudioContext();
+  var webAudioContext = new audioContext();
   var _bufferSource;
   var _buffer;
   var _loaded = false;
@@ -70,8 +70,10 @@ function loadMusic() {
         return;
       }
       _globalTimeOffset = webAudioContext.currentTime;
+      if (!this.paused) {
+        _bufferSource && _bufferSource.stop(0);
+      }
       this.paused = false;
-      _bufferSource && _bufferSource.stop();
       _bufferSource = webAudioContext.createBufferSource();
       _bufferSource.buffer = _buffer;
       _bufferSource.connect(_analyserNode);
@@ -86,7 +88,7 @@ function loadMusic() {
     pause: function() {
       this.setCurrentTime(this.getCurrentTime());
       this.paused = true;
-      _bufferSource && _bufferSource.stop();
+      _bufferSource && _bufferSource.stop(0);
     }
   }
 }

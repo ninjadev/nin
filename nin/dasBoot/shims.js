@@ -18,3 +18,8 @@ var makeFullscreen = function(elem) {
     elem.webkitRequestFullscreen();
   }
 };
+
+var audioContext = (function() {
+  return window.AudioContext ||
+    window.webkitAudioContext;
+})();

@@ -7,14 +7,54 @@
       var linesContainer = null;
 
       $scope.xScale = 0.5;
+      $scope.xScaleTarget = 0.5;
       $scope.yScale = 1;
 
+      $scope.$watch('xScaleTarget', function() {
+        var target = $('.layers-bar-container');
+        var rect = target[0].getBoundingClientRect();
+        var parentRect = target.parent()[0].getBoundingClientRect();
+        var firstVisibleFrame = -rect.left / $scope.xScale;
+        var lastVisibleFrame = (-rect.left + parentRect.width) / $scope.xScale;
+        var centerFrame = firstVisibleFrame + (lastVisibleFrame - firstVisibleFrame) / 2;
 
-      $scope.musicLayerClick = function($event) {
+        var radius = parentRect.width / 2 / $scope.xScaleTarget;
+        var newFirstVisibleFrame = centerFrame - radius;
+        var newLastVisibleFrame = centerFrame + radius;
+
+        if (newFirstVisibleFrame < 0) {
+          newFirstVisibleFrame = 0;
+        }
+
+        if(newLastVisibleFrame > rect.width / $scope.xScale) {
+          newLastVisibleFrame = rect.width / $scope.xScale;
+        }
+
+        if(newLastVisibleFrame === 0) {
+          return;
+        }
+        var newCenterFrame = newFirstVisibleFrame + (newLastVisibleFrame - newFirstVisibleFrame) / 2;
+        var newXScaleTarget = parentRect.width / 2 / (newLastVisibleFrame - newCenterFrame) ;
+        var newOffsetX = newFirstVisibleFrame * newXScaleTarget;
+        $('div.bottom').parent().scrollLeft(newOffsetX);
+        $scope.xScale = newXScaleTarget;
+      });
+
+      function getClickOffset($event) {
         var target = $('.layers-bar-container')[0];
         var rect = target.getBoundingClientRect();
         var offsetX = ($event.clientX - rect.left) | 0;
-        $scope.demo.jumpToFrame(offsetX / $scope.xScale | 0);
+        var offsetY = ($event.clientY - rect.top) | 0;
+        return {x: offsetX, y: offsetY};
+      }
+
+      function getScrollOffset($event) {
+        var target = $('.layers-bar-container')[0];
+        return target.getBoundingClientRect();
+      }
+
+      $scope.musicLayerClick = function($event) {
+        $scope.demo.jumpToFrame(getClickOffset($event).x / $scope.xScale | 0);
       };
 
       $scope.$window = window;

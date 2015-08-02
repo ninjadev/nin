@@ -3,7 +3,7 @@ function loadMusic() {
   var _bufferSource;
   var _buffer;
   var _loaded = false;
-  Loader.loadAjax('res/music.mp3', {responseType: 'arraybuffer'}, function(data) {
+  Loader.loadAjax(PROJECT.music.path, {responseType: 'arraybuffer'}, function(data) {
     webAudioContext.decodeAudioData(data, function(buffer) {
       _buffer = buffer;
       _loaded = true;

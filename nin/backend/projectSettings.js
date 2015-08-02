@@ -2,6 +2,7 @@ var fs = require('fs');
 
 var defaultSettings = {
   music: {
+    path: "res/music.mp3",
     bpm: 110,
     subdivision: 6
   }

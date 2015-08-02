@@ -1,11 +1,14 @@
-var spawn = require('child_process').spawn;
+var spawn = require('child_process').spawn,
+    path = require('path'),
+    projectSettings = require('./projectSettings');
 
 var render = function(projectPath) {
-  var avconv = spawn('avconv', [
+  var musicPath = path.join(projectPath, projectSettings.load(projectPath).music.path),
+      avconv = spawn('avconv', [
   '-y',
   '-r', '60',
   '-i', projectPath + '/bin/render/%07d.png',
-  '-i', projectPath + '/res/music.mp3',
+  '-i', musicPath,
   '-c:v', 'libx264',
   '-c:a', 'copy',
   '-crf', '16',  

@@ -127,6 +127,12 @@ main-window, main-window > div {
     background: #3d464b;
 }
 
+.layers-bar-container, .layers-bar-container * {
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000;
+}
+
 .layer-bar-container {
     border: 1px solid #888;
 }

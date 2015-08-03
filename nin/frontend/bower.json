@@ -13,9 +13,5 @@
     "angular-bootstrap": "0.11.0",
     "angular-ui-layout": "~0.0.0",
     "jquery-ui": "~1.10.4"
-  },
-  "devDependencies": {
-    "angular-mocks": "1.2.15",
-    "angular-scenario": "1.2.15"
   }
 }

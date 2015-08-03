@@ -3,10 +3,11 @@ function loadMusic() {
   var _bufferSource;
   var _buffer;
   var _loaded = false;
-  Loader.loadAjax(PROJECT.music.path, {responseType: 'arraybuffer'}, function(data) {
+  Loader.loadAjax(PROJECT.music.path, {responseType: 'arraybuffer'}, function(data, registerAsLoaded) {
     webAudioContext.decodeAudioData(data, function(buffer) {
       _buffer = buffer;
       _loaded = true;
+      registerAsLoaded();
     });
   });
   var _gainNode = webAudioContext.createGain();

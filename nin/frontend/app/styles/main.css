@@ -101,6 +101,7 @@ main-window, main-window > div {
     text-align: left;
     z-index: 999999;
     color: white;
+    pointer-events: none;
 }
 
 .beat-bean-panel {

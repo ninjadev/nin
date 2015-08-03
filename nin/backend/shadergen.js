@@ -59,7 +59,7 @@ var shaderGen = function(pathPrefix, cb) {
   traversePath(pathPrefix + '/src/shaders/', function() {
     traversePath(__dirname + '/../dasBoot/shaders/', function() {
       fs.writeFileSync(pathPrefix + '/gen/shaders.js', out);
-      cb();
+      cb(out);
     });
   });
 };

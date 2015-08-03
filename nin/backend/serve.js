@@ -39,6 +39,19 @@ var serve = function(projectPath, shouldRunHeadlessly) {
       frontend.listen(8000);
     }
 
+    var findShaderDependencies = function(content) {
+      var regex = /\bSHADERS\.(\w+)\b/g;
+      var shaderNames = [];
+      var matches = content.match(regex) || [];
+      matches.forEach(function(match) {
+        var shaderName = match.split('.')[1];
+        if (shaderNames.indexOf(shaderName) === -1) {
+          shaderNames.push(shaderName);
+        }
+      });
+      return shaderNames;
+    };
+
     var eventFromPath = function(data) {
       var path = data.path,
           filename = p.basename(path),
@@ -59,6 +72,7 @@ var serve = function(projectPath, shouldRunHeadlessly) {
         event.type = 'layer';
         event.content = content;
         event.layername = filenameWithoutExtension;
+        event.shaderDependencies = findShaderDependencies(content);
       }
 
       return event;
@@ -69,15 +83,15 @@ var serve = function(projectPath, shouldRunHeadlessly) {
         return;
       }
 
-      sock.broadcast(event, eventFromPath(data.path));
+      sock.broadcast(event, eventFromPath(data));
     });
 
     var sockets = express();
     var sockets_server = require('http').createServer(sockets);
     var sock = socket(projectPath, function(conn) {
       for (var i in watcher.paths) {
-        conn.send('add', eventFromPath(watcher.paths[i]));
-      });
+        conn.send('add', eventFromPath({path: watcher.paths[i]}));
+      }
     });
 
     sock.server.installHandlers(sockets_server, {prefix: '/socket'});

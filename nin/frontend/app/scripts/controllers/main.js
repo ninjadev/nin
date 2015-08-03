@@ -203,6 +203,7 @@
         return h;
       }
 
+      var layerShaderDependencies = {};
       socket.on('add change', function(event) {
         switch (event.type) {
           case 'layers':
@@ -234,11 +235,13 @@
           case 'shader':
             (1, eval)(event.content);
 
-            for (var i in $scope.layers.length) {
+            for (var i in $scope.layers) {
               var layer = $scope.layers[i];
-              if (layer.shaders && layer.shaders.indexOf(event.shadername !== -1)) {
-                demo.lm.refresh(layer.type);
-                demo.lm.update(demo.looper.currentFrame);
+              if (layerShaderDependencies[layer.type]) {
+                if (layerShaderDependencies[layer.type].indexOf(event.shadername) !== -1) {
+                  demo.lm.refresh(layer.type);
+                  demo.lm.update(demo.looper.currentFrame);
+                }
               }
             }
 
@@ -247,6 +250,7 @@
 
           case 'layer':
             (1, eval)(event.content);
+            layerShaderDependencies[event.layername] = event.shaderDependencies;
 
             demo.lm.refresh(event.layername);
             demo.lm.update(demo.looper.currentFrame);

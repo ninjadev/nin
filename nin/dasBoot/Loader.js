@@ -88,8 +88,20 @@ Loader.prototype.start = function(onprogress, oncomplete) {
   this.itemsToAjax.forEach(function(item) {
     if(window.FILES) {
       console.log(that.id, item.filepath, FILES[item.filepath] && atob(FILES[item.filepath]).slice(0, 10));
-      item.callback(atob(FILES[item.filepath]));
-      registerAsLoaded(item); 
+      var bytes = atob(FILES[item.filepath])
+      if(item.options.responseType == 'arraybuffer') {
+        var buffer = new ArrayBuffer(bytes.length);
+        var bufferView = new Uint8Array(buffer);
+        for(var i = 0; i < bytes.length; i++) {
+          bufferView[i] = bytes.charCodeAt(i);
+        }
+        item.callback(buffer, function() {
+          registerAsLoaded(item);
+        });
+      } else {
+        item.callback(bytes);
+        registerAsLoaded(item);
+      }
     } else {
       var response = null;
       var request = new XMLHttpRequest();

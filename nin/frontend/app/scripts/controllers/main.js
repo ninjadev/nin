@@ -203,84 +203,56 @@
         return h;
       }
 
-      function updateLayers() {
-        $http({
-          method: 'GET',
-          url: '//localhost:9000/res/layers.json?' + Math.random() * 1e16
-        }).success(function(layers) {
-          $scope.layers = layers;
-          demo.lm.hardReset();
-          for(var i = 0; i < layers.length; i++) {
-            var layer = layers[i];
-            layer.position = i;
-            layer.color = (Math.abs(hash(layer.displayName || '')) | 0) % 8;
-            demo.lm.loadLayer(layer);
-          }
-          Loader.start(function() {}, function() {});
-          demo.lm.jumpToFrame(demo.getCurrentFrame());
-        });
-      }
+      socket.on('add change', function(event) {
+        switch (event.type) {
+          case 'layers':
+            var layers = JSON.parse(event.content);
 
-      function updateCamerapaths() {
-        $http.get('//localhost:9000/res/camerapaths.json')
-          .success(function(camerapaths) {
+            $scope.layers = layers;
+            demo.lm.hardReset();
+
+            for(var i in layers) {
+              var layer = layers[i];
+              layer.position = i;
+              layer.color = (Math.abs(hash(layer.displayName || '')) | 0) % 8;
+              demo.lm.loadLayer(layer);
+            }
+
+            Loader.start(function() {}, function() {});
+            demo.lm.jumpToFrame(demo.getCurrentFrame());
+            break;
+
+          case 'camerapaths':
+            var camerapaths = JSON.parse(event.content);
+
             CameraController.paths = camerapaths;
             for (var index in CameraController.layers) {
               CameraController.layers[index].parseCameraPath(camerapaths);
             }
-          });
-      }
+            break;
 
-      function updateShaders(path) {
-        var splitted = path.split('/');
-        var shaderName = splitted[splitted.length - 2];
-        ScriptReloader.reload('//localhost:9000/gen/shaders.js', function() {
-          for (var i=0; i < $scope.layers.length; i++) {
-            var layer = $scope.layers[i];
-            if (layer.shaders && layer.shaders.indexOf(shaderName) !== -1) {
-              demo.lm.refresh(layer.type);
-              demo.lm.update(demo.looper.currentFrame);
+          case 'shader':
+            (1, eval)(event.content);
+
+            for (var i in $scope.layers.length) {
+              var layer = $scope.layers[i];
+              if (layer.shaders && layer.shaders.indexOf(event.shadername !== -1)) {
+                demo.lm.refresh(layer.type);
+                demo.lm.update(demo.looper.currentFrame);
+              }
             }
-          }
-          Loader.start(function() {}, function() {});
-        });
-      }
 
-      function updateSingleLayer(path) {
-        var splitted = path.split('/');
-        ScriptReloader.reload('//localhost:9000/' + path, function() {
-          var className = splitted[splitted.length - 1].split('.')[0];
-          demo.lm.refresh(className);
-          demo.lm.update(demo.looper.currentFrame);
-          Loader.start(function() {}, function() {});
-        });
-      }
+            Loader.start(function() {}, function() {});
+            break;
 
-      socket.on('add', function(e) {
-        e.path = e.path.replace(/\\/g, '/');
-        console.log('add!', e);
-        if(e.path == 'res/layers.json') {
-          updateLayers();
-        } else if (e.path == 'res/camerapaths.json') {
-          updateCamerapaths();
-        } else if (e.path.indexOf('/shaders/') !== -1) {
-          updateShaders(e.path);
-        } else {
-          updateSingleLayer(e.path);
-        }
-      });
+          case 'layer':
+            (1, eval)(event.content);
 
-      socket.on('change', function(e) {
-        e.path = e.path.replace(/\\/g, '/');
-        console.log('change!', e);
-        if(e.path == 'res/layers.json') {
-          updateLayers();
-        } else if (e.path == 'res/camerapaths.json') {
-          updateCamerapaths();
-        } else if (e.path.indexOf('/shaders/') !== -1) {
-          updateShaders(e.path);
-        } else {
-          updateSingleLayer(e.path);
+            demo.lm.refresh(event.layername);
+            demo.lm.update(demo.looper.currentFrame);
+
+            Loader.start(function() {}, function() {});
+            break;
         }
       });
 

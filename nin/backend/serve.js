@@ -39,19 +39,47 @@ var serve = function(projectPath, shouldRunHeadlessly) {
       frontend.listen(8000);
     }
 
+    var eventFromPath = function(data) {
+      var path = data.path,
+          filename = p.basename(path),
+          filenameWithoutExtension = filename.split('.')[0],
+          content = fs.readFileSync(path, 'utf-8');
+
+      var event = {};
+
+      if (filename == 'layers.json' ||
+            filename == 'camerapaths.json') {
+        event.type = filenameWithoutExtension;
+        event.content = content;
+      } else if (path.indexOf('/shaders/') !== -1) {
+        event.type = 'shader';
+        event.content = data.out;
+        event.shadername = p.basename(p.dirname(path));
+      } else {
+        event.type = 'layer';
+        event.content = content;
+        event.layername = filenameWithoutExtension;
+      }
+
+      return event;
+    };
+
     var watcher = watch(projectPath, function(event, data) {
-      sock.broadcast(event, data);
+      if (event !== 'add' && event !== 'change') {
+        return;
+      }
+
+      sock.broadcast(event, eventFromPath(data.path));
     });
 
     var sockets = express();
     var sockets_server = require('http').createServer(sockets);
     var sock = socket(projectPath, function(conn) {
       for (var i in watcher.paths) {
-        conn.send('add', {
-          path: watcher.paths[i]
-        });
-      }
+        conn.send('add', eventFromPath(watcher.paths[i]));
+      });
     });
+
     sock.server.installHandlers(sockets_server, {prefix: '/socket'});
     sockets_server.listen(1337, '0.0.0.0');
 

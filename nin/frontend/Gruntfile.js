@@ -4,6 +4,7 @@
   module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
     require('time-grunt')(grunt);
+    grunt.loadNpmTasks('grunt-contrib-less');
 
     grunt.initConfig({
       watch: {
@@ -18,9 +19,9 @@
             livereload: true
           }
         },
-        styles: {
-          files: ['app/styles/{,*/}*.css'],
-          tasks: ['newer:copy:styles']
+        less: {
+          files: ['app/styles/{,*/}*.less'],
+          tasks: ['newer:less:app']
         },
         gruntfile: {
           files: ['Gruntfile.js']
@@ -49,6 +50,30 @@
               '.tmp',
               'app'
             ]
+          }
+        },
+        dist: {
+          options: {
+            base: 'app'
+          }
+        }
+      },
+
+      less: {
+        app: {
+          options: {
+            paths: ['app/styles']
+          },
+          files: {
+            '.tmp/styles/main.css': 'app/styles/{,*/}*.less'
+          }
+        },
+        dist: {
+          options: {
+            paths: ['app/styles']
+          },
+          files: {
+            'dist/styles/main.css': 'app/styles/{,*/}*.less'
           }
         }
       },
@@ -193,22 +218,12 @@
             dest: 'dist/images',
             src: ['generated/*']
           }]
-        },
-        styles: {
-          expand: true,
-          cwd: 'app/styles',
-          dest: '.tmp/styles/',
-          src: '{,*/}*.css'
         }
       },
 
       // Run some tasks in parallel to speed up the build process
       concurrent: {
-        server: [
-          'copy:styles'
-        ],
         dist: [
-          'copy:styles',
           'imagemin',
           'svgmin'
         ]
@@ -221,7 +236,7 @@
       grunt.task.run([
         'clean:server',
         'bowerInstall',
-        'concurrent:server',
+        'less:app',
         'connect:livereload',
         'watch'
       ]);
@@ -234,6 +249,7 @@
       'concurrent:dist',
       'concat',
       'ngmin',
+      'less:dist',
       'copy:dist',
       'cssmin',
       'uglify',

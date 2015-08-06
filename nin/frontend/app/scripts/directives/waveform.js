@@ -24,7 +24,7 @@
               height: 50,
               width: duration,
               interpolate: true,
-              innerColor: '#3b4449',
+              innerColor: 'rgb(46, 62, 72)',
               outerColor: 'rgba(0, 0, 0, 0)',
               data: channelData
             });

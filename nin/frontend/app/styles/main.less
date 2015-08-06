@@ -170,12 +170,13 @@ main-window, main-window > div {
     height: calc(~"100% -" 8px);
 }
 
-.marker-line.yellow {
-    border-right: 1px solid #f3c656;
+.marker-line.play {
+    border-right: 1px solid #b1e758;
 }
 
-.marker-line.green {
-    border-right: 3px solid rgb(76, 184, 73);
+.marker-line.loop {
+    border-right: 1px solid #ffb870;
+    box-shadow: 0px 0px 20px #ffb870;
 }
 
 .glow {
@@ -184,12 +185,15 @@ main-window, main-window > div {
     margin-left: -20px;
 }
 
-.glow.glow-yellow {
-    box-shadow: inset -10px 0px 20px -3px rgba(243, 198, 86, 0.13);
+.glow.glow-play {
+    box-shadow: inset -10px 0px 20px -3px #59922f;
+    opacity: 0.7;
 }
 
-.glow.glow-green {
-    box-shadow: inset -10px 0px 20px -3px rgba(76, 184, 73, 0.13);
+.glow.glow-loop {
+    width: 1px;
+    opacity: 0.7;
+    margin-left: 0;
 }
 
 .musiclayer {
@@ -213,6 +217,7 @@ main-window, main-window > div {
 .musiclayer .under {
     height: 100%;
     background: #f3c656;
+    background: @tangaroa;
 }
 
 .top-panel {

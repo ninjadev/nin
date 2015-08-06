@@ -59,38 +59,38 @@
     ng-click="musicLayerClick($event)"
     >
     <div
-      class="marker-line yellow"
+      class="marker-line play"
       ng-hide="hideMarker"
       style="
         margin-left: {{ currentFrame * xScale - bottomScrollOffset }}px;
         height: {{ (30 * yScale + 1) * layers.length }}px;
       "
       >
-      <div class="glow glow-yellow">
+      <div class="glow glow-play">
         </div>
     </div>
 
     <div
-      class="marker-line green"
+      class="marker-line loop"
       ng-show="loopStart"
       style="
         margin-left: {{ loopStart * xScale - bottomScrollOffset }}px;
         height: {{ (30 * yScale + 1) * layers.length }}px;
       "
       >
-      <div class="glow glow-green">
+      <div class="glow glow-loop">
         </div>
     </div>
 
     <div
-      class="marker-line green"
+      class="marker-line loop"
       ng-show="loopEnd"
       style="
         margin-left: {{ loopEnd * xScale - bottomScrollOffset }}px;
         height: {{ (30 * yScale + 1) * layers.length }}px;
       "
       >
-      <div class="glow glow-green">
+      <div class="glow glow-loop">
         </div>
     </div>
 

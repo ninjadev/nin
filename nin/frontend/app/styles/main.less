@@ -447,6 +447,43 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .top-left-quadrant {
-  background: @top-left-quadrant-bg-color url('/images/nin.png') no-repeat center center;
+  background: @bg-color url('/images/nin.png') no-repeat center center;
   background-size: 15%;
+
+  > div {
+    height: 100%;
+    background: @bg-color;
+  }
+
+  .label {
+    font-weight: normal;
+  }
+
+  input {
+    background: @top-panel-layer-title-bg-color;
+  }
+
+  .info-panel {
+    padding-top: 20px;
+    .value {
+      font-family: monospace;
+      display: inline-block;
+    }
+    .config-value {
+      font-family: monospace;
+      overflow: auto;
+      white-space: pre;
+    }
+  }
+
+  .buttons {
+    padding-top: 20px;
+  }
+}
+
+.btn.btn-default {
+  background: #4d565b;
+  box-shadow: 0px 1px 1px #666666;
+  border: solid @top-panel-layer-title-bg-color 1px;
+  color: @text-color;
 }

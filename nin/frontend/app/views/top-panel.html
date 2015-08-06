@@ -4,91 +4,93 @@
   ui-layout="{ flow : 'column' }"
   >
 
-  <div ng-show=inspectedLayer>
+  <div class=top-left-quadrant>
+    <div ng-show=inspectedLayer>
 
-    <div class=layer-title>
-      {{ inspectedLayer.displayName }}
-    </div>
+      <div class=layer-title>
+        {{ inspectedLayer.displayName }}
+      </div>
 
-    <tabset justified=true>
+      <tabset justified=true>
 
-      <tab heading=Camera>
-        <div class="camera-panel col-sm-12">
-          <div class=form-horizontal>
-            <div class=form-group>
-              <label class="col-sm-2 control-label">
-                position
-              </label>
-              <div class="col-sm-10">
-                <input
-                   class=selectable-contents
-                   ng-value=cameraPosition
-                   select-on-click
-                  >
+        <tab heading=Camera>
+          <div class="camera-panel col-sm-12">
+            <div class=form-horizontal>
+              <div class=form-group>
+                <label class="col-sm-2 control-label">
+                  position
+                </label>
+                <div class="col-sm-10">
+                  <input
+                     class=selectable-contents
+                     ng-value=cameraPosition
+                     select-on-click
+                    >
+                </div>
               </div>
-            </div>
 
-            <div class=form-group>
-              <label class="col-sm-2 control-label">
-                lookAt
-              </label>
-              <div class="col-sm-10">
-                <input
-                   class=selectable-contents
-                   ng-value=cameraLookat
-                   select-on-click
-                  >
+              <div class=form-group>
+                <label class="col-sm-2 control-label">
+                  lookAt
+                </label>
+                <div class="col-sm-10">
+                  <input
+                     class=selectable-contents
+                     ng-value=cameraLookat
+                     select-on-click
+                    >
+                </div>
               </div>
-            </div>
 
-            <div class=form-group>
-              <label class="col-sm-2 control-label">
-                roll
-              </label>
-              <div class="col-sm-10">
-                <input
-                   class=selectable-contents
-                   ng-value=cameraRoll
-                   select-on-click
-                  >
+              <div class=form-group>
+                <label class="col-sm-2 control-label">
+                  roll
+                </label>
+                <div class="col-sm-10">
+                  <input
+                     class=selectable-contents
+                     ng-value=cameraRoll
+                     select-on-click
+                    >
+                </div>
               </div>
-            </div>
 
-            <div class=form-group>
-              <label class="col-sm-2 control-label">
-                fov
-              </label>
-              <div class="col-sm-10">
-                <input
-                   class=selectable-contents
-                   ng-value=cameraFov
-                   select-on-click
-                  >
+              <div class=form-group>
+                <label class="col-sm-2 control-label">
+                  fov
+                </label>
+                <div class="col-sm-10">
+                  <input
+                     class=selectable-contents
+                     ng-value=cameraFov
+                     select-on-click
+                    >
+                </div>
               </div>
-            </div>
 
-            <div class=form-group>
-              <button
-                  id="fly-mode"
-                  class="btn btn-default"
-                  ng-click="commands.toggleFlyAroundMode()">
-                  Fly-around mode
-              </button>
-              <button
-                  id="reset-fly-flight-dynamics"
-                  class="btn btn-default"
-                  ng-click="resetFlyFlightDynamics();">
-                  Reset flight dynamics
-              </button>
+              <div class=form-group>
+                <button
+                    id="fly-mode"
+                    class="btn btn-default"
+                    ng-click="commands.toggleFlyAroundMode()">
+                    Fly-around mode
+                </button>
+                <button
+                    id="reset-fly-flight-dynamics"
+                    class="btn btn-default"
+                    ng-click="resetFlyFlightDynamics();">
+                    Reset flight dynamics
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </tab>
+        </tab>
 
-      <tab heading="A second tab">
-        Yo
-      </tab>
-    </tabset>
+        <tab heading="A second tab">
+          Yo
+        </tab>
+      </tabset>
+    </div>
   </div>
 
   <demo></demo>

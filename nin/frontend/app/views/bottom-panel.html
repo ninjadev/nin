@@ -111,6 +111,10 @@
       style="
         height: {{ 30 * yScale }}px;
         font-size: {{ 30 * 0.5 * yScale }}px;
+        {{ layer === inspectedLayer ?  ''
+                                    : 'background: url(' +
+                                         backgroundImageDataUrl + ')' }};
+        background-size: {{ backgroundWidth }}px 1px;
       "
       >
       <div

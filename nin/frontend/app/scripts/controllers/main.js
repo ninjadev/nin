@@ -4,6 +4,27 @@
   angular.module('nin')
     .controller('MainCtrl', function ($scope, $http, $window, ScriptReloader, socket, demo, commands) {
 
+      $scope.themes = [
+        'dark',
+        'light'
+      ];
+
+      $scope.selectedTheme = localStorage.getItem('selectedTheme') || 'dark';
+      commands.on('selectTheme', function(theme) {
+        var foundTheme = false;
+        for(var i = 0; i < $scope.themes.length; i++) {
+          if($scope.themes[i] == theme) {
+            foundTheme = true;
+            continue;
+          }
+        }
+        if(!foundTheme) {
+          return;
+        }
+        $scope.selectedTheme = theme;
+        localStorage.setItem('selectedTheme', theme);
+      });
+
       $scope.menu = [
         {
           name: 'File',
@@ -109,6 +130,17 @@
               commands.pause();
               var shaderName = window.prompt("Enter a name for the shader:");
               commands.generate('shaderWithLayer', shaderName);
+            }}
+          ]
+        },
+        {
+          name: 'Theme',
+          items: [
+            {name: 'Dark', click: function() {
+              commands.selectTheme('dark');
+            }},
+            {name: 'Light', click: function() {
+              commands.selectTheme('light');
             }}
           ]
         },

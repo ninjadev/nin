@@ -74,7 +74,7 @@ main-window, main-window > div {
 }
 
 .ui-splitbar {
-    background: @arsenic;
+    background: @splitbar-bg-color;
 }
 
 .bottom {
@@ -101,7 +101,7 @@ main-window, main-window > div {
     padding: 3px 6px;
     text-align: left;
     z-index: 999999;
-    color: white;
+    color: @fixed-panel-text-color;
     pointer-events: none;
 }
 
@@ -110,7 +110,7 @@ main-window, main-window > div {
 }
 
 .fixed-panel label {
-    opacity: 0.5;
+    opacity: @fixed-panel-label-opacity;
     padding: 1px 2px;
     font-weight: normal;
 }
@@ -136,9 +136,10 @@ main-window, main-window > div {
 }
 
 .layer-bar {
+    color: @layer-bar-text-color;
     height: 100%;
-    border-left: 1px solid #161f24;
-    border-right: 1px solid #161f24;
+    border-left: 1px solid @layer-bar-border-color;
+    border-right: 1px solid @layer-bar-border-color;
     padding: 1px 2px;
     overflow: hidden;
     opacity: 0.8;
@@ -171,7 +172,7 @@ main-window, main-window > div {
 }
 
 .marker-line.play {
-    border-right: 1px solid #b1e758;
+    border-right: 1px solid @marker-line-play-color;
 }
 
 .marker-line.loop {
@@ -186,7 +187,8 @@ main-window, main-window > div {
 }
 
 .glow.glow-play {
-    box-shadow: inset -10px 0px 20px -3px #59922f;
+    background: transparent;
+    box-shadow: inset -10px 0px 20px -3px @marker-line-play-glow-color;
     opacity: 0.7;
 }
 
@@ -216,8 +218,6 @@ main-window, main-window > div {
 
 .musiclayer .under {
     height: 100%;
-    background: #f3c656;
-    background: @tangaroa;
 }
 
 .top-panel {
@@ -388,11 +388,10 @@ input[type=range]:focus::-ms-fill-upper {
     position: fixed;
     z-index: 99999999;
     height: 34px;
-    color: #d3dde3;
 }
 
 .menu-group.selected {
-    background: #161F24;
+    background: @menu-bg-color;
 }
 
 .menu-group {
@@ -407,8 +406,8 @@ input[type=range]:focus::-ms-fill-upper {
 
 .sub-menu {
     position: absolute;
-    background: #161F24;
-    color: #929CA1;
+    background: @menu-bg-color;
+    color: @menu-text-color;
     padding: 2px;
 }
 
@@ -420,8 +419,8 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .sub-menu .menu-item:hover {
-    background: #3d464b;
-    color: #d3dde3;
+    background: @menu-bg-color-selected;
+    color: @menu-text-color-selected;
 }
 
 .sub-menu .menu-item.separator-item:hover {
@@ -431,17 +430,17 @@ input[type=range]:focus::-ms-fill-upper {
 .sub-menu .menu-item .shortcut {
     float: right;
     padding-left: 12px;
-    color: #5f686d;
+    color: @menu-shortcut-text-color;
 }
 
 .sub-menu .menu-item:hover .shortcut {
-    color: #929CA1;
+    color: @menu-shortcut-text-color-selected;
 }
 
 .sub-menu .separator {
     height: 1px;
     width: 10%;
-    background: #5f686d;
+    background: @menu-separator-bg-color;
     opacity: 0.2;
     margin: 2px 0 4px;
 
@@ -452,7 +451,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .top-left-quadrant {
-  background: @bg-color url('/images/nin.png') no-repeat center center;
+  background: @bg-color url(@logo-path) no-repeat center center;
   background-size: 15%;
 
   > div {
@@ -462,6 +461,7 @@ input[type=range]:focus::-ms-fill-upper {
 
   .label {
     font-weight: normal;
+    color: @text-color;
   }
 
   input {
@@ -487,8 +487,8 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .btn.btn-default {
-  background: #4d565b;
-  box-shadow: 0px 1px 1px #666666;
+  background: @btn-default-bg-color;
+  box-shadow: 0px 1px 1px @btn-default-box-shadow-color;
   border: solid @top-panel-layer-title-bg-color 1px;
   color: @text-color;
 }

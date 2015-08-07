@@ -1,3 +1,6 @@
+@import "app/styles/colors.less";
+
+
 @font-face {
     font-family: 'lane';
     src: url('/fonts/LANENAR_-webfont.eot');
@@ -12,23 +15,23 @@
 ::-webkit-scrollbar {
     height: 10px;
     width: 10px;
-    background: #3d464b;
+    background: @scrollbar-bg-color;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #5f686d;
+    background: @scrollbar-thumb-color;
     -webkit-border-radius: 3px;
     -webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.75);
 }
 
 ::-webkit-scrollbar-corner {
-    background: #5f686d;
+    background: @scrollbar-thumb-color;
 }
 
 html, body {
     height: 100%;
-    background: #5f686d;
-    color: #d3dde3;
+    background: @bg-color;
+    color: @text-color;
     font-family: 'lane', sans-serif;
     font-size: 15px;
     user-select: none;
@@ -48,7 +51,7 @@ html, body {
 }
 
 .demo-container {
-    background: black;
+    background: @demo-container-bg-color;
     height: 100%;
     width: 100%;
     overflow: hidden;
@@ -71,7 +74,7 @@ main-window, main-window > div {
 }
 
 .ui-splitbar {
-    background: #888;
+    background: @arsenic;
 }
 
 .bottom {
@@ -80,12 +83,10 @@ main-window, main-window > div {
 
 .bottom-controls {
     z-index: 999999;
-    border-right: 1px solid #3b4449;
-    box-shadow: 1px 0px 3px 1px rgba(59, 68, 73, 0.3);
     position: fixed;
     right: 15px;
     bottom: 15px;
-    background: #161F24;
+    background: @fixed-panel-bg-color;
 }
 
 .frame-panel {
@@ -94,8 +95,8 @@ main-window, main-window > div {
 
 .fixed-panel {
     position: fixed;
-    top: calc(50% + 18px);
-    background: #161F24;
+    top: calc(~"50% +" 18px);
+    background: @fixed-panel-bg-color;
     height: 30px;
     padding: 3px 6px;
     text-align: left;
@@ -125,7 +126,7 @@ main-window, main-window > div {
     width: auto;
     height: 100%;
     float: left;
-    background: #3d464b;
+    background: @well-bg-color;
 }
 
 .layers-bar-container, .layers-bar-container * {
@@ -134,16 +135,13 @@ main-window, main-window > div {
     -webkit-perspective: 1000;
 }
 
-.layer-bar-container {
-    border: 1px solid #888;
-}
-
 .layer-bar {
-    background: #888;
     height: 100%;
-    border: 1px solid #161f24;
+    border-left: 1px solid #161f24;
+    border-right: 1px solid #161f24;
     padding: 1px 2px;
     overflow: hidden;
+    opacity: 0.8;
 }
 
 .layer-bar .name {
@@ -153,15 +151,15 @@ main-window, main-window > div {
 
 .layer-bar-wrapper {
     height: 30px;
-    padding: 2px 0;
+    border-bottom: 1px solid @well-bg-border-color;
 }
 
 .layer-bar-wrapper:nth-of-type(2n) {
-    background: rgba(0, 0, 0, 0.05);
+    background: @well-bg-color;
 }
 
 .layer-bar-wrapper.inspected {
-    background: #161f24;
+    background: @selected-layer-bg-color;
 }
 
 .marker-line {
@@ -169,15 +167,16 @@ main-window, main-window > div {
     z-index: 100;
     background: transparent;
     width: 1px;
-    height: calc(100% - 8px);
+    height: calc(~"100% -" 8px);
 }
 
-.marker-line.yellow {
-    border-right: 1px solid #f3c656;
+.marker-line.play {
+    border-right: 1px solid #b1e758;
 }
 
-.marker-line.green {
-    border-right: 3px solid rgb(76, 184, 73);
+.marker-line.loop {
+    border-right: 1px solid #ffb870;
+    box-shadow: 0px 0px 20px #ffb870;
 }
 
 .glow {
@@ -186,16 +185,19 @@ main-window, main-window > div {
     margin-left: -20px;
 }
 
-.glow.glow-yellow {
-    box-shadow: inset -10px 0px 20px -3px rgba(243, 198, 86, 0.13);
+.glow.glow-play {
+    box-shadow: inset -10px 0px 20px -3px #59922f;
+    opacity: 0.7;
 }
 
-.glow.glow-green {
-    box-shadow: inset -10px 0px 20px -3px rgba(76, 184, 73, 0.13);
+.glow.glow-loop {
+    width: 1px;
+    opacity: 0.7;
+    margin-left: 0;
 }
 
 .musiclayer {
-    background: #888;
+    background: @music-layer-bg-color;
     height: 50px;
 }
 
@@ -215,16 +217,17 @@ main-window, main-window > div {
 .musiclayer .under {
     height: 100%;
     background: #f3c656;
+    background: @tangaroa;
 }
 
 .top-panel {
-    background: #3d464b;
+    background: @bg-color;
 }
 
 .top-panel .layer-title {
     font-size: 40px;
     padding: 30px 15px 5px;
-    background: #161f24;
+    background: @top-panel-layer-title-bg-color;
 }
 
 .tweak-panel {
@@ -243,9 +246,9 @@ main-window, main-window > div {
 
 .camera-panel input,
 .tweak-panel input {
-    background: #161f24;
+    background: @well-bg-color-alt;
     border: 1px solid #414a4f;
-    color: #d3dde3;
+    color: @text-color;
     outline: 0;
     font-family: monospace;
     width: 100%;
@@ -446,4 +449,46 @@ input[type=range]:focus::-ms-fill-upper {
 
 .beat {
     font-weight: bold;
+}
+
+.top-left-quadrant {
+  background: @bg-color url('/images/nin.png') no-repeat center center;
+  background-size: 15%;
+
+  > div {
+    height: 100%;
+    background: @bg-color;
+  }
+
+  .label {
+    font-weight: normal;
+  }
+
+  input {
+    background: @top-panel-layer-title-bg-color;
+  }
+
+  .info-panel {
+    padding-top: 20px;
+    .value {
+      font-family: monospace;
+      display: inline-block;
+    }
+    .config-value {
+      font-family: monospace;
+      overflow: auto;
+      white-space: pre;
+    }
+  }
+
+  .buttons {
+    padding-top: 20px;
+  }
+}
+
+.btn.btn-default {
+  background: #4d565b;
+  box-shadow: 0px 1px 1px #666666;
+  border: solid @top-panel-layer-title-bg-color 1px;
+  color: @text-color;
 }

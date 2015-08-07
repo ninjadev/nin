@@ -10,6 +10,51 @@
       $scope.xScaleTarget = 0.5;
       $scope.yScale = 1;
 
+
+      function updateLayerBackgroundGradientStyle() {
+        var wellBgColor = 'rgb(52, 68, 78)';
+        var wellBgColorAlt = 'rgb(46, 62, 72)';
+        var wellBgBorderColor = 'rgb(10, 26, 36)';
+
+        var beatsPerSecond = PROJECT.music.bpm / 60;
+        var secondsPerBeat = 1 / beatsPerSecond;
+        var framesPerSecond = 60;
+        var framesPerBeat = secondsPerBeat * framesPerSecond;
+        var beatWidthInPixels = framesPerBeat * $scope.xScale;
+        var devicePixelRatio = window.devicePixelRatio || 1;
+
+        var entirePatternRepeatCount = 6;
+        var backgroundWidth = beatWidthInPixels * 8 * devicePixelRatio;
+        var repeatedBackgroundWidth = backgroundWidth * entirePatternRepeatCount;
+
+        var backgroundCanvas = document.createElement('canvas');
+        var ctx = backgroundCanvas.getContext('2d');
+        backgroundCanvas.width = repeatedBackgroundWidth;
+        backgroundCanvas.height = 1;
+        for(var i = 0; i < entirePatternRepeatCount; i++) {
+          var entirePatternRepeatOffset = i * backgroundWidth;
+          ctx.fillStyle = wellBgColor;
+          ctx.fillRect(entirePatternRepeatOffset, 0,
+                       backgroundWidth, 1);
+          ctx.fillStyle = wellBgColorAlt;
+          ctx.fillRect(entirePatternRepeatOffset + backgroundWidth / 2, 0,
+                       backgroundWidth, 1);
+          ctx.fillStyle = wellBgBorderColor;
+          for(var j = 0; j < 8; j++) {
+            ctx.fillRect(entirePatternRepeatOffset + j * backgroundWidth / 8, 0,
+                         1, 1);
+          }
+        }
+        $scope.backgroundImageDataUrl = backgroundCanvas.toDataURL();
+        $scope.backgroundWidth = repeatedBackgroundWidth / devicePixelRatio;
+      }
+
+      updateLayerBackgroundGradientStyle();
+
+      $scope.$watch('xScale', function() {
+        updateLayerBackgroundGradientStyle();
+      });
+
       $scope.$watch('xScaleTarget', function() {
         var target = $('.layers-bar-container');
         var rect = target[0].getBoundingClientRect();

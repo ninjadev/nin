@@ -21,7 +21,7 @@
         },
         less: {
           files: ['app/styles/{,*/}*.less'],
-          tasks: ['newer:less:app']
+          tasks: ['less:app']
         },
         gruntfile: {
           files: ['Gruntfile.js']
@@ -32,7 +32,6 @@
           },
           files: [
             'app/{,*/}*.html',
-            '.tmp/styles/{,*/}*.css',
             'app/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
           ]
         }
@@ -65,7 +64,8 @@
             paths: ['app/styles']
           },
           files: {
-            '.tmp/styles/main.css': 'app/styles/{,*/}*.less'
+            '.tmp/styles/light.css': 'app/styles/themes/light.less',
+            '.tmp/styles/dark.css': 'app/styles/themes/dark.less'
           }
         },
         dist: {
@@ -73,7 +73,8 @@
             paths: ['app/styles']
           },
           files: {
-            'dist/styles/main.css': 'app/styles/{,*/}*.less'
+            'dist/styles/light.css': 'app/styles/themes/light.less',
+            'dist/styles/dark.css': 'app/styles/themes/dark.less'
           }
         }
       },

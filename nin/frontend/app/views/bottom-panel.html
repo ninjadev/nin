@@ -122,8 +122,8 @@
         dragresizable
         on-drag-resize="dragResizeLayer(event, ui, layer)"
         class=layer-bar
+        ng-class="'color-' + layer.color"
         style="
-          background: {{ layer.color }};
           width:{{ (layer.endFrame - layer.startFrame) * xScale }}px;
           left:{{ layer.startFrame * xScale }}px;
         ">

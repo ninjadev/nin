@@ -12,9 +12,21 @@
 
 
       function updateLayerBackgroundGradientStyle() {
-        var wellBgColor = 'rgb(52, 68, 78)';
-        var wellBgColorAlt = 'rgb(46, 62, 72)';
-        var wellBgBorderColor = 'rgb(10, 26, 36)';
+        if(!$scope.selectedTheme) {
+          return;
+        }
+        var wellBgColor;
+        var wellBgColorAlt;
+        var wellBgBorderColor;
+        if($scope.selectedTheme == 'dark') {
+          wellBgColor = 'rgb(52, 68, 78)';
+          wellBgColorAlt = 'rgb(46, 62, 72)';
+          wellBgBorderColor = 'rgb(10, 26, 36)';
+        } else if($scope.selectedTheme == 'light') {
+          wellBgColor = '#efefef';
+          wellBgColorAlt = '#dfdfdf';
+          wellBgBorderColor = '#ababab';
+        }
 
         var beatsPerSecond = PROJECT.music.bpm / 60;
         var secondsPerBeat = 1 / beatsPerSecond;
@@ -52,6 +64,10 @@
       updateLayerBackgroundGradientStyle();
 
       $scope.$watch('xScale', function() {
+        updateLayerBackgroundGradientStyle();
+      });
+
+      $scope.$watch('selectedTheme', function() {
         updateLayerBackgroundGradientStyle();
       });
 

@@ -191,6 +191,18 @@
         console.log('nin socket connection established', arguments);
       };
 
+      /* http://stackoverflow.com/a/7616484 */
+      function hash(string) {
+        var h = 0, i, chr, len;
+        if (string.length === 0) return h;
+        for (i = 0, len = string.length; i < len; i++) {
+          chr   = string.charCodeAt(i);
+          h = ((h << 5) - h) + chr;
+          h |= 0; // Convert to 32bit integer
+        }
+        return h;
+      }
+
       function updateLayers() {
         $http({
           method: 'GET',
@@ -201,6 +213,7 @@
           for(var i = 0; i < layers.length; i++) {
             var layer = layers[i];
             layer.position = i;
+            layer.color = (Math.abs(hash(layer.displayName || '')) | 0) % 8;
             demo.lm.loadLayer(layer);
           }
           Loader.start(function() {}, function() {});

@@ -14,7 +14,10 @@ function watch(projectPath, cb) {
     ignored: [/[\/\\]\./, /\/shaders\//],
     persistent: true,
     ignoreInitial: false,
-    cwd: projectPath
+    cwd: projectPath,
+    useFsEvents: true,
+    usePolling: true,
+    interval: 200
   });
 
   var logFileChanges = false;

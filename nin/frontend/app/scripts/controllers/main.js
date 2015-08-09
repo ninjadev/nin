@@ -228,8 +228,12 @@
 
             CameraController.paths = camerapaths;
             for (var index in CameraController.layers) {
-              CameraController.layers[index].parseCameraPath(camerapaths);
+              var cameraController = CameraController.layers[index];
+              cameraController.parseCameraPath(camerapaths);
+              demo.lm.refresh(cameraController.layer_id);
             }
+
+            demo.lm.update(demo.looper.currentFrame);
             break;
 
           case 'shader':
@@ -240,11 +244,11 @@
               if (layerShaderDependencies[layer.type]) {
                 if (layerShaderDependencies[layer.type].indexOf(event.shadername) !== -1) {
                   demo.lm.refresh(layer.type);
-                  demo.lm.update(demo.looper.currentFrame);
                 }
               }
             }
 
+            demo.lm.update(demo.looper.currentFrame);
             Loader.start(function() {}, function() {});
             break;
 

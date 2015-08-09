@@ -237,7 +237,8 @@
             break;
 
           case 'shader':
-            (1, eval)(event.content);
+            var indirectEval = eval;
+            indirectEval(event.content);
 
             for (var i in $scope.layers) {
               var layer = $scope.layers[i];
@@ -253,7 +254,8 @@
             break;
 
           case 'layer':
-            (1, eval)(event.content);
+            var indirectEval = eval;
+            indirectEval(event.content);
             layerShaderDependencies[event.layername] = event.shaderDependencies;
 
             demo.lm.refresh(event.layername);

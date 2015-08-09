@@ -39,19 +39,61 @@ var serve = function(projectPath, shouldRunHeadlessly) {
       frontend.listen(8000);
     }
 
+    var findShaderDependencies = function(content) {
+      var regex = /\bSHADERS\.(\w+)\b/g;
+      var shaderNames = [];
+      var matches = content.match(regex) || [];
+      matches.forEach(function(match) {
+        var shaderName = match.split('.')[1];
+        if (shaderNames.indexOf(shaderName) === -1) {
+          shaderNames.push(shaderName);
+        }
+      });
+      return shaderNames;
+    };
+
+    var eventFromPath = function(data) {
+      var path = data.path,
+          filename = p.basename(path),
+          filenameWithoutExtension = filename.split('.')[0],
+          content = fs.readFileSync(path, 'utf-8');
+
+      var event = {};
+
+      if (filename == 'layers.json' ||
+            filename == 'camerapaths.json') {
+        event.type = filenameWithoutExtension;
+        event.content = content;
+      } else if (path.indexOf('/shaders/') !== -1) {
+        event.type = 'shader';
+        event.content = data.out;
+        event.shadername = p.basename(p.dirname(path));
+      } else {
+        event.type = 'layer';
+        event.content = content;
+        event.layername = filenameWithoutExtension;
+        event.shaderDependencies = findShaderDependencies(content);
+      }
+
+      return event;
+    };
+
     var watcher = watch(projectPath, function(event, data) {
-      sock.broadcast(event, data);
+      if (event !== 'add' && event !== 'change') {
+        return;
+      }
+
+      sock.broadcast(event, eventFromPath(data));
     });
 
     var sockets = express();
     var sockets_server = require('http').createServer(sockets);
     var sock = socket(projectPath, function(conn) {
       for (var i in watcher.paths) {
-        conn.send('add', {
-          path: watcher.paths[i]
-        });
+        conn.send('add', eventFromPath({path: watcher.paths[i]}));
       }
     });
+
     sock.server.installHandlers(sockets_server, {prefix: '/socket'});
     sockets_server.listen(1337, '0.0.0.0');
 

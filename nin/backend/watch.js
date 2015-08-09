@@ -14,7 +14,10 @@ function watch(projectPath, cb) {
     ignored: [/[\/\\]\./, /\/shaders\//],
     persistent: true,
     ignoreInitial: false,
-    cwd: projectPath
+    cwd: projectPath,
+    useFsEvents: true,
+    usePolling: true,
+    interval: 200
   });
 
   var logFileChanges = false;
@@ -60,8 +63,8 @@ function watch(projectPath, cb) {
     if (event === 'add' || event === 'change') {
       var pathParts = path.split('/');
       console.log('Recompiling shaders:', pathParts[2]);
-      sg.shaderGen(projectPath, function() {
-        cb(event, {path: path});
+      sg.shaderGen(projectPath, function(out) {
+        cb(event, {path: path, out: out});
       });
     }
   });

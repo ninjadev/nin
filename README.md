@@ -55,8 +55,12 @@ Instead of executing `nin run` in your project folder, run `nin headless` which 
 This allows you to serve a development version of the frontend by running `grunt serve` in the frontend folder.
 
 ## Linting
-This projects uses the Google Closure Linter, please see this link for installation information.
-`https://developers.google.com/closure/utilities/docs/linter_howto`  
+
+The frontend part of this project uses JSHint for linting.
+See the `.jshintrc` file in the frontend part of this project.
+
+The demo itself and our own `dasBoot` uses the Google Closure Linter, please see this link for installation information.
+`https://developers.google.com/closure/utilities/docs/linter_howto`
 Use the `--nojsdoc` flag.
 
 ## Shaders

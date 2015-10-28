@@ -1,5 +1,7 @@
 # nin
 
+![](http://i.imgur.com/ObCrMxz.jpg)
+
 > nin is ninjatool
 
 nin is Ninjadev's internal demo tool. It is a tool for easing development of browser-based WebGL demos.

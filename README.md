@@ -109,3 +109,7 @@ See [the wiki page](https://github.com/ninjadev/nin/wiki/Camera-Controller) for 
 | z         | decrease camera zoom          |
 | Z         | increase camera zoom          |
 | mouse click on demo | lookat click target |
+
+## Testimonials / Reviews
+
+> nice! - mrdoob

@@ -21,7 +21,7 @@ window['bootstrap'] = function(options) {
 
   demo.effectComposer = new THREE.EffectComposer(demo.renderer);
   demo.rebuildEffectComposer = function(passes) {
-    var clearPass = new ClearPass();
+    var clearPass = new THREE.ClearPass();
     var toScreenPass = new THREE.ShaderPass(THREE.CopyShader);
     toScreenPass.renderToScreen = true;
     demo.effectComposer = new THREE.EffectComposer(demo.renderer);

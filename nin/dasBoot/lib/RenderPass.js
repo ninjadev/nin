@@ -17,7 +17,7 @@ THREE.RenderPass = function ( scene, camera, overrideMaterial, clearColor, clear
 	this.oldClearColor = new THREE.Color();
 	this.oldClearAlpha = 1;
 
-	this.clear = true;
+	this.clear = false;
 	this.needsSwap = false;
 
 };

@@ -9,7 +9,7 @@ window['bootstrap'] = function(options) {
   demo.renderer.setClearColor(0x000000, 1);
   demo.renderer.sortObjects = true;
   demo.renderer.autoClear = false;
-  demo.renderer.shadowMapEnabled = true;
+  demo.renderer.shadowMap.enabled = true;
   demo.renderer.shadowCameraNear = 1;
   demo.renderer.shadowCameraFar = 10000;
   demo.renderer.shadowCameraFov = 50;

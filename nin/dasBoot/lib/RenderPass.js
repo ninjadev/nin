@@ -14,7 +14,7 @@ THREE.RenderPass = function ( scene, camera, overrideMaterial, clearColor, clear
 	this.clearColor = clearColor;
 	this.clearAlpha = ( clearAlpha !== undefined ) ? clearAlpha : 0;
 
-	this.clear = true;
+	this.clear = false;
 	this.clearDepth = false;
 	this.needsSwap = false;
 

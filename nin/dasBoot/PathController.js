@@ -65,7 +65,7 @@ PathController.prototype.parse3Dkeyframes = function(keyframes) {
           var point = raw_points[j];
           points[j] = new THREE.Vector3(point[0], point[1], point[2]);
         }
-        this_pos.points = new THREE.SplineCurve3(points);
+        this_pos.points = new THREE.CatmullRomCurve3(points);
       }
     }
     parsed[i] = this_pos;
@@ -269,11 +269,7 @@ PathControllerVisualizer.prototype.generateJoinSegments = function(spline) {
         this.cameraPathJoinPoints[i + 1]);
     geometry.computeLineDistances();
 
-    this.pathGroup.add(
-        new THREE.Line(
-          geometry,
-          this.joinSegmentMaterial,
-          THREE.LinePieces));
+    this.pathGroup.add(new THREE.LineSegments(geometry, this.joinSegmentMaterial));
   }
 };
 

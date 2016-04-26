@@ -9,7 +9,7 @@ window['bootstrap'] = function(options) {
   demo.renderer.setClearColor(0x000000, 1);
   demo.renderer.sortObjects = true;
   demo.renderer.autoClear = false;
-  demo.renderer.shadowMapEnabled = true;
+  demo.renderer.shadowMap.enabled = true;
   demo.renderer.shadowCameraNear = 1;
   demo.renderer.shadowCameraFar = 10000;
   demo.renderer.shadowCameraFov = 50;
@@ -21,7 +21,7 @@ window['bootstrap'] = function(options) {
 
   demo.effectComposer = new THREE.EffectComposer(demo.renderer);
   demo.rebuildEffectComposer = function(passes) {
-    var clearPass = new ClearPass();
+    var clearPass = new THREE.ClearPass();
     var toScreenPass = new THREE.ShaderPass(THREE.CopyShader);
     toScreenPass.renderToScreen = true;
     demo.effectComposer = new THREE.EffectComposer(demo.renderer);

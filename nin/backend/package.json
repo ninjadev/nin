@@ -4,6 +4,7 @@
   "dependencies": {
     "body-parser": "1.15.0",
     "chokidar": "1.4.3",
+    "chalk": "1.1.3",
     "commander": "2.9.0",
     "concat-files": "0.1.0",
     "crc": "3.4.0",

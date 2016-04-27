@@ -1,10 +1,10 @@
+var chalk = require('chalk');
 var chokidar = require('chokidar');
 var sg = require('./shadergen');
 
 
 function watch(projectPath, cb) {
   var paths = [];
-  console.log('Project path:', projectPath);
 
   var watcher = chokidar.watch(
     ['src/',
@@ -36,7 +36,10 @@ function watch(projectPath, cb) {
     }
 
     if (logFileChanges) {
-      console.log('Change in project detected: ' + event + ', ' + path);
+      console.log(chalk.yellow('Change in project detected: ') +
+                  chalk.cyan(event) +
+                  ', ' +
+                  chalk.magenta(path));
     }
 
     cb(event, {path: path});
@@ -62,7 +65,7 @@ function watch(projectPath, cb) {
   shaderWatcher.on('all', function(event, path) {
     if (event === 'add' || event === 'change') {
       var pathParts = path.split('/');
-      console.log('Recompiling shaders:', pathParts[2]);
+      console.log(chalk.yellow('Recompiling shaders:'), chalk.magenta(pathParts[2]));
       sg.shaderGen(projectPath, function(out) {
         cb(event, {path: path, out: out});
       });

@@ -1,3 +1,4 @@
+var chalk = require('chalk');
 var generate = require('./generate/generate');
 var layers = require('./layers');
 var sock = require('sockjs');
@@ -15,7 +16,7 @@ function socket(projectPath, onConnectionCallback) {
 
   server.on('connection', function (conn) {
     connections[conn.id] = conn;
-    console.log('connection!');
+    console.log(chalk.magenta('A client has connected.'));
 
     conn.send = function(event, data) {
       conn.write(JSON.stringify({
@@ -30,7 +31,7 @@ function socket(projectPath, onConnectionCallback) {
 
     conn.on('close', function () {
       delete connections[conn.id];
-      console.log('lost connection');
+      console.log(chalk.magenta('A client has disconnected.'));
     });
 
     conn.on('data', function (message) {

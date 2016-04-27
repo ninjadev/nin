@@ -1,3 +1,4 @@
+var chalk = require('chalk');
 var compress = require('./compress').compress;
 var exec = require('child_process').exec;
 var fs = require('fs');
@@ -13,11 +14,25 @@ function moveCursorToColumn(col) {
   return '\033[' + col + 'G';
 }
 
+function renderOK() {
+    console.log(moveCursorToColumn(72) +
+                chalk.grey('[') + chalk.green('OK') + chalk.grey(']'));
+}
+
+function renderWarn() {
+    console.log(moveCursorToColumn(70) +
+                chalk.grey('[') + chalk.yellow('WARN') + chalk.grey(']'));
+}
+
+function renderError() {
+    console.log(moveCursorToColumn(69) +
+                chalk.grey('[') + chalk.red('ERROR') + chalk.grey(']'));
+}
 
 function res(projectPath, callback) {
   var walker = walk.walk(projectPath + '/res/' , {followLinks: false});
   var files = [];
-  process.stdout.write('Collecting files from res/\n');
+  console.log(chalk.yellow('\nCollecting files from res/'));
   walker.on('file', function(root, stat, next) {
 
     /* hacks to ensure slashes in path are correct.
@@ -27,16 +42,16 @@ function res(projectPath, callback) {
     root = root.replace(/\/\//g, '/');
 
     var file = fs.readFileSync(root + stat.name);
-    process.stdout.write('Assimilating res/' + stat.name);
+    process.stdout.write('- Assimilating ' + chalk.grey('res/') + chalk.magenta(stat.name));
     files.push('FILES[\'' + root.slice(projectPath.length + 1) + stat.name + '\']=\'' +
                file.toString('base64') + '\'');
-    process.stdout.write(moveCursorToColumn(72) + '[OK]\n');
+    renderOK();
     next();
   });
   walker.on('end', function(){
-    process.stdout.write('Merging assimilated files');
+    process.stdout.write(chalk.yellow('\nMerging assimilated files'));
     callback('FILES={};' + files.join(';') + ';');
-    process.stdout.write(moveCursorToColumn(72) + '[OK]\n');
+    renderOK();
   });
 }
 
@@ -49,9 +64,17 @@ var compile = function(projectPath, options) {
       });
     }
     if(options.pngCompress) {
+      process.stdout.write(chalk.yellow('\nCompressing demo to .png.html'));
       compress(projectPath, data, function(data) {
+        renderOK();
         writeDemoToFile(data, 'demo.png.html');
-        process.stdout.write('Successfully compiled demo.png.html!\n');
+        console.log(chalk.white('\n★ ---------------------------------------- ★'));
+        console.log(chalk.white('| ') +
+                    chalk.green('Successfully compiled ') +
+                    chalk.grey('bin/') +
+                    chalk.green('demo.png.html!') +
+                    chalk.white(' |'));
+        console.log(chalk.white('★ ---------------------------------------- ★\n'));
       });
     } else {
       var customHtml = '';
@@ -84,12 +107,18 @@ var compile = function(projectPath, options) {
         fs.writeFileSync(projectPath + '/gen/files.js', new Buffer(data));
         projectSettings.generate(projectPath);
         shaderGen(projectPath, function() {
-          process.stdout.write('Running closure compiler...');
+          process.stdout.write(chalk.yellow('\nRunning closure compiler'));
           exec('java -jar -Xmx2048m ' + __dirname + '/compiler.jar -O SIMPLE --language_in ECMASCRIPT5 --logging_level INFO ' + __dirname + '/../dasBoot/lib/*.js ' + __dirname + '/../dasBoot/*.js ' + projectPath + '/lib/*.js ' + projectPath + '/gen/*.js ' + projectPath + '/src/*.js',
             {encoding: 'binary', maxBuffer: 1024 * 1024 * 1024},
             function(error, stdout, stderr) {
-              stderr && console.error(stderr);
-              process.stdout.write(moveCursorToColumn(72) + '[OK]\n');
+              if(error) {
+                renderError();
+              } else if(stderr) {
+                renderWarn();
+                console.error(stderr);
+              } else {
+                renderOK();
+              }
               collect(stdout);
             });
         });

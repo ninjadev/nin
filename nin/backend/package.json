@@ -2,17 +2,16 @@
   "name": "nin",
   "version": "0.0.1",
   "dependencies": {
-    "body-parser": "1.13.2",
-    "chokidar": "1.0.5",
-    "commander": "2.8.1",
-    "concat-files": "0.1.x",
-    "crc": "2.0.0",
-    "express": "4.3.x",
-    "jsonfile": "1.1.x",
-    "mkdirp": "0.5.x",
-    "readdir": "0.0.x",
-    "rimraf": "2.4.x",
-    "sockjs": "0.3.x",
-    "walk": "2.2.x"
+    "body-parser": "1.15.0",
+    "chokidar": "1.4.3",
+    "commander": "2.9.0",
+    "concat-files": "0.1.0",
+    "crc": "3.4.0",
+    "express": "4.13.4",
+    "mkdirp": "0.5.1",
+    "readdir": "0.0.13",
+    "rimraf": "2.5.2",
+    "sockjs": "0.3.16",
+    "walk": "2.3.9"
   }
 }

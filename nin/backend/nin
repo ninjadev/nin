@@ -15,8 +15,6 @@ program
   .description('Compile the nin project')
   .option('--no-png-compression', 'Do not use the .png.html compression trick')
   .action(function(options){
-    console.log(options);
-    console.log('compiling project');
     compile.compile(utils.findProjectRootOrExit(process.cwd()), {
         pngCompress: options.pngCompression
     });

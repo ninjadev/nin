@@ -63,7 +63,7 @@
       ng-hide="hideMarker"
       style="
         margin-left: {{ currentFrame * xScale - bottomScrollOffset }}px;
-        height: {{ (30 * yScale + 1) * layers.length }}px;
+        height: {{ 50 + (30 * yScale) * layers.length }}px;
       "
       >
       <div class="glow glow-play">
@@ -75,7 +75,7 @@
       ng-show="loopStart"
       style="
         margin-left: {{ loopStart * xScale - bottomScrollOffset }}px;
-        height: {{ (30 * yScale + 1) * layers.length }}px;
+        height: {{ 50 + (30 * yScale) * layers.length }}px;
       "
       >
       <div class="glow glow-loop">
@@ -87,7 +87,7 @@
       ng-show="loopEnd"
       style="
         margin-left: {{ loopEnd * xScale - bottomScrollOffset }}px;
-        height: {{ (30 * yScale + 1) * layers.length }}px;
+        height: {{ 50 + (30 * yScale) * layers.length }}px;
       "
       >
       <div class="glow glow-loop">

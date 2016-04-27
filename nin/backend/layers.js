@@ -58,6 +58,9 @@ function read(projectPath, callback) {
 
 function write(projectPath, layers, callback) {
   var data = JSON.stringify(layers, null, 2) + '\n';
+  data = data.replace(/[\u007F-\uFFFF]/g, function(chr) {
+    return '\\u' + ('0000' + chr.charCodeAt(0).toString(16)).substr(-4);
+  });
   fs.writeFile(projectPath + '/res/layers.json', data, function(err) {
     advanceQueue();
     callback(err);

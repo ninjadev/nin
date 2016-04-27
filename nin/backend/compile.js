@@ -37,40 +37,40 @@ function res(projectPath, callback) {
 var compile = function(projectPath, options) {
   console.log('starting to compile');
   function collect(data) {
-      function writeDemoToFile(data, filename) {
-        var binPath = p.join(projectPath, '/bin/');
-        mkdirp(binPath, function() {
-          fs.writeFileSync(projectPath + '/bin/' + filename, data);
-        });
+    function writeDemoToFile(data, filename) {
+      var binPath = p.join(projectPath, '/bin/');
+      mkdirp(binPath, function() {
+        fs.writeFileSync(projectPath + '/bin/' + filename, data);
+      });
+    }
+    if(options.pngCompress) {
+      compress(projectPath, data, function(data) {
+        writeDemoToFile(data, 'demo.png.html');
+        console.log('Successfully compiled demo.png.html!');
+      });
+    } else {
+      var customHtml = '';
+      try {
+        customHtml = fs.readFileSync(projectPath + '/index.html', {encoding: 'utf8'});
+      } catch(e) {
+        customHtml = fs.readFileSync(__dirname + '/index.html', {encoding: 'utf8'});
       }
-      if(options.pngCompress) {
-        compress(projectPath, data, function(data) {
-          writeDemoToFile(data, 'demo.png.html');
-          console.log('Successfully compiled demo.png.html!');
-        });
-      } else {
-        var customHtml = '';
-        try {
-          customHtml = fs.readFileSync(projectPath + '/index.html', {encoding: 'utf8'});
-        } catch(e) {
-          customHtml = fs.readFileSync(__dirname + '/index.html', {encoding: 'utf8'});
-        }
-        var html =
-          customHtml +
-          '<script>' +
-          'GU=1;' + /* hack to make sure GU exisits from the get-go */
-          'BEAN=0;' +
-          'BEAT=false;' +
-          'FRAME_FOR_BEAN=function placeholder(){};' +
-          'BEAN_FOR_FRAME=function placeholder(){};' +
-           data +
-          'var layers = JSON.parse(atob(FILES["res/layers.json"]));' +
-          'var camerapaths = JSON.parse(atob(FILES["res/camerapaths.json"]));' +
-          'demo=bootstrap({layers:layers, camerapaths:camerapaths, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +
-          '</script>';
-        writeDemoToFile(html, 'demo.html') +
-        console.log('Successfully compiled demo.html!');
-      }
+      var html =
+        customHtml +
+        '<script>' +
+        'GU=1;' + /* hack to make sure GU exisits from the get-go */
+        'BEAN=0;' +
+        'BEAT=false;' +
+        'FRAME_FOR_BEAN=function placeholder(){};' +
+        'BEAN_FOR_FRAME=function placeholder(){};' +
+         data +
+        'var layers = JSON.parse(atob(FILES["res/layers.json"]));' +
+        'var camerapaths = JSON.parse(atob(FILES["res/camerapaths.json"]));' +
+        'demo=bootstrap({layers:layers, camerapaths:camerapaths, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +
+        '</script>';
+      writeDemoToFile(html, 'demo.html') +
+      console.log('Successfully compiled demo.html!');
+    }
   }
   res(projectPath, function(data) {
     var genPath = p.join(projectPath, '/gen/');

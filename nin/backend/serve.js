@@ -89,8 +89,9 @@ var serve = function(projectPath, shouldRunHeadlessly) {
     var sockets = express();
     var sockets_server = require('http').createServer(sockets);
     var sock = socket(projectPath, function(conn) {
-      for (var i in watcher.paths) {
-        conn.send('add', eventFromPath({path: watcher.paths[i]}));
+      var sortedPaths = watcher.paths.sort();
+      for (var i in sortedPaths) {
+        conn.send('add', eventFromPath({path: sortedPaths[i]}));
       }
     });
 

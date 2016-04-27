@@ -4,10 +4,8 @@
   angular.module('nin')
     .controller('BottomCtrl', function ($scope, $interval, socket, camera, commands) {
 
-      var linesContainer = null;
-
-      $scope.xScale = 0.5;
-      $scope.xScaleTarget = 0.5;
+      $scope.xScale = 1;
+      $scope.xScaleTarget = 0;
       $scope.yScale = 1;
 
 
@@ -71,7 +69,9 @@
         updateLayerBackgroundGradientStyle();
       });
 
-      $scope.$watch('xScaleTarget', function() {
+      $scope.$watch('xScaleTarget', updateXScale);
+      updateXScale();
+      function updateXScale() {
         var target = $('.layers-bar-container');
         var rect = target[0].getBoundingClientRect();
         var parentRect = target.parent()[0].getBoundingClientRect();
@@ -99,7 +99,7 @@
         var newOffsetX = newFirstVisibleFrame * newXScaleTarget;
         $('div.bottom').parent().scrollLeft(newOffsetX);
         $scope.xScale = newXScaleTarget;
-      });
+      }
 
       function getClickOffset($event) {
         var target = $('.layers-bar-container')[0];
@@ -174,16 +174,5 @@
           $scope.demo.jumpToFrame($scope.loopStart);
         }
       });
-
-      $interval(function(){
-        $scope.hideMarker = false;
-        if(!linesContainer) {
-          return;
-        }
-        if(linesContainer.scrollLeft > $scope.currentFrame * $scope.xScale ||
-          $scope.currentFrame * $scope.xScale >= linesContainer.scrollLeft + $(linesContainer).width()) {
-          $scope.hideMarker = true;
-        }
-      }, 1000 / 60);
     });
 })();

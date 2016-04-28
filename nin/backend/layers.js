@@ -1,6 +1,6 @@
-var fs = require('fs')
-  , utils = require('./utils')
-  ;
+var fs = require('fs');
+var utils = require('./utils');
+
 
 function add(projectPath, layer, callback) {
   read(projectPath, function (err, layers) {

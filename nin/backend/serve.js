@@ -1,13 +1,14 @@
+var bodyParser = require('body-parser');
+var concat = require('concat-files');
 var express = require('express');
 var fs = require('fs');
+var mkdirp = require('mkdirp');
+var p = require('path');
+var projectSettings = require('./projectSettings');
+var readDir = require('readdir');
 var socket = require('./socket');
 var watch = require('./watch');
-var p = require('path');
-var mkdirp = require('mkdirp');
-var readDir = require('readdir');
-var concat = require('concat-files');
-var bodyParser = require('body-parser');
-var projectSettings = require('./projectSettings');
+
 
 var serve = function(projectPath, shouldRunHeadlessly) {
 

@@ -1,6 +1,5 @@
-var chokidar = require('chokidar')
-  , sg = require('./shadergen')
-  ;
+var chokidar = require('chokidar');
+var sg = require('./shadergen');
 
 
 function watch(projectPath, cb) {

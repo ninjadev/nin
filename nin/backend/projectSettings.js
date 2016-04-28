@@ -1,5 +1,6 @@
 var fs = require('fs');
 
+
 var defaultSettings = {
   music: {
     path: "res/music.mp3",

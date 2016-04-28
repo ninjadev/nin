@@ -1,5 +1,6 @@
-var fs = require('fs'),
-    path = require('path');
+var fs = require('fs');
+var path = require('path');
+
 
 function findProjectRootOrExit(currentPath) {
   var up = '';

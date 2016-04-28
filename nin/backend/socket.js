@@ -1,7 +1,7 @@
-var sock = require('sockjs')
-  , layers = require('./layers')
-  , generate = require('./generate/generate')
-  ;
+var generate = require('./generate/generate');
+var layers = require('./layers');
+var sock = require('sockjs');
+
 
 function socket(projectPath, onConnectionCallback) {
   var server = sock.createServer();

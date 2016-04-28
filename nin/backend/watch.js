@@ -9,6 +9,7 @@ function watch(projectPath, cb) {
 
   var watcher = chokidar.watch(
     ['src/',
+     'lib/',
      'res/layers.json',
      'res/camerapaths.json'], {
     ignored: [/[\/\\]\./, /\/shaders\//],

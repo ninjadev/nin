@@ -1,12 +1,13 @@
-var walk = require('walk');
-var fs = require('fs');
-var exec = require('child_process').exec;
 var compress = require('./compress').compress;
-var shaderGen = require('./shadergen').shaderGen;
-var rmdir = require('rimraf');
-var p = require('path');
+var exec = require('child_process').exec;
+var fs = require('fs');
 var mkdirp = require('mkdirp');
+var p = require('path');
 var projectSettings = require('./projectSettings');
+var rmdir = require('rimraf');
+var shaderGen = require('./shadergen').shaderGen;
+var walk = require('walk');
+
 
 function res(projectPath, callback) {
   var walker = walk.walk(projectPath + '/res/' , {followLinks: false});

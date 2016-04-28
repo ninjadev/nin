@@ -1,6 +1,7 @@
+var crc = require('crc').crc32;
 var fs = require('fs');
 var zlib = require('zlib');
-var crc = require('crc').crc32;
+
 
 function positiveNumberToBytes(number, bytes) {
   bytes = bytes || 4;

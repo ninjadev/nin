@@ -1,6 +1,7 @@
-var spawn = require('child_process').spawn,
-    path = require('path'),
-    projectSettings = require('./projectSettings');
+var path = require('path');
+var projectSettings = require('./projectSettings');
+var spawn = require('child_process').spawn;
+
 
 var render = function(projectPath) {
   var musicPath = path.join(projectPath, projectSettings.load(projectPath).music.path),

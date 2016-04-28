@@ -81,7 +81,7 @@ var compile = function(projectPath, options) {
         projectSettings.generate(projectPath);
         shaderGen(projectPath, function() {
           console.log('Running closure compiler...');
-          exec('java -jar -Xmx2048m ' + __dirname + '/compiler.jar -O SIMPLE --language_in ECMASCRIPT5 --debug --logging_level INFO ' + __dirname + '/../dasBoot/lib/*.js ' + __dirname + '/../dasBoot/*.js ' + projectPath + '/lib/*.js ' + projectPath + '/gen/*.js ' + projectPath + '/src/*.js',
+          exec('java -jar -Xmx2048m ' + __dirname + '/compiler.jar -O SIMPLE --language_in ECMASCRIPT5 --logging_level INFO ' + __dirname + '/../dasBoot/lib/*.js ' + __dirname + '/../dasBoot/*.js ' + projectPath + '/lib/*.js ' + projectPath + '/gen/*.js ' + projectPath + '/src/*.js',
             {encoding: 'binary', maxBuffer: 1024 * 1024 * 1024},
             function(error, stdout, stderr) {
               stderr && console.log(stderr);

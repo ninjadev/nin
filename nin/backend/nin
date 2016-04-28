@@ -9,11 +9,19 @@ var compile  = require('./compile'),
     render    = require('./render'),
     generate = require('./generate/generate'),
     utils = require('./utils');
+var init = require('./init');
 
 program.Command.prototype._outputHelp = program.Command.prototype.outputHelp;
 program.Command.prototype.outputHelp = function() {
     this._outputHelp(utils.colorizeCommanderHelpText);
 };
+
+program
+  .command('init')
+  .description('Turn the current directory into a nin project')
+  .action(function(options) {
+    init.init(process.cwd());
+  });
 
 program
   .command('compile')

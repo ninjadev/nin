@@ -10,13 +10,16 @@ var compile  = require('./compile'),
     generate = require('./generate/generate'),
     utils = require('./utils');
 
+program.Command.prototype._outputHelp = program.Command.prototype.outputHelp;
+program.Command.prototype.outputHelp = function() {
+    this._outputHelp(utils.colorizeCommanderHelpText);
+};
+
 program
   .command('compile')
   .description('Compile the nin project')
   .option('--no-png-compression', 'Do not use the .png.html compression trick')
   .action(function(options){
-    console.log(options);
-    console.log('compiling project');
     compile.compile(utils.findProjectRootOrExit(process.cwd()), {
         pngCompress: options.pngCompression
     });
@@ -55,5 +58,5 @@ program
 program.parse(process.argv);
 
 if(!process.argv.slice(2).length) {
-    program.outputHelp();
+  program.outputHelp();
 }

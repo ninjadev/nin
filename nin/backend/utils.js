@@ -1,3 +1,4 @@
+var chalk = require('chalk');
 var fs = require('fs');
 var path = require('path');
 
@@ -9,14 +10,14 @@ function findProjectRootOrExit(currentPath) {
         manifest = path.join(base, 'nin.json');
 
     if (fs.existsSync(manifest)) {
-      console.log('Found nin.json in project root (', base, ')');
+      console.log(chalk.grey('Found nin.json in project root (' + base + ')'));
       return base;
     }
 
     up += '../';
   } while (base != path.sep)
 
-  console.error('Could not find project root containing nin.json (looked from ', currentPath, ')');
+  console.error(chalk.red('Could not find project root containing nin.json (looked from ' + currentPath + ')'));
   process.exit(1);
 }
 
@@ -40,8 +41,18 @@ function mergeOptions(input, defaults) {
   return output;
 }
 
+function colorizeCommanderHelpText(txt) {
+  return (txt.replace(/(\[[^\]]*\])/g, chalk.grey('$1'))
+             .replace(/Usage: (\w+)/g, 'Usage: ' + chalk.green('$1'))
+             .replace(/(\n  \w+ [^\n]*)/g, chalk.cyan('$1'))
+             .replace(/(\n   ( -+[\w,-]+)+)/g, chalk.green('$1'))
+             .replace(/(\n    \w+)/g, chalk.green('$1'))
+             .replace(/(\n  \w+:)/g, chalk.yellow('$1')));
+}
+
 module.exports = {
   findProjectRootOrExit: findProjectRootOrExit,
   camelize: camelize,
-  mergeOptions: mergeOptions
+  mergeOptions: mergeOptions,
+  colorizeCommanderHelpText: colorizeCommanderHelpText
 };

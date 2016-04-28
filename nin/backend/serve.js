@@ -1,4 +1,5 @@
 var bodyParser = require('body-parser');
+var chalk = require('chalk');
 var concat = require('concat-files');
 var express = require('express');
 var fs = require('fs');
@@ -33,7 +34,6 @@ var serve = function(projectPath, shouldRunHeadlessly) {
          dasBootDestinationFilePath, function() {
     projectSettings.generate(projectPath);
 
-    console.log(__dirname);
     if(!shouldRunHeadlessly) {
       var frontend = express();
       frontend.use(express.static(__dirname + '/../frontend/dist/'));
@@ -124,9 +124,9 @@ var serve = function(projectPath, shouldRunHeadlessly) {
     files.listen(9000);
 
     if(shouldRunHeadlessly) {
-      console.log('running nin headlessly');
+      console.log('Running nin headlessly');
     } else {
-      console.log('serving nin on http://localhost:8000');
+      console.log(chalk.yellow('Serving nin on http://localhost:8000'));
     }
 
   });

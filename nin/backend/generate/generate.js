@@ -80,6 +80,7 @@ var generateLayer = function(layerName, templateFile, filters, projectRoot) {
   var layerFileName = layerName + '.js';
   var newLayer = path.join(projectRoot, 'src', layerFileName);
 
+  mkdirp.sync(path.join(projectRoot, 'src'));
   if (fs.existsSync(newLayer)) {
     process.stderr.write('Layer ' + layerFileName + ' already exists\n');
     process.exit(1);

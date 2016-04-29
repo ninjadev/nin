@@ -22,3 +22,6 @@ TemplateLayer.prototype.update = function(frame, relativeFrame) {
 
 TemplateLayer.prototype.resize = function() {
 };
+
+TemplateLayer.prototype.render = function(renderer, interpolation) {
+};

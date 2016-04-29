@@ -65,6 +65,7 @@ window['bootstrap'] = function(options) {
 
   demo.render = function(renderer, interpolation) {
     renderer.clear(true, true, true);
+    demo.lm.render(renderer, interpolation);
     demo.effectComposer.render();
   };
 

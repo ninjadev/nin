@@ -43,3 +43,6 @@ TemplateLayer.prototype.update = function(frame, relativeFrame) {
   this.cube.rotation.x = Math.sin(frame / 10);
   this.cube.rotation.y = Math.cos(frame / 10);
 };
+
+TemplateLayer.prototype.render = function(renderer, interpolation) {
+};

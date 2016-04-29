@@ -3,22 +3,28 @@ var fs = require('fs');
 var path = require('path');
 
 
-function findProjectRootOrExit(currentPath) {
+function findProjectRoot(currentPath) {
   var up = '';
   do {
     var base = path.join(currentPath, up),
         manifest = path.join(base, 'nin.json');
 
     if (fs.existsSync(manifest)) {
-      console.log(chalk.grey('Found nin.json in project root (' + base + ')'));
       return base;
     }
-
     up += '../';
   } while (base != path.sep)
+}
 
-  console.error(chalk.red('Could not find project root containing nin.json (looked from ' + currentPath + ')'));
-  process.exit(1);
+function findProjectRootOrExit(currentPath) {
+  var base = findProjectRoot(currentPath);
+  if(base) {
+    console.log(chalk.grey('Found nin.json in project root (' + base + ')'));
+    return base;
+  } else {
+    console.error(chalk.red('Could not find project root containing nin.json (looked from ' + currentPath + ')'));
+    process.exit(1);
+  }
 }
 
 // Authored by CMS at
@@ -52,6 +58,7 @@ function colorizeCommanderHelpText(txt) {
 
 module.exports = {
   findProjectRootOrExit: findProjectRootOrExit,
+  findProjectRoot: findProjectRoot,
   camelize: camelize,
   mergeOptions: mergeOptions,
   colorizeCommanderHelpText: colorizeCommanderHelpText

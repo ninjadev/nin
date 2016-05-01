@@ -61,7 +61,9 @@ LayerManager.prototype.update = function(frame) {
 
 LayerManager.prototype.render = function(renderer, interpolation) {
   for(var i = 0; i < this.activeLayers.length; i++) {
-    this.activeLayers[i].instance && this.activeLayers[i].instance.render(renderer, interpolation);
+    if (this.activeLayers[i].instance && this.activeLayers[i].instance.render) {
+      this.activeLayers[i].instance.render(renderer, interpolation);
+    }
   }
 };
 

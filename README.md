@@ -117,3 +117,11 @@ See [the wiki page](https://github.com/ninjadev/nin/wiki/Camera-Controller) for 
 ## Testimonials / Reviews
 
 > nice! - mrdoob
+
+## List of known nin projects
+
+- [Ninjacon 2016: Sea Shark Invtro](https://github.com/stianjensen/ninjacon-invite)
+- [Everything is Fashion](https://github.com/ninjadev/tyve)
+- [Hold Kjæft](https://github.com/Raane/HoldKjeft)
+- [Heatseeker](https://github.com/sigvef/heatseeker)
+- [Inakuwa Oasis](https://github.com/ninjadev/en)

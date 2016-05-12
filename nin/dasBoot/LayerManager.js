@@ -54,6 +54,26 @@ LayerManager.prototype.update = function(frame) {
         relativeFrame = frame - layer.startFrame;
 
     if (li) {
+      if(layer.animationClips) {
+        for(var key in layer.animationClips) {
+          var animationClip = layer.animationClips[key];
+          for(var j = 1; j < animationClip.length; j++) {
+            var keyframe = animationClip[j];
+            if(keyframe.relativeFrame >= relativeFrame) {
+              var from = animationClip[j - 1];
+              var to = keyframe;
+              break;
+            }
+          }
+          if(from) {
+            li[key] = window[to.type](from.value, to.value,
+                                      (relativeFrame - from.relativeFrame) /
+                                      (to.relativeFrame - from.relativeFrame));
+          } else if(to) {
+            li[key] = to.value;
+          }
+        }
+      }
       li.update(frame, relativeFrame);
     }
   }

@@ -1,0 +1,21 @@
+<div style="position: absolute">{{ clipName }}</div>
+
+<svg
+  height="{{ 30 * layerYScale }}"
+  width="{{ (layer.endFrame - layer.startFrame) * layerXScale }}"
+  >
+
+  <path
+    d="{{ path }}"
+    style=stroke:#d3dde3;stroke-width:2;fill:none
+    />
+
+  <path
+    d="{{ path }}
+       L{{ (layer.endFrame - layer.startFrame) * layerXScale }} {{ 30 * layerYScale}}
+       L0 {{ 30 * layerYScale }}
+       Z"
+    style=fill:#2e3e48
+    />
+
+</svg>

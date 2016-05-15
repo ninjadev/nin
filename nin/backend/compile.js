@@ -113,6 +113,8 @@ var compile = function(projectPath, options) {
             function(error, stdout, stderr) {
               if(error) {
                 renderError();
+                console.error(error);
+                process.exit(1);
               } else if(stderr) {
                 renderWarn();
                 console.error(stderr);

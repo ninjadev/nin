@@ -1,0 +1,13 @@
+/* everything up until the first method is considered
+ * as the body of the constructor. */
+
+this.someMemberVariable = "hello world"
+
+someMethod(a, b, c) {
+    var scopedVariable = "someMethod was called"
+        log(scopedVariable, a, b, c)
+}
+
+someMethodThatReturnsSomething(a, b) {
+    < a * b
+}

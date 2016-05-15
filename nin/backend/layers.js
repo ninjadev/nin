@@ -36,7 +36,17 @@ function update(projectPath, layerId, layer, callback) {
       return;
     }
     for (var key in layer) {
-      layers[layerId][key] = layer[key];
+      var splitted = key.split('.');
+      var target = layers[layerId];
+      for(var i = 0; i < splitted.length - 1; i++) {
+        if(!target) {
+          break;
+        }
+        target = target[splitted[i]];
+      }
+      if(target) {
+        target[splitted[splitted.length - 1]] = layer[key];
+      }
     }
     write(projectPath, layers, function (err) {
       if (callback) {

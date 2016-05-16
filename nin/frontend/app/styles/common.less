@@ -533,3 +533,21 @@ input[type=range]:focus::-ms-fill-upper {
   background-color: rgba(255, 255, 255, 0.6);
   border: 2px solid #7f4950;
 }
+
+.disconnect-banner {
+  width: 100%;
+  position: fixed;
+  background: @error-message-bg-color;
+  color: @error-message-text-color;
+  font-size: 16px;
+  height: 48px;
+  padding: 0 15px;
+  line-height: 50px;
+  z-index: 99999999;
+  top: calc(~"50% +  10px");
+  text-align: center;
+  a {
+    color: @error-message-text-color;
+    text-decoration: underline;
+  }
+}

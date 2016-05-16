@@ -268,6 +268,7 @@
 
       socket.onclose = function(e) {
         console.log('nin socket connection closed', e);
+        $scope.disconnected = true;
       };
     });
 })();

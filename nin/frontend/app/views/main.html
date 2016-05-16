@@ -1,5 +1,13 @@
 <link rel="stylesheet" ng-href="styles/{{ selectedTheme }}.css">
 
+<div
+  class="disconnect-banner"
+  ng-if="disconnected"
+  >
+  Disconnected from the nin backend!
+  Try refreshing, and perhaps restarting <code>nin</code> too.
+</div>
+
 <div menubar menu=menu></div>
 
 <ui-layout options="{ flow : 'row' }" >

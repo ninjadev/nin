@@ -18,7 +18,7 @@ function chunk(type, data) {
   return Buffer.concat([
       new Buffer(length, 'binary'),
       new Buffer(type + data, 'binary'),
-      new Buffer(positiveNumberToBytes(+('0x' + crc(type + data)), 4), 'binary')
+      new Buffer(positiveNumberToBytes(crc(new Buffer(type + data, 'binary')), 4), 'binary')
   ]);
 }
 
@@ -100,7 +100,7 @@ function compress(projectPath, payload, callback) {
   zlib.deflate(scanlinesBuffer.toString('binary'), function(err, buffer){
     var IDATData = Buffer.concat([
       buffer,
-      new Buffer(positiveNumberToBytes(+('0x' + crc(scanlinesBuffer.toString('binary'))), 4), 'binary')
+      new Buffer(positiveNumberToBytes(crc(scanlinesBuffer), 4), 'binary')
     ]);
     var IDATChunk = chunk('IDAT', IDATData.toString('binary'));
     callback(Buffer.concat([

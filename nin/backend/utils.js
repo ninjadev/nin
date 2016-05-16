@@ -10,10 +10,10 @@ function findProjectRoot(currentPath) {
         manifest = path.join(base, 'nin.json');
 
     if (fs.existsSync(manifest)) {
-      return base;
+      return base.replace(/\/$/, '');
     }
     up += '../';
-  } while (base != path.sep)
+  } while (base != path.sep);
 }
 
 function findProjectRootOrExit(currentPath) {

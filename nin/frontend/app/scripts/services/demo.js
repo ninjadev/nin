@@ -1,12 +1,27 @@
 (function() {
   'use strict';
 
-  angular.module('nin').factory('demo', function(commands){
+  angular.module('nin').factory('demo', function(commands, $rootScope){
     var demo = bootstrap({
       rootPath: '//localhost:9000/',
     });
 
     window.demo = demo;
+
+    var originalLoop = demo.looper.loop;
+    demo.looper.loop = function() {
+      var wasError = false;
+      try {
+        originalLoop();
+      } catch(e) {
+        wasError = true;
+        $rootScope.globalJSError = e;
+        requestAnimFrame(demo.looper.loop);
+      }
+      if(!wasError) {
+        $rootScope.globalJSError = '';
+      }
+    };
 
     commands.on('playPause', function() {
       if(demo.music.paused) {

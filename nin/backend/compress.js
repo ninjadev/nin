@@ -5,28 +5,31 @@ var zlib = require('zlib');
 
 function positiveNumberToBytes(number, bytes) {
   bytes = bytes || 4;
-  var result = '';
+  var result = [];
   for(var i = 0; i < bytes; i++){
-    result = String.fromCharCode(number % 256) + result;
+    result = [number % 256].concat(result);
     number = number / 256 | 0;
   }
-  return result;
+  return new Buffer(result);
 }
 
 function chunk(type, data) {
   var length = positiveNumberToBytes(data.length, 4);
+  var typeAndData = Buffer.concat([new Buffer(type, 'binary'), data]);
   return Buffer.concat([
-      new Buffer(length, 'binary'),
-      new Buffer(type + data, 'binary'),
-      new Buffer(positiveNumberToBytes(crc(new Buffer(type + data, 'binary')), 4), 'binary')
+      length,
+      typeAndData,
+      positiveNumberToBytes(crc(typeAndData), 4)
   ]);
 }
 
 
 function compress(projectPath, payload, callback) {
 
+  payload = new Buffer(payload, 'binary');
+
   while(payload.length % 3) {
-    payload += ' ';  
+    payload = Buffer.concat([payload, new Buffer([0])]);
   }
 
   var width = Math.ceil(Math.sqrt(payload.length / 3));
@@ -34,18 +37,19 @@ function compress(projectPath, payload, callback) {
   var padding = width * height - payload.length / 3;
 
   while(padding --> 0) {
-    payload += '   ';
+    payload = Buffer.concat([payload, new Buffer([0, 0, 0])]);
   }
 
   var fileSignature = new Buffer('\x89\x50\x4e\x47\x0d\x0a\x1a\x0a', 'binary');
-  var IHDRChunk = chunk('IHDR', 
-    positiveNumberToBytes(width, 4) +
-    positiveNumberToBytes(height, 4) +
-    positiveNumberToBytes(8, 1) +
-    positiveNumberToBytes(2, 1) +
-    positiveNumberToBytes(0, 1) +
-    positiveNumberToBytes(0, 1) +
-    positiveNumberToBytes(0, 1));
+  var IHDRChunk = chunk('IHDR', Buffer.concat([
+    positiveNumberToBytes(width, 4),
+    positiveNumberToBytes(height, 4),
+    positiveNumberToBytes(8, 1),
+    positiveNumberToBytes(2, 1),
+    positiveNumberToBytes(0, 1),
+    positiveNumberToBytes(0, 1),
+    positiveNumberToBytes(0, 1)
+  ]));
 
   var customHtml = '';
   try {
@@ -89,20 +93,27 @@ function compress(projectPath, payload, callback) {
         '}' +
       '}' +
     '}</script><canvas class=hide height='+ height + ' width=' + width + '></canvas><img src=# onload=z()><!--';
-  var htMlChunk = chunk('htMl', html);
-  var IENDChunk = chunk('IEND', '');
+  var htMlChunk = chunk('htMl', new Buffer(html));
+  var IENDChunk = chunk('IEND', new Buffer(''));
 
-  var scanlines = payload.match(new RegExp('[\\s\\S]{1,' + (width * 3) + '}', 'g'));
-  var scanlinesBuffer = Buffer.concat(scanlines.map(function(scanline){
-    return new Buffer('\0' + scanline, 'binary');
+  /* http://stackoverflow.com/a/11764168 */
+  function bufferChunk (buffer, len) {
+    var chunks = [], i = 0, n = buffer.length;
+    while (i < n) { chunks.push(buffer.slice(i, i += len)); }
+    return chunks;
+  }
+
+  var scanlines = bufferChunk(payload, width * 3);
+  var scanlinesBuffer = Buffer.concat(scanlines.map(function(scanline) {
+    return Buffer.concat([new Buffer([0]), scanline]);
   }));
 
-  zlib.deflate(scanlinesBuffer.toString('binary'), function(err, buffer){
+  zlib.deflate(scanlinesBuffer, function(err, buffer){
     var IDATData = Buffer.concat([
       buffer,
-      new Buffer(positiveNumberToBytes(crc(scanlinesBuffer), 4), 'binary')
+      positiveNumberToBytes(crc(scanlinesBuffer), 4)
     ]);
-    var IDATChunk = chunk('IDAT', IDATData.toString('binary'));
+    var IDATChunk = chunk('IDAT', IDATData);
     callback(Buffer.concat([
       fileSignature,
       IHDRChunk,

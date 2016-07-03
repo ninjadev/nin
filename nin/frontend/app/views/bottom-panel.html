@@ -109,7 +109,7 @@
       ng-rightclick="inspectLayer(layer)"
       ng-class="(layer==inspectedLayer) ? 'inspected' : ''"
       style="
-        height: {{ 30 * yScale }}px;
+        height: calc((30px * {{ layer.automationClips | keyslength }} + 30px) * {{yScale}});
         font-size: {{ 30 * 0.5 * yScale }}px;
         {{ layer === inspectedLayer ?  ''
                                     : 'background: url(' +
@@ -126,9 +126,28 @@
         style="
           width:{{ (layer.endFrame - layer.startFrame) * xScale }}px;
           left:{{ layer.startFrame * xScale }}px;
+          height: {{30 * yScale}}px;
         ">
         <span class="name">{{ layer.displayName }}</span>
         &nbsp;
+      </div>
+
+      <div
+        ng-repeat="(name, automationClip) in layer.automationClips"
+        title="{{ layer.displayName }}"
+        automation-clip=automationClip
+        layer=layer
+        layer-x-scale="xScale"
+        layer-y-scale="yScale"
+        clip-name="name"
+        class=layer-bar
+        style="
+          width:{{ (layer.endFrame - layer.startFrame) * xScale }}px;
+          left:{{ layer.startFrame * xScale }}px;
+          top: {{ $index * 30 * yScale }}px;
+          height: {{ 30 * yScale }}px;
+          background: #0a1a24;
+        ">
       </div>
     </div>
   </div>

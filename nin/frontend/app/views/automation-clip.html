@@ -1,0 +1,37 @@
+<div class="automation-clip">
+  <div class="clip-name">{{ clipName }}</div>
+
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="{{ 30 * layerYScale }}"
+    width="{{ (layer.endFrame - layer.startFrame) * layerXScale }}"
+    ng-mousemove="mousemoveSvg($event)"
+    ng-mouseup="mouseupSvg($event)"
+    >
+
+    <path
+      d="{{ path }}"
+      style=stroke:#d3dde3;stroke-width:2;fill:none
+      />
+
+    <path
+      d="{{ path }}
+         L{{ (layer.endFrame - layer.startFrame) * layerXScale }} {{ 30 * layerYScale}}
+         L0 {{ 30 * layerYScale }}
+         Z"
+      style=fill:#2e3e48
+      />
+
+    <circle
+      ng-repeat="keyframe in automationClip"
+      ng-mousedown="mousedownKeyframe($event, $index)"
+      ng-click="clickKeyframe($event, $index)"
+      ng-rightclick="rightclickKeyframe($event, $index)"
+      cx="0"
+      cy="0"
+      r="4"
+      transform="{{ 'matrix(1 0 0 1 '+ coordinateStore[$index].x + ' ' + coordinateStore[$index].y + ')' }}";
+      style="stroke:#d3dde3;stroke-width:2;fill:transparent;cursor:move"
+      />
+  </svg>
+</div>

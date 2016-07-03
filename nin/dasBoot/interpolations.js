@@ -21,3 +21,7 @@ function easeOut(a, b, t) {
   t = (--t)*t*t+1;
   return lerp(a, b, t);
 }
+
+function hold(a, b, t) {
+  return t <= 1 ? a : b;
+}

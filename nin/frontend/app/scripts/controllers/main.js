@@ -2,7 +2,7 @@
   'use strict';
 
   angular.module('nin')
-    .controller('MainCtrl', function ($scope, $http, $window, ScriptReloader, socket, demo, commands) {
+    .controller('MainCtrl', function ($scope, $rootScope, $http, $window, ScriptReloader, socket, demo, commands) {
 
       $scope.themes = [
         'dark',
@@ -204,65 +204,73 @@
       }
 
       var layerShaderDependencies = {};
+      $rootScope.globalJSErrors = $rootScope.globalJSErrors || {};
       socket.on('add change', function(event) {
-        switch (event.type) {
-          case 'layers':
-            var layers = JSON.parse(event.content);
+        try {
+          switch (event.type) {
+            case 'layers':
+              var layers = JSON.parse(event.content);
 
-            $scope.layers = layers;
-            demo.lm.hardReset();
+              $scope.layers = layers;
+              demo.lm.hardReset();
 
-            for(var i in layers) {
-              var layer = layers[i];
-              layer.position = i;
-              layer.color = (Math.abs(hash(layer.displayName || '')) | 0) % 8;
-              demo.lm.loadLayer(layer);
-            }
+              for(var i in layers) {
+                var layer = layers[i];
+                layer.position = i;
+                layer.color = (Math.abs(hash(layer.displayName || '')) | 0) % 8;
+                demo.lm.loadLayer(layer);
+              }
 
-            Loader.start(function() {}, function() {});
-            demo.lm.jumpToFrame(demo.getCurrentFrame());
-            break;
+              Loader.start(function() {}, function() {});
+              demo.lm.jumpToFrame(demo.getCurrentFrame());
+              break;
 
-          case 'camerapaths':
-            var camerapaths = JSON.parse(event.content);
+            case 'camerapaths':
+              var camerapaths = JSON.parse(event.content);
 
-            CameraController.paths = camerapaths;
-            for (var index in CameraController.layers) {
-              var cameraController = CameraController.layers[index];
-              cameraController.parseCameraPath(camerapaths);
-              demo.lm.refresh(cameraController.layer_id);
-            }
+              CameraController.paths = camerapaths;
+              for (var index in CameraController.layers) {
+                var cameraController = CameraController.layers[index];
+                cameraController.parseCameraPath(camerapaths);
+                demo.lm.refresh(cameraController.layer_id);
+              }
 
-            demo.lm.update(demo.looper.currentFrame);
-            break;
+              demo.lm.update(demo.looper.currentFrame);
+              break;
 
-          case 'shader':
-            var indirectEval = eval;
-            indirectEval(event.content);
+            case 'shader':
+              var indirectEval = eval;
+              indirectEval(event.content);
 
-            for (var i in $scope.layers) {
-              var layer = $scope.layers[i];
-              if (layerShaderDependencies[layer.type]) {
-                if (layerShaderDependencies[layer.type].indexOf(event.shadername) !== -1) {
-                  demo.lm.refresh(layer.type);
+              for (var i in $scope.layers) {
+                var layer = $scope.layers[i];
+                if (layerShaderDependencies[layer.type]) {
+                  if (layerShaderDependencies[layer.type].indexOf(event.shadername) !== -1) {
+                    demo.lm.refresh(layer.type);
+                  }
                 }
               }
-            }
 
-            demo.lm.update(demo.looper.currentFrame);
-            Loader.start(function() {}, function() {});
-            break;
+              demo.lm.update(demo.looper.currentFrame);
+              Loader.start(function() {}, function() {});
+              break;
 
-          case 'layer':
-            var indirectEval = eval;
-            indirectEval(event.content);
-            layerShaderDependencies[event.layername] = event.shaderDependencies;
+            case 'layer':
+              var indirectEval = eval;
+              indirectEval(event.content);
+              layerShaderDependencies[event.layername] = event.shaderDependencies;
 
-            demo.lm.refresh(event.layername);
-            demo.lm.update(demo.looper.currentFrame);
+              demo.lm.refresh(event.layername);
+              demo.lm.update(demo.looper.currentFrame);
 
-            Loader.start(function() {}, function() {});
-            break;
+              Loader.start(function() {}, function() {});
+              break;
+          }
+
+          delete $rootScope.globalJSErrors[event.type];
+        } catch (e) {
+          e.context = "WS load of " + event.path + " failed";
+          $rootScope.globalJSErrors[event.type] = e;
         }
       });
 

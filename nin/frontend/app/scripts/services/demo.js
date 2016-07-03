@@ -8,18 +8,18 @@
 
     window.demo = demo;
 
+    $rootScope.globalJSErrors = $rootScope.globalJSErrors || {};
     var originalLoop = demo.looper.loop;
     demo.looper.loop = function() {
-      var wasError = false;
       try {
         originalLoop();
+
+        delete $rootScope.globalJSErrors.looper;
       } catch(e) {
-        wasError = true;
-        $rootScope.globalJSError = e;
+        e.context = "Error during looping of demo";
+        $rootScope.globalJSErrors.looper = e;
+
         requestAnimFrame(demo.looper.loop);
-      }
-      if(!wasError) {
-        $rootScope.globalJSError = '';
       }
     };
 

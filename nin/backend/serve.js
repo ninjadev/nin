@@ -59,7 +59,9 @@ var serve = function(projectPath, shouldRunHeadlessly) {
           filenameWithoutExtension = filename.split('.')[0],
           content = fs.readFileSync(path, 'utf-8');
 
-      var event = {};
+      var event = {
+        path: path
+      };
 
       if (filename == 'layers.json' ||
             filename == 'camerapaths.json') {

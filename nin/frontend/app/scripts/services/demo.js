@@ -10,14 +10,28 @@
 
     $rootScope.globalJSErrors = $rootScope.globalJSErrors || {};
     var originalLoop = demo.looper.loop;
+    var forcedPause = false;
     demo.looper.loop = function() {
       try {
         originalLoop();
+
+        if (forcedPause) {
+          demo.music.play();
+          forcedPause = false;
+        }
 
         delete $rootScope.globalJSErrors.looper;
       } catch(e) {
         e.context = "Error during looping of demo";
         $rootScope.globalJSErrors.looper = e;
+
+        demo.looper.deltaTime += demo.looper.frameLength;
+        demo.looper.currentFrame -= 1;
+
+        if (!demo.music.paused) {
+          demo.music.pause();
+          forcedPause = true;
+        }
 
         requestAnimFrame(demo.looper.loop);
       }

@@ -530,8 +530,29 @@ input[type=range]:focus::-ms-fill-upper {
   padding-bottom: 10px;
   font-family: monospace;
   z-index: 999999999999999;
-  background-color: rgba(113, 75, 75, 0.6);
-  overflow-y: scroll;
+  background-color: fade(darken(@radical-red, 25%), 80%);
+  overflow-y: auto;
+  white-space: pre;
+}
+
+.global-error-overlay > .bg {
+  background: #fafafa;
+  padding: 15px;
+  color: #000;
+  overflow-x: scroll;
+}
+
+.global-error-overlay .muted {
+  color: #888;
+}
+
+.global-error-overlay strong {
+  color: @radical-red;
+}
+
+.global-error-overlay .context {
+  text-align: center;
+  font-weight: bold;
 }
 
 .disconnect-banner {

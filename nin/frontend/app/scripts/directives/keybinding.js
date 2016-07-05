@@ -32,7 +32,9 @@ angular.module('nin').directive('keybinding', function(commands, render, demo) {
     },
     '13': function(e) {
       // 'return'
-      commands.jumpToFrame(0);
+      commands.getCuePoint(function(cuePoint) {
+        commands.jumpToFrame(cuePoint || 0);
+      });
     },
     '62': function() {
       // '>'

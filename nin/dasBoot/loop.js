@@ -5,12 +5,12 @@ function createLoop(options) {
   var renderer = options.renderer;
   var music = options.music;
 
-
   function Looper() {
     this.time = 0;
     this.oldTime = 0;
     this.deltaTime = 0;
     this.currentFrame = 0;
+    this.frameLength = frameLength;
 
     var that = this;
     this.loop = function() {

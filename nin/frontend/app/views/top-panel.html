@@ -96,14 +96,10 @@
   <div>
     <div
       class=global-error-overlay
-      ng-show=globalJSError
+      ng-repeat="(_, error) in globalJSErrors"
       >
-      <h3>{{ globalJSError.name }}</h3>
-      <h4>{{ globalJSError.message }}</h4>
-      <br>
-      <pre>
-        {{ globalJSError.stack }}
-      </pre>
+      <pre>⛄ {{ error.context }} ⛄</pre>
+      <pre>{{ error.stack }}</pre>
     </div>
     <demo></demo>
   </div>

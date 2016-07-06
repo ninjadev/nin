@@ -9,6 +9,8 @@
         'light'
       ];
 
+      $scope.fileCache = {};
+
       $scope.selectedTheme = localStorage.getItem('selectedTheme') || 'dark';
       commands.on('selectTheme', function(theme) {
         var foundTheme = false;
@@ -240,6 +242,7 @@
 
             case 'shader':
               var indirectEval = eval;
+              $scope.fileCache[event.path] = event.content;
               indirectEval(event.content);
 
               for (var i in $scope.layers) {
@@ -257,6 +260,7 @@
 
             case 'layer':
               var indirectEval = eval;
+              $scope.fileCache[event.path] = event.content;
               indirectEval(event.content);
               layerShaderDependencies[event.layername] = event.shaderDependencies;
 
@@ -270,6 +274,8 @@
           delete $rootScope.globalJSErrors[event.type];
         } catch (e) {
           e.context = "WS load of " + event.path + " failed";
+          e.type = event.type;
+          e.path = event.path;
           $rootScope.globalJSErrors[event.type] = e;
         }
       });

@@ -94,13 +94,17 @@
   </div>
 
   <div>
+    <!-- cramped formatting because of whitespace: pre -->
     <div
       class=global-error-overlay
       ng-repeat="(_, error) in globalJSErrors"
-      >
-      <pre>⛄ {{ error.context }} ⛄</pre>
-      <pre>{{ error.stack }}</pre>
-    </div>
+      ><div class="context">⛄ {{ error.context }} ⛄</div>
+<div class="bg">
+<div class="header"><strong>{{ error.stack.split('\n')[0] }}</strong></div>
+<div class="excerpt"
+  ng-bind-html="error | errorExcerpt:fileCache"
+  ></div><div class="stack" ng-bind-html="error | stackFormat"></div>
+</div></div>
     <demo></demo>
   </div>
 </div>

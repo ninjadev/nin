@@ -30,6 +30,14 @@ angular.module('nin').directive('keybinding', function(commands, render, demo) {
       // 'm'
       commands.toggleFullscreen();
     },
+    '116': function() {
+      // 't'
+      commands.multiplyLoopLengthBy(0.5);
+    },
+    '121': function() {
+      // 'y'
+      commands.multiplyLoopLengthBy(2.0);
+    },
     '13': function(e) {
       // 'return'
       commands.jumpToFrame(0);

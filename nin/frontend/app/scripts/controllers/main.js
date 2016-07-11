@@ -78,6 +78,12 @@
             {name: 'Set cue point', shortcut: 'g', click: function() {
               commands.setCuePoint();
             }},
+            {name: 'Halve loop length', shortcut: 't', click: function() {
+              commands.multiplyLoopLengthBy(0.5);
+            }},
+            {name: 'Double loop length', shortcut: 'y', click: function() {
+              commands.multiplyLoopLengthBy(2.0);
+            }},
             {name: '-'},
             {name: 'Toggle fullscreen', shortcut: 'm', click: function() {
               commands.toggleFullscreen();

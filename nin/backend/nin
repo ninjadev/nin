@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 
-var program = require('commander');
 var fs = require('fs');
 var path = require('path');
+var program = require('commander');
 
-var compile  = require('./compile'),
-    serve    = require('./serve'),
-    render    = require('./render'),
-    generate = require('./generate/generate'),
-    utils = require('./utils');
+var compile = require('./compile');
+var generate = require('./generate/generate');
 var init = require('./init');
+var render = require('./render');
+var serve = require('./serve');
+var utils = require('./utils');
 
 program.Command.prototype._outputHelp = program.Command.prototype.outputHelp;
 program.Command.prototype.outputHelp = function() {

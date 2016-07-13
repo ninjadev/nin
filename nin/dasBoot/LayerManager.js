@@ -37,7 +37,7 @@ LayerManager.prototype.loadLayer = function(layer) {
       if (!that.checkDependencies(layer)) {
         return setTimeout(arguments.callee, 100);
       }
-      layer.instance = new window[layer.type](layer);
+      layer.instance = new window[layer.type](layer, that.demo);
       Loader.start(function() {}, function() {});
       that.rebuildEffectComposer();
     } else {
@@ -84,7 +84,7 @@ LayerManager.prototype.refresh = function(className) {
     var layer = this.layers[i];
     if(layer.type == className || (layer.dependencies && layer.dependencies.indexOf(className) != -1)) {
       if (layer.type in window && this.checkDependencies(layer)) {
-        layer.instance = new window[layer.type](layer);
+        layer.instance = new window[layer.type](layer, this.demo);
       }
     }
   }

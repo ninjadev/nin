@@ -149,6 +149,9 @@
       $scope.loopStart = null;
       $scope.loopEnd = null;
       $scope.loopActive = false;
+      commands.on('getCuePoint', function(callback) {
+        callback($scope.loopActive ? $scope.loopStart : null);
+      });
       commands.on('setCuePoint', function() {
         var currentBEAN = BEAN_FOR_FRAME($scope.currentFrame);
         var currentQuantizedFrame = FRAME_FOR_BEAN(currentBEAN - currentBEAN % PROJECT.music.subdivision);

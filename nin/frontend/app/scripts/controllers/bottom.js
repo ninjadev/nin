@@ -5,7 +5,7 @@
     .controller('BottomCtrl', function ($scope, $interval, socket, camera, commands) {
 
       $scope.xScale = 1;
-      $scope.xScaleTarget = 0;
+      $scope.xScaleTarget = 1;
       $scope.yScale = 1;
 
 

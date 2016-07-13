@@ -37,15 +37,16 @@ angular.module('nin').controller('TopCtrl', function($scope, camera, commands, $
     camera.toggleFlyAroundMode();
     if($scope.flyAroundMode) {
       flyAroundInterval = $interval(updateScopeCameraValues, 16);
-    } else {
-      flyAroundInterval.cancel();
+    } else if (!flyAroundInterval) {
+      $interval.cancel(flyAroundInterval);
       flyAroundInterval = null;
     }
   });
 
   $scope.$on('$destroy', function() {
-    if(flyAroundInterval) {
-      flyAroundInterval.cancel();
+    if (flyAroundInterval) {
+      $interval.cancel(flyAroundInterval);
+      flyAroundInterval = null;
     }
   });
 

@@ -184,10 +184,14 @@
         $scope.loopEnd = $scope.loopStart + newLoopLength;
       });
 
+      var lastFrame = 0;
       $scope.$watch('currentFrame', function (nextFrame) {
-        if ($scope.loopActive && nextFrame >= $scope.loopEnd) {
+        if ($scope.loopActive && !$scope.demo.music.paused && lastFrame >= $scope.loopStart 
+                              && lastFrame <= $scope.loopEnd && nextFrame >= $scope.loopEnd 
+                              && !(nextFrame >= $scope.loopEnd + 5)) {
           $scope.demo.jumpToFrame($scope.loopStart);
         }
+        lastFrame = nextFrame;
       });
     });
 })();

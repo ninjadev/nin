@@ -1,7 +1,7 @@
 /**
  * @constructor
  */
-function TemplateLayer(layer) {
+function TemplateLayer(layer, demo) {
   this.config = layer.config;
   this.scene = new THREE.Scene();
 

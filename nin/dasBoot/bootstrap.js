@@ -143,9 +143,15 @@ window['bootstrap'] = function(options) {
   demo.start = function() {
     container.insertBefore(demo.renderer.domElement, container.firstChild);
     demo.resize();
+    demo.warmup();
+    demo.jumpToFrame(0);
     demo.music.play();
     demo.looper.loop();
   };
+
+  demo.warmup = function() {
+    demo.lm.warmup();
+  }
 
   return demo;
 };

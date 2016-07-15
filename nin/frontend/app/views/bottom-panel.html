@@ -10,7 +10,7 @@
       {{ demo.getCurrentFrame() }}
     </span>
 
-    <span ng-show=inspectedLayer>
+    <span ng-if=inspectedLayer>
       <span
         class=value
         title="Relative frame for inspected layer"
@@ -28,6 +28,16 @@
       title="Global music BEAT number for frame"
       >
       {{ $window.BEAN }}
+    </span>
+
+    <span ng-if=inspectedLayer>
+      <span
+        class=value
+        title="Relative BEAN for inspected layer"
+        >
+      / {{ relativeBEAN() }}
+      </span>
+      <label>relative BEAN</label>
     </span>
   </div>
 

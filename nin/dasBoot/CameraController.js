@@ -97,11 +97,9 @@ CameraController.prototype.updateCamera = function(frame) {
     var roll = this.roll.getPoint(frame);
 
     if (!this.pause) {
-      this.camera.rotation.z = 0;
       this.camera.rotateOnAxis(this.rotVector, roll);
     }
 
-    this.visualization.rotation.z = 0;
     this.visualization.rotateOnAxis(this.rotVector, roll);
   }
 

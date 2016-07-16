@@ -1,6 +1,7 @@
 var chalk = require('chalk');
 var compress = require('./compress').compress;
 var exec = require('child_process').exec;
+var execSync = require('child_process').execSync;
 var fs = require('fs');
 var mkdirp = require('mkdirp');
 var p = require('path');
@@ -63,9 +64,21 @@ var compile = function(projectPath, options) {
         fs.writeFileSync(projectPath + '/bin/' + filename, data);
       });
     }
+
+    var settings = projectSettings.load(projectPath);
+    var metadata = [
+      ['Title', settings.title],
+      ['Author', settings.authors.join(', ')],
+      ['Creation time', '' + new Date()],
+      ['Software', 'NIN'],
+      ['Description',
+        "Git revision: " + execSync('git rev-parse HEAD') +
+        'Git origin: ' + execSync('git config --get remote.origin.url')]
+    ];
+
     if(options.pngCompress) {
       process.stdout.write(chalk.yellow('\nCompressing demo to .png.html'));
-      compress(projectPath, data, function(data) {
+      compress(projectPath, data, metadata, function(data) {
         renderOK();
         writeDemoToFile(data, 'demo.png.html');
         console.log(chalk.white('\n★ ---------------------------------------- ★'));
@@ -83,7 +96,13 @@ var compile = function(projectPath, options) {
       } catch(e) {
         customHtml = fs.readFileSync(__dirname + '/index.html', {encoding: 'utf8'});
       }
+
+      var parsedMetadata = metadata.map(function(data) {
+        return '<!-- ' + data[0] + ': ' + data[1] + ' -->';
+      }).join('\n') + '\n';
+
       var html =
+        parsedMetadata +
         customHtml +
         '<script>' +
         'GU=1;' + /* hack to make sure GU exisits from the get-go */

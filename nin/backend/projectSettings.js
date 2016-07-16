@@ -2,6 +2,8 @@ var fs = require('fs');
 
 
 var defaultSettings = {
+  title: "Untitled",
+  authors: ["Anonymous"],
   music: {
     path: "res/music.mp3",
     bpm: 110,

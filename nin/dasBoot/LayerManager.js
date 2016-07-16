@@ -10,6 +10,15 @@ function LayerManager(demo) {
   this.lastUpdatedActiveLayers = -1;
 }
 
+LayerManager.prototype.warmup = function() {
+  for(var i = 0; i < this.layers.length; i++) {
+    var layer = this.layers[i];
+    demo.jumpToFrame(layer.startFrame);
+    demo.update(layer.startFrame, 0);
+    demo.render(demo.renderer, 0);
+  }
+}
+
 LayerManager.prototype.resize = function() {
   for(var i = 0; i < this.layers.length; i++) {
     var layer = this.layers[i];

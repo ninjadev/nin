@@ -120,6 +120,10 @@
 
       $scope.$window = window;
 
+      $scope.relativeBEAN = function() {
+        return window.BEAN - BEAN_FOR_FRAME($scope.inspectedLayer.startFrame);
+      };
+
       $scope.inspectLayer = function(layer) {
         $scope.$parent.$parent.inspectedLayer = $scope.inspectedLayer == layer ? null
                                                                                : layer;

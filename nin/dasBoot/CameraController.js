@@ -81,7 +81,7 @@ CameraController.prototype.updateCamera = function(frame) {
     if (!this.pause) {
       this.camera.position.copy(pos);
     }
-    this.visualization.position.copy(pos);
+    //this.visualization.position.copy(pos);
   }
 
   if (this.lookAt) {
@@ -90,7 +90,7 @@ CameraController.prototype.updateCamera = function(frame) {
     if (!this.pause) {
       this.camera.lookAt(lookAt);
     }
-    this.visualization.lookAt(lookAt);
+    //this.visualization.lookAt(lookAt);
   }
 
   if (this.roll) {
@@ -100,7 +100,7 @@ CameraController.prototype.updateCamera = function(frame) {
       this.camera.rotateOnAxis(this.rotVector, roll);
     }
 
-    this.visualization.rotateOnAxis(this.rotVector, roll);
+    //this.visualization.rotateOnAxis(this.rotVector, roll);
   }
 
   if (this.pause) return;
@@ -125,6 +125,6 @@ CameraController.prototype.updateCamera = function(frame) {
     if (!this.pause) {
       this.camera.position.add(amount);
     }
-    this.visualization.position.add(amount);
+    //this.visualization.position.add(amount);
   }
 };

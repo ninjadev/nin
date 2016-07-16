@@ -23,6 +23,7 @@ PathController.prototype.parse3Dkeyframes = function(keyframes) {
         keyframes[i].center[0], keyframes[i].center[1], keyframes[i].center[2]
       );
       this_pos.offset = keyframes[i].offset || 0;
+      this_pos.length = keyframes[i].length || 0;
       if (keyframes[i].up) {
         var up = new THREE.Vector3(
           keyframes[i].up[0], keyframes[i].up[1], keyframes[i].up[2]
@@ -146,6 +147,7 @@ PathController.prototype.get3Dpoint = function(frame) {
       t = 0;
     }
     t += current.offset;
+    t *= current.length;
     var point = new THREE.Vector3(
       Math.sin(t * Math.PI * 2) * current.radius,
       0,

@@ -126,3 +126,4 @@ See [the wiki page](https://github.com/ninjadev/nin/wiki/Camera-Controller) for 
 - [Heatseeker](https://github.com/sigvef/heatseeker)
 - [Inakuwa Oasis](https://github.com/ninjadev/en)
 - [Stars and boxes](https://github.com/iver56/abel-demo-14)
+- [Crankwork Steamfist](https://github.com/ninjadev/dix)

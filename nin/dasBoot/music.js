@@ -24,7 +24,7 @@ function loadMusic() {
   var _playbackRate = 1;
 
   return {
-    paused: false,
+    paused: true,
 
     _calculateFFT: function() {
       _analyserNode.getByteTimeDomainData(fftBuffer);

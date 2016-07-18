@@ -4,6 +4,8 @@ var fs = require('fs');
 var defaultSettings = {
   title: "Untitled",
   authors: ["Anonymous"],
+  description: "This is my project",
+  previewImage: "https://raw.githubusercontent.com/ninjadev/nin/master/nin/frontend/app/images/nin-dark.png",
   music: {
     path: "res/music.mp3",
     bpm: 110,

@@ -105,10 +105,10 @@
         {
           name: 'Render',
           items: [
-            {name: 'Start rendering', shortcut: 'Shift + R', click: function() {
+            {name: 'Start rendering', click: function() {
               commands.startRendering();
             }},
-            {name: 'Stop rendering', shortcut: 'Shift + R', click: function() {
+            {name: 'Stop rendering', click: function() {
               commands.stopRendering();
             }}
           ]

@@ -100,14 +100,6 @@ angular.module('nin').directive('keybinding', function(commands, render, demo) {
       // 'g'
       commands.setCuePoint();
     },
-    '82': function(e) {
-      // 'R'
-      if(render.isCurrentlyRendering()) {
-        commands.stopRendering();
-      } else {
-        commands.startRendering();
-      }
-    },
     '43': function(e) {
       // '+'
       commands.volumeDelta(0.1);

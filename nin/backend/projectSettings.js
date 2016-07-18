@@ -2,6 +2,8 @@ var fs = require('fs');
 
 
 var defaultSettings = {
+  title: "Untitled",
+  authors: ["Anonymous"],
   music: {
     path: "res/music.mp3",
     bpm: 110,
@@ -31,7 +33,7 @@ function traverse(input, defaults) {
   var output = {};
   for (var key in defaults) {
     if (key in input) {
-      if (typeof input[key] === 'object') {
+      if (input[key].constructor === Object) {
         output[key] = traverse(input[key], defaults[key]);
       } else {
         output[key] = input[key];

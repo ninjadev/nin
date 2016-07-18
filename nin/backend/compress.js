@@ -1,6 +1,7 @@
 var crc = require('crc').crc32;
 var fs = require('fs');
 var zlib = require('zlib');
+var execSync = require('child_process').execSync;
 
 
 function positiveNumberToBytes(number, bytes) {
@@ -23,8 +24,7 @@ function chunk(type, data) {
   ]);
 }
 
-
-function compress(projectPath, payload, callback) {
+function compress(projectPath, payload, metadata, callback) {
 
   payload = new Buffer(payload, 'binary');
 
@@ -57,6 +57,7 @@ function compress(projectPath, payload, callback) {
   } catch(e) {
     customHtml = fs.readFileSync(__dirname + '/index.html', {encoding: 'utf8'});
   }
+
   var html =
     customHtml +
     '<script>' +
@@ -92,7 +93,13 @@ function compress(projectPath, payload, callback) {
           'demo=bootstrap({layers:layers, camerapaths:camerapaths, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +
         '}' +
       '}' +
-    '}</script><canvas class=hide height='+ height + ' width=' + width + '></canvas><img src=# onload=z()><!--';
+    '}</script>' +
+    '<canvas class=hide height='+ height + ' width=' + width + '></canvas><img src=# onload=z()><!--';
+
+
+  var metadataChunks = Buffer.concat(metadata.map(function(data) {
+    return chunk('tEXt', new Buffer(data[0] + '\0' + data[1]));
+  }));
   var htMlChunk = chunk('htMl', new Buffer(html));
   var IENDChunk = chunk('IEND', new Buffer(''));
 
@@ -117,6 +124,7 @@ function compress(projectPath, payload, callback) {
     callback(Buffer.concat([
       fileSignature,
       IHDRChunk,
+      metadataChunks,
       htMlChunk,
       IDATChunk,
       IENDChunk

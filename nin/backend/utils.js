@@ -56,10 +56,19 @@ function colorizeCommanderHelpText(txt) {
              .replace(/(\n  \w+:)/g, chalk.yellow('$1')));
 }
 
+function unsafeHTMLEscape(txt) {
+  return txt.replace(/\</g, '&lt;')
+            .replace(/\>/g, '&gt;')
+            .replace(/\"/g, '&quot;')
+            .replace(/\'/g, '&#039')
+            .replace(/\&/g, '&amp');
+}
+
 module.exports = {
   findProjectRootOrExit: findProjectRootOrExit,
   findProjectRoot: findProjectRoot,
   camelize: camelize,
   mergeOptions: mergeOptions,
-  colorizeCommanderHelpText: colorizeCommanderHelpText
+  colorizeCommanderHelpText: colorizeCommanderHelpText,
+  unsafeHTMLEscape: unsafeHTMLEscape
 };

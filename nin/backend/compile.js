@@ -8,6 +8,7 @@ var p = require('path');
 var projectSettings = require('./projectSettings');
 var rmdir = require('rimraf');
 var shaderGen = require('./shadergen').shaderGen;
+var utils = require('./utils');
 var walk = require('walk');
 
 
@@ -85,10 +86,10 @@ var compile = function(projectPath, options) {
         .join('\n');
 
     const ogTags =
-`<meta property="og:title" content="${metadata.Title}" />
-<meta property="og:description" content="${metadata.Description}" />
+`<meta property="og:title" content="${utils.unsafeHTMLEscape(metadata.Title)}" />
+<meta property="og:description" content="${utils.unsafeHTMLEscape(metadata.Description)}" />
 <meta property="og:image" content="${metadata.previewImage}" />
-<meta name="author" content="${metadata.Author}" />`;
+<meta name="author" content="${utils.unsafeHTMLEscape(metadata.Author)}" />`;
 
     const htmlPreamble =
       metadataAsHTMLComments +

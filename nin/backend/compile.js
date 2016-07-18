@@ -77,12 +77,7 @@ var compile = function(projectPath, options) {
         console.log(chalk.white('★ ---------------------------------------- ★\n'));
       });
     } else {
-      var customHtml = '';
-      try {
-        customHtml = fs.readFileSync(projectPath + '/index.html', {encoding: 'utf8'});
-      } catch(e) {
-        customHtml = fs.readFileSync(__dirname + '/index.html', {encoding: 'utf8'});
-      }
+      var customHtml = fs.readFileSync(projectPath + '/index.html', {encoding: 'utf8'});
       var html =
         customHtml +
         '<script>' +

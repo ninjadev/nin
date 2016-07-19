@@ -9,7 +9,8 @@ var defaultSettings = {
     path: "res/music.mp3",
     bpm: 125,
     subdivision: 4
-  }
+  },
+  googleAnalyticsID: "Your GA ID"
 };
 
 function init(projectPath) {

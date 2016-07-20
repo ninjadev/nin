@@ -1,0 +1,1 @@
+window['NIN'] = window['NIN'] || {}; 

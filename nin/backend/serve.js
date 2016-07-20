@@ -63,7 +63,7 @@ var serve = function(projectPath, shouldRunHeadlessly) {
         path: path
       };
 
-      if (filename == 'layers.json' ||
+      if (filename == 'graph.json' ||
             filename == 'camerapaths.json') {
         event.type = filenameWithoutExtension;
         event.content = content;
@@ -72,10 +72,8 @@ var serve = function(projectPath, shouldRunHeadlessly) {
         event.content = data.out;
         event.shadername = p.basename(p.dirname(path));
       } else {
-        event.type = 'layer';
+        event.type = 'node';
         event.content = content;
-        event.layername = filenameWithoutExtension;
-        event.shaderDependencies = findShaderDependencies(content);
       }
 
       return event;
@@ -92,8 +90,18 @@ var serve = function(projectPath, shouldRunHeadlessly) {
     var sockets = express();
     var sockets_server = require('http').createServer(sockets);
     var sock = socket(projectPath, function(conn) {
-      var sortedPaths = watcher.paths.sort();
+      var sortedPaths = watcher.paths.sort(function(a, b) {
+        var directoryPrecedence = {'lib': 0, 'src': 1, 'res': 2};
+        var directoryAScore = directoryPrecedence[a.slice(0, 3)];
+        var directoryBScore = directoryPrecedence[b.slice(0, 3)];
+        if(directoryAScore == directoryBScore) {
+          return a > b;
+        }
+        return directoryAScore > directoryBScore;
+
+      });
       for (var i in sortedPaths) {
+        console.log('first we need one of these!', sortedPaths[i]);
         conn.send('add', eventFromPath({path: sortedPaths[i]}));
       }
     });

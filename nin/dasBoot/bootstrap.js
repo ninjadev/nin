@@ -2,6 +2,7 @@ window['bootstrap'] = function(options) {
   options = options || {};
 
   var demo = {};
+  window.demo = demo;
 
   var container = document.body;
 
@@ -9,48 +10,10 @@ window['bootstrap'] = function(options) {
   demo.renderer.setClearColor(0x000000, 1);
   demo.renderer.sortObjects = true;
   demo.renderer.autoClear = false;
-  demo.renderer.shadowMap.enabled = true;
-  demo.renderer.shadowCameraNear = 1;
-  demo.renderer.shadowCameraFar = 10000;
-  demo.renderer.shadowCameraFov = 50;
-
-  demo.renderer.shadowMapBias = 0.0039;
-  demo.renderer.shadowMapDarkness = 0.5;
-  demo.renderer.shadowMapWidth = 1024;
-  demo.renderer.shadowMapHeight = 1024;
-
-  demo.effectComposer = new THREE.EffectComposer(demo.renderer);
-  demo.rebuildEffectComposer = function(passes) {
-    var clearPass = new THREE.ClearPass();
-    var toScreenPass = new THREE.ShaderPass(THREE.CopyShader);
-    toScreenPass.renderToScreen = true;
-    demo.effectComposer = new THREE.EffectComposer(demo.renderer);
-    demo.effectComposer.addPass(clearPass);
-    for (var i = 0; i < passes.length; i++) {
-      passes[i] && demo.effectComposer.addPass(passes[i]);
-    }
-    demo.effectComposer.addPass(toScreenPass);
-  };
 
   Loader.setRootPath(options.rootPath || '');
 
-  demo.lm = new LayerManager(demo);
-  if (options.layers) {
-    for (var i = 0; i < options.layers.length; i++) {
-      var layer = options.layers[i];
-      layer.position = i;
-      demo.lm.loadLayer(layer);
-    }
-    demo.lm.jumpToFrame(0);
-  }
-
-  if (options.camerapaths) {
-    CameraController.paths = options.camerapaths;
-    for (var index in CameraController.layers) {
-      CameraController.layers[index].parseCameraPath(options.camerapaths);
-    }
-    demo.lm.jumpToFrame(0);
-  }
+  demo.nm = new NodeManager(demo);
 
   demo.setContainer = function(c) {
     container = c;
@@ -60,13 +23,12 @@ window['bootstrap'] = function(options) {
 
   demo.update = function(frame) {
     currentFrame = frame;
-    demo.lm.update(frame);
+    demo.nm.update(frame);
   };
 
-  demo.render = function(renderer, interpolation) {
+  demo.render = function(renderer) {
     renderer.clear(true, true, true);
-    demo.lm.render(renderer, interpolation);
-    demo.effectComposer.render();
+    demo.nm.render(renderer);
   };
 
   demo.resize = function(width, height) {
@@ -83,8 +45,7 @@ window['bootstrap'] = function(options) {
     demo.renderer.domElement.style.position = 'absolute';
     demo.renderer.domElement.style.margin = ((rect.height - 9 * GU) / 2) +
       'px 0 0 ' + ((rect.width - 16 * GU) / 2) + 'px';
-    demo.effectComposer.setSize(16 * GU, 9 * GU);
-    demo.lm.resize();
+    demo.nm.resize();
     demo.update(currentFrame);
     demo.render(demo.renderer, 0);
   };
@@ -125,7 +86,7 @@ window['bootstrap'] = function(options) {
     demo.looper.deltaTime = 0;
     demo.looper.currentFrame = frame;
     updateBeatBean(frame);
-    demo.lm.jumpToFrame(frame);
+    demo.nm.jumpToFrame(frame);
     demo.update(frame);
     demo.render(demo.renderer, 0);
   };
@@ -150,7 +111,7 @@ window['bootstrap'] = function(options) {
   };
 
   demo.warmup = function() {
-    demo.lm.warmup();
+    demo.nm.warmup();
   }
 
   return demo;

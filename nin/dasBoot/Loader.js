@@ -75,6 +75,7 @@ Loader.prototype.start = function(onprogress, oncomplete) {
         'png': 'data:image/png;base64,',
         'mp3': 'data:audio/mp3;base64,',
         'mp4': 'data:video/mp4;base64,',
+        'webm': 'data:video/webm;base64,',
         'svg': 'data:image/svg+xml;base64,',
       }[item.filepath.slice(-3)];
       console.log(that.id, item.filepath, prefix + (FILES[item.filepath] && FILES[item.filepath].slice(0, 10)));

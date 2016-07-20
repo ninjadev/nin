@@ -12,6 +12,9 @@
     "angular-ui": "~0.4.0",
     "angular-bootstrap": "0.11.0",
     "angular-ui-layout": "~0.0.0",
-    "jquery-ui": "~1.10.4"
+    "jquery-ui": "~1.10.4",
+    "svg-pan-zoom": "^3.2.9",
+    "svg.js": "^2.3.2",
+    "svg.draggable.js": "^2.2.0"
   }
 }

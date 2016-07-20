@@ -1,6 +1,6 @@
 var chalk = require('chalk');
 var generate = require('./generate/generate');
-var layers = require('./layers');
+var graph = require('./graph');
 var sock = require('sockjs');
 
 
@@ -38,9 +38,7 @@ function socket(projectPath, onConnectionCallback) {
       var event = JSON.parse(message);
       switch (event.type) {
         case 'set':
-          var data = {};
-          data[event.data.field] = event.data.value;
-          layers.update(projectPath, event.data.id, data, function (err) {
+          graph.update(projectPath, event.data.id, event.data.fields, function (err) {
             if (err) {
               console.log(err);
             }

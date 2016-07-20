@@ -41,10 +41,6 @@ html, body {
     user-select: text;
 }
 
-* {
-    border-radius: 0 !important;
-}
-
 .container-fluid {
     height: 100%;
     width: 100%;
@@ -57,11 +53,13 @@ html, body {
     overflow: hidden;
 }
 
-.fullscreen {
+body.fullscreen .floating-viewer-container {
     position: fixed;
     -webkit-transform: translateZ(0);
     top: 0;
     left: 0;
+    bottom: 0;
+    right: 0;
     height: 100%;
     width: 100%;
     z-index: 1000000000;
@@ -73,12 +71,14 @@ main-window, main-window > div {
     display: block;
 }
 
-.ui-splitbar {
-    background: @splitbar-bg-color;
+.bottom {
+  height: 50px;
+  position: absolute;
+  bottom: 0;
 }
 
-.bottom {
-    margin-top: 8px;
+body.fullscreen .bottom {
+  display: none;
 }
 
 .bottom-controls {
@@ -89,24 +89,22 @@ main-window, main-window > div {
     background: @fixed-panel-bg-color;
 }
 
-.frame-panel {
-    left: 15px;
+.frame-panel,
+.beat-bean-panel {
+  margin-left: 15px;
+  padding: 3px 6px;
+  height: 30px;
+  background: @fixed-panel-bg-color;
+  display: inline-block;
 }
 
 .fixed-panel {
     position: fixed;
-    top: calc(~"50% +" 18px);
-    background: @fixed-panel-bg-color;
-    height: 30px;
-    padding: 3px 6px;
+    bottom: 10px;
     text-align: left;
     z-index: 999999;
     color: @fixed-panel-text-color;
     pointer-events: none;
-}
-
-.beat-bean-panel {
-    right: 25px;
 }
 
 .fixed-panel label {
@@ -120,55 +118,12 @@ main-window, main-window > div {
     font-weight: bold;
 }
 
-.layers-bar-container {
-    overflow-x: scroll;
-    overflow-y: visible;
-    width: auto;
-    height: 100%;
-    float: left;
-    background: @well-bg-color;
-}
-
-.layers-bar-container, .layers-bar-container * {
-    -webkit-transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    -webkit-perspective: 1000;
-}
-
-.layer-bar {
-    color: @layer-bar-text-color;
-    height: 100%;
-    border-left: 1px solid @layer-bar-border-color;
-    border-right: 1px solid @layer-bar-border-color;
-    padding: 1px 2px;
-    overflow: hidden;
-    opacity: 0.8;
-}
-
-.layer-bar .name {
-    padding: 2px 5px;
-    background: rgba(0, 0, 0, 0.5);
-}
-
-.layer-bar-wrapper {
-    height: 30px;
-    border-bottom: 1px solid @well-bg-border-color;
-}
-
-.layer-bar-wrapper:nth-of-type(2n) {
-    background: @well-bg-color;
-}
-
-.layer-bar-wrapper.inspected {
-    background: @selected-layer-bg-color;
-}
-
 .marker-line {
     position: absolute;
     z-index: 100;
     background: transparent;
     width: 1px;
-    height: calc(~"100% -" 8px);
+    height: 100%;
 }
 
 .marker-line.play {
@@ -222,36 +177,11 @@ main-window, main-window > div {
 
 .top-panel {
     background: @bg-color;
-}
-
-.top-panel .layer-title {
-    font-size: 40px;
-    padding: 30px 15px 5px;
-    background: @top-panel-layer-title-bg-color;
-}
-
-.tweak-panel {
-    padding-top: 20px;
-}
-
-.tweak-panel .tweak-label {
-    text-align: right;
-    padding: 6px;
-    font-weight: normal;
-}
-
-.camera-panel {
-    padding-top: 20px;
-}
-
-.camera-panel input,
-.tweak-panel input {
-    background: @well-bg-color-alt;
-    border: 1px solid #414a4f;
-    color: @text-color;
-    outline: 0;
-    font-family: monospace;
-    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 50px;
 }
 
 .nav-tabs > li > a {
@@ -375,7 +305,6 @@ input[type=range]:focus::-ms-fill-upper {
 .scalers {
     float: right;
     width: 100px;
-    height: 100px;
 }
 
 .x-scaler, .y-scaler {
@@ -388,6 +317,10 @@ input[type=range]:focus::-ms-fill-upper {
     position: fixed;
     z-index: 99999999;
     height: 34px;
+}
+
+body.fullscreen .top-menu {
+  display: none;
 }
 
 .menu-group.selected {
@@ -450,9 +383,25 @@ input[type=range]:focus::-ms-fill-upper {
     font-weight: bold;
 }
 
-.top-left-quadrant {
+.floating-viewer-container {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  width: 640px;
+  height: 360px;
+  box-shadow: rgba(0, 0, 0, 0.5) 1px 0px 2px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.node-area-container {
   background: @bg-color url(@logo-path) no-repeat center center;
   background-size: 15%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
   > div {
     height: 100%;
@@ -491,33 +440,6 @@ input[type=range]:focus::-ms-fill-upper {
   box-shadow: 0px 1px 1px @btn-default-box-shadow-color;
   border: solid @top-panel-layer-title-bg-color 1px;
   color: @text-color;
-}
-
-.layer-bar {
-  &.color-0 {
-    background: @layer-bar-bg-color-0;
-  }
-  &.color-1 {
-    background: @layer-bar-bg-color-1;
-  }
-  &.color-2 {
-    background: @layer-bar-bg-color-2;
-  }
-  &.color-3 {
-    background: @layer-bar-bg-color-3;
-  }
-  &.color-4 {
-    background: @layer-bar-bg-color-4;
-  }
-  &.color-5 {
-    background: @layer-bar-bg-color-5;
-  }
-  &.color-6 {
-    background: @layer-bar-bg-color-6;
-  }
-  &.color-7 {
-    background: @layer-bar-bg-color-7;
-  }
 }
 
 .global-error-overlay {
@@ -570,5 +492,46 @@ input[type=range]:focus::-ms-fill-upper {
   a {
     color: @error-message-text-color;
     text-decoration: underline;
+  }
+}
+
+.graph-editor {
+  margin: 30px 0px 0px;
+
+  svg {
+    
+    .selected {
+      stroke: @graph-selected-item-stroke-color;
+    }
+
+    .node {
+      cursor: move;
+      .background {
+        fill: @graph-node-bg-color;
+        rx: 2;
+        ry: 2;
+      }
+    }
+
+    .connection-lines {
+      line {
+        stroke-width: 1;
+        stroke: @graph-line-color;;
+      }
+    }
+
+    text {
+      fill: @graph-node-text-color;
+      stroke: none;
+      font-family: lane;
+      text-anchor: middle;
+      alignment-baseline: middle;
+    }
+
+    .input,
+    .output {
+      fill: @graph-node-input-output-bg-color;
+      font-size: 8px;
+    }
   }
 }

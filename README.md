@@ -117,6 +117,10 @@ See [the wiki page](https://github.com/ninjadev/nin/wiki/Camera-Controller) for 
 
 > nice! - mrdoob
 
+<!-- -->
+
+> Oh man, I didn't know you guys released your tools. I'm a big fan of your stuff -- awesome to see such polished prods on the web. Happy to have helped enable some amazing work! - [daeken](https://news.ycombinator.com/item?id=12264461#unv_12265590)
+
 ## List of known nin projects
 
 - [Ninjacon 2016: Sea Shark Invtro](https://github.com/stianjensen/ninjacon-invite)

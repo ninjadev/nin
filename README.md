@@ -115,7 +115,7 @@ See [the wiki page](https://github.com/ninjadev/nin/wiki/Camera-Controller) for 
 
 ## Testimonials / Reviews
 
-> nice! - mrdoob
+> nice! - [mrdoob](https://twitter.com/mrdoob/status/686575651923574790)
 
 <!-- -->
 

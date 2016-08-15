@@ -24,7 +24,7 @@ function chunk(type, data) {
   ]);
 }
 
-function compress(projectPath, payload, metadata, callback) {
+function compress(projectPath, payload, htmlPreamble, metadata, callback) {
 
   payload = new Buffer(payload, 'binary');
 
@@ -51,15 +51,8 @@ function compress(projectPath, payload, metadata, callback) {
     positiveNumberToBytes(0, 1)
   ]));
 
-  var customHtml = '';
-  try {
-    customHtml = fs.readFileSync(projectPath + '/index.html', {encoding: 'utf8'});
-  } catch(e) {
-    customHtml = fs.readFileSync(__dirname + '/index.html', {encoding: 'utf8'});
-  }
-
   var html =
-    customHtml +
+    htmlPreamble +
     '<script>' +
     'function z(){' +
       'x=document.querySelector("canvas").getContext("2d");' +
@@ -97,9 +90,10 @@ function compress(projectPath, payload, metadata, callback) {
     '<canvas class=hide height='+ height + ' width=' + width + '></canvas><img src=# onload=z()><!--';
 
 
-  var metadataChunks = Buffer.concat(metadata.map(function(data) {
-    return chunk('tEXt', new Buffer(data[0] + '\0' + data[1]));
-  }));
+  var metadataChunks = Buffer.concat(
+    Object.keys(metadata)
+      .map(key => chunk('tEXt', new Buffer(key + '\0' + metadata[key])))
+  );
   var htMlChunk = chunk('htMl', new Buffer(html));
   var IENDChunk = chunk('IEND', new Buffer(''));
 

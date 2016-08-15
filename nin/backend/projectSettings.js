@@ -1,15 +1,24 @@
 var fs = require('fs');
 
-
 var defaultSettings = {
-  title: "Untitled",
-  authors: ["Anonymous"],
+  title: "My project",
+  authors: ["Your demoscene handle"],
+  description: "This is my project",
+  previewImage: "https://raw.githubusercontent.com/ninjadev/nin/master/nin/frontend/app/images/nin-dark.png",
   music: {
     path: "res/music.mp3",
-    bpm: 110,
-    subdivision: 6
-  }
+    bpm: 125,
+    subdivision: 4
+  },
+  googleAnalyticsID: "Your GA ID"
 };
+
+function init(projectPath) {
+  fs.writeFileSync(
+    projectPath + '/nin.json',
+    new Buffer(JSON.stringify(defaultSettings, null, '  '))
+  );
+}
 
 function load(projectPath) {
   var rawProjectSettings = fs.readFileSync(projectPath + '/nin.json', 'utf8');
@@ -45,4 +54,4 @@ function traverse(input, defaults) {
   return output;
 }
 
-module.exports = {load: load, generate: generate};
+module.exports = {init: init, load: load, generate: generate};

@@ -2,6 +2,7 @@ var chalk = require('chalk');
 var child_process = require('child_process');
 var generate = require('./generate/generate');
 var path = require('path');
+var projectSettings = require('./projectSettings');
 var utils = require('./utils');
 var glob = require('glob');
 
@@ -17,6 +18,7 @@ function init(projectPath) {
     function end() {
       if(--numberOfRemainingFiles == 0) {
         generate.generate(projectPath, 'layer', 'SpinningCube');
+        projectSettings.init(projectPath);
         console.log(chalk.green('This directory is now a nin project. Do'),
                     chalk.cyan('nin run'),
                     chalk.green('to get started!'));

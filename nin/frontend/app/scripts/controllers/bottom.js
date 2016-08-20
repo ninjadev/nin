@@ -134,22 +134,6 @@
         layer.minimized = !layer.minimized;
       };
 
-      $scope.dragResizeLayer = function(event, ui, layer) {
-        if (ui.position.left != (layer.startFrame * $scope.xScale | 0)) {
-          socket.sendEvent('set', {
-            id: layer.position,
-            field: 'startFrame',
-            value: (ui.position.left / $scope.xScale | 0)
-          });
-        } else {
-          socket.sendEvent('set', {
-            id: layer.position,
-            field: 'endFrame',
-            value: ((ui.position.left + ui.size.width) / $scope.xScale | 0)
-          });
-        }
-      };
-
       $scope.loopStart = null;
       $scope.loopEnd = null;
       $scope.loopActive = false;

@@ -9,11 +9,16 @@
         }
       });
 
-      Loader.loadAjax(options.path, response => {
-        var rawPath = JSON.parse(response);
-        this.cameraController = new CameraController(rawPath);
-        this.outputs.camera.setValue(this.cameraController.camera);
-      });
+      this.options = options;
+
+      this.cameraController = new CameraController();
+      this.outputs.camera.setValue(this.cameraController.camera);
+      Loader.loadAjax(options.path, response => this.initializeCamera(response));
+    }
+
+    initializeCamera(rawRawPath) {
+      var rawPath = JSON.parse(rawRawPath);
+      this.cameraController.parseCameraPath(rawPath);
     }
 
     update(frame) {

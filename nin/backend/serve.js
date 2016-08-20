@@ -68,6 +68,7 @@ var serve = function(projectPath, shouldRunHeadlessly) {
         event.content = content;
       } else if (path.endsWith('.camera.json')) {
         event.type = 'camera';
+        event.path = path;
         event.content = content;
       } else if (path.indexOf('/shaders/') !== -1) {
         event.type = 'shader';

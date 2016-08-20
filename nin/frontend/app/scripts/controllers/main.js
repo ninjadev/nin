@@ -238,6 +238,16 @@ class MainCtrl {
           Loader.start(function() {}, function() {});
           break;
 
+        case 'camera':
+          for (let key in demo.nm.nodes) {
+            if (demo.nm.nodes[key] instanceof NIN.CameraNode) {
+              if (demo.nm.nodes[key].options.path == event.path) {
+                demo.nm.nodes[key].initializeCamera(event.content);
+              }
+            }
+          }
+          break;
+
         case 'shader':
           var indirectEval = eval;
           this.fileCache[event.path] = event.content;

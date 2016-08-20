@@ -3,8 +3,10 @@ function CameraController(rawPath) {
   this.rotVector = new THREE.Vector3(0, 0, 1);
   this.pause = false;
 
-  this.parseCameraPath(rawPath);
   this.generateVisualization();
+  if (rawPath) {
+    this.parseCameraPath(rawPath);
+  }
 }
 
 CameraController.prototype.getVisualization = function() {

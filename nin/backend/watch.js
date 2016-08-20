@@ -10,7 +10,7 @@ function watch(projectPath, cb) {
     ['src/',
      'lib/',
      'res/graph.json',
-     'res/camerapaths.json'], {
+     'res/*.camera.json'], {
     ignored: [/[\/\\]\./, /\/shaders\//],
     persistent: true,
     ignoreInitial: false,

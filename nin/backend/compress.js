@@ -82,8 +82,7 @@ function compress(projectPath, payload, htmlPreamble, metadata, callback) {
           'BEAN_FOR_FRAME=function placeholder(){};' +
           '(1,eval)(s);' +
           'var layers = JSON.parse(atob(FILES["res/layers.json"]));' +
-          'var camerapaths = JSON.parse(atob(FILES["res/camerapaths.json"]));' +
-          'demo=bootstrap({layers:layers, camerapaths:camerapaths, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +
+          'demo=bootstrap({layers:layers, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +
         '}' +
       '}' +
     '}</script>' +

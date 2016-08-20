@@ -5,9 +5,6 @@
     .controller('BottomCtrl', function ($scope, $interval, socket, camera, commands) {
 
       $scope.xScale = 1;
-      $scope.xScaleTarget = 1;
-      $scope.yScale = 1;
-
 
       function updateLayerBackgroundGradientStyle() {
         if(!$scope.selectedTheme) {
@@ -69,36 +66,14 @@
         updateLayerBackgroundGradientStyle();
       });
 
-      $scope.$watch('xScaleTarget', updateXScale);
-      updateXScale();
+      $scope.$watch('duration', updateXScale);
+      window.addEventListener('resize', function() {
+        $scope.$apply(updateXScale);
+      });
+
       function updateXScale() {
-        var target = $('.layers-bar-container');
-        var rect = target[0].getBoundingClientRect();
-        var parentRect = target.parent()[0].getBoundingClientRect();
-        var firstVisibleFrame = -rect.left / $scope.xScale;
-        var lastVisibleFrame = (-rect.left + parentRect.width) / $scope.xScale;
-        var centerFrame = firstVisibleFrame + (lastVisibleFrame - firstVisibleFrame) / 2;
-
-        var radius = parentRect.width / 2 / $scope.xScaleTarget;
-        var newFirstVisibleFrame = centerFrame - radius;
-        var newLastVisibleFrame = centerFrame + radius;
-
-        if (newFirstVisibleFrame < 0) {
-          newFirstVisibleFrame = 0;
-        }
-
-        if(newLastVisibleFrame > rect.width / $scope.xScale) {
-          newLastVisibleFrame = rect.width / $scope.xScale;
-        }
-
-        if(newLastVisibleFrame === 0) {
-          return;
-        }
-        var newCenterFrame = newFirstVisibleFrame + (newLastVisibleFrame - newFirstVisibleFrame) / 2;
-        var newXScaleTarget = parentRect.width / 2 / (newLastVisibleFrame - newCenterFrame) ;
-        var newOffsetX = newFirstVisibleFrame * newXScaleTarget;
-        $('div.bottom').parent().scrollLeft(newOffsetX);
-        $scope.xScale = newXScaleTarget;
+        var rect = $('body')[0].getBoundingClientRect();
+        $scope.xScale = rect.width / $scope.duration;
       }
 
       function getClickOffset($event) {

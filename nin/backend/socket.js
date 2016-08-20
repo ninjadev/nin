@@ -38,7 +38,15 @@ function socket(projectPath, onConnectionCallback) {
       var event = JSON.parse(message);
       switch (event.type) {
         case 'set':
-          graph.update(projectPath, event.data.id, event.data.fields, function (err) {
+          // TODO: Untested, nothing uses this yet
+          graph.transform(projectPath, function(g) {
+            var index = g.findIndex(nodeInfo => nodeInfo.id == event.data.id);
+            for (var key in event.data.fields) {
+              g[index][key] = data[key];
+            }
+
+          },
+          function() {
             if (err) {
               console.log(err);
             }

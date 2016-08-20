@@ -238,19 +238,6 @@ class MainCtrl {
           Loader.start(function() {}, function() {});
           break;
 
-        case 'camerapaths':
-          var camerapaths = JSON.parse(event.content);
-
-          CameraController.paths = camerapaths;
-          for (var index in CameraController.layers) {
-            var cameraController = CameraController.layers[index];
-            cameraController.parseCameraPath(camerapaths);
-            demo.nm.refresh(cameraController.layer_id);
-          }
-
-          demo.nm.update(demo.looper.currentFrame);
-          break;
-
         case 'shader':
           var indirectEval = eval;
           this.fileCache[event.path] = event.content;

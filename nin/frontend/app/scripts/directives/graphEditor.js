@@ -6,24 +6,6 @@
       restrict: 'A',
       templateUrl: 'views/graph-editor.html',
       link: function($scope, element, attrs) {
-        let stored = localStorage.getItem('nin-nodemeta');
-        let nodeCache = stored && JSON.parse(stored) || {};
-
-        function getFor(id) {
-          if (!nodeCache[id]) {
-            nodeCache[id] = {
-              x: 0,
-              y: 0
-            };
-          }
-
-          return nodeCache[id];
-        }
-
-        function persistNodeMeta() {
-          localStorage.setItem('nin-nodemeta', JSON.stringify(nodeCache));
-        }
-
         demo.nm.onGraphChange(renderSVG);
         $scope.$watch('graph', renderSVG);
 
@@ -44,6 +26,58 @@
             demo.renderer.overrideToScreenTexture = selectedItem.getValue();
           }
         }
+
+        function generateDepths() {
+          let deepestLevel = 0;
+          let depths = {};
+          let seen = new Set();
+
+          function recurse(level, currentNodes) {
+            let nextLevel = [];
+            deepestLevel = Math.max(deepestLevel, level);
+
+            for (let i=0; i<currentNodes.length; i++) {
+              let node = currentNodes[i];
+              seen.add(node.id);
+              depths[node.id] = {
+                y: level,
+                x: i
+              };
+
+              for (let child in node.inputs) {
+                let source = node.inputs[child].source;
+                if (source && !seen.has(source.node.id)) {
+                  seen.add(source.node.id);
+                  nextLevel.push(source.node);
+                }
+              }
+            }
+
+            if (nextLevel.length) {
+              recurse(level + 1, nextLevel);
+            }
+          }
+
+          recurse(0, [demo.nm.nodes.root]);
+
+          let offset = 0;
+          for (let nodeId in demo.nm.nodes) {
+            if (depths[nodeId] === undefined) {
+              depths[nodeId] = {
+                y: deepestLevel + 1,
+                x: offset
+              };
+
+              offset += 1;
+            }
+
+            depths[nodeId].x *= 200;
+            depths[nodeId].y *= -200;
+          }
+
+          return depths;
+        }
+
 
         function calculateSize() {
           $scope.width = $window.innerWidth;
@@ -88,10 +122,10 @@
           });
           nodeLineSVG.replace(newNodeLineSVG);
           nodeLineSVG = newNodeLineSVG;
+          let depths = generateDepths();
 
           for (let nodeInfo of $scope.graph) {
             var node = demo.nm.nodes[nodeInfo.id];
-            var nodeMeta = getFor(nodeInfo.id);
 
             var outputOrdering = Object.keys(node.outputs).sort();
             outputOrdering.reverse();
@@ -100,16 +134,15 @@
               var toNodeName = nodeInfo.connectedTo[outputName].split('.')[0];
               var toNodeInputName = nodeInfo.connectedTo[outputName].split('.')[1];
               var toNode = demo.nm.nodes[toNodeName];
-              var toNodeMeta = getFor(toNodeName);
 
               var inputOrdering = Object.keys(toNode.inputs).sort();
 
-              var fromX = (nodeMeta.x + 100 -
+              var fromX = (depths[nodeInfo.id].x + 100 -
                            20 * outputOrdering.indexOf(outputName) - 10);
-              var fromY = nodeMeta.y + 100;
-              var toX = (toNodeMeta.x +
+              var fromY = depths[nodeInfo.id].y + 100;
+              var toX = (depths[toNodeName].x +
                          20 * inputOrdering.indexOf(toNodeInputName) + 10);
-              var toY = toNodeMeta.y;
+              var toY = depths[toNodeName].y;
 
               drawManhattanLine(nodeLineSVG, fromX, fromY, toX, toY);
             }
@@ -125,37 +158,21 @@
             return;
           }
 
+          let depths = generateDepths();
+
           baseSVG = $window.SVG(element[0]);
           nodeLineSVG = baseSVG.nested();
           var i = 0;
           for (var nodeName in demo.nm.nodes) {
             var node = demo.nm.nodes[nodeName];
             var nodeGroup = baseSVG.group();
-            var nodeMeta = getFor(node.id);
 
             nodeGroup.attr({
               class: 'node' 
             }).transform({
-              x: nodeMeta.x,
-              y: nodeMeta.y
-            }).draggable({
-            }).on('dragstart', (function(nodeMeta, nodeGroup) {
-              return function(e) {
-                /* since e.detail.p includes an offset from the top left corner
-                 * of the node, we need to cache it here in order to compensate
-                 * for it in dragmove */
-                nodeMeta.dragStartX = (nodeGroup.transform().x - e.detail.p.x);
-                nodeMeta.dragStartY = (nodeGroup.transform().y - e.detail.p.y);
-              };
-            })(nodeMeta, nodeGroup)).on('dragmove', (function(nodeMeta) {
-              return function(e) {
-                /* populate _graphEditorInfo so that coordinates are always
-                 * readily available for e.g. drawing connections */
-                nodeMeta.x = (nodeMeta.dragStartX + e.detail.p.x);
-                nodeMeta.y = (nodeMeta.dragStartY + e.detail.p.y);
-                redrawNodeLines();
-              };
-            })(nodeMeta)).on('dragend', persistNodeMeta);
+              x: depths[node.id].x,
+              y: depths[node.id].y
+            });
 
             nodeGroup.rect(100, 100).attr({
               class: 'background',
@@ -227,9 +244,19 @@
             center: false,
             refreshRate: 'auto'
           });
+
           panZoom.resize();
           panZoom.updateBBox();
           panZoom.center();
+
+          panZoom.zoom(localStorage.getItem('graph-scale') || '1.0');
+          let pan = localStorage.getItem('graph-pan');
+          if (pan) { panZoom.pan(JSON.parse(pan)); }
+
+          panZoom.setOnPan(
+              pan => localStorage.setItem('graph-pan', JSON.stringify(pan)));
+          panZoom.setOnZoom(
+              scale => localStorage.setItem('graph-scale', scale));
         }
       },
       scope: {

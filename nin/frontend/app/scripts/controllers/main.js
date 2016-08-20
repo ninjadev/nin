@@ -223,7 +223,6 @@
                   setTimeout(function () {
                     let node = demo.nm.createNode(nodeInfo);
                     demo.nm.insertOrReplaceNode(node);
-                    demo.nm.update(demo.looper.currentFrame);
                   }, 100);
                 }
               }

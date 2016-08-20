@@ -13,6 +13,9 @@
       for(var key in this.outputs) {
         this.outputs[key].node = this;
       }
+
+      this.oldActive = false;
+      this.active = false;
     }
 
     resize() {

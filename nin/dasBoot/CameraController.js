@@ -1,31 +1,15 @@
-function CameraController(layer_id) {
-  console.log('started CC', layer_id);
-  if (layer_id in CameraController.layers) {
-    if (!CameraController.layers[layer_id].loaded && Object.keys(CameraController.paths).length > 0) {
-      this.parseCameraPath(CameraController.paths);
-    }
-    return CameraController.layers[layer_id];
-  }
-  CameraController.layers[layer_id] = this;
-
-  this.layer_id = layer_id;
-
+function CameraController(rawPath) {
   this.camera = new THREE.PerspectiveCamera(45, 16/9, 1, 50000);
   this.rotVector = new THREE.Vector3(0, 0, 1);
   this.pause = false;
 
-  if (Object.keys(CameraController.paths).length > 0) {
-    this.parseCameraPath(CameraController.paths);
-    this.generateVisualization();
-  }
+  this.parseCameraPath(rawPath);
+  this.generateVisualization();
 }
-
-CameraController.layers = {};
-CameraController.paths = {};
 
 CameraController.prototype.getVisualization = function() {
   return this.visualization;
-}
+};
 
 CameraController.prototype.generateVisualization = function() {
   this.visualization = new THREE.Object3D();
@@ -47,30 +31,23 @@ CameraController.prototype.generateVisualization = function() {
   this.visualization.add(base);
   this.visualization.add(leftReel);
   this.visualization.add(rightReel);
-}
+};
 
-CameraController.prototype.parseCameraPath = function(camera_paths) {
-  this.loaded = true;
-  var raw_path = camera_paths[this.layer_id];
-  if (!raw_path) {
-    console.warn("No camera path for layer %d", this.layer_id);
-    return;
+CameraController.prototype.parseCameraPath = function(rawPath) {
+  if (rawPath.position) {
+    this.position = new PathController(rawPath.position, '3D');
   }
-
-  if (raw_path.position) {
-    this.position = new PathController(raw_path.position, '3D');
+  if (rawPath.lookAt) {
+    this.lookAt = new PathController(rawPath.lookAt, '3D');
   }
-  if (raw_path.lookAt) {
-    this.lookAt = new PathController(raw_path.lookAt, '3D');
+  if (rawPath.roll) {
+    this.roll = new PathController(rawPath.roll, '1D');
   }
-  if (raw_path.roll) {
-    this.roll = new PathController(raw_path.roll, '1D');
+  if (rawPath.fov) {
+    this.fov = new PathController(rawPath.fov, '1D');
   }
-  if (raw_path.fov) {
-    this.fov = new PathController(raw_path.fov, '1D');
-  }
-  if (raw_path.shake) {
-    this.shake = new PathController(raw_path.shake, '1D');
+  if (rawPath.shake) {
+    this.shake = new PathController(rawPath.shake, '1D');
   }
 };
 
@@ -103,7 +80,9 @@ CameraController.prototype.updateCamera = function(frame) {
     //this.visualization.rotateOnAxis(this.rotVector, roll);
   }
 
-  if (this.pause) return;
+  if (this.pause) {
+    return;
+  }
 
   if (this.fov) {
     var fov = this.fov.getPoint(frame);

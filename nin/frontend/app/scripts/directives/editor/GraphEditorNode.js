@@ -1,8 +1,22 @@
 const GraphEditorInputOutput = require('./GraphEditorInputOutput');
+const FlyaroundController = require('./FlyaroundController');
 const React = require('react');
 const e = React.createElement;
 
 class GraphEditorNode extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.flyaroundController = null;
+    this.startFlyControl = () => {
+      if (!this.flyaroundController) {
+        this.flyaroundController = new FlyaroundController(this.props.node);
+      } else {
+        this.flyaroundController.toggleFlyAroundMode();
+      }
+    };
+  }
 
   static getYCoordinateForIO(node, key) {
   }
@@ -90,6 +104,13 @@ class GraphEditorNode extends React.Component {
         className: 'monospaced',
         transform: `translate(${width / 2}, ${height / 2 + 11}) scale(0.3)`,
       }, this.props.nodeInfo.type) : null,
+      node.constructor.prototype instanceof NIN.THREENode ? e('text', {
+        x: 0,
+        y: 0,
+        className: 'start-fly-around',
+        transform: `translate(${width / 2}, ${height / 2 - 11}) scale(0.3)`,
+        onClick: this.startFlyControl,
+      }, node.camera.isOverriddenByFlyControls ? 'Exit fly-around mode' : 'Start fly-around mode') : null,
     );
   }
 }

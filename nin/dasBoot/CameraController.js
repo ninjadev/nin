@@ -1,7 +1,6 @@
 function CameraController(rawPath) {
   this.camera = new THREE.PerspectiveCamera(45, 16/9, 1, 50000);
   this.rotVector = new THREE.Vector3(0, 0, 1);
-  this.pause = false;
 
   this.generateVisualization();
   if (rawPath) {
@@ -57,7 +56,7 @@ CameraController.prototype.updateCamera = function(frame) {
   if (this.position) {
     var pos = this.position.get3Dpoint(frame);
 
-    if (!this.pause) {
+    if (!this.camera.isOverriddenByFlyControls) {
       this.camera.position.copy(pos);
     }
     //this.visualization.position.copy(pos);
@@ -66,7 +65,7 @@ CameraController.prototype.updateCamera = function(frame) {
   if (this.lookAt) {
     var lookAt = this.lookAt.get3Dpoint(frame);
 
-    if (!this.pause) {
+    if (!this.camera.isOverriddenByFlyControls) {
       this.camera.lookAt(lookAt);
     }
     //this.visualization.lookAt(lookAt);
@@ -75,21 +74,21 @@ CameraController.prototype.updateCamera = function(frame) {
   if (this.roll) {
     var roll = this.roll.getPoint(frame);
 
-    if (!this.pause) {
+    if (!this.camera.isOverriddenByFlyControls) {
       this.camera.rotateOnAxis(this.rotVector, roll);
     }
 
     //this.visualization.rotateOnAxis(this.rotVector, roll);
   }
 
-  if (this.pause) {
+  if (this.camera.isOverriddenByFlyControls) {
     return;
   }
 
   if (this.fov) {
     var fov = this.fov.getPoint(frame);
 
-    if (!this.pause) {
+    if (!this.camera.isOverriddenByFlyControls) {
       this.camera.fov = fov;
       this.camera.updateProjectionMatrix();
     }
@@ -103,7 +102,7 @@ CameraController.prototype.updateCamera = function(frame) {
       (Math.random() - 0.5) * shake
     );
 
-    if (!this.pause) {
+    if (!this.camera.isOverriddenByFlyControls) {
       this.camera.position.add(amount);
     }
     //this.visualization.position.add(amount);

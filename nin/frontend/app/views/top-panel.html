@@ -1,99 +1,18 @@
 <div
   class=top-panel
   ng-controller="TopCtrl"
-  ui-layout="{ flow : 'column' }"
   >
 
-  <div class=top-left-quadrant>
-    <div ng-show=inspectedLayer>
-
-      <div class=layer-title>
-        {{ inspectedLayer.displayName }}
-      </div>
-
-      <div class="info-panel col-sm-6">
-        <div>
-          <div class=label>type</div>
-          <div class=value>{{ inspectedLayer.type }}</div>
-        </div>
-        <div>
-          <div class=label>startFrame</div>
-          <div class=value>{{ inspectedLayer.startFrame }}</div>
-        </div>
-        <div>
-          <div class=label>endFrame</div>
-          <div class=value>{{ inspectedLayer.endFrame }}</div>
-        </div>
-        <div>
-          <div class=label>config</div>
-          <div class=config-value>{{ inspectedLayer.config | json }}</div>
-        </div>
-      </div>
-
-      <div class="camera-panel col-sm-6">
-        <div class=label>
-          position
-        </div>
-        <div>
-          <input
-             class=selectable-contents
-             ng-model=cameraPosition
-             select-on-click
-            >
-        </div>
-
-        <div class=label>
-          lookAt
-        </div>
-        <div>
-          <input
-             class=selectable-contents
-             ng-model=cameraLookat
-             select-on-click
-            >
-        </div>
-
-        <div class=label>
-          roll
-        </div>
-        <div>
-          <input
-             class=selectable-contents
-             ng-model=cameraRoll
-             select-on-click
-            >
-        </div>
-
-        <div class=label>
-          fov
-        </div>
-        <div>
-          <input
-             class=selectable-contents
-             ng-model=cameraFov
-             select-on-click
-            >
-        </div>
-
-        <div class=buttons>
-          <button
-              id="fly-mode"
-              class="btn btn-default"
-              ng-click="commands.toggleFlyAroundMode()">
-              Fly-around mode
-          </button>
-          <button
-              id="reset-fly-flight-dynamics"
-              class="btn btn-default"
-              ng-click="resetFlyFlightDynamics();">
-              Reset flight dynamics
-          </button>
-        </div>
-      </div>
+  <div class=node-area-container>
+    <div
+      class=graph-editor
+      graph-editor
+      graph=graph
+      >
     </div>
   </div>
 
-  <div>
+  <div class="floating-viewer-container">
     <!-- cramped formatting because of whitespace: pre -->
     <div
       class=global-error-overlay

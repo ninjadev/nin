@@ -216,21 +216,31 @@
       socket.on('add change', function(event) {
         try {
           switch (event.type) {
-            case 'layers':
-              var layers = JSON.parse(event.content);
+            case 'graph':
+              var graph = JSON.parse(event.content);
 
-              $scope.layers = layers;
-              demo.lm.hardReset();
+              $scope.graph = graph;
+              demo.nm.hardReset();
 
-              for(var i in layers) {
-                var layer = layers[i];
-                layer.position = i;
-                layer.color = (Math.abs(hash(layer.displayName || '')) | 0) % 8;
-                demo.lm.loadLayer(layer);
+              for(var i in graph) {
+                var nodeInfo = graph[i];
+                var node = demo.nm.createNode(nodeInfo);
+                demo.nm.insertOrReplaceNode(node);
+              }
+              for(var i in graph) {
+                var nodeInfo = graph[i];
+                for(var outputName in nodeInfo.connectedTo) {
+                  var toNodeId = nodeInfo.connectedTo[outputName].split('.')[0];
+                  var inputName = nodeInfo.connectedTo[outputName].split('.')[1];
+                  demo.nm.connect(
+                      nodeInfo.id,
+                      outputName,
+                      toNodeId,
+                      inputName);
+                }
               }
 
               Loader.start(function() {}, function() {});
-              demo.lm.jumpToFrame(demo.getCurrentFrame());
               break;
 
             case 'camerapaths':
@@ -240,10 +250,10 @@
               for (var index in CameraController.layers) {
                 var cameraController = CameraController.layers[index];
                 cameraController.parseCameraPath(camerapaths);
-                demo.lm.refresh(cameraController.layer_id);
+                demo.nm.refresh(cameraController.layer_id);
               }
 
-              demo.lm.update(demo.looper.currentFrame);
+              demo.nm.update(demo.looper.currentFrame);
               break;
 
             case 'shader':
@@ -255,23 +265,34 @@
                 var layer = $scope.layers[i];
                 if (layerShaderDependencies[layer.type]) {
                   if (layerShaderDependencies[layer.type].indexOf(event.shadername) !== -1) {
-                    demo.lm.refresh(layer.type);
+                    demo.nm.refresh(layer.type);
                   }
                 }
               }
 
-              demo.lm.update(demo.looper.currentFrame);
+              demo.nm.update(demo.looper.currentFrame);
               Loader.start(function() {}, function() {});
               break;
 
-            case 'layer':
-              var indirectEval = eval;
+            case 'node':
               $scope.fileCache[event.path] = event.content;
+              var indirectEval = eval;
               indirectEval(event.content);
-              layerShaderDependencies[event.layername] = event.shaderDependencies;
 
-              demo.lm.refresh(event.layername);
-              demo.lm.update(demo.looper.currentFrame);
+              var splitted = event.path.split('/');
+              var filename = splitted[splitted.length - 1];
+              var typename = filename.slice(0, -3);
+              if($scope.graph) {
+                for(var i = 0; i < $scope.graph.length; i++) {
+                  var nodeInfo = $scope.graph[i];
+                  if(nodeInfo.type == typename) {
+                    var node = demo.nm.createNode(nodeInfo);
+                    demo.nm.insertOrReplaceNode(node);
+                  }
+                }
+              }
+
+              demo.nm.update(demo.looper.currentFrame);
 
               Loader.start(function() {}, function() {});
               break;

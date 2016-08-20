@@ -9,6 +9,14 @@ nin is Ninjadev's internal demo tool. It is a tool for easing development of bro
 This project has a node backend that keeps track of all files and compiles files as they are edited.
 The frontend of this project is written in Angular and displays among other the layers that the demo consists of.
 
+
+## nin is now node-based!
+
+Nin just became node-based instead of layer-based.
+Here is a list of gotchas to watch out for if you are used to layer-based nin:
+
+- Changing res/graph.json does *not* trigger updates in a running nin instance.
+
 ## How it works
 Create a new project with a structure like the one seen in the directory `example-project`.
 It may be stored anywhere on your disk.

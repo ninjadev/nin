@@ -1,7 +1,7 @@
 var fs = require('fs'),
     path = require('path'),
     utils = require('../utils'),
-    layers = require('../layers'),
+    graph = require('../graph'),
     mkdirp = require('mkdirp');
 
 var generate = function(projectRoot, type, name) {

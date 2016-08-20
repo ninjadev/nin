@@ -1,44 +1,25 @@
 <div class=bottom ng-controller="BottomCtrl">
 
-  <div class="frame-panel fixed-panel">
+  <div class="fixed-panel">
 
-    <label>frame</label>
-    <span
-     class=value
-     title="Global frame for demo"
-      >
-      {{ demo.getCurrentFrame() }}
-    </span>
-
-    <span ng-if=inspectedLayer>
+    <div class="frame-panel">
+      <label>frame</label>
+      <span
+       class=value
+       title="Global frame for demo"
+        >
+        {{ demo.getCurrentFrame() }}
+      </span>
+    </div>
+    <div class="beat-bean-panel">
+      <label>BEAN</label>
       <span
         class=value
-        title="Relative frame for inspected layer"
+        title="Global music BEAT number for frame"
         >
-      / {{ demo.getCurrentFrame() - inspectedLayer.startFrame }}
+        {{ $window.BEAN }}
       </span>
-      <label>relative frame</label>
-    </span>
-  </div>
-
-  <div class="beat-bean-panel fixed-panel">
-    <label>BEAN</label>
-    <span
-      class=value
-      title="Global music BEAT number for frame"
-      >
-      {{ $window.BEAN }}
-    </span>
-
-    <span ng-if=inspectedLayer>
-      <span
-        class=value
-        title="Relative BEAN for inspected layer"
-        >
-      / {{ relativeBEAN() }}
-      </span>
-      <label>relative BEAN</label>
-    </span>
+      </div>
   </div>
 
   <div class="bottom-controls">
@@ -50,15 +31,6 @@
           max=4
           step=0.01
           ng-model=xScaleTarget
-          >
-      </div>
-      <div class=y-scaler>
-        <input
-          type=range
-          min=0.01
-          max=4
-          step=0.1
-          ng-model=yScale
           >
       </div>
     </div>
@@ -97,7 +69,7 @@
       ng-show="loopEnd"
       style="
         margin-left: {{ loopEnd * xScale - bottomScrollOffset }}px;
-        height: {{ 50 + (30 * yScale) * layers.length }}px;
+        height: 50px;
       "
       >
       <div class="glow glow-loop">
@@ -113,34 +85,6 @@
       &nbsp;
     </div>
 
-    <div
-      class="layer-bar-wrapper"
-      ng-repeat="layer in layers"
-      ng-rightclick="inspectLayer(layer)"
-      ng-class="(layer==inspectedLayer) ? 'inspected' : ''"
-      style="
-        height: {{ 30 * yScale }}px;
-        font-size: {{ 30 * 0.5 * yScale }}px;
-        {{ layer === inspectedLayer ?  ''
-                                    : 'background: url(' +
-                                         backgroundImageDataUrl + ')' }};
-        background-size: {{ backgroundWidth }}px 1px;
-      "
-      >
-      <div
-        title="{{ layer.displayName }}"
-        dragresizable
-        on-drag-resize="dragResizeLayer(event, ui, layer)"
-        class=layer-bar
-        ng-class="'color-' + layer.color"
-        style="
-          width:{{ (layer.endFrame - layer.startFrame) * xScale }}px;
-          left:{{ layer.startFrame * xScale }}px;
-        ">
-        <span class="name">{{ layer.displayName }}</span>
-        &nbsp;
-      </div>
-    </div>
   </div>
 
 </div>

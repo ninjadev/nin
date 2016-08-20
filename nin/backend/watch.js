@@ -29,19 +29,10 @@ function watch(projectPath, cb) {
    * trigger intial callbacks for all files */
   watcher.on('add', function(){ });
 
-  var graphAlreadyLoaded = false;
-
   watcher.on('all', function (event, path) {
     if (event === 'unlink') event = 'delete';
     if (event == 'addDir') {
       return;
-    }
-
-    if(path == 'res/graph.json') {
-      if(graphAlreadyLoaded) {
-        return;
-      }
-      graphAlreadyLoaded = true;
     }
 
     if (logFileChanges) {

@@ -57,7 +57,7 @@ var serve = function(projectPath, shouldRunHeadlessly) {
       var path = data.path,
           filename = p.basename(path),
           filenameWithoutExtension = filename.split('.')[0],
-          content = fs.readFileSync(path, 'utf-8');
+          content = fs.readFileSync(p.join(projectPath, path), 'utf-8');
 
       var event = {
         path: path

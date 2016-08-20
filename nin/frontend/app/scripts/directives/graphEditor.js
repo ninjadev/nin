@@ -6,6 +6,23 @@
       restrict: 'A',
       templateUrl: 'views/graph-editor.html',
       link: function($scope, element, attrs) {
+        let stored = localStorage.getItem('nin-nodemeta');
+        let nodeCache = stored && JSON.parse(stored) || {};
+
+        function getFor(id) {
+          if (!nodeCache[id]) {
+            nodeCache[id] = {
+              x: 0,
+              y: 0
+            };
+          }
+
+          return nodeCache[id];
+        }
+
+        function persistNodeMeta() {
+          localStorage.setItem('nin-nodemeta', JSON.stringify(nodeCache));
+        }
 
         demo.nm.onGraphChange(renderSVG);
         $scope.$watch('graph', renderSVG);
@@ -71,96 +88,78 @@
           });
           nodeLineSVG.replace(newNodeLineSVG);
           nodeLineSVG = newNodeLineSVG;
-          for(var i = 0; i < $scope.graph.length; i++) {
-            var nodeInfo = $scope.graph[i];
+
+          for (let nodeInfo of $scope.graph) {
             var node = demo.nm.nodes[nodeInfo.id];
+            var nodeMeta = getFor(nodeInfo.id);
+
             var outputOrdering = Object.keys(node.outputs).sort();
             outputOrdering.reverse();
+
             for(var outputName in nodeInfo.connectedTo) {
               var toNodeName = nodeInfo.connectedTo[outputName].split('.')[0];
               var toNodeInputName = nodeInfo.connectedTo[outputName].split('.')[1];
               var toNode = demo.nm.nodes[toNodeName];
+              var toNodeMeta = getFor(toNodeName);
+
               var inputOrdering = Object.keys(toNode.inputs).sort();
-              var fromX = (node._graphEditorInfo.x + 100 -
+
+              var fromX = (nodeMeta.x + 100 -
                            20 * outputOrdering.indexOf(outputName) - 10);
-              var fromY = node._graphEditorInfo.y + 100;
-              var toX = (toNode._graphEditorInfo.x +
+              var fromY = nodeMeta.y + 100;
+              var toX = (toNodeMeta.x +
                          20 * inputOrdering.indexOf(toNodeInputName) + 10);
-              var toY = toNode._graphEditorInfo.y;
+              var toY = toNodeMeta.y;
+
               drawManhattanLine(nodeLineSVG, fromX, fromY, toX, toY);
             }
           }
         }
 
         function renderSVG() {
-
           /* delete old SVG */
           element[0].innerHTML = '';
 
           /* early exits */
-          if(!$scope.graph) {
+          if (!($scope.graph && demo.nm.nodes)) {
             return;
-          }
-          if(!demo.nm.nodes) {
-            return;
-          }
-
-          /* preprocess the NodeManager's nodes by
-           * bundling stored information from graph.json */
-          for(var i = 0; i < $scope.graph.length; i++) {
-            var nodeInfo = $scope.graph[i];
-            var node = demo.nm.nodes[nodeInfo.id];
-            node._graphEditorInfo = node._graphEditorInfo || {};
-            node._graphEditorInfo.x = nodeInfo.x || 0;
-            node._graphEditorInfo.y = nodeInfo.y || 0;
           }
 
           baseSVG = $window.SVG(element[0]);
           nodeLineSVG = baseSVG.nested();
           var i = 0;
-          for(var nodeName in demo.nm.nodes) {
+          for (var nodeName in demo.nm.nodes) {
             var node = demo.nm.nodes[nodeName];
             var nodeGroup = baseSVG.group();
+            var nodeMeta = getFor(node.id);
+
             nodeGroup.attr({
               class: 'node' 
             }).transform({
-              x: node._graphEditorInfo.x,
-              y: node._graphEditorInfo.y,
+              x: nodeMeta.x,
+              y: nodeMeta.y
             }).draggable({
-            }).on('dragstart', (function(node, nodeGroup) {
+            }).on('dragstart', (function(nodeMeta, nodeGroup) {
               return function(e) {
                 /* since e.detail.p includes an offset from the top left corner
                  * of the node, we need to cache it here in order to compensate
                  * for it in dragmove */
-                node._graphEditorInfo.dragStartX = (nodeGroup.transform().x -
-                                                    e.detail.p.x);
-                node._graphEditorInfo.dragStartY = (nodeGroup.transform().y -
-                                                    e.detail.p.y);
+                nodeMeta.dragStartX = (nodeGroup.transform().x - e.detail.p.x);
+                nodeMeta.dragStartY = (nodeGroup.transform().y - e.detail.p.y);
               };
-            })(node, nodeGroup)).on('dragmove', (function(node) {
+            })(nodeMeta, nodeGroup)).on('dragmove', (function(nodeMeta) {
               return function(e) {
                 /* populate _graphEditorInfo so that coordinates are always
                  * readily available for e.g. drawing connections */
-                node._graphEditorInfo.x = (node._graphEditorInfo.dragStartX +
-                                           e.detail.p.x);
-                node._graphEditorInfo.y = (node._graphEditorInfo.dragStartY +
-                                           e.detail.p.y);
+                nodeMeta.x = (nodeMeta.dragStartX + e.detail.p.x);
+                nodeMeta.y = (nodeMeta.dragStartY + e.detail.p.y);
                 redrawNodeLines();
               };
-            })(node)).on('dragend', (function(node) {
-              return function(e) {
-                socket.sendEvent('set', {
-                  id: node.id,
-                  fields: {
-                    x: node._graphEditorInfo.x,
-                    y: node._graphEditorInfo.y
-                  }
-                });
-              };
-            })(node));
+            })(nodeMeta)).on('dragend', persistNodeMeta);
+
             nodeGroup.rect(100, 100).attr({
               class: 'background',
-              opacity: 0.5 + 0.5 * node._graphEditorInfo.active || false
+              opacity: 0.5 + 0.5 * node.active || false
             });
             nodeGroup.plain(nodeName).attr({
               x: 50,

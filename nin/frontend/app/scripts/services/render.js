@@ -1,12 +1,25 @@
-angular.module('nin').service('render', function(demo, $http, commands) {
+class Render {
+  constructor(demo, $http, commands) {
+    this.currentFrame;
+    this.currentlyRendering = false;
+    this.currentTimeout;
 
-  var currentFrame;
-  var currentlyRendering = false;
-  var currentTimeout;
+    commands.on('startRendering', function() {
+      demo.resize(1920, 1080);
+      this.currentlyRendering = true;
+      this.render(demo.getCurrentFrame());
+    });
 
-  function render(i) {
+    commands.on('stopRendering', function() {
+      demo.resize();
+      this.currentlyRendering = false;
+      cancelTimeout(this.currentTimeout);
+    });
+  }
+
+  render(i) {
     i = i || 0;
-    currentFrame = i;
+    this.currentFrame = i;
     demo.jumpToFrame(i);
     var image = demo.renderer.domElement.toDataURL('image/png');
 
@@ -16,29 +29,16 @@ angular.module('nin').service('render', function(demo, $http, commands) {
         frame: i
       });
 
-    if(currentlyRendering) {
-      currentTimeout = setTimeout(function() {
-        render(currentFrame + 1);
+    if(this.currentlyRendering) {
+      this.currentTimeout = setTimeout(function() {
+        this.render(this.currentFrame + 1);
       }, 0);
     }
   }
 
-  render.isCurrentlyRendering = function() {
-    return currentlyRendering;
-  };
+  isCurrentlyRendering() {
+    return this.currentlyRendering;
+  }
+}
 
-  commands.on('startRendering', function() {
-    demo.resize(1920, 1080);
-    currentlyRendering = true;
-    render(demo.getCurrentFrame());
-  });
-
-  commands.on('stopRendering', function() {
-    demo.resize();
-    currentlyRendering = false;
-    cancelTimeout(currentTimeout);
-  });
-
-  return render;
-});
-
+module.exports = Render;

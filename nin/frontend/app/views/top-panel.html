@@ -1,13 +1,9 @@
-<div
-  class=top-panel
-  ng-controller="TopCtrl"
-  >
-
+<div class=top-panel>
   <div class=node-area-container>
     <div
       class=graph-editor
       graph-editor
-      graph=graph
+      graph=main.graph
       >
     </div>
   </div>
@@ -16,7 +12,7 @@
     <!-- cramped formatting because of whitespace: pre -->
     <div
       class=global-error-overlay
-      ng-repeat="(_, error) in globalJSErrors"
+      ng-repeat="(_, error) in main.globalJSErrors"
       ><div class="context">⛄ {{ error.context }} ⛄</div>
 <div class="bg">
 <div class="header"><strong>{{ error.stack.split('\n')[0] }}</strong></div>

@@ -1,9 +1,8 @@
 .PHONY: all
 all:
 	npm install
-	bower install
-	grunt build
+	webpack
 
-.PHONY:
+.PHONY: run
 run:
-	grunt serve
+	webpack --watch

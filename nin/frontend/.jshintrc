@@ -3,6 +3,7 @@
 //
 
 {
+    "esversion"     : 6,
     "passfail"      : false,
     "maxerr"        : 100,
 
@@ -11,7 +12,6 @@
     "browser"       : true,   // Standard browser globals e.g. `window`, `document`.
     "node"          : false,
     "wsh"           : true,   // Windows Scripting Host.
-    "jquery"        : true,
     "predef"        : [
         "GU"
     ],

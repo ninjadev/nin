@@ -1,4 +1,4 @@
-<div class=bottom ng-controller="BottomCtrl">
+<div class=bottom>
 
   <div class="fixed-panel">
 
@@ -8,7 +8,7 @@
        class=value
        title="Global frame for demo"
         >
-        {{ demo.getCurrentFrame() }}
+        {{ main.demo.getCurrentFrame() }}
       </span>
     </div>
     <div class="beat-bean-panel">
@@ -17,20 +17,20 @@
         class=value
         title="Global music BEAT number for frame"
         >
-        {{ $window.BEAN }}
+        {{ bottom.$window.BEAN }}
       </span>
       </div>
   </div>
 
   <div
     class=layers-bar-container
-    ng-click="musicLayerClick($event)"
+    ng-click="bottom.musicLayerClick($event)"
     >
     <div
       class="marker-line play"
       ng-hide="hideMarker"
       style="
-        margin-left: {{ currentFrame * xScale - bottomScrollOffset }}px;
+        margin-left: {{ main.currentFrame * bottom.xScale }}px;
         height: {{ 50 + 30 * layers.length }}px;
       "
       >
@@ -40,9 +40,9 @@
 
     <div
       class="marker-line loop"
-      ng-show="loopStart"
+      ng-show="bottom.loopStart"
       style="
-        margin-left: {{ loopStart * xScale - bottomScrollOffset }}px;
+        margin-left: {{ bottom.loopStart * bottom.xScale }}px;
         height: {{ 50 + 30 * layers.length }}px;
       "
       >
@@ -52,9 +52,9 @@
 
     <div
       class="marker-line loop"
-      ng-show="loopEnd"
+      ng-show="bottom.loopEnd"
       style="
-        margin-left: {{ loopEnd * xScale - bottomScrollOffset }}px;
+        margin-left: {{ bottom.loopEnd * bottom.xScale }}px;
         height: 50px;
       "
       >
@@ -64,10 +64,10 @@
 
     <div
       waveform
-      duration="{{duration}}"
+      duration="{{main.duration}}"
       class="layer musiclayer"
-      ng-click="musicLayerClick($event)"
-      style="width: {{ duration * xScale }}px">
+      ng-click="bottom.musicLayerClick($event)"
+      style="width: {{ main.duration * bottom.xScale }}px">
       &nbsp;
     </div>
 

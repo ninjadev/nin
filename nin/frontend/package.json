@@ -1,38 +1,37 @@
 {
   "name": "frontend",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "angular": "1.5.8",
+    "angular-ui-bootstrap": "2.1.0",
+    "angular-ui-layout": "1.4.2",
+    "bootstrap": "3.3.7",
+    "jquery": "3.1.1",
+    "jquery-ui": "1.12.1",
+    "sockjs-client": "1.1.1",
+    "svg-pan-zoom": "3.3.0",
+    "svg.draggable.js": "2.2.1",
+    "svg.js": "2.3.6",
+    "w2ui": "1.4.3"
+  },
   "devDependencies": {
-    "bower": "1.7.9",
-    "grunt": "0.4.5",
-    "grunt-autoprefixer": "3.0.4",
-    "grunt-bower-install": "1.6.0",
-    "grunt-concurrent": "2.3.0",
-    "grunt-contrib-clean": "1.0.0",
-    "grunt-contrib-concat": "1.0.1",
-    "grunt-contrib-connect": "1.0.2",
-    "grunt-contrib-copy": "1.0.0",
-    "grunt-contrib-cssmin": "1.0.1",
-    "grunt-contrib-htmlmin": "1.4.0",
-    "grunt-contrib-imagemin": "1.0.0",
-    "grunt-contrib-jshint": "1.0.0",
-    "grunt-contrib-less": "1.1.0",
-    "grunt-contrib-uglify": "1.0.1",
-    "grunt-contrib-watch": "1.0.0",
-    "grunt-google-cdn": "0.4.3",
-    "grunt-newer": "1.2.0",
-    "grunt-ngmin": "0.0.3",
-    "grunt-rev": "0.1.0",
-    "grunt-svgmin": "3.2.0",
-    "grunt-usemin": "3.1.1",
+    "babel-core": "6.13.2",
+    "babel-loader": "6.2.5",
+    "babel-preset-es2015": "6.13.2",
+    "copy-webpack-plugin": "4.0.0",
+    "css-loader": "0.23.1",
+    "extract-text-webpack-plugin": "1.0.1",
+    "jshint": "2.9.3",
+    "jshint-loader": "0.8.3",
     "jshint-stylish": "2.2.0",
-    "load-grunt-tasks": "3.5.0",
-    "time-grunt": "1.3.0"
+    "less": "2.7.1",
+    "less-loader": "2.2.3",
+    "ng-annotate-loader": "0.1.1",
+    "style-loader": "0.13.1",
+    "webpack": "1.13.2"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=4.0.0"
   },
-  "scripts": {
-    "test": "grunt test"
-  }
+  "scripts": {}
 }

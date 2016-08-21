@@ -1,5 +1,4 @@
-angular.module('nin').service('commands', function() {
-
+function commands() {
   var handlers = {};
 
   function execute(command, args) {
@@ -24,4 +23,6 @@ angular.module('nin').service('commands', function() {
   };
 
   return commands;
-});
+}
+
+module.exports = commands;

@@ -1,4 +1,4 @@
-angular.module('nin').filter('errorExcerpt', function($sce) {
+function errorExcerpt($sce) {
   return function(error, fileCache) {
     var lines = fileCache[error.path].split('\n');
     var coordinates = error.stack.split('\n')[1].trim().replace(/.*:(\d+:\d+)\)/, '$1').split(':');
@@ -26,4 +26,6 @@ angular.module('nin').filter('errorExcerpt', function($sce) {
     }
     return $sce.trustAsHtml(html);
   };
-});
+}
+
+module.exports = errorExcerpt;

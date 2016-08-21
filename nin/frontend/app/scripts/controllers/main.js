@@ -124,20 +124,10 @@
         {
           name: 'Generate',
           items: [
-            {name: 'Layer', click: function() {
+            {name: 'Node', click: function() {
               commands.pause();
-              var layerName = window.prompt("Enter a name for the layer:");
-              commands.generate('layer', layerName);
-            }},
-            {name: 'Shader', click: function() {
-              commands.pause();
-              var shaderName = window.prompt("Enter a name for the shader:");
-              commands.generate('shader', shaderName);
-            }},
-            {name: 'Shader with layer', click: function() {
-              commands.pause();
-              var shaderName = window.prompt("Enter a name for the shader:");
-              commands.generate('shaderWithLayer', shaderName);
+              var layerName = window.prompt("Enter a name for the node:");
+              commands.generate('node', layerName);
             }}
           ]
         },
@@ -217,21 +207,30 @@
         try {
           switch (event.type) {
             case 'graph':
-              var graph = JSON.parse(event.content);
+              let graph = JSON.parse(event.content);
 
               $scope.graph = graph;
               demo.nm.hardReset();
 
-              for(var i in graph) {
-                var nodeInfo = graph[i];
-                var node = demo.nm.createNode(nodeInfo);
-                demo.nm.insertOrReplaceNode(node);
+              for (let nodeInfo of graph) {
+                try {
+                  let node = demo.nm.createNode(nodeInfo);
+                  demo.nm.insertOrReplaceNode(node);
+                } catch (e) {
+                  // This hack only works due to not-yet received
+                  // nodes created through generate not having
+                  // any connections / friends.
+                  setTimeout(function () {
+                    let node = demo.nm.createNode(nodeInfo);
+                    demo.nm.insertOrReplaceNode(node);
+                  }, 100);
+                }
               }
-              for(var i in graph) {
-                var nodeInfo = graph[i];
-                for(var outputName in nodeInfo.connectedTo) {
-                  var toNodeId = nodeInfo.connectedTo[outputName].split('.')[0];
-                  var inputName = nodeInfo.connectedTo[outputName].split('.')[1];
+
+              for (let nodeInfo of graph) {
+                for (let outputName in nodeInfo.connectedTo) {
+                  let toNodeId = nodeInfo.connectedTo[outputName].split('.')[0];
+                  let inputName = nodeInfo.connectedTo[outputName].split('.')[1];
                   demo.nm.connect(
                       nodeInfo.id,
                       outputName,
@@ -282,10 +281,10 @@
               var splitted = event.path.split('/');
               var filename = splitted[splitted.length - 1];
               var typename = filename.slice(0, -3);
-              if($scope.graph) {
-                for(var i = 0; i < $scope.graph.length; i++) {
-                  var nodeInfo = $scope.graph[i];
-                  if(nodeInfo.type == typename) {
+
+              if ($scope.graph) {
+                for (let nodeInfo of $scope.graph) {
+                  if (nodeInfo.type == typename) {
                     var node = demo.nm.createNode(nodeInfo);
                     demo.nm.insertOrReplaceNode(node);
                   }

@@ -21,12 +21,6 @@ class NodeManager {
     } else {
       node = new window[nodeInfo.type](nodeInfo.id, nodeInfo.options);
     }
-    for(var key in node.inputs) {
-      node.inputs[key].node = node;
-    }
-    for(var key in node.outputs) {
-      node.outputs[key].node = node;
-    }
     return node;
   }
 
@@ -84,17 +78,19 @@ class NodeManager {
     if(!this.nodes.root) {
       return;
     }
+
     for(var key in this.nodes) {
-      this.nodes[key]._graphEditorInfo.oldActive = this.nodes[key]._graphEditorInfo.active;
-      this.nodes[key]._graphEditorInfo.active = false;
+      this.nodes[key].oldActive = this.nodes[key].active;
+      this.nodes[key].active = false;
     }
+
     this.traverseNodeGraphPostOrderDfs(this.nodes.root, function(node) {
-      node._graphEditorInfo.active = true;
+      node.active = true;
       node.update(frame);
     });
+
     for(var key in this.nodes) {
-      if(this.nodes[key]._graphEditorInfo.oldActive !=
-          this.nodes[key]._graphEditorInfo.active) {
+      if(this.nodes[key].oldActive != this.nodes[key].active) {
         this.fireGraphChange();
         break;
       }

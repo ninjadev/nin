@@ -121,7 +121,7 @@
           flow: {
             html: {
               steps: {
-                js: ['concat', 'uglifyjs'],
+                js: ['concat'],
                 css: ['cssmin']
               },
               post: {}
@@ -253,7 +253,6 @@
       'less:dist',
       'copy:dist',
       'cssmin',
-      'uglify',
       'usemin',
       'htmlmin'
     ]);

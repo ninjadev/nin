@@ -63,7 +63,8 @@ window['bootstrap'] = function(options) {
     render: demo.render,
     update: demo.update,
     renderer: demo.renderer,
-    music: demo.music
+    music: demo.music,
+    wrapper: options.wrapper
   });
 
   demo.getCurrentFrame = function() {
@@ -72,7 +73,9 @@ window['bootstrap'] = function(options) {
 
   demo.jumpToFrame = function(frame) {
     var time = (frame / 60) * 1000;
-    if (time > demo.music.getDuration() * 1000) {
+    console.log('So this still happens');
+
+    /*if (time > demo.music.getDuration() * 1000) {
       time = demo.music.getDuration() * 1000;
       frame = (time / 1000) * 60;
     }
@@ -80,15 +83,15 @@ window['bootstrap'] = function(options) {
       frame = 0;
       time = 0;
     }
+    console.log('jumping to frame');
     demo.music.setCurrentTime(time / 1000);
     demo.looper.time = time;
     demo.looper.oldTime = time;
     demo.looper.deltaTime = 0;
     demo.looper.currentFrame = frame;
     updateBeatBean(frame);
-    demo.nm.jumpToFrame(frame);
     demo.update(frame);
-    demo.render(demo.renderer, 0);
+    demo.render(demo.renderer, 0);*/
   };
 
   function progress(percent) {
@@ -99,20 +102,20 @@ window['bootstrap'] = function(options) {
     console.log('finished loading :)');
   }
 
-  Loader.start(options.onprogress || progress, options.oncomplete || finished);
-
   demo.start = function() {
     container.insertBefore(demo.renderer.domElement, container.firstChild);
     demo.resize();
     demo.warmup();
     demo.jumpToFrame(0);
-    demo.music.play();
+    //demo.music.play();
     demo.looper.loop();
   };
 
   demo.warmup = function() {
     demo.nm.warmup();
   }
+
+  Loader.start(options.onprogress || progress, options.oncomplete || finished);
 
   return demo;
 };

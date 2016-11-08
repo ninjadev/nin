@@ -90,7 +90,7 @@
       }
 
       $scope.musicLayerClick = function($event) {
-        $scope.demo.jumpToFrame(getClickOffset($event).x / $scope.xScale | 0);
+        commands.jumpToFrame(getClickOffset($event).x / $scope.xScale | 0);
       };
 
       $scope.$window = window;
@@ -165,7 +165,7 @@
 
       $scope.$watch('currentFrame', function (nextFrame) {
         if ($scope.loopActive && nextFrame >= $scope.loopEnd) {
-          $scope.demo.jumpToFrame($scope.loopStart);
+          commands.jumpToFrame($scope.loopStart);
         }
       });
     });

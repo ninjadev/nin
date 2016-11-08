@@ -2,13 +2,26 @@
   'use strict';
 
   angular.module('nin').factory('demo', function(commands, $rootScope){
+    const app = MCorp.app('5904326537830503301');
+    let wrapper = {
+      clock: {
+        pos: 0,
+        update: () => {}
+      }
+    };
+    app.run = () => {
+      wrapper.clock = app.motions['nin'];
+    };
+    app.init();
+
     var demo = bootstrap({
       rootPath: '//localhost:9000/',
+      wrapper
     });
 
     window.demo = demo;
 
-    $rootScope.globalJSErrors = $rootScope.globalJSErrors || {};
+    /*$rootScope.globalJSErrors = $rootScope.globalJSErrors || {};
     var originalLoop = demo.looper.loop;
     var forcedPause = false;
     demo.looper.loop = function() {
@@ -35,30 +48,30 @@
 
         requestAnimFrame(demo.looper.loop);
       }
-    };
+    };*/
 
     commands.on('playPause', function() {
-      if(demo.music.paused) {
-        demo.music.play();
+      if (wrapper.clock.vel != 0.0) {
+        wrapper.clock.update(null, 0.0, 0.0);
       } else {
-        demo.music.pause();
+        wrapper.clock.update(null, 1.0, 0.0);
       }
     });
 
     commands.on('pause', function() {
-      demo.music.pause();
+      wrapper.clock.update(null, 0.0, 0.0);
     });
 
     commands.on('jog', function(amount) {
-      demo.jumpToFrame(demo.getCurrentFrame() + amount);
+      wrapper.clock.update(wrapper.clock.pos + amount / 60);
     });
 
     commands.on('jumpToFrame', function(frame) {
-      demo.jumpToFrame(frame);
+      wrapper.clock.update(frame / 60);
     });
 
     commands.on('setPlaybackRate', function(rate) {
-      demo.music.setPlaybackRate(rate);
+      //demo.music.setPlaybackRate(rate);
     });
 
     var showCameraPathVisualizations = false;

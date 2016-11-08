@@ -121,8 +121,7 @@
           flow: {
             html: {
               steps: {
-                js: ['concat', 'uglifyjs'],
-                css: ['cssmin']
+                js: ['concat']
               },
               post: {}
             }
@@ -135,12 +134,6 @@
         css: ['dist/styles/{,*/}*.css'],
         options: {
           assetsDirs: ['dist']
-        }
-      },
-
-      cssmin: {
-        options: {
-          root: 'app'
         }
       },
 
@@ -252,8 +245,6 @@
       'ngmin',
       'less:dist',
       'copy:dist',
-      'cssmin',
-      'uglify',
       'usemin',
       'htmlmin'
     ]);

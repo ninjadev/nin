@@ -1,4 +1,4 @@
-angular.module('nin').filter('stackFormat', function($sce) {
+function stackFormat($sce) {
   return function(error) {
     var lines = error.stack.split('\n');
     var html = '';
@@ -20,4 +20,6 @@ angular.module('nin').filter('stackFormat', function($sce) {
     }
     return $sce.trustAsHtml(html);
   };
-});
+}
+
+module.exports = stackFormat;

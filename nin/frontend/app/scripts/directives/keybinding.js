@@ -1,5 +1,4 @@
-angular.module('nin').directive('keybinding', function(commands, render, demo) {
-
+function keybinding(commands, demo) {
   var keybindings = {
     '32': function(e) {
       // 'space'
@@ -121,4 +120,6 @@ angular.module('nin').directive('keybinding', function(commands, render, demo) {
       });
     }
   };
-});
+}
+
+module.exports = keybinding;

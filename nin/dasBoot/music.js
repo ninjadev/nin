@@ -23,7 +23,7 @@ function loadMusic() {
   var _globalTimeOffset = 0;
   var _playbackRate = 1;
 
-  return {
+  const thisss = {
     paused: true,
 
     _calculateFFT: function() {
@@ -92,4 +92,7 @@ function loadMusic() {
       _bufferSource && _bufferSource.stop(0);
     }
   }
+
+  window.thisss = thisss;
+  return thisss;
 }

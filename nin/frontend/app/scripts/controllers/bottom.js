@@ -1,5 +1,5 @@
 class BottomCtrl {
-  constructor($scope, commands, demo) {
+  constructor($scope, commands, demo, $window) {
     this.xScale = 1;
 
     this.updateLayerBackgroundGradientStyle($scope);
@@ -13,11 +13,11 @@ class BottomCtrl {
     });
 
     $scope.$watch('main.duration', () => this.updateXScale($scope));
-    window.addEventListener('resize', () => {
+    $window.addEventListener('resize', () => {
       $scope.$apply(() => this.updateXScale($scope));
     });
 
-    this.$window = window;
+    this.$window = $window;
 
     this.loopStart = null;
     this.loopEnd = null;
@@ -51,8 +51,8 @@ class BottomCtrl {
       }
 
       var clampedAmount = Math.max(0, amount),
-          loopLength = this.loopEnd - this.loopStart,
-          newLoopLength = Math.max(1, loopLength * clampedAmount);
+        loopLength = this.loopEnd - this.loopStart,
+        newLoopLength = Math.max(1, loopLength * clampedAmount);
 
       this.loopEnd = this.loopStart + newLoopLength;
     });

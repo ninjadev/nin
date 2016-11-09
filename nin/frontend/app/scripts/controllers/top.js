@@ -1,6 +1,8 @@
 class TopCtrl {
-  constructor($scope, camera, commands) {
+  constructor($scope, camera, commands, $document, $window) {
     this.camera = camera;
+    this.$window = $window;
+    this.$document = $document;
 
     commands.on('toggleFlyAroundMode', function() {
       camera.toggleFlyAroundMode();
@@ -17,12 +19,12 @@ class TopCtrl {
   }
 
   displayValue(id, val) {
-    var el = document.getElementById(id);
+    var el = this.$document.getElementById(id);
     el.textContent = val;
-    var range = document.createRange();
+    var range = this.$document.createRange();
     range.selectNodeContents(el);
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
+    this.$window.getSelection().removeAllRanges();
+    this.$window.getSelection().addRange(range);
   }
 
   toggleFlyAroundMode() {

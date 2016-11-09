@@ -1,5 +1,5 @@
 class MainCtrl {
-  constructor(socket, demo, commands) {
+  constructor(socket, demo, commands, $window, $timeout) {
     this.themes = [
       'dark',
       'light'
@@ -122,7 +122,7 @@ class MainCtrl {
         items: [
           {name: 'Node', click: function() {
             commands.pause();
-            const nodeName = window.prompt("Enter a name for the node:");
+            const nodeName = $window.prompt("Enter a name for the node:");
             commands.generate('node', nodeName);
           }}
         ]
@@ -142,7 +142,7 @@ class MainCtrl {
         name: 'Help',
         items: [
           {name: 'Online wiki', click: function() {
-            window.open('https://github.com/ninjadev/nin/wiki');
+            $window.open('https://github.com/ninjadev/nin/wiki');
           }}
         ]
       },
@@ -202,94 +202,94 @@ class MainCtrl {
     socket.on('add change', event => {
       try {
         switch (event.type) {
-          case 'graph':
-            let graph = JSON.parse(event.content);
+        case 'graph':
+          let graph = JSON.parse(event.content);
 
-            this.graph = graph;
-            demo.nm.hardReset();
+          this.graph = graph;
+          demo.nm.hardReset();
 
-            for (let nodeInfo of graph) {
-              try {
+          for (let nodeInfo of graph) {
+            try {
+              let node = demo.nm.createNode(nodeInfo);
+              demo.nm.insertOrReplaceNode(node);
+            } catch (e) {
+              // This hack only works due to not-yet received
+              // nodes created through generate not having
+              // any connections / friends.
+              $timeout(function () {
                 let node = demo.nm.createNode(nodeInfo);
                 demo.nm.insertOrReplaceNode(node);
-              } catch (e) {
-                // This hack only works due to not-yet received
-                // nodes created through generate not having
-                // any connections / friends.
-                setTimeout(function () {
-                  let node = demo.nm.createNode(nodeInfo);
-                  demo.nm.insertOrReplaceNode(node);
-                }, 100);
+              }, 100);
+            }
+          }
+
+          for (let nodeInfo of graph) {
+            for (let outputName in nodeInfo.connectedTo) {
+              let toNodeId = nodeInfo.connectedTo[outputName].split('.')[0];
+              let inputName = nodeInfo.connectedTo[outputName].split('.')[1];
+              demo.nm.connect(
+                nodeInfo.id,
+                outputName,
+                toNodeId,
+                inputName);
+            }
+          }
+
+          Loader.start(function() {}, function() {});
+          break;
+
+        case 'camerapaths':
+          var camerapaths = JSON.parse(event.content);
+
+          CameraController.paths = camerapaths;
+          for (var index in CameraController.layers) {
+            var cameraController = CameraController.layers[index];
+            cameraController.parseCameraPath(camerapaths);
+            demo.nm.refresh(cameraController.layer_id);
+          }
+
+          demo.nm.update(demo.looper.currentFrame);
+          break;
+
+        case 'shader':
+          var indirectEval = eval;
+          this.fileCache[event.path] = event.content;
+          indirectEval(event.content);
+
+          for (var i in this.layers) {
+            var layer = this.layers[i];
+            if (layerShaderDependencies[layer.type]) {
+              if (layerShaderDependencies[layer.type].indexOf(event.shadername) !== -1) {
+                demo.nm.refresh(layer.type);
               }
             }
+          }
 
-            for (let nodeInfo of graph) {
-              for (let outputName in nodeInfo.connectedTo) {
-                let toNodeId = nodeInfo.connectedTo[outputName].split('.')[0];
-                let inputName = nodeInfo.connectedTo[outputName].split('.')[1];
-                demo.nm.connect(
-                    nodeInfo.id,
-                    outputName,
-                    toNodeId,
-                    inputName);
+          demo.nm.update(demo.looper.currentFrame);
+          Loader.start(function() {}, function() {});
+          break;
+
+        case 'node':
+          this.fileCache[event.path] = event.content;
+          var indirectEval = eval;
+          indirectEval(event.content);
+
+          var splitted = event.path.split('/');
+          var filename = splitted[splitted.length - 1];
+          var typename = filename.slice(0, -3);
+          if(this.graph) {
+            for(var i = 0; i < this.graph.length; i++) {
+              var nodeInfo = this.graph[i];
+              if(nodeInfo.type == typename) {
+                var node = demo.nm.createNode(nodeInfo);
+                demo.nm.insertOrReplaceNode(node);
               }
             }
+          }
 
-            Loader.start(function() {}, function() {});
-            break;
-
-          case 'camerapaths':
-            var camerapaths = JSON.parse(event.content);
-
-            CameraController.paths = camerapaths;
-            for (var index in CameraController.layers) {
-              var cameraController = CameraController.layers[index];
-              cameraController.parseCameraPath(camerapaths);
-              demo.nm.refresh(cameraController.layer_id);
-            }
-
-            demo.nm.update(demo.looper.currentFrame);
-            break;
-
-          case 'shader':
-            var indirectEval = eval;
-            this.fileCache[event.path] = event.content;
-            indirectEval(event.content);
-
-            for (var i in this.layers) {
-              var layer = this.layers[i];
-              if (layerShaderDependencies[layer.type]) {
-                if (layerShaderDependencies[layer.type].indexOf(event.shadername) !== -1) {
-                  demo.nm.refresh(layer.type);
-                }
-              }
-            }
-
-            demo.nm.update(demo.looper.currentFrame);
-            Loader.start(function() {}, function() {});
-            break;
-
-          case 'node':
-            this.fileCache[event.path] = event.content;
-            var indirectEval = eval;
-            indirectEval(event.content);
-
-            var splitted = event.path.split('/');
-            var filename = splitted[splitted.length - 1];
-            var typename = filename.slice(0, -3);
-            if(this.graph) {
-              for(var i = 0; i < this.graph.length; i++) {
-                var nodeInfo = this.graph[i];
-                if(nodeInfo.type == typename) {
-                  var node = demo.nm.createNode(nodeInfo);
-                  demo.nm.insertOrReplaceNode(node);
-                }
-              }
-            }
-
-            demo.nm.update(demo.looper.currentFrame);
-            Loader.start(function() {}, function() {});
-            break;
+          demo.nm.update(demo.looper.currentFrame);
+          Loader.start(function() {}, function() {});
+          break;
         }
 
         delete this.globalJSErrors[event.type];

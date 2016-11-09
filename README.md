@@ -45,6 +45,7 @@ Yarn installation guide is available [here](https://yarnpkg.com/en/docs/install)
 If you already have npm installed you can bootstrap to yarn by running `npm install -g yarn`.
 
 Running `make` in the nin folder will build and compile the entire project.
+Running `sudo make link-nin` will add nin to /usr/bin, making it available globally.
 
 You must have java installed for the `nin compile` command to work.
 

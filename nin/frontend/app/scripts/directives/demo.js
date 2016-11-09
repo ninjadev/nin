@@ -28,7 +28,7 @@ function demo($interval, demo) {
       });
 
       scope.$watch(() => scope.main.volume, volume => {
-        if (scope.mute) return;
+        if (scope.main.mute) return;
         demo.music.setVolume(volume);
       });
 

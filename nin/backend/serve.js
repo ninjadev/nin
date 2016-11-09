@@ -63,9 +63,12 @@ var serve = function(projectPath, shouldRunHeadlessly) {
         path: path
       };
 
-      if (filename == 'graph.json' ||
-            filename == 'camerapaths.json') {
-        event.type = filenameWithoutExtension;
+      if (filename == 'graph.json') {
+        event.type = 'graph';
+        event.content = content;
+      } else if (path.endsWith('.camera.json')) {
+        event.type = 'camera';
+        event.path = path;
         event.content = content;
       } else if (path.indexOf('/shaders/') !== -1) {
         event.type = 'shader';

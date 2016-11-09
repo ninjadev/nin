@@ -238,17 +238,14 @@ class MainCtrl {
           Loader.start(function() {}, function() {});
           break;
 
-        case 'camerapaths':
-          var camerapaths = JSON.parse(event.content);
-
-          CameraController.paths = camerapaths;
-          for (var index in CameraController.layers) {
-            var cameraController = CameraController.layers[index];
-            cameraController.parseCameraPath(camerapaths);
-            demo.nm.refresh(cameraController.layer_id);
+        case 'camera':
+          for (let key in demo.nm.nodes) {
+            if (demo.nm.nodes[key] instanceof NIN.CameraNode) {
+              if (demo.nm.nodes[key].options.path == event.path) {
+                demo.nm.nodes[key].initializeCamera(event.content);
+              }
+            }
           }
-
-          demo.nm.update(demo.looper.currentFrame);
           break;
 
         case 'shader':

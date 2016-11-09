@@ -1,13 +1,13 @@
 const Waveform = require('../../lib/waveform');
 
-function waveform() {
+function waveform($window) {
   return {
     restrict: 'A',
     template: '<div class=under style="width:{{ currentFrame * xScale }}px"></div>' +
               '<div class=over></div>',
     link: function(scope, element, attrs) {
 
-      window.AudioContext = window.AudioContext || window.webkitAudioContext;
+      $window.AudioContext = $window.AudioContext || $window.webkitAudioContext;
       var context = new AudioContext();
 
       scope.$watch('selectedTheme', function() {

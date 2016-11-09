@@ -1,5 +1,5 @@
 class Render {
-  constructor(demo, $http, commands) {
+  constructor(demo, $http, $timeout, commands) {
     this.currentFrame;
     this.currentlyRendering = false;
     this.currentTimeout;
@@ -24,13 +24,13 @@ class Render {
     var image = demo.renderer.domElement.toDataURL('image/png');
 
     $http.post('http://localhost:9000/', {
-        type: 'render-frame',
-        image: image,
-        frame: i
-      });
+      type: 'render-frame',
+      image: image,
+      frame: i
+    });
 
     if(this.currentlyRendering) {
-      this.currentTimeout = setTimeout(function() {
+      this.currentTimeout = $timeout(function() {
         this.render(this.currentFrame + 1);
       }, 0);
     }

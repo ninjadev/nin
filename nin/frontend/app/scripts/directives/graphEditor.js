@@ -112,13 +112,13 @@ function graphEditor($window, $timeout, demo, socket) {
           ];
         }
         nodeLineSVG.polyline(path).fill('none').stroke({
-          width: 1  
+          width: 1
         });
       }
 
       function redrawNodeLines() {
         var newNodeLineSVG = baseSVG.nested().attr({
-          class: 'connection-lines' 
+          class: 'connection-lines'
         });
         nodeLineSVG.replace(newNodeLineSVG);
         nodeLineSVG = newNodeLineSVG;

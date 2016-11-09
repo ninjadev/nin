@@ -1,9 +1,9 @@
-function demo(commands, $rootScope) {
+function demo(commands, $rootScope, $window) {
   var demo = bootstrap({
     rootPath: '//localhost:9000/',
   });
 
-  window.demo = demo;
+  $window.demo = demo;
 
   $rootScope.globalJSErrors = $rootScope.globalJSErrors || {};
   var originalLoop = demo.looper.loop;

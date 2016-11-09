@@ -1,10 +1,10 @@
-function demo($interval, demo) {
+function demo($interval, demo, $timeout) {
   return {
     restrict: 'E',
     template: '<div class=demo-container></div>',
     link: function(scope, element) {
       demo.setContainer(element[0].children[0]);
-      setTimeout(function() {
+      $timeout(function() {
         demo.resize();
       });
 
@@ -37,7 +37,7 @@ function demo($interval, demo) {
         scope.main.duration = demo.music.getDuration() * 60;
       }, 1000 / 60);
 
-      setTimeout(function(){
+      $timeout(function(){
         demo.start();
         demo.music.pause();
         demo.jumpToFrame(0);

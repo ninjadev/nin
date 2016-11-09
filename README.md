@@ -40,23 +40,14 @@ In the compiled result, you can have a start screen that is shown while the demo
 
 ## Setup
 
-You will need to have node, npm and bower installed.
+You will need to have node and yarn installed.
+Yarn installation guide is available [here](https://yarnpkg.com/en/docs/install).
+If you already have npm installed you can bootstrap to yarn by running `npm install -g yarn`.
 
-Run `make` in the nin folder. This is a convenience method that runs `make` in the `frontend` and `backend` folders.
-
-To use grunt, you need to install the command line utility globally, by running `sudo npm install -g grunt-cli`
-
-To make nin available as a global command line utility, the easiest way is to add an alias to your `.bashrc` like this:
-
-```
-alias nin='~/path/to/nin-project/backend/nin'
-```
+Running `make` in the nin folder will build and compile the entire project.
+Running `sudo make link-nin` will add nin to /usr/bin, making it available globally.
 
 You must have java installed for the `nin compile` command to work.
-
-### Commands to try if it does not work:
-
-sudo apt-get install g++
 
 ## Development
 

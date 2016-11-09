@@ -1,6 +1,6 @@
 .PHONY: all
 all:
-	npm install
+	yarn install
 	webpack
 
 .PHONY: run

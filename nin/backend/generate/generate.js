@@ -12,21 +12,22 @@ var generate = function(projectRoot, type, name) {
   var camelizedName = utils.camelize(name);
 
   switch (type) {
-    case 'layer':
-      var layerName = camelizedName + 'Layer';
-      generateLayer(layerName, 'TemplateLayer.js',
-          [[/TemplateLayer/g, layerName]],
+    case 'node':
+      generateLayer(camelizedName,
+          'TemplateNode.js',
+          [[/TemplateNode/g, camelizedName]],
           projectRoot);
 
-      layers.add(projectRoot, {
-        displayName: name,
-        type: layerName,
-        color: 'red'
-      }, function (err) {
+      graph.transform(projectRoot, function(g) {
+        g.push({
+          id: name,
+          type: camelizedName
+        });
+      }, function(err) {
         if (err) {
           console.error(err);
         } else {
-          console.log('Added ' + layerName + ' to layers.json');
+          console.log('Added ' + name + ' to graph.json');
         }
       });
       break;

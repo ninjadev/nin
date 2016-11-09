@@ -1,8 +1,7 @@
 var fs = require('fs');
 var utils = require('./utils');
 
-
-function update(projectPath, nodeId, data, callback) {
+function transform(projectPath, transformer, callback) {
   read(projectPath, function (err, graph) {
     if (err) {
       if (callback) {
@@ -10,10 +9,9 @@ function update(projectPath, nodeId, data, callback) {
       }
       return;
     }
-    var index = graph.findIndex(nodeInfo => nodeInfo.id == nodeId);
-    for (var key in data) {
-      graph[index][key] = data[key];
-    }
+
+    transformer(graph);
+
     write(projectPath, graph, function (err) {
       if (callback) {
         callback(err);
@@ -59,4 +57,4 @@ function _read(projectPath, callback) {
   });
 }
 
-module.exports = {update: update};
+module.exports = {transform: transform};

@@ -94,12 +94,14 @@ var serve = function(projectPath, shouldRunHeadlessly) {
         var directoryPrecedence = {'lib': 0, 'src': 1, 'res': 2};
         var directoryAScore = directoryPrecedence[a.slice(0, 3)];
         var directoryBScore = directoryPrecedence[b.slice(0, 3)];
+
         if(directoryAScore == directoryBScore) {
           return a > b;
         }
-        return directoryAScore > directoryBScore;
 
+        return directoryAScore > directoryBScore;
       });
+
       for (var i in sortedPaths) {
         conn.send('add', eventFromPath({path: sortedPaths[i]}));
       }

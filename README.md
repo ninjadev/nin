@@ -40,9 +40,10 @@ In the compiled result, you can have a start screen that is shown while the demo
 
 ## Setup
 
-You will need to have node and yarn installed.
+You will need to have node, yarn and webpack installed.
 Yarn installation guide is available [here](https://yarnpkg.com/en/docs/install).
 If you already have npm installed you can bootstrap to yarn by running `npm install -g yarn`.
+Install webpack by running `npm install -g webpack`.
 
 Running `make` in the nin folder will build and compile the entire project.
 Running `sudo make link-nin` will add nin to /usr/bin, making it available globally.

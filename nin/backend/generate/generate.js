@@ -4,7 +4,7 @@ var fs = require('fs'),
     graph = require('../graph'),
     mkdirp = require('mkdirp');
 
-var generate = function(projectRoot, type, name) {
+var generate = function(projectRoot, type, name, options) {
   if (type == '' || name == '') {
     return;
   }
@@ -19,10 +19,10 @@ var generate = function(projectRoot, type, name) {
           projectRoot);
 
       graph.transform(projectRoot, function(g) {
-        g.push({
+        g.push(Object.assign({
           id: name,
-          type: camelizedName
-        });
+          type: camelizedName,
+        }, options));
       }, function(err) {
         if (err) {
           console.error(err);

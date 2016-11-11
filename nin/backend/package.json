@@ -1,6 +1,6 @@
 {
-  "name": "nin",
-  "version": "0.0.1",
+  "name": "ninjadev-nin",
+  "version": "0.0.8",
   "dependencies": {
     "body-parser": "1.15.0",
     "chalk": "1.1.3",
@@ -16,5 +16,12 @@
     "rimraf": "2.5.2",
     "sockjs": "0.3.16",
     "walk": "2.3.9"
+  },
+  "scripts": {
+    "npm_prepublish": "sed -i.bak s/'var publishing = false;'/'var publishing = true;'/g serve.js && make bundle-deps",
+    "npm_postpublish": "sed -i.bak s/'var publishing = true;'/'var publishing = false;'/g serve.js"
+  },
+  "bin": {
+    "nin": "./nin"
   }
 }

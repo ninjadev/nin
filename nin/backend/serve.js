@@ -10,13 +10,16 @@ var readDir = require('readdir');
 var socket = require('./socket');
 var watch = require('./watch');
 
+var publishing = false;
+
 
 var serve = function(projectPath, shouldRunHeadlessly) {
 
   var genPath = p.join(projectPath, '/gen/');
   mkdirp.sync(genPath);
 
-  var dasBootSourceDirectoryPath = p.join(__dirname, '/../dasBoot/');
+  var dasBootPostfix = publishing ? '/dasBoot/' : '/../dasBoot/';
+  var dasBootSourceDirectoryPath = p.join(__dirname, dasBootPostfix);
 
   var dasBootLibSourceFilePaths = readDir.readSync(
     dasBootSourceDirectoryPath,
@@ -36,7 +39,8 @@ var serve = function(projectPath, shouldRunHeadlessly) {
 
     if(!shouldRunHeadlessly) {
       var frontend = express();
-      frontend.use(express.static(__dirname + '/../frontend/dist/'));
+      var frontendPostfix = publishing ? '/frontend/' : '/../frontend/dist/';
+      frontend.use(express.static(__dirname + frontendPostfix));
       frontend.listen(8000);
     }
 

@@ -34,7 +34,10 @@
         height: {{ 50 + 30 * layers.length }}px;
       "
       >
-      <div class="glow glow-play">
+      <div
+        class="glow glow-play"
+        ng-class="{'glow-visible': !main.demo.music.paused}"
+        >
         </div>
     </div>
 

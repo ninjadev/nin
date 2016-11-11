@@ -1,6 +1,6 @@
 {
-  "name": "frontend",
-  "version": "0.0.0",
+  "name": "nin-frontend",
+  "version": "0.0.1",
   "dependencies": {
     "angular": "1.5.8",
     "angular-ui-bootstrap": "2.1.0",

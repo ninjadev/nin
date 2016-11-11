@@ -205,19 +205,16 @@ class MainCtrl {
         case 'graph':
           let graph = JSON.parse(event.content);
 
-          this.graph = graph;
-          demo.nm.hardReset();
-
           for (let nodeInfo of graph) {
+            let node = demo.nm.createNode(nodeInfo);
+
             try {
-              let node = demo.nm.createNode(nodeInfo);
               demo.nm.insertOrReplaceNode(node);
             } catch (e) {
               // This hack only works due to not-yet received
               // nodes created through generate not having
               // any connections / friends.
               $timeout(function () {
-                let node = demo.nm.createNode(nodeInfo);
                 demo.nm.insertOrReplaceNode(node);
               }, 100);
             }
@@ -235,6 +232,7 @@ class MainCtrl {
             }
           }
 
+          this.graph = graph;
           Loader.start(function() {}, function() {});
           break;
 

@@ -1,5 +1,4 @@
-var fs = require('fs');
-var utils = require('./utils');
+let fs = require('fs');
 
 function transform(projectPath, transformer, callback) {
   read(projectPath, function (err, graph) {
@@ -20,8 +19,8 @@ function transform(projectPath, transformer, callback) {
   });
 }
 
-var operationQueue = [];
-var activeOperation = null;
+let operationQueue = [];
+let activeOperation = null;
 
 function read(projectPath, callback) {
   operationQueue.push([projectPath, callback]);
@@ -31,7 +30,7 @@ function read(projectPath, callback) {
 }
 
 function write(projectPath, layers, callback) {
-  var data = JSON.stringify(layers, null, 2) + '\n';
+  let data = JSON.stringify(layers, null, 2) + '\n';
   fs.writeFile(projectPath + '/res/graph.json', data, function(err) {
     advanceQueue();
     callback(err);
@@ -51,7 +50,7 @@ function _read(projectPath, callback) {
       advanceQueue();
       callback(err);
     } else {
-      var graph = JSON.parse(data);
+      let graph = JSON.parse(data);
       callback(err, graph);
     }
   });

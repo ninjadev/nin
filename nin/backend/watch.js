@@ -1,26 +1,28 @@
-var chalk = require('chalk');
-var chokidar = require('chokidar');
-var sg = require('./shadergen');
+const chalk = require('chalk');
+const chokidar = require('chokidar');
+const sg = require('./shadergen');
 
 
 function watch(projectPath, cb) {
-  var paths = [];
+  let paths = [];
 
-  var watcher = chokidar.watch(
-    ['src/',
-     'lib/',
-     'res/graph.json',
-     'res/*.camera.json'], {
-    ignored: [/[\/\\]\./, /\/shaders\//],
-    persistent: true,
-    ignoreInitial: false,
-    cwd: projectPath,
-    useFsEvents: true,
-    usePolling: true,
-    interval: 200
-  });
+  const watcher = chokidar.watch(
+    [ 'src/',
+      'lib/',
+      'res/graph.json',
+      'res/*.camera.json'],
+    {
+      ignored: [/[\/\\]\./, /\/shaders\//],
+      persistent: true,
+      ignoreInitial: false,
+      cwd: projectPath,
+      useFsEvents: true,
+      usePolling: true,
+      interval: 200
+    }
+  );
 
-  var logFileChanges = false;
+  let logFileChanges = false;
   watcher.on('ready', function() {
     logFileChanges = true;
   });
@@ -48,14 +50,14 @@ function watch(projectPath, cb) {
     if (event === 'add') {
       paths.push(path);
     } else if (event === 'delete') {
-      var i = paths.indexOf(path);
+      const i = paths.indexOf(path);
       if (i > -1) {
         paths.splice(i, 1);
       }
     }
   });
 
-  var shaderWatcher = chokidar.watch('src/shaders/', {
+  const shaderWatcher = chokidar.watch('src/shaders/', {
     ignored: /[\/\\]\./,
     persistent: true,
     ignoreInitial: true,
@@ -64,7 +66,7 @@ function watch(projectPath, cb) {
 
   shaderWatcher.on('all', function(event, path) {
     if (event === 'add' || event === 'change') {
-      var pathParts = path.split('/');
+      const pathParts = path.split('/');
       console.log(chalk.yellow('Recompiling shaders:'), chalk.magenta(pathParts[2]));
       sg.shaderGen(projectPath, function(out) {
         cb(event, {path: path, out: out});

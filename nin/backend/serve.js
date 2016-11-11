@@ -1,40 +1,40 @@
-var bodyParser = require('body-parser');
-var chalk = require('chalk');
-var concat = require('concat-files');
-var express = require('express');
-var fs = require('fs');
-var mkdirp = require('mkdirp');
-var p = require('path');
-var projectSettings = require('./projectSettings');
-var readDir = require('readdir');
-var socket = require('./socket');
-var watch = require('./watch');
+let bodyParser = require('body-parser');
+let chalk = require('chalk');
+let concat = require('concat-files');
+let express = require('express');
+let fs = require('fs');
+let mkdirp = require('mkdirp');
+let p = require('path');
+let projectSettings = require('./projectSettings');
+let readDir = require('readdir');
+let socket = require('./socket');
+let watch = require('./watch');
 
-var publishing = false;
+const publishing = false;
 
+let serve = function(projectPath, shouldRunHeadlessly) {
 
-var serve = function(projectPath, shouldRunHeadlessly) {
-
-  var genPath = p.join(projectPath, '/gen/');
+  let genPath = p.join(projectPath, '/gen/');
   mkdirp.sync(genPath);
 
-  var dasBootPostfix = publishing ? '/dasBoot/' : '/../dasBoot/';
-  var dasBootSourceDirectoryPath = p.join(__dirname, dasBootPostfix);
+  const dasBootPostfix = publishing ? '/dasBoot/' : '/../dasBoot/';
+  const dasBootSourceDirectoryPath = p.join(__dirname, dasBootPostfix);
 
-  var dasBootLibSourceFilePaths = readDir.readSync(
+  let dasBootLibSourceFilePaths = readDir.readSync(
     dasBootSourceDirectoryPath,
     ['lib/*.js'],
     readDir.ABSOLUTE_PATHS
   ).sort();
-  var dasBootSourceFilePaths = readDir.readSync(
+  let dasBootSourceFilePaths = readDir.readSync(
     dasBootSourceDirectoryPath,
     ['*.js'],
     readDir.ABSOLUTE_PATHS
   ).sort();
 
-  var dasBootDestinationFilePath = p.join(projectPath, '/gen/dasBoot.js');
+  let dasBootDestinationFilePath = p.join(projectPath, '/gen/dasBoot.js');
   concat(dasBootLibSourceFilePaths.concat(dasBootSourceFilePaths),
          dasBootDestinationFilePath, function() {
+    /* eslint-disable */
     projectSettings.generate(projectPath);
 
     if(!shouldRunHeadlessly) {
@@ -44,24 +44,10 @@ var serve = function(projectPath, shouldRunHeadlessly) {
       frontend.listen(8000);
     }
 
-    var findShaderDependencies = function(content) {
-      var regex = /\bSHADERS\.(\w+)\b/g;
-      var shaderNames = [];
-      var matches = content.match(regex) || [];
-      matches.forEach(function(match) {
-        var shaderName = match.split('.')[1];
-        if (shaderNames.indexOf(shaderName) === -1) {
-          shaderNames.push(shaderName);
-        }
-      });
-      return shaderNames;
-    };
-
     var eventFromPath = function(data) {
-      var path = data.path,
-          filename = p.basename(path),
-          filenameWithoutExtension = filename.split('.')[0],
-          content = fs.readFileSync(p.join(projectPath, path), 'utf-8');
+      var path = data.path;
+      var filename = p.basename(path);
+      var content = fs.readFileSync(p.join(projectPath, path), 'utf-8');
 
       var event = {
         path: path
@@ -119,9 +105,9 @@ var serve = function(projectPath, shouldRunHeadlessly) {
 
     var files = express();
     files.use(function(req, res, next) {
-      res.setHeader("Access-Control-Allow-Origin", "*");
-      res.header("Access-Control-Allow-Headers",
-                 "Origin, X-Requested-With, Content-Type, Accept");
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Headers',
+                 'Origin, X-Requested-With, Content-Type, Accept');
       next();
     });
     files.use(express.static(projectPath));
@@ -146,8 +132,8 @@ var serve = function(projectPath, shouldRunHeadlessly) {
     } else {
       console.log(chalk.yellow('Serving nin on http://localhost:8000'));
     }
-
   });
+/* eslint-enable*/
 };
 
 module.exports = {serve: serve};

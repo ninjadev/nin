@@ -1,11 +1,11 @@
-var fs = require('fs');
-var walk = require('walk');
+let fs = require('fs');
+let walk = require('walk');
 
 
-var shaderGen = function(pathPrefix, cb) {
+let shaderGen = function(pathPrefix, cb) {
 
   function getShaderData(path, type) {
-    var data = '';
+    let data = '';
     if(fs.existsSync(path)) {
       data = fs.readFileSync(path, 'utf8');
     } else {
@@ -16,19 +16,19 @@ var shaderGen = function(pathPrefix, cb) {
   }
 
   function traversePath(pathPrefix, callback) {
-    var walker = walk.walk(pathPrefix, {followLinks: false});
+    let walker = walk.walk(pathPrefix, {followLinks: false});
     walker.on('directories', function(root, stat, next) {
-      for(var i = 0; i < stat.length; i++) {
+      for(let i = 0; i < stat.length; i++) {
         directories.push(stat[i].name);
       }
       next();
     });
 
     walker.on('end', function() {
-      var path = '';
-      var tmpData = '';
-      var type = '';
-      for(var i = 0; i < directories.length; i++) {
+      let path = '';
+      let tmpData = '';
+      let type = '';
+      for(let i = 0; i < directories.length; i++) {
         out += 'SHADERS.' + directories[i] + ' = {';
 
         type = '/uniforms.json';
@@ -53,8 +53,8 @@ var shaderGen = function(pathPrefix, cb) {
     });
   }
 
-  var directories = [];
-  var out = 'SHADERS={};';
+  let directories = [];
+  let out = 'SHADERS={};';
 
   traversePath(pathPrefix + '/src/shaders/', function() {
     traversePath(__dirname + '/../dasBoot/shaders/', function() {

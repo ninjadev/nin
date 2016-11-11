@@ -1,13 +1,14 @@
-var chalk = require('chalk');
-var fs = require('fs');
-var path = require('path');
+const chalk = require('chalk');
+const fs = require('fs');
+const path = require('path');
 
 
 function findProjectRoot(currentPath) {
-  var up = '';
+  let up = '';
+  let base = '';
   do {
-    var base = path.join(currentPath, up),
-        manifest = path.join(base, 'nin.json');
+    base = path.join(currentPath, up);
+    const manifest = path.join(base, 'nin.json');
 
     if (fs.existsSync(manifest)) {
       return base.replace(/\/$/, '');
@@ -17,7 +18,7 @@ function findProjectRoot(currentPath) {
 }
 
 function findProjectRootOrExit(currentPath) {
-  var base = findProjectRoot(currentPath);
+  const base = findProjectRoot(currentPath);
   if(base) {
     console.log(chalk.grey('Found nin.json in project root (' + base + ')'));
     return base;
@@ -31,29 +32,31 @@ function findProjectRootOrExit(currentPath) {
 // http://stackoverflow.com/questions/2970525/converting-any-string-into-camel-case/2970667#2970667
 function camelize(str) {
   return str.replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, function(match, index) {
-    if (+match === 0) return ""; // or if (/\s+/.test(match)) for white spaces
+    if (+match === 0) return ''; // or if (/\s+/.test(match)) for white spaces
     return index == 0 ? match.toLowerCase() : match.toUpperCase();
   });
 }
 
 function mergeOptions(input, defaults) {
-  var output = {};
-  for (var key in defaults) {
+  let output = {};
+  for (const key in defaults) {
     output[key] = defaults[key];
   }
-  for (var key in input) {
+  for (const key in input) {
     output[key] = input[key];
   }
   return output;
 }
 
 function colorizeCommanderHelpText(txt) {
+  /* eslint-disable */
   return (txt.replace(/(\[[^\]]*\])/g, chalk.grey('$1'))
              .replace(/Usage: (\w+)/g, 'Usage: ' + chalk.green('$1'))
              .replace(/(\n  \w+ [^\n]*)/g, chalk.cyan('$1'))
              .replace(/(\n   ( -+[\w,-]+)+)/g, chalk.green('$1'))
              .replace(/(\n    \w+)/g, chalk.green('$1'))
              .replace(/(\n  \w+:)/g, chalk.yellow('$1')));
+  /* eslint-enable */
 }
 
 function unsafeHTMLEscape(txt) {

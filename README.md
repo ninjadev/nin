@@ -9,6 +9,9 @@ nin is Ninjadev's internal demo tool. It is a tool for easing development of bro
 This project has a node backend that keeps track of all files and compiles files as they are edited.
 The frontend of this project is written in Angular and displays among other the layers that the demo consists of.
 
+## Installing nin
+
+To install nin simply run the command `npm install -g ninjadev-nin`.
 
 ## nin is now node-based!
 
@@ -38,7 +41,7 @@ Expect to render maybe a frame or two per second.
 ### Start screen
 In the compiled result, you can have a start screen that is shown while the demo is being loaded. When compiling, nin will look for an `index.html` file in the root folder of your demo, and use that as start screen. JavaScript functions `ONPROGRESS` and `ONCOMPLETE` should be implemented in `index.html`. After `ONCOMPLETE` is called, `demo.start()` may be called. `index.html` should not include `</body>` or `</html>`.
 
-## Setup
+## Development Setup
 
 You will need to have node, yarn and webpack installed.
 Yarn installation guide is available [here](https://yarnpkg.com/en/docs/install).
@@ -50,7 +53,7 @@ Running `sudo make link-nin` will add nin to /usr/bin, making it available globa
 
 You must have java installed for the `nin compile` command to work.
 
-## Development
+## Developing
 
 When developing on nin, it can be useful to run the backend and frontend separately.
 Instead of executing `nin run` in your project folder, run `nin headless` which will start the backend as usual, but without a frontend connected.
@@ -120,6 +123,12 @@ See [the wiki page](https://github.com/ninjadev/nin/wiki/Camera-Controller) for 
 <!-- -->
 
 > Oh man, I didn't know you guys released your tools. I'm a big fan of your stuff -- awesome to see such polished prods on the web. Happy to have helped enable some amazing work! - [daeken](https://news.ycombinator.com/item?id=12264461#unv_12265590)
+
+## Publishing nin
+
+To publish nin type the command `make publish`.
+This will run a prepublish command, and a postpublish command that modifies the project to be usable as a command line tool.
+To be able to publish you need access to the `ninjadev` user on npm whose password will be given through secure channels.
 
 ## List of known nin projects
 

@@ -186,6 +186,28 @@ function graphEditor($window, $timeout, demo, socket) {
           });
 
           var j = 0;
+          var sortedKeys = Object.keys(node.inputs).sort();
+          for(var i in sortedKeys) {
+            var inputName = sortedKeys[i];
+            var input = node.inputs[inputName];
+            var inputGroup = nodeGroup.group();
+            inputGroup.attr({
+              class: 'input'
+            }).transform({
+              x: 25 * j
+            }).on('click', (function(input, inputGroup) {
+              return function() {
+                select(input, inputGroup);
+              };
+            })(input, inputGroup));
+            var inputBg = inputGroup.rect(25, 25);
+            inputGroup.plain(inputName).attr({
+              x: 12.5,
+              y: 12.5
+            });
+            j++;
+          }
+          j = 0;
           var sortedKeys = Object.keys(node.outputs).sort();
           sortedKeys.reverse();
           for(var i in sortedKeys) {

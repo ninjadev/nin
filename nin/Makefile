@@ -1,8 +1,8 @@
 .PHONY: all
 all:
-	cd backend && make
+	yarn install
 	cd frontend && make
 
-.PHONY: link-nin
-link-nin:
-	sudo ln -s "$$(pwd)/backend/nin" /usr/bin/nin
+.PHONY: publish
+publish: all
+	npm publish

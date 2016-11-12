@@ -1,6 +1,6 @@
 {
   "name": "ninjadev-nin",
-  "version": "0.0.8",
+  "version": "1.0.0",
   "author": "nin contributors",
   "license": "Apache-2.0",
   "repository": {
@@ -25,6 +25,6 @@
     "walk": "2.3.9"
   },
   "bin": {
-    "nin": "./backend/nin"
+    "nin": "./nin/backend/nin"
   }
 }

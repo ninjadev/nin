@@ -13,6 +13,10 @@ The frontend of this project is written in Angular and displays among other the 
 
 To install nin simply run the command `npm install -g ninjadev-nin`.
 
+## Requirements
+
+This projects requires node version `7.1.0` or newer.
+
 ## nin is now node-based!
 
 Nin just became node-based instead of layer-based.

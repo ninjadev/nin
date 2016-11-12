@@ -1,15 +1,15 @@
-var chalk = require('chalk');
-var generate = require('./generate/generate');
-var graph = require('./graph');
-var sock = require('sockjs');
+const chalk = require('chalk');
+const generate = require('./generate/generate');
+const graph = require('./graph');
+const sock = require('sockjs');
 
 
 function socket(projectPath, onConnectionCallback) {
-  var server = sock.createServer();
-  var connections = {};
+  const server = sock.createServer();
+  let connections = {};
 
   function broadcast(event, data) {
-    for (var id in connections) {
+    for (const id in connections) {
       connections[id].send(event, data);
     }
   }
@@ -35,27 +35,26 @@ function socket(projectPath, onConnectionCallback) {
     });
 
     conn.on('data', function (message) {
-      var event = JSON.parse(message);
+      let event = JSON.parse(message);
       switch (event.type) {
-        case 'set':
-          // TODO: Untested, nothing uses this yet
-          graph.transform(projectPath, function(g) {
-            var index = g.findIndex(nodeInfo => nodeInfo.id == event.data.id);
-            for (var key in event.data.fields) {
-              g[index][key] = data[key];
-            }
+      case 'set':
+        // TODO: Untested, nothing uses this yet
+        graph.transform(projectPath, function(g) {
+          const index = g.findIndex(nodeInfo => nodeInfo.id == event.data.id);
+          for (const key in event.data.fields) {
+            g[index][key] = event.data.fields[key];
+          }
+        },
+        function(err) {
+          if (err) {
+            console.log(err);
+          }
+        });
+        break;
 
-          },
-          function() {
-            if (err) {
-              console.log(err);
-            }
-          });
-          break;
-
-        case 'generate':
-          generate.generate(projectPath, event.data.type, event.data.name);
-          break;
+      case 'generate':
+        generate.generate(projectPath, event.data.type, event.data.name);
+        break;
       }
     });
   });

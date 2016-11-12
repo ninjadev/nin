@@ -8,6 +8,7 @@
     "commander": "2.9.0",
     "concat-files": "0.1.0",
     "crc": "3.4.0",
+    "eslint": "3.10.0",
     "express": "4.13.4",
     "fluent-ffmpeg": "2.0.1",
     "glob": "7.0.3",
@@ -18,8 +19,9 @@
     "walk": "2.3.9"
   },
   "scripts": {
-    "npm_prepublish": "sed -i.bak s/'var publishing = false;'/'var publishing = true;'/g serve.js && make bundle-deps",
-    "npm_postpublish": "sed -i.bak s/'var publishing = true;'/'var publishing = false;'/g serve.js"
+    "lint": "eslint *.js",
+    "npm_prepublish": "sed -i.bak s/'const publishing = false;'/'const publishing = true;'/g serve.js && make bundle-deps",
+    "npm_postpublish": "sed -i.bak s/'const publishing = true;'/'const publishing = false;'/g serve.js"
   },
   "bin": {
     "nin": "./nin"

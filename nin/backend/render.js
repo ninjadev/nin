@@ -1,14 +1,14 @@
-var path = require('path');
-var projectSettings = require('./projectSettings');
-var ffmpeg = require('fluent-ffmpeg');
+let path = require('path');
+let projectSettings = require('./projectSettings');
+let ffmpeg = require('fluent-ffmpeg');
 
 
-var render = function(projectPath) {
+let render = function(projectPath) {
   console.time('Total execution time');
 
-  var pngPath = path.join(projectPath, '/bin/render/%07d.png');
-  var musicPath = path.join(projectPath, projectSettings.load(projectPath).music.path);
-  var destination = path.join(projectPath, '/bin/render/render.mp4');
+  let pngPath = path.join(projectPath, '/bin/render/%07d.png');
+  let musicPath = path.join(projectPath, projectSettings.load(projectPath).music.path);
+  let destination = path.join(projectPath, '/bin/render/render.mp4');
 
   ffmpeg()
     .addInput(pngPath)
@@ -29,7 +29,7 @@ var render = function(projectPath) {
     .on('progress', function(progress) {
       console.log('Processing: ' + progress.percent.toFixed(2) + '% done');
     })
-    .on('error', function(err, stdout, stderr) {
+    .on('error', function(err) {
       console.log('Cannot process video: ' + err.message);
     })
     .on('end', function() {

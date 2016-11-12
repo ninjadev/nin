@@ -18,12 +18,7 @@
     "sockjs": "0.3.16",
     "walk": "2.3.9"
   },
-  "scripts": {
-    "lint": "eslint *.js",
-    "npm_prepublish": "sed -i.bak s/'const publishing = false;'/'const publishing = true;'/g serve.js && make bundle-deps",
-    "npm_postpublish": "sed -i.bak s/'const publishing = true;'/'const publishing = false;'/g serve.js"
-  },
   "bin": {
-    "nin": "./nin"
+    "nin": "./backend/nin"
   }
 }

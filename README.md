@@ -53,7 +53,7 @@ If you already have npm installed you can bootstrap to yarn by running `npm inst
 Install webpack by running `npm install -g webpack`.
 
 Running `make` in the nin folder will build and compile the entire project.
-Running `sudo make link-nin` will add nin to /usr/bin, making it available globally.
+Running `npm link` will add nin to your node binaries path, making it available globally.
 
 You must have java installed for the `nin compile` command to work.
 
@@ -131,7 +131,6 @@ See [the wiki page](https://github.com/ninjadev/nin/wiki/Camera-Controller) for 
 ## Publishing nin
 
 To publish nin type the command `make publish`.
-This will run a prepublish command, and a postpublish command that modifies the project to be usable as a command line tool.
 To be able to publish you need access to the `ninjadev` user on npm whose password will be given through secure channels.
 
 ## List of known nin projects

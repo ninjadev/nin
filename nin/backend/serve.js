@@ -10,17 +10,13 @@ let readDir = require('readdir');
 let socket = require('./socket');
 let watch = require('./watch');
 
-const publishing = false;
+const serve = function(projectPath, shouldRunHeadlessly) {
 
-let serve = function(projectPath, shouldRunHeadlessly) {
-
-  let genPath = p.join(projectPath, '/gen/');
+  const genPath = p.join(projectPath, 'gen');
   mkdirp.sync(genPath);
 
-  const dasBootPostfix = publishing ? '/dasBoot/' : '/../dasBoot/';
-  const dasBootSourceDirectoryPath = p.join(__dirname, dasBootPostfix);
-
-  let dasBootLibSourceFilePaths = readDir.readSync(
+  const dasBootSourceDirectoryPath = p.join(__dirname, '../dasBoot');
+  const dasBootLibSourceFilePaths = readDir.readSync(
     dasBootSourceDirectoryPath,
     ['lib/*.js'],
     readDir.ABSOLUTE_PATHS
@@ -31,7 +27,7 @@ let serve = function(projectPath, shouldRunHeadlessly) {
     readDir.ABSOLUTE_PATHS
   ).sort();
 
-  let dasBootDestinationFilePath = p.join(projectPath, '/gen/dasBoot.js');
+  const dasBootDestinationFilePath = p.join(projectPath, 'gen/dasBoot.js');
   concat(dasBootLibSourceFilePaths.concat(dasBootSourceFilePaths),
          dasBootDestinationFilePath, function() {
     /* eslint-disable */
@@ -39,8 +35,7 @@ let serve = function(projectPath, shouldRunHeadlessly) {
 
     if(!shouldRunHeadlessly) {
       var frontend = express();
-      var frontendPostfix = publishing ? '/frontend/' : '/../frontend/dist/';
-      frontend.use(express.static(__dirname + frontendPostfix));
+      frontend.use(express.static(p.join(__dirname, '../frontend/dist')));
       frontend.listen(8000);
     }
 

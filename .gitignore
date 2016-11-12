@@ -50,5 +50,3 @@ dist/
 
 # files from publish
 *.bak
-nin/backend/frontend
-nin/backend/dasBoot

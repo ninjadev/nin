@@ -1,5 +1,9 @@
 function errorExcerpt($sce) {
   return function(error, fileCache) {
+    if (fileCache === undefined || !error.path in fileCache) {
+      return;
+    }
+
     var lines = fileCache[error.path].split('\n');
     var coordinates = error.stack.split('\n')[1].trim().replace(/.*:(\d+:\d+)\)/, '$1').split(':');
     var lineNumber = +coordinates[0];

@@ -126,6 +126,9 @@ function graphEditor($window, $timeout, demo, socket) {
 
         for (let nodeInfo of $scope.graph) {
           var node = demo.nm.nodes[nodeInfo.id];
+          if (node === undefined) {
+            throw `NodeManager has no node with ID '${nodeInfo.id}'`;
+          }
 
           var outputOrdering = Object.keys(node.outputs).sort();
           outputOrdering.reverse();

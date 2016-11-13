@@ -1,7 +1,7 @@
 .PHONY: all
 all:
 	yarn install
-	cd frontend && make
+	cd nin/frontend && make
 
 .PHONY: publish
 publish: all

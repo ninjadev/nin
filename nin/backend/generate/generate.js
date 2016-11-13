@@ -1,22 +1,22 @@
-var fs = require('fs'),
-    path = require('path'),
-    utils = require('../utils'),
-    graph = require('../graph'),
-    mkdirp = require('mkdirp');
+const fs = require('fs');
+const path = require('path');
+const utils = require('../utils');
+const graph = require('../graph');
+const mkdirp = require('mkdirp');
 
-var generate = function(projectRoot, type, name, options) {
+const generate = function(projectRoot, type, name, options) {
   if (type == '' || name == '') {
     return;
   }
 
-  var camelizedName = utils.camelize(name);
+  const camelizedName = utils.camelize(name);
 
   switch (type) {
     case 'node':
       generateLayer(camelizedName,
-          'TemplateNode.js',
-          [[/TemplateNode/g, camelizedName]],
-          projectRoot);
+        'TemplateNode.js',
+        [[/TemplateNode/g, camelizedName]],
+        projectRoot);
 
       graph.transform(projectRoot, function(g) {
         g.push(Object.assign({
@@ -36,14 +36,14 @@ var generate = function(projectRoot, type, name, options) {
       generateShader(camelizedName, projectRoot);
       break;
 
-    case 'shaderWithLayer':
-      var shaderLayerName = camelizedName + 'Layer';
+    case 'shaderWithLayer': {
+      const shaderLayerName = camelizedName + 'Layer';
 
       generateShader(camelizedName, projectRoot);
       generateLayer(shaderLayerName, 'TemplateShaderLayer.js',
-          [[/TemplateLayer/g, shaderLayerName],
-           [/TemplateShader/g, camelizedName]],
-          projectRoot);
+        [[/TemplateLayer/g, shaderLayerName],
+          [/TemplateShader/g, camelizedName]],
+        projectRoot);
 
       layers.add(projectRoot, {
         displayName: name,
@@ -57,29 +57,30 @@ var generate = function(projectRoot, type, name, options) {
         }
       });
       break;
+    }
 
     default:
       process.stderr.write('Attempted to generate resource without generator:', type, '\n');
   }
 };
 
-var generateShader = function(shaderName, projectRoot) {
-  var targetShaderPath = path.join(projectRoot, 'src', 'shaders', shaderName),
-      templateShaderPath = path.join(__dirname, 'templateShader');
+const generateShader = function(shaderName, projectRoot) {
+  const targetShaderPath = path.join(projectRoot, 'src', 'shaders', shaderName),
+    templateShaderPath = path.join(__dirname, 'templateShader');
 
   mkdirp.sync(targetShaderPath);
   fs.readdirSync(templateShaderPath).forEach(function (fileName) {
-    var from = path.join(templateShaderPath, fileName),
-        to = path.join(targetShaderPath, fileName);
+    const from = path.join(templateShaderPath, fileName),
+      to = path.join(targetShaderPath, fileName);
     fs.createReadStream(from).pipe(fs.createWriteStream(to));
   });
 
   process.stdout.write('Generated shader ' + shaderName + '\n');
 };
 
-var generateLayer = function(layerName, templateFile, filters, projectRoot) {
-  var layerFileName = layerName + '.js';
-  var newLayer = path.join(projectRoot, 'src', layerFileName);
+const generateLayer = function(layerName, templateFile, filters, projectRoot) {
+  const layerFileName = layerName + '.js';
+  const newLayer = path.join(projectRoot, 'src', layerFileName);
 
   mkdirp.sync(path.join(projectRoot, 'src'));
   if (fs.existsSync(newLayer)) {
@@ -88,9 +89,9 @@ var generateLayer = function(layerName, templateFile, filters, projectRoot) {
   }
 
   templateFile = path.join(__dirname, templateFile);
-  var templateLayer = fs.readFileSync(templateFile, 'utf-8');
+  let templateLayer = fs.readFileSync(templateFile, 'utf-8');
 
-  for (var i=0; i<filters.length; i++) {
+  for (let i=0; i<filters.length; i++) {
     templateLayer = templateLayer.replace(filters[i][0], filters[i][1]);
   }
 
@@ -99,4 +100,4 @@ var generateLayer = function(layerName, templateFile, filters, projectRoot) {
   process.stdout.write('Generated layer ' + layerFileName + '\n');
 };
 
-module.exports = {generate: generate};
+module.exports = {generate};

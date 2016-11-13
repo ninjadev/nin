@@ -1,52 +1,52 @@
-var chalk = require('chalk');
-var compress = require('./compress').compress;
-var exec = require('child_process').exec;
-var execSync = require('child_process').execSync;
-var fs = require('fs');
-var mkdirp = require('mkdirp');
-var p = require('path');
-var projectSettings = require('./projectSettings');
-var rmdir = require('rimraf');
-var shaderGen = require('./shadergen').shaderGen;
-var utils = require('./utils');
-var walk = require('walk');
+const chalk = require('chalk');
+const compress = require('./compress').compress;
+const exec = require('child_process').exec;
+const execSync = require('child_process').execSync;
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+const p = require('path');
+const projectSettings = require('./projectSettings');
+const rmdir = require('rimraf');
+const shaderGen = require('./shadergen').shaderGen;
+const utils = require('./utils');
+const walk = require('walk');
 
 
 function moveCursorToColumn(col) {
-  return '\033[' + col + 'G';
+  return '\x1B[' + col + 'G';
 }
 
 function renderOK() {
-    console.log(moveCursorToColumn(72) +
-                chalk.grey('[') + chalk.green('OK') + chalk.grey(']'));
+  console.log(moveCursorToColumn(72) +
+    chalk.grey('[') + chalk.green('OK') + chalk.grey(']'));
 }
 
 function renderWarn() {
-    console.log(moveCursorToColumn(70) +
-                chalk.grey('[') + chalk.yellow('WARN') + chalk.grey(']'));
+  console.log(moveCursorToColumn(70) +
+    chalk.grey('[') + chalk.yellow('WARN') + chalk.grey(']'));
 }
 
 function renderError() {
-    console.log(moveCursorToColumn(69) +
-                chalk.grey('[') + chalk.red('ERROR') + chalk.grey(']'));
+  console.log(moveCursorToColumn(69) +
+    chalk.grey('[') + chalk.red('ERROR') + chalk.grey(']'));
 }
 
 function res(projectPath, callback) {
-  var walker = walk.walk(projectPath + '/res/' , {followLinks: false});
-  var files = [];
+  const walker = walk.walk(projectPath + '/res/' , {followLinks: false});
+  const files = [];
   console.log(chalk.yellow('\nCollecting files from res/'));
   walker.on('file', function(root, stat, next) {
 
     /* hacks to ensure slashes in path are correct.
      * TODO: is there a bug in walker that causes
      * these things to happen?  */
-    root += '/'
+    root += '/';
     root = root.replace(/\/\//g, '/');
 
-    var file = fs.readFileSync(root + stat.name);
+    const file = fs.readFileSync(root + stat.name);
     process.stdout.write('- Assimilating ' + chalk.grey('res/') + chalk.magenta(stat.name));
     files.push('FILES[\'' + root.slice(projectPath.length + 1) + stat.name + '\']=\'' +
-               file.toString('base64') + '\'');
+      file.toString('base64') + '\'');
     renderOK();
     next();
   });
@@ -57,22 +57,22 @@ function res(projectPath, callback) {
   });
 }
 
-var compile = function(projectPath, options) {
+const compile = function(projectPath, options) {
   function collect(data) {
     function writeDemoToFile(data, filename) {
-      var binPath = p.join(projectPath, '/bin/');
+      const binPath = p.join(projectPath, '/bin/');
       mkdirp(binPath, function() {
         fs.writeFileSync(projectPath + '/bin/' + filename, data);
       });
     }
 
-    var settings = projectSettings.load(projectPath);
-    var projectVersion = execSync('git rev-parse HEAD');
-    var projectOrigin = execSync('git config --get remote.origin.url');
-    var NINVersion = execSync(`cd ${__dirname} && git rev-parse HEAD`);
-    var NINOrigin = execSync(`cd ${__dirname} && git config --get remote.origin.url`);
+    const settings = projectSettings.load(projectPath);
+    const projectVersion = execSync('git rev-parse HEAD');
+    const projectOrigin = execSync('git config --get remote.origin.url');
+    const NINVersion = execSync(`cd ${__dirname} && git rev-parse HEAD`);
+    const NINOrigin = execSync(`cd ${__dirname} && git config --get remote.origin.url`);
 
-    var metadata = {
+    const metadata = {
       'Title': settings.title,
       'Author': settings.authors.join(', '),
       'Description': settings.description,
@@ -82,26 +82,26 @@ var compile = function(projectPath, options) {
     };
 
     const metadataAsHTMLComments = Object.keys(metadata)
-        .map(key => `<!-- ${key}: ${metadata[key]} -->`)
-        .join('\n');
+      .map(key => `<!-- ${key}: ${metadata[key]} -->`)
+      .join('\n');
 
     const ogTags =
-`<meta property="og:title" content="${utils.unsafeHTMLEscape(metadata.Title)}" />
-<meta property="og:description" content="${utils.unsafeHTMLEscape(metadata.Description)}" />
-<meta property="og:image" content="${metadata.previewImage}" />
-<meta name="author" content="${utils.unsafeHTMLEscape(metadata.Author)}" />`;
+      `<meta property="og:title" content="${utils.unsafeHTMLEscape(metadata.Title)}" />
+      <meta property="og:description" content="${utils.unsafeHTMLEscape(metadata.Description)}" />
+      <meta property="og:image" content="${metadata.previewImage}" />
+      <meta name="author" content="${utils.unsafeHTMLEscape(metadata.Author)}" />`;
 
     const htmlPreamble =
       fs.readFileSync(projectPath + '/index.html', {encoding: 'utf8'})
-        .replace(
-          "NIN_WILL_REPLACE_THIS_TAG_WITH_YOUR_ANALYTICS_ID",
-          settings.googleAnalyticsID)
-        .replace(
-          "NIN_WILL_REPLACE_THIS_TAG_WITH_AUTOGENERATED_COMMENT_TAGS",
-          metadataAsHTMLComments)
-        .replace(
-            "NIN_WILL_REPLACE_THIS_TAG_WITH_AUTOGENERATED_META_TAGS",
-            ogTags);
+      .replace(
+        'NIN_WILL_REPLACE_THIS_TAG_WITH_YOUR_ANALYTICS_ID',
+        settings.googleAnalyticsID)
+      .replace(
+        'NIN_WILL_REPLACE_THIS_TAG_WITH_AUTOGENERATED_COMMENT_TAGS',
+        metadataAsHTMLComments)
+      .replace(
+        'NIN_WILL_REPLACE_THIS_TAG_WITH_AUTOGENERATED_META_TAGS',
+        ogTags);
 
     if(options.pngCompress) {
       process.stdout.write(chalk.yellow('\nCompressing demo to .png.html'));
@@ -110,14 +110,14 @@ var compile = function(projectPath, options) {
         writeDemoToFile(data, 'demo.png.html');
         console.log(chalk.white('\n★ ---------------------------------------- ★'));
         console.log(chalk.white('| ') +
-                    chalk.green('Successfully compiled ') +
-                    chalk.grey('bin/') +
-                    chalk.green('demo.png.html!') +
-                    chalk.white(' |'));
+          chalk.green('Successfully compiled ') +
+            chalk.grey('bin/') +
+            chalk.green('demo.png.html!') +
+            chalk.white(' |'));
         console.log(chalk.white('★ ---------------------------------------- ★\n'));
       });
     } else {
-      var html =
+      const html =
         htmlPreamble +
         '<script>' +
         'GU=1;' + /* hack to make sure GU exisits from the get-go */
@@ -125,18 +125,18 @@ var compile = function(projectPath, options) {
         'BEAT=false;' +
         'FRAME_FOR_BEAN=function placeholder(){};' +
         'BEAN_FOR_FRAME=function placeholder(){};' +
-         data +
+        data +
         'var layers = JSON.parse(atob(FILES["res/layers.json"]));' +
         'demo=bootstrap({layers:layers, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +
         '</script>';
       writeDemoToFile(html, 'demo.html') +
-      process.stdout.write('Successfully compiled demo.html!\n');
+        process.stdout.write('Successfully compiled demo.html!\n');
     }
   }
   res(projectPath, function(data) {
-    var genPath = p.join(projectPath, '/gen/');
-    rmdir(genPath, function(error) {
-      mkdirp(genPath, function(error) {
+    const genPath = p.join(projectPath, '/gen/');
+    rmdir(genPath, function() {
+      mkdirp(genPath, function() {
         fs.writeFileSync(projectPath + '/gen/files.js', new Buffer(data));
         projectSettings.generate(projectPath);
         shaderGen(projectPath, function() {

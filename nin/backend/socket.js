@@ -37,24 +37,24 @@ function socket(projectPath, onConnectionCallback) {
     conn.on('data', function (message) {
       let event = JSON.parse(message);
       switch (event.type) {
-      case 'set':
-        // TODO: Untested, nothing uses this yet
-        graph.transform(projectPath, function(g) {
-          const index = g.findIndex(nodeInfo => nodeInfo.id == event.data.id);
-          for (const key in event.data.fields) {
-            g[index][key] = event.data.fields[key];
-          }
-        },
-        function(err) {
-          if (err) {
-            console.log(err);
-          }
-        });
-        break;
+        case 'set':
+          // TODO: Untested, nothing uses this yet
+          graph.transform(projectPath, function(g) {
+            const index = g.findIndex(nodeInfo => nodeInfo.id == event.data.id);
+            for (const key in event.data.fields) {
+              g[index][key] = event.data.fields[key];
+            }
+          },
+            function(err) {
+              if (err) {
+                console.log(err);
+              }
+            });
+          break;
 
-      case 'generate':
-        generate.generate(projectPath, event.data.type, event.data.name);
-        break;
+        case 'generate':
+          generate.generate(projectPath, event.data.type, event.data.name);
+          break;
       }
     });
   });

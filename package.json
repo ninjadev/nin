@@ -24,6 +24,9 @@
     "sockjs": "0.3.16",
     "walk": "2.3.9"
   },
+  "scripts": {
+    "lint": "eslint nin/backend/ || true"
+  },
   "bin": {
     "nin": "./nin/backend/nin"
   }

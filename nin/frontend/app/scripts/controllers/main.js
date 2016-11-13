@@ -50,12 +50,6 @@ class MainCtrl {
       }
     });
 
-    commands.on('volumeDelta', delta => {
-      this.mute = false;
-      this.volume = clamp(0, this.volume + delta, 1);
-      localStorage.setItem('nin-volume', this.volume);
-    });
-
     socket.onopen = function() {
       console.log('nin socket connection established', arguments);
     };

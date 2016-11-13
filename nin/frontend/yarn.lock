@@ -1942,6 +1942,10 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.3.6"
 
+keymage@1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/keymage/-/keymage-1.1.3.tgz#26c65b4f94ccedc04ae2940ff80cf52bafe7ee41"
+
 kind-of@^3.0.2:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.0.4.tgz#7b8ecf18a4e17f8269d73b501c9f232c96887a74"

@@ -19,8 +19,9 @@ program.Command.prototype.outputHelp = function() {
 program
   .command('init')
   .description('Turn the current directory into a nin project')
-  .action(function(options) {
-    init.init(process.cwd());
+  .arguments('<dirname>', 'Where to create the new project')
+  .action(function(dirname) {
+    init.init(dirname);
   });
 
 program

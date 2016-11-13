@@ -1,19 +1,28 @@
-let chalk = require('chalk');
-let child_process = require('child_process');
-let generate = require('./generate/generate');
-let path = require('path');
-let projectSettings = require('./projectSettings');
-let utils = require('./utils');
-let glob = require('glob');
+const chalk = require('chalk');
+const child_process = require('child_process');
+const fs = require('fs');
+const generate = require('./generate/generate');
+const glob = require('glob');
+const path = require('path');
+const projectSettings = require('./projectSettings');
 
 
-function init(projectPath) {
-  let root = utils.findProjectRoot(projectPath);
-  if(root) {
-    console.log(chalk.red('Error: this directory is already a nin project.'));
-    process.exit(1); 
+function init(dirname) {
+  const projectPath = path.join(process.cwd(), dirname);
+  try {
+    fs.mkdirSync(projectPath);
+  } catch (e) {
+    console.error(chalk.red(e));
+    process.exit(1);
   }
+  child_process.execSync(
+      `git init ${projectPath}`,
+      {stdio: 'inherit'});
+
   glob(path.join(__dirname, 'blank-project/*'), function(error, files) {
+    // As globs don't expand to include dotfiles,
+    // we need to add the .gitignore manually
+    files.push(path.join(__dirname, 'blank-project/.gitignore'));
     let numberOfRemainingFiles = files.length;
     function end() {
       if(--numberOfRemainingFiles == 0) {

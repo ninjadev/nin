@@ -32,7 +32,7 @@ function init(dirname) {
           }
         });
         projectSettings.init(projectPath);
-        console.log(chalk.green('This directory is now a nin project. Do'),
+        console.log(chalk.green(`${projectPath} is now a nin project. Run`),
                     chalk.cyan('nin run'),
                     chalk.green('to get started!'));
       }

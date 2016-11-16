@@ -19,10 +19,7 @@ function init(dirname) {
       `git init ${projectPath}`,
       {stdio: 'inherit'});
 
-  glob(path.join(__dirname, 'blank-project/*'), function(error, files) {
-    // As globs don't expand to include dotfiles,
-    // we need to add the .gitignore manually
-    files.push(path.join(__dirname, 'blank-project/.gitignore'));
+  glob(path.join(__dirname, 'blank-project/*'), {dot: true}, function(error, files) {
     let numberOfRemainingFiles = files.length;
     function end() {
       if(--numberOfRemainingFiles == 0) {
@@ -34,7 +31,7 @@ function init(dirname) {
         projectSettings.init(projectPath);
         console.log(chalk.green(`${projectPath} is now a nin project. Run`),
                     chalk.cyan('nin run'),
-                    chalk.green('to get started!'));
+                    chalk.green('inside to serve your project!'));
       }
     }
     files.map(function(file) {

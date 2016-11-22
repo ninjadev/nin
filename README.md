@@ -9,13 +9,17 @@ nin is Ninjadev's internal demo tool. It is a tool for easing development of bro
 This project has a node backend that keeps track of all files and compiles files as they are edited.
 The frontend of this project is written in Angular and displays among other the layers that the demo consists of.
 
+# User manual
+
 ## Installing nin
 
 To install nin simply run the command `npm install -g ninjadev-nin`.
-
-## Requirements
-
 This projects requires node version `7.1.0` or newer.
+
+## Getting started
+
+Running `nin new <dirname>` will create the specified directory and initialize a new nin project inside.
+Running `nin run` inside the newly created project will make it accessible on http://localhost:8000.
 
 ## nin is now node-based!
 
@@ -24,15 +28,16 @@ Here is a list of gotchas to watch out for if you are used to layer-based nin:
 
 - Changing res/graph.json does *not* trigger updates in a running nin instance.
 
-## How it works
-Create a new project with a structure like the one seen in the directory `example-project`.
-It may be stored anywhere on your disk.
-In the root folder of your project, execute `nin run`, and visit http://localhost:8000 in your browser to use nin.
+## Compiling
+The `nin compile` command will create a single file `bin/demo.png.html` that contains all the code and resources of your demo.
+Base64 and PNG compression magic is used to achieve this.
+To compile without PNG compression, use `nin compile --no-png-compression`.
+That will yield a slightly larger file, but more browsers will be able to run it.
 
-### Compiling
-The `nin compile` command will create a single file `bin/demo.png.html` that contains all the code and resources of your demo. Base64 and PNG compression magic is used to achieve this. To compile without PNG compression, use `nin compile --no-png-compression`. That will yield a slightly larger file, but more browsers will be able to run it.
+You must have java installed for the `nin compile` command to work.
 
-### Rendering to video
+## Rendering to video
+
 1. `nin run`.
 1. Open nin in your browser, navigate to the frame you want to render from, and press R. This will start dumping single frames as numbered .PNGs in `bin/render/`  in your project folder.
 1. Refresh etc every time WebGL crashes.
@@ -42,10 +47,9 @@ The `nin compile` command will create a single file `bin/demo.png.html` that con
 Each frame will take up to around 4MB on disk, and the finished .mp4 will be on the order of 1GB when rendered, so make sure you have enough disk space.
 Expect to render maybe a frame or two per second.
 
-### Start screen
-In the compiled result, you can have a start screen that is shown while the demo is being loaded. When compiling, nin will look for an `index.html` file in the root folder of your demo, and use that as start screen. JavaScript functions `ONPROGRESS` and `ONCOMPLETE` should be implemented in `index.html`. After `ONCOMPLETE` is called, `demo.start()` may be called. `index.html` should not include `</body>` or `</html>`.
+# Developer manual
 
-## Development Setup
+## Setup
 
 You will need to have node, yarn and webpack installed.
 Yarn installation guide is available [here](https://yarnpkg.com/en/docs/install).
@@ -55,13 +59,11 @@ Install webpack by running `npm install -g webpack`.
 Running `make` in the nin folder will build and compile the entire project.
 Running `npm link` will add nin to your node binaries path, making it available globally.
 
-You must have java installed for the `nin compile` command to work.
+# Developing
 
-## Developing
-
-When developing on nin, it can be useful to run the backend and frontend separately.
-Instead of executing `nin run` in your project folder, run `nin headless` which will start the backend as usual, but without a frontend connected.
-This allows you to serve a development version of the frontend by running `grunt serve` in the frontend folder.
+First, run `nin run` inside your project.
+If you wish to develop on the frontend, running `make run` inside `nin/frontend/` makes webpack rebuild the frontend on file change.
+You only need to rerun `nin run` if you change files in either `nin/dasBoot` or `nin/backend`.
 
 ## Linting
 

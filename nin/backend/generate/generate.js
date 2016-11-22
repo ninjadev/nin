@@ -27,7 +27,7 @@ const generate = function(projectRoot, type, name, options) {
         if (err) {
           console.error(err);
         } else {
-          console.log('Added ' + name + ' to graph.json');
+          console.log(`-> added ${name} to graph.json`);
         }
       });
       break;
@@ -53,7 +53,7 @@ const generate = function(projectRoot, type, name, options) {
         if (err) {
           console.error(err);
         } else {
-          console.log('Added ' + shaderLayerName + ' to layers.json');
+          console.log(`-> added ${shaderLayerName} to layers.json`);
         }
       });
       break;
@@ -75,7 +75,7 @@ const generateShader = function(shaderName, projectRoot) {
     fs.createReadStream(from).pipe(fs.createWriteStream(to));
   });
 
-  process.stdout.write('Generated shader ' + shaderName + '\n');
+  console.log(`-> added ${shaderName} to src`);
 };
 
 const generateLayer = function(layerName, templateFile, filters, projectRoot) {
@@ -96,8 +96,7 @@ const generateLayer = function(layerName, templateFile, filters, projectRoot) {
   }
 
   fs.writeFileSync(newLayer, templateLayer);
-
-  process.stdout.write('Generated layer ' + layerFileName + '\n');
+  console.log(`-> added ${layerFileName} to src`);
 };
 
 module.exports = {generate};

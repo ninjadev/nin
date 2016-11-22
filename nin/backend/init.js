@@ -1,19 +1,25 @@
-let chalk = require('chalk');
-let child_process = require('child_process');
-let generate = require('./generate/generate');
-let path = require('path');
-let projectSettings = require('./projectSettings');
-let utils = require('./utils');
-let glob = require('glob');
+const chalk = require('chalk');
+const child_process = require('child_process');
+const fs = require('fs');
+const generate = require('./generate/generate');
+const glob = require('glob');
+const path = require('path');
+const projectSettings = require('./projectSettings');
 
 
-function init(projectPath) {
-  let root = utils.findProjectRoot(projectPath);
-  if(root) {
-    console.log(chalk.red('Error: this directory is already a nin project.'));
-    process.exit(1); 
+function init(dirname) {
+  const projectPath = path.join(process.cwd(), dirname);
+  try {
+    fs.mkdirSync(projectPath);
+  } catch (e) {
+    console.error(chalk.red(e));
+    process.exit(1);
   }
-  glob(path.join(__dirname, 'blank-project/*'), function(error, files) {
+  child_process.execSync(
+      `git init ${projectPath}`,
+      {stdio: 'inherit'});
+
+  glob(path.join(__dirname, 'blank-project/*'), {dot: true}, function(error, files) {
     let numberOfRemainingFiles = files.length;
     function end() {
       if(--numberOfRemainingFiles == 0) {
@@ -23,9 +29,9 @@ function init(projectPath) {
           }
         });
         projectSettings.init(projectPath);
-        console.log(chalk.green('This directory is now a nin project. Do'),
+        console.log(chalk.green(`${projectPath} is now a nin project. Run`),
                     chalk.cyan('nin run'),
-                    chalk.green('to get started!'));
+                    chalk.green('inside to serve your project!'));
       }
     }
     files.map(function(file) {

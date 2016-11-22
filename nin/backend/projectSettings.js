@@ -1,6 +1,7 @@
-let fs = require('fs');
+const fs = require('fs');
+const p = require('path');
 
-let defaultSettings = {
+const defaultSettings = {
   title: 'My project',
   authors: ['Your demoscene handle'],
   description: 'This is my project',
@@ -15,13 +16,13 @@ let defaultSettings = {
 
 function init(projectPath) {
   fs.writeFileSync(
-    projectPath + '/nin.json',
+    p.join(projectPath, 'nin.json'),
     new Buffer(JSON.stringify(defaultSettings, null, '  '))
   );
 }
 
 function load(projectPath) {
-  let rawProjectSettings = fs.readFileSync(projectPath + '/nin.json', 'utf8');
+  let rawProjectSettings = fs.readFileSync(p.join(projectPath, 'nin.json'), 'utf8');
   let projectSettings = JSON.parse(rawProjectSettings);
   return traverse(projectSettings, defaultSettings);
 }
@@ -29,7 +30,7 @@ function load(projectPath) {
 function write(projectPath, parsedProjectSettings) {
   let projectSettingsFile = 'var PROJECT = ' + JSON.stringify(parsedProjectSettings) + ';';
   fs.writeFileSync(
-    projectPath + '/gen/projectSettings.js',
+    p.join(projectPath, 'gen/projectSettings.js'),
     new Buffer(projectSettingsFile)
   );
 }

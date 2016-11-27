@@ -195,7 +195,9 @@ function menubar($window, commands, ninrc) {
     link: function($scope, element, attrs) {
       menu.forEach(category => {
         category.items.forEach(item => {
-          item.keybind = ninrc.keybinds[item.action] || item.defaultKeybind;
+          item.keybind =
+            ninrc.keybinds && ninrc.keybinds[item.action]
+            || item.defaultKeybind;
           if (item.keybind) {
             keymage(item.keybind, item.invoke);
           }

@@ -19,11 +19,11 @@
         class=menu-item
         ng-class="{'separator-item': item.name == '-'}"
         ng-repeat="item in menuGroup.items"
-        ng-click=item.click()
+        ng-click=item.invoke()
         >
         <div ng-show="item.name != '-'">
           {{ item.name }}
-          <span class=shortcut>{{ item.shortcut }}</span>
+          <span class=shortcut>{{ item.keybind }}</span>
         </div>
         <div
           class=separator

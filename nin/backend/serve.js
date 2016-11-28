@@ -9,6 +9,8 @@ let projectSettings = require('./projectSettings');
 let readDir = require('readdir');
 let socket = require('./socket');
 let watch = require('./watch');
+const os = require('os');
+const ini = require('ini');
 
 const serve = function(projectPath, shouldRunHeadlessly) {
 
@@ -36,6 +38,20 @@ const serve = function(projectPath, shouldRunHeadlessly) {
     if(!shouldRunHeadlessly) {
       var frontend = express();
       frontend.use(express.static(p.join(__dirname, '../frontend/dist')));
+      frontend.get('/.ninrc', (req, res) => {
+        let content = {};
+        const ninrcpath = p.join(os.homedir(), '.ninrc');
+        if (fs.existsSync(ninrcpath)) {
+          try {
+            const rawContent = fs.readFileSync(ninrcpath, 'utf-8');
+            content = ini.parse(rawContent);
+          } catch (e) {
+            console.error('Error while reading .ninrc: ' + e);
+          }
+        }
+
+        res.send(JSON.stringify(content));
+      });
       frontend.listen(8000);
     }
 

@@ -6,6 +6,7 @@ const commands = require('./commands');
 const camera = require('./camera');
 const ScriptReloader = require('./ScriptReloader');
 const render = require('./render');
+const ninrc = require('./ninrc');
 
 module.exports = angular.module('nin.services', [])
                    .factory('socket', socket)
@@ -14,4 +15,5 @@ module.exports = angular.module('nin.services', [])
                    .service('ScriptReloader', ScriptReloader)
                    .service('commands', commands)
                    .service('render', render)
+                   .service('ninrc', ninrc)
                    .name;

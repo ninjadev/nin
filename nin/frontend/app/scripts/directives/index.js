@@ -2,7 +2,6 @@ const angular = require('angular');
 
 const demo = require('./demo');
 const graphEditor = require('./graphEditor');
-const keybinding = require('./keybinding');
 const waveform = require('./waveform');
 const menubar = require('./menubar');
 const dragresizable = require('./dragresizable');
@@ -13,7 +12,6 @@ const ngRightClick = require('./ngRightClick');
 module.exports = angular.module('nin.directives', [])
                    .directive('demo', demo)
                    .directive('graphEditor', graphEditor)
-                   .directive('keybinding', keybinding)
                    .directive('waveform', waveform)
                    .directive('menubar', menubar)
                    .directive('dragresizable', dragresizable)

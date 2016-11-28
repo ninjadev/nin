@@ -85,42 +85,20 @@ The only rules you need to oblige is that:
 - The uniform file needs to include `tDiffuse`
 - The vertex shader needs to pass on vUv (uv)
 
-# Keyboard shortcuts
+## .ninrc
 
-| key        | function                 |
-|------------|--------------------------|
-| space      | play/pause               |
-| m          | fullscreen               |
-| j          | toggle mute music        |
-| +/-        | volume up/down           |
-| g          | set/unset loop points    |
-| .          | skip one second ahead    |
-| ,          | skip one second back     |
-| L          | skip ten seconds ahead   |
-| K          | skip ten seconds back    |
-| return     | rewind to start of demo  |
-| >/:        | skip one frame ahead     |
-| </;        | skip one frame back      |
-| 1          | set playback rate to .25 |
-| 2          | set playback rate to .5  |
-| 3          | set playback rate to 1   |
-| 4          | set playback rate to 2   |
-| 5          | set playback rate to 4   |
+Many of nin's settings can be overriden by placing a .ninrc file in your home directory.
+Currently, keyboard shortcuts is the only behavior which can be changed in the .ninrc.
+The list of canonical names for keybindings can be found in
+[nin/frontend/app/scripts/directives/menubar.js](https://github.com/ninjadev/nin/blob/master/nin/frontend/app/scripts/directives/menubar.js).
 
-## Camera controls
-See [the wiki page](https://github.com/ninjadev/nin/wiki/Camera-Controller) for more information on the Camera Controller.
+An example .ninrc looks like the following:
 
-| key       | function                      |
-|-----------|-------------------------------|
-| a/w/s/d   | camera horizontal position    |
-| arrows    | camera pitch/yaw              |
-| q/e       | camera roll                   |
-| r/f       | camera vertical position      |
-| x         | reset flight dynamics         |
-| c         | toggle fly around mode        |
-| z         | decrease camera zoom          |
-| Z         | increase camera zoom          |
-| mouse click on demo | lookat click target |
+```
+[keybinds]
+startRendering=left
+stopRendering=right
+```
 
 ## Testimonials / Reviews
 

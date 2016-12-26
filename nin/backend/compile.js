@@ -4,12 +4,16 @@ const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
 const fs = require('fs');
 const mkdirp = require('mkdirp');
+const OptiPng = require('optipng');
 const p = require('path');
 const projectSettings = require('./projectSettings');
 const rmdir = require('rimraf');
 const shaderGen = require('./shadergen').shaderGen;
+const stream = require('stream');
 const utils = require('./utils');
 const walk = require('walk');
+
+const pngOptimizer = new OptiPng(['-o7']);
 
 
 function moveCursorToColumn(col) {
@@ -45,10 +49,32 @@ function res(projectPath, callback) {
 
     const file = fs.readFileSync(root + stat.name);
     process.stdout.write('- Assimilating ' + chalk.grey('res/') + chalk.magenta(stat.name));
-    files.push('FILES[\'' + root.slice(projectPath.length + 1) + stat.name + '\']=\'' +
-      file.toString('base64') + '\'');
-    renderOK();
-    next();
+    function pushFinishedFile(file) {
+      files.push('FILES[\'' + root.slice(projectPath.length + 1) + stat.name + '\']=\'' +
+        file.toString('base64') + '\'');
+      renderOK();
+      next();
+    }
+    if(stat.name.slice(-4).toLowerCase() == '.png') {
+      const chunks = [];
+      const s = new stream.Readable();
+      s.push(file);
+      s.push(null);
+      s.pipe(pngOptimizer).on('data', data => {
+        chunks.push(data);
+      }).on('end', () => {
+        const newFile = Buffer.concat(chunks);
+        const percentage = (((file.length / newFile.length - 1) * 10000) | 0) / 100;
+        process.stdout.write(
+            `\n    OptiPng: saved ` +
+            chalk.cyan(`${(file.length - newFile.length) / 1024 | 0}KB`) + 
+            ' (' +
+            chalk.green(`${percentage}%`) + ' reduction)');
+        pushFinishedFile(newFile);
+      });
+    } else {
+      pushFinishedFile(file);
+    }
   });
   walker.on('end', function(){
     process.stdout.write(chalk.yellow('\nMerging assimilated files'));

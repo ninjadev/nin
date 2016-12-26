@@ -18,17 +18,17 @@ function moveCursorToColumn(col) {
 
 function renderOK() {
   console.log(moveCursorToColumn(72) +
-    chalk.grey('[') + chalk.green('OK') + chalk.grey(']'));
+    chalk.grey('[') + chalk.green('✔️ OK') + chalk.grey(']'));
 }
 
 function renderWarn() {
   console.log(moveCursorToColumn(70) +
-    chalk.grey('[') + chalk.yellow('WARN') + chalk.grey(']'));
+    chalk.grey('[') + chalk.yellow('⚠️ WARN') + chalk.grey(']'));
 }
 
 function renderError() {
   console.log(moveCursorToColumn(69) +
-    chalk.grey('[') + chalk.red('ERROR') + chalk.grey(']'));
+    chalk.grey('[') + chalk.red('❌ ERROR') + chalk.grey(']'));
 }
 
 function res(projectPath, callback) {

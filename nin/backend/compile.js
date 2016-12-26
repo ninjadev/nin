@@ -1,6 +1,7 @@
 const chalk = require('chalk');
+const glob = require('glob');
+const closureCompiler = require('google-closure-compiler-js');
 const compress = require('./compress').compress;
-const exec = require('child_process').exec;
 const execSync = require('child_process').execSync;
 const fs = require('fs');
 const mkdirp = require('mkdirp');
@@ -167,21 +168,30 @@ const compile = function(projectPath, options) {
         projectSettings.generate(projectPath);
         shaderGen(projectPath, function() {
           process.stdout.write(chalk.yellow('\nRunning closure compiler'));
-          exec('java -jar -Xmx2048m ' + __dirname + '/compiler.jar -O SIMPLE --language_in ECMASCRIPT6 --language_out=ES5 --logging_level INFO ' + __dirname + '/../dasBoot/lib/*.js ' + __dirname + '/../dasBoot/*.js ' + projectPath + '/lib/*.js ' + projectPath + '/gen/*.js ' + projectPath + '/src/*.js',
-            {encoding: 'binary', maxBuffer: 1024 * 1024 * 1024},
-            function(error, stdout, stderr) {
-              if(error) {
-                renderError();
-                console.error(error);
-                process.exit(1);
-              } else if(stderr) {
-                renderWarn();
-                console.error(stderr);
-              } else {
-                renderOK();
-              }
-              collect(stdout);
-            });
+          const globPaths = [
+            __dirname + '/../dasBoot/lib/*.js',
+            __dirname + '/../dasBoot/*.js',
+            projectPath + '/lib/*.js ',
+            projectPath + '/gen/*.js ',
+            projectPath + '/src/*.js',
+          ];
+          const jsCode = [].concat.apply(
+            [], globPaths.map(globPath => glob.sync(globPath)))
+            .map(filename => fs.readFileSync(filename, 'utf8'));
+          const out = closureCompiler.compile({
+            jsCode: jsCode
+          });
+          if(out.errors.length) {
+            renderError();
+            out.errors.map(console.error);
+            process.exit(1);
+          } else if(out.warnings.length) {
+            renderWarn();
+            out.warnings.map(console.error);
+          } else {
+            renderOK();
+          }
+          collect(out.compiledCode);
         });
       });
     });

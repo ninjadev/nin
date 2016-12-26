@@ -1,0 +1,2 @@
+generate/*
+!generate/generate.js

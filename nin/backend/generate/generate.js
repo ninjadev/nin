@@ -45,11 +45,8 @@ const generate = function(projectRoot, type, name, options) {
           [/TemplateShader/g, camelizedName]],
         projectRoot);
 
-      layers.add(projectRoot, {
-        displayName: name,
-        type: shaderLayerName,
-        color: 'pink'
-      }, function (err) {
+      // NOOP. Not yet implemented
+      graph.transform(projectRoot, graph => graph, function (err) {
         if (err) {
           console.error(err);
         } else {

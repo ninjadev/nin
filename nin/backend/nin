@@ -64,8 +64,8 @@ program
     generate.generate(projectRoot, resource, name);
   });
 
-program.parse(process.argv);
+const result = program.parse(process.argv);
 
-if(!process.argv.slice(2).length) {
+if(typeof result.args[0] != 'object') {
   program.outputHelp();
 }

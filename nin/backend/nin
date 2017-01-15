@@ -35,10 +35,10 @@ program
   });
 
 program
-  .command('run')
+  .command('run [port]')
   .description('Run the backend project')
-  .action(function() {
-    serve.serve(utils.findProjectRootOrExit(process.cwd()));
+  .action(function(port) {
+    serve.serve(utils.findProjectRootOrExit(process.cwd()), port);
   });
 
 program

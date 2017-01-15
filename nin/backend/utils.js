@@ -1,7 +1,26 @@
 const chalk = require('chalk');
 const fs = require('fs');
 const path = require('path');
+const ps = require('./projectSettings');
+const execSync = require('child_process').execSync;
+const ninPackageJson = require('../../package.json');
 
+function getProjectMetadata(projectPath) {
+  return {
+    projectSettings: ps.load(projectPath),
+    projectVersion: execSync('git rev-parse HEAD'),
+    projectOrigin: execSync('git config --get remote.origin.url'),
+  };
+}
+
+function getNinMetadata() {
+  return {
+    name: ninPackageJson.name,
+    version: ninPackageJson.version,
+    sha1: execSync(`cd ${__dirname} && git rev-parse HEAD`),
+    origin: execSync(`cd ${__dirname} && git config --get remote.origin.url`),
+  };
+}
 
 function findProjectRoot(currentPath) {
   let up = '';
@@ -73,5 +92,7 @@ module.exports = {
   camelize: camelize,
   mergeOptions: mergeOptions,
   colorizeCommanderHelpText: colorizeCommanderHelpText,
-  unsafeHTMLEscape: unsafeHTMLEscape
+  unsafeHTMLEscape: unsafeHTMLEscape,
+  getProjectMetadata,
+  getNinMetadata,
 };

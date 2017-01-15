@@ -1,5 +1,4 @@
 let bodyParser = require('body-parser');
-let chalk = require('chalk');
 let concat = require('concat-files');
 let express = require('express');
 let fs = require('fs');
@@ -9,6 +8,8 @@ let projectSettings = require('./projectSettings');
 let readDir = require('readdir');
 let socket = require('./socket');
 let watch = require('./watch');
+let utils = require('./utils');
+
 const os = require('os');
 const ini = require('ini');
 
@@ -142,7 +143,10 @@ const serve = function(
     mkdirp.sync(projectPath + '/bin/render/');
     files.listen(backendPort);
 
-    console.log(chalk.yellow(`Serving nin on http://localhost:${frontendPort}`));
+    const pm = utils.getProjectMetadata(projectPath);
+    const {name, version} = utils.getNinMetadata(projectPath);
+
+    console.log(`${name}@${version} serving ${pm.projectSettings.title} on port 8000`);
   });
 /* eslint-enable*/
 };

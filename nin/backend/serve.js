@@ -12,7 +12,7 @@ let watch = require('./watch');
 const os = require('os');
 const ini = require('ini');
 
-const serve = function(projectPath, shouldRunHeadlessly) {
+const serve = function(projectPath) {
 
   const genPath = p.join(projectPath, 'gen');
   mkdirp.sync(genPath);
@@ -35,25 +35,23 @@ const serve = function(projectPath, shouldRunHeadlessly) {
     /* eslint-disable */
     projectSettings.generate(projectPath);
 
-    if(!shouldRunHeadlessly) {
-      var frontend = express();
-      frontend.use(express.static(p.join(__dirname, '../frontend/dist')));
-      frontend.get('/.ninrc', (req, res) => {
-        let content = {};
-        const ninrcpath = p.join(os.homedir(), '.ninrc');
-        if (fs.existsSync(ninrcpath)) {
-          try {
-            const rawContent = fs.readFileSync(ninrcpath, 'utf-8');
-            content = ini.parse(rawContent);
-          } catch (e) {
-            console.error('Error while reading .ninrc: ' + e);
-          }
+    var frontend = express();
+    frontend.use(express.static(p.join(__dirname, '../frontend/dist')));
+    frontend.get('/.ninrc', (req, res) => {
+      let content = {};
+      const ninrcpath = p.join(os.homedir(), '.ninrc');
+      if (fs.existsSync(ninrcpath)) {
+        try {
+          const rawContent = fs.readFileSync(ninrcpath, 'utf-8');
+          content = ini.parse(rawContent);
+        } catch (e) {
+          console.error('Error while reading .ninrc: ' + e);
         }
+      }
 
-        res.send(JSON.stringify(content));
-      });
-      frontend.listen(8000);
-    }
+      res.send(JSON.stringify(content));
+    });
+    frontend.listen(8000);
 
     var eventFromPath = function(data) {
       var path = data.path;
@@ -138,11 +136,7 @@ const serve = function(projectPath, shouldRunHeadlessly) {
     mkdirp.sync(projectPath + '/bin/render/');
     files.listen(9000);
 
-    if(shouldRunHeadlessly) {
-      console.log('Running nin headlessly');
-    } else {
-      console.log(chalk.yellow('Serving nin on http://localhost:8000'));
-    }
+    console.log(chalk.yellow('Serving nin on http://localhost:8000'));
   });
 /* eslint-enable*/
 };

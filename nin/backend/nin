@@ -42,14 +42,6 @@ program
   });
 
 program
-  .command('headless')
-  .description('Run the backend project headlessly')
-  .action(function() {
-    var shouldRunHeadlessly = true;
-    serve.serve(utils.findProjectRootOrExit(process.cwd()), shouldRunHeadlessly);
-  });
-
-program
   .command('render')
   .description('Render recorded pngs to a video file')
   .action(function(project) {

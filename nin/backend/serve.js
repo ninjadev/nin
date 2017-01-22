@@ -12,8 +12,11 @@ let watch = require('./watch');
 const os = require('os');
 const ini = require('ini');
 
-const serve = function(projectPath) {
-
+const serve = function(
+    projectPath,
+    frontendPort=8000,
+    backendPort=9000) {
+  console.log(frontendPort, backendPort);
   const genPath = p.join(projectPath, 'gen');
   mkdirp.sync(genPath);
 
@@ -51,7 +54,7 @@ const serve = function(projectPath) {
 
       res.send(JSON.stringify(content));
     });
-    frontend.listen(8000);
+    frontend.listen(frontendPort);
 
     var eventFromPath = function(data) {
       var path = data.path;
@@ -134,9 +137,9 @@ const serve = function(projectPath) {
       res.end('OK');
     });
     mkdirp.sync(projectPath + '/bin/render/');
-    files.listen(9000);
+    files.listen(backendPort);
 
-    console.log(chalk.yellow('Serving nin on http://localhost:8000'));
+    console.log(chalk.yellow(`Serving nin on http://localhost:${frontendPort}`));
   });
 /* eslint-enable*/
 };

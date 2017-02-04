@@ -1,58 +1,50 @@
 #!/usr/bin/env node
 
-var program = require('commander');
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
 
-var compile  = require('./compile'),
-    serve    = require('./serve'),
-    render   = require('./render'),
-    generate = require('./generate/generate'),
-    utils    = require('./utils');
-var init     = require('./init');
+const compile = require('./compile');
+const generate = require('./generate/generate');
+const init = require('./init');
+const program = require('commander');
+const render = require('./render');
+const serve = require('./serve');
+const utils = require('./utils');
 
 program.Command.prototype._outputHelp = program.Command.prototype.outputHelp;
 program.Command.prototype.outputHelp = function() {
-    this._outputHelp(utils.colorizeCommanderHelpText);
+  return this._outputHelp(utils.colorizeCommanderHelpText);
 };
 
 program
   .command('new')
   .description('Turns <dirname> into a nin project')
   .arguments('<dirname>', 'Where to create the new project')
-  .action(function(dirname) {
-    init.init(dirname);
-  });
+  .action(dirname => init.init(dirname));
 
 program
   .command('compile')
   .description('Compile the nin project')
   .option('--no-png-compression', 'Do not use the .png.html compression trick')
-  .action(function(options){
-    compile.compile(utils.findProjectRootOrExit(process.cwd()), {
-        pngCompress: options.pngCompression
-    });
-  });
+  .action(options => compile.compile(utils.findProjectRootOrExit(process.cwd()), {
+    pngCompress: options.pngCompression
+  }));
 
 program
   .command('run [port]')
   .description('Run the backend project')
-  .action(function(port) {
-    serve.serve(utils.findProjectRootOrExit(process.cwd()), port);
-  });
+  .action(port => serve.serve(utils.findProjectRootOrExit(process.cwd()), port));
 
 program
   .command('render')
   .description('Render recorded pngs to a video file')
-  .action(function(project) {
-    render.render(utils.findProjectRootOrExit(process.cwd()));
-  });
+  .action(() => render.render(utils.findProjectRootOrExit(process.cwd())));
 
 program
   .command('generate [resource] [name]')
   .description('Generate resources')
-  .action(function(resource, name) {
-    var projectRoot = utils.findProjectRootOrExit(process.cwd());
+  .action((resource, name) => {
+    const projectRoot = utils.findProjectRootOrExit(process.cwd());
     generate.generate(projectRoot, resource, name);
   });
 

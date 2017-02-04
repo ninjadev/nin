@@ -16,7 +16,6 @@ const serve = function(
     projectPath,
     frontendPort=8000,
     backendPort=9000) {
-  console.log(frontendPort, backendPort);
   const genPath = p.join(projectPath, 'gen');
   mkdirp.sync(genPath);
 

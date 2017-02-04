@@ -8,12 +8,14 @@
     "bootstrap": "3.3.7",
     "jquery": "3.1.1",
     "jquery-ui": "1.12.1",
+    "keymage": "1.1.3",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "sockjs-client": "1.1.1",
     "svg-pan-zoom": "3.3.0",
     "svg.draggable.js": "2.2.1",
     "svg.js": "2.3.6",
-    "w2ui": "1.4.3",
-    "keymage": "1.1.3"
+    "w2ui": "1.4.3"
   },
   "devDependencies": {
     "babel-core": "6.13.2",

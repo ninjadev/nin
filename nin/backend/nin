@@ -58,6 +58,6 @@ program
 
 const result = program.parse(process.argv);
 
-if(typeof result.args[0] != 'object') {
+if(typeof result.args[result.args.length - 1] != 'object') {
   program.outputHelp();
 }

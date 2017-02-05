@@ -1,16 +1,16 @@
-let bodyParser = require('body-parser');
-let chalk = require('chalk');
-let concat = require('concat-files');
-let express = require('express');
-let fs = require('fs');
-let mkdirp = require('mkdirp');
-let p = require('path');
-let projectSettings = require('./projectSettings');
-let readDir = require('readdir');
-let socket = require('./socket');
-let watch = require('./watch');
-const os = require('os');
+const bodyParser = require('body-parser');
+const concat = require('concat-files');
+const express = require('express');
+const fs = require('fs');
 const ini = require('ini');
+const mkdirp = require('mkdirp');
+const os = require('os');
+const p = require('path');
+const projectSettings = require('./projectSettings');
+const readDir = require('readdir');
+const socket = require('./socket');
+const utils = require('./utils');
+const watch = require('./watch');
 
 const serve = function(
     projectPath,
@@ -37,7 +37,7 @@ const serve = function(
     /* eslint-disable */
     projectSettings.generate(projectPath);
 
-    var frontend = express();
+    const frontend = express();
     frontend.use(express.static(p.join(__dirname, '../frontend/dist')));
     frontend.get('/.ninrc', (req, res) => {
       let content = {};
@@ -55,12 +55,12 @@ const serve = function(
     });
     frontend.listen(frontendPort);
 
-    var eventFromPath = function(data) {
-      var path = data.path;
-      var filename = p.basename(path);
-      var content = fs.readFileSync(p.join(projectPath, path), 'utf-8');
+    const eventFromPath = function(data) {
+      const path = data.path;
+      const filename = p.basename(path);
+      const content = fs.readFileSync(p.join(projectPath, path), 'utf-8');
 
-      var event = {
+      const event = {
         path: path
       };
 
@@ -83,7 +83,7 @@ const serve = function(
       return event;
     };
 
-    var watcher = watch(projectPath, function(event, data) {
+    const watcher = watch(projectPath, function(event, data) {
       if (event !== 'add' && event !== 'change') {
         return;
       }
@@ -91,13 +91,13 @@ const serve = function(
       sock.broadcast(event, eventFromPath(data));
     });
 
-    var sockets = express();
-    var sockets_server = require('http').createServer(sockets);
-    var sock = socket(projectPath, function(conn) {
-      var sortedPaths = watcher.paths.sort(function(a, b) {
-        var directoryPrecedence = {'lib': 0, 'src': 1, 'res': 2};
-        var directoryAScore = directoryPrecedence[a.slice(0, 3)];
-        var directoryBScore = directoryPrecedence[b.slice(0, 3)];
+    const sockets = express();
+    const sockets_server = require('http').createServer(sockets);
+    const sock = socket(projectPath, function(conn) {
+      const sortedPaths = watcher.paths.sort(function(a, b) {
+        const directoryPrecedence = {'lib': 0, 'src': 1, 'res': 2};
+        const directoryAScore = directoryPrecedence[a.slice(0, 3)];
+        const directoryBScore = directoryPrecedence[b.slice(0, 3)];
 
         if(directoryAScore == directoryBScore) {
           return a > b;
@@ -106,7 +106,7 @@ const serve = function(
         return directoryAScore > directoryBScore;
       });
 
-      for (var i in sortedPaths) {
+      for (const i in sortedPaths) {
         conn.send('add', eventFromPath({path: sortedPaths[i]}));
       }
     });
@@ -114,7 +114,7 @@ const serve = function(
     sock.server.installHandlers(sockets_server, {prefix: '/socket'});
     sockets_server.listen(1337, '0.0.0.0');
 
-    var files = express();
+    const files = express();
     files.use(function(req, res, next) {
       res.setHeader('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Headers',
@@ -124,13 +124,13 @@ const serve = function(
     files.use(express.static(projectPath));
     files.use(bodyParser.json({limit: '50mb'}));
     files.post('/', function(req, res){
-      var filename = '' + req.body.frame;
+      const filename = '' + req.body.frame;
       while(filename.length < 7) {
         filename = '0' + filename;
       }
       filename += '.png';
       console.log(filename);
-      var buffer = new Buffer(req.body.image.slice(22), 'base64');
+      const buffer = new Buffer(req.body.image.slice(22), 'base64');
       fs.writeFile(projectPath + '/bin/render/' + filename, buffer, err => {
         if (err) {
           console.error(err);
@@ -142,7 +142,10 @@ const serve = function(
     mkdirp.sync(projectPath + '/bin/render/');
     files.listen(backendPort);
 
-    console.log(chalk.yellow(`Serving nin on http://localhost:${frontendPort}`));
+    const pm = utils.getProjectMetadata(projectPath);
+    const {name, version} = utils.getNinMetadata(projectPath);
+
+    console.log(`${name}@${version} serving ${pm.projectSettings.title} on port 8000`);
   });
 /* eslint-enable*/
 };

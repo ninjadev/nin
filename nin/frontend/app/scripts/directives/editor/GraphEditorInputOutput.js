@@ -57,9 +57,6 @@ class GraphEditorInputOutput extends React.Component {
   render() {
     const preview = previews[this.props.item.constructor.name];
     const isConnected = !!(this.props.item.destination || this.props.item.source);
-    if(this.props.item.node.constructor.name == 'RootNode') {
-      console.log(this.props.item, isConnected);
-    }
     return e('g', {
       transform: `translate(${this.props.x}, ${this.props.y}) scale(${1 / this.props.scale})`
     },
@@ -77,7 +74,8 @@ class GraphEditorInputOutput extends React.Component {
         r: 5,
         fill: isConnected ? 'white' : 'transparent',
         stroke: 'white',
-        strokeWidth: 2
+        strokeWidth: 2,
+        onClick: event => {this.props.editor.startOrCompleteConnection(this.props.item);},
       }),
       this.props.scale > 1.5 ? e('text', {
         x: 0,

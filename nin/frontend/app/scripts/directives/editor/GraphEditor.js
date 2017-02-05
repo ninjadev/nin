@@ -10,7 +10,11 @@ class GraphEditor extends React.Component {
       scale: 1,
       x: 0,
       y: 0,
+      connectionStart: null,
+      connectionEnd: {},
     };
+
+    this.currentConnector = null;
 
     this.dragCoastSpeed = {
       x: 0,
@@ -24,10 +28,102 @@ class GraphEditor extends React.Component {
     this.lastDragEventTime = performance.now();
     this.pinchZoomDistance = 0;
     this.isMouseDragging = false;
+
+  }
+
+  startOrCompleteConnection(outputOrInput) {
+    if(this.state.connectionStart) {
+      this.completeConnection(outputOrInput);
+    } else {
+      this.startConnection(outputOrInput);
+    }
+  }
+
+  completeConnection(outputOrInput) {
+    let fromNode;
+    let fromNodeName;
+    let outputName;
+    let toNodeName;
+    let toNode;
+    let inputName;
+    for(let key in outputOrInput.node.outputs) {
+      if(outputOrInput == outputOrInput.node.outputs[key]) {
+        fromNode = outputOrInput.node;
+        outputName = key;
+        break;
+      }
+    }
+    for(let key in outputOrInput.node.inputs) {
+      if(outputOrInput == outputOrInput.node.inputs[key]) {
+        toNode = outputOrInput.node;
+        inputName = key;
+        break;
+      }
+    }
+    for(let key in this.currentConnector.node.outputs) {
+      if(this.currentConnector == this.currentConnector.node.outputs[key]) {
+        fromNode = this.currentConnector.node;
+        outputName = key;
+        break;
+      }
+    }
+    for(let key in this.currentConnector.node.inputs) {
+      if(this.currentConnector == this.currentConnector.node.inputs[key]) {
+        toNode = this.currentConnector.node;
+        inputName = key;
+      }
+    }
+    let fromNodeInfo;
+    for(let i = 0; i < this.props.graph.length; i++) {
+      let nodeInfo = this.props.graph[i]; 
+      if(this.props.nodes[nodeInfo.id] == fromNode) {
+        fromNodeName = nodeInfo.id;
+        fromNodeInfo = nodeInfo;
+      }
+      if(this.props.nodes[nodeInfo.id] == toNode) {
+        toNodeName = nodeInfo.id;
+      }
+    }
+    console.log('connect', fromNode, toNode, fromNodeName, outputName, toNodeName, inputName);
+    this.props.demo.nm.connect(fromNodeName, outputName, toNodeName, inputName);
+    fromNodeInfo.connectedTo[outputName] = `${toNodeName}.${inputName}`;
+    this.setState({
+      connectionStart: null,
+    });
+    this.currentConnector = null;
+    console.log('el completorama');
+  }
+
+  startConnection(outputOrInput) {
+    this.currentConnector = outputOrInput;
+    let coordinates;
+    for(let key in outputOrInput.node.outputs) {
+      if(outputOrInput == outputOrInput.node.outputs[key]) {
+        coordinates = GraphEditorNode.getCoordinatesForOutput(outputOrInput.node, key);
+        break;
+      }
+    }
+    for(let key in outputOrInput.node.inputs) {
+      if(outputOrInput == outputOrInput.node.inputs[key]) {
+        coordinates = GraphEditorNode.getCoordinatesForInput(outputOrInput.node, key);
+      }
+    }
+    let nodeInfo;
+    for(let i = 0; i < this.props.graph.length; i++) {
+      if(this.props.nodes[this.props.graph[i].id] == outputOrInput.node) {
+        nodeInfo = this.props.graph[i];
+        break;
+      }
+    }
+    this.setState({
+      connectionStart: {
+        x: nodeInfo.x + coordinates.x,
+        y: nodeInfo.y + coordinates.y,
+      }
+    });
   }
 
   removeConnection(output, input) {
-    console.log('yolo', output, input);
     const fromNodeName = output.split('.')[0];
     const outputName = output.split('.')[1];
     const toNodeName = input.split('.')[0];
@@ -106,16 +202,17 @@ class GraphEditor extends React.Component {
   }
 
   coastLoop() {
-    const friction = 1 - 0.015;
+    const friction = 0.015;
+    const deceleration = 9.81 * 39.37 * 160 * friction / 2000;
     if(this.isCoasting) {
       requestAnimationFrame(() => this.coastLoop());
     }
-    this.dragCoastSpeed.x *= friction;
-    this.dragCoastSpeed.y *= friction;
-    if(Math.abs(this.dragCoastSpeed.x) < 0.00001) {
+    this.dragCoastSpeed.x -= Math.sign(this.dragCoastSpeed.x) * deceleration;
+    this.dragCoastSpeed.y -= Math.sign(this.dragCoastSpeed.y) * deceleration;
+    if(Math.abs(this.dragCoastSpeed.x) <= deceleration) {
       this.dragCoastSpeed.x = 0;
     }
-    if(Math.abs(this.dragCoastSpeed.y) < 0.00001) {
+    if(Math.abs(this.dragCoastSpeed.y) <= deceleration) {
       this.dragCoastSpeed.y = 0;
     }
     if(this.dragCoastSpeed.x == 0 && this.dragCoastSpeed.y == 0) {
@@ -208,10 +305,17 @@ class GraphEditor extends React.Component {
         this.dragEnd(event.offsetX, event.offsetY);
       });
       this.container.addEventListener('mousemove', event => {
-        if(!this.isMouseDragging) {
-          return;
+        if(this.state.connectionStart) {
+          this.setState({
+            connectionEnd: {
+              x: event.offsetX - this.state.x,
+              y: event.offsetY - this.state.y,
+            }
+          });
         }
-        this.dragMove(event.offsetX, event.offsetY);
+        if(this.isMouseDragging) {
+          this.dragMove(event.offsetX, event.offsetY);
+        }
       });
     }, 1000);
   }
@@ -247,6 +351,7 @@ class GraphEditor extends React.Component {
         x: nodeInfo.x,
         y: nodeInfo.y,
         demo: this.props.demo,
+        editor: this,
       }));
 
     const connections = [];
@@ -276,6 +381,14 @@ class GraphEditor extends React.Component {
           key: `${nodeInfo.id}.${fromIOId}|${toNodeId}.${toIOId}`
         });
       }
+    }
+
+    if(this.state.connectionStart) {
+      connections.push({
+        from: this.state.connectionStart,
+        to: this.state.connectionEnd,
+        key: `temporary`
+      });
     }
 
     return e('div', {ref: ref => this.container = ref}, e('svg',

@@ -44,6 +44,9 @@ class Connection extends React.Component {
         stroke: 'white',
         strokeWidth: 5 / this.props.scale,
         fill: 'transparent',
+        style: {
+          pointerEvents: 'none',
+        }
       }),
       this.state.showDeleteButton ? e('circle', {
         className: 'delete-button',

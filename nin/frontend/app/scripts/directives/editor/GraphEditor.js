@@ -25,6 +25,68 @@ class GraphEditor extends React.Component {
     this.isMouseDragging = false;
   }
 
+  generateDepths() {
+    let deepestLevel = 0;
+    let depths = {};
+    let seen = new Set();
+
+    function recurse(level, currentNodes) {
+      let nextLevel = [];
+      deepestLevel = Math.max(deepestLevel, level);
+
+      for (let i = 0; i<currentNodes.length; i++) {
+        let node = currentNodes[i];
+        seen.add(node.id);
+        depths[node.id] = {
+          x: level,
+          y: i
+        };
+
+        for (let child in node.inputs) {
+          let source = node.inputs[child].source;
+          if (source && !seen.has(source.node.id)) {
+            seen.add(source.node.id);
+            nextLevel.push(source.node);
+          }
+        }
+      }
+
+      if (nextLevel.length) {
+        recurse(level + 1, nextLevel);
+      }
+    }
+
+    recurse(0, [this.props.nodes.root]);
+
+    let offset = 0;
+    for (let nodeId in this.props.nodes) {
+      if (depths[nodeId] === undefined) {
+        depths[nodeId] = {
+          x: deepestLevel + 1,
+          y: offset
+        };
+
+        offset += 1;
+      }
+    }
+    return depths;
+  }
+
+  reflowGraphLayout() {
+    let depths = this.generateDepths();
+    for(let i = 0; i < this.props.graph.length; i++) {
+      const id = this.props.graph[i].id;
+      this.props.graph[i].x = depths[id].x * -250;
+      this.props.graph[i].y = depths[id].y * -100;
+    }
+    this.forceUpdate();
+    console.log('reflowGraphLayout');
+  }
+
+  componentWillReceiveProps(nextProps) {
+    setTimeout(() => this.reflowGraphLayout(), 0);
+  }
+
   coastLoop() {
     const friction = 1 - 0.015;
     if(this.isCoasting) {
@@ -59,7 +121,6 @@ class GraphEditor extends React.Component {
   dragMove(x, y) {
     let xDelta = x - this.dragStartCoordinates.x;
     let yDelta = y - this.dragStartCoordinates.y;
-    console.log(xDelta, yDelta);
     this.setState({
       x: this.state.x + xDelta,
       y: this.state.y + yDelta,
@@ -168,11 +229,49 @@ class GraphEditor extends React.Component {
         x: nodeInfo.x,
         y: nodeInfo.y,
       }));
+
+    const connections = [];
+    for(let i = 0; i < this.props.graph.length; i++) {
+      let nodeInfo = this.props.graph[i];
+      for(let fromIOId in nodeInfo.connectedTo) {
+        let toNodeId = nodeInfo.connectedTo[fromIOId].split('.')[0];
+        let toIOId = nodeInfo.connectedTo[fromIOId].split('.')[1];
+        let outputCoordinates = GraphEditorNode.getCoordinatesForOutput(
+          this.props.nodes[nodeInfo.id].outputs[fromIOId].node, fromIOId);
+        let inputCoordinates = GraphEditorNode.getCoordinatesForInput(
+          this.props.nodes[toNodeId].inputs[toIOId].node, toIOId);
+        outputCoordinates.x += nodeInfo.x;
+        outputCoordinates.y += nodeInfo.y;
+        let toNodeInfo;
+        for(let j = 0; j < this.props.graph.length; j++) {
+          if(this.props.graph[j].id == toNodeId) {
+            toNodeInfo = this.props.graph[j];
+            break;
+          }
+        }
+        inputCoordinates.x += toNodeInfo.x;
+        inputCoordinates.y += toNodeInfo.y;
+        connections.push({
+          from: outputCoordinates,
+          to: inputCoordinates,
+          key: `${nodeInfo.id}.${fromIOId}:${toNodeId}.${toIOId}`
+        });
+      }
+    }
+
     return e('div', {ref: ref => this.container = ref}, e('svg',
       {height: 99999, width: 99999},
       e('g', {
         transform: `matrix(${this.state.scale},0,0,${this.state.scale},${this.state.x},${this.state.y})`,
-      }, graphEditorNodes)));
+      }, graphEditorNodes,
+      connections.map((connection, i) => e('path', {
+        d: `M${connection.from.x} ${connection.from.y} L ${connection.to.x} ${connection.to.y}`,
+        stroke: 'white',
+        strokeWidth: 5 / this.state.scale,
+        fill: 'transparent',
+        key: connection.key,
+      })),
+      )));
   }
 }
 

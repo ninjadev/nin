@@ -228,6 +228,7 @@ class GraphEditor extends React.Component {
         node: this.props.nodes[nodeInfo.id],
         x: nodeInfo.x,
         y: nodeInfo.y,
+        demo: this.props.demo,
       }));
 
     const connections = [];

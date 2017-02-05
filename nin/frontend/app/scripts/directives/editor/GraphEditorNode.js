@@ -65,6 +65,7 @@ class GraphEditorNode extends React.Component {
         key: key,
         id: key,
         scale: this.props.scale,
+        demo: this.props.demo,
       })),
       Object.keys(node.outputs).map((key, i) => e(GraphEditorInputOutput, {
         item: node.outputs[key],
@@ -73,6 +74,7 @@ class GraphEditorNode extends React.Component {
         key: key,
         id: key,
         scale: this.props.scale,
+        demo: this.props.demo,
       })),
       e('text', {
         className: 'name',

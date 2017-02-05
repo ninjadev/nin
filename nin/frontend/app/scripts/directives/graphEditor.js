@@ -14,7 +14,7 @@ function graphEditor($window, $timeout, demo, socket) {
     templateUrl: 'views/graph-editor.html',
     link: function($scope, element, attrs) {
       $scope.$watch('graph', () => {
-        const editor = e(GraphEditor, {graph: $scope.graph, nodes: demo.nm.nodes});
+        const editor = e(GraphEditor, {graph: $scope.graph, nodes: demo.nm.nodes, demo: demo});
         ReactDOM.render(editor, element[0]);
       });
     },

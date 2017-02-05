@@ -316,7 +316,9 @@ input[type=range]:focus::-ms-fill-upper {
 .top-menu {
     position: fixed;
     z-index: 99999999;
-    height: 34px;
+    height: 27px;
+    width: 100%;
+    background: rgba(89, 98, 103, 0.8);
 }
 
 body.fullscreen .top-menu {
@@ -496,7 +498,7 @@ body.fullscreen .top-menu {
 }
 
 .graph-editor {
-  margin: 30px 0px 0px;
+  margin: 0;
 
   svg {
     
@@ -534,4 +536,21 @@ body.fullscreen .top-menu {
       font-size: 8px;
     }
   }
+}
+
+table {
+  width: 100%;
+  max-width: 100%;
+
+  td {
+    padding: 5px;
+    vertical-align: top;
+  }
+  tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.monospaced {
+  font-family: monospace;
 }

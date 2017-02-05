@@ -1,4 +1,5 @@
 const GraphEditorNode = require('./GraphEditorNode');
+const Connection = require('./Connection');
 const React = require('react');
 const e = React.createElement;
 
@@ -265,20 +266,7 @@ class GraphEditor extends React.Component {
       e('g', {
         transform: `matrix(${this.state.scale},0,0,${this.state.scale},${this.state.x},${this.state.y})`,
       }, graphEditorNodes,
-      connections.map((connection, i) => {
-        const dX = connection.to.x - connection.from.x;
-        const dY = connection.to.y - connection.from.y;
-        const midX = connection.from.x + dX / 2;
-        const midY = connection.from.y + dY / 2;
-        const intensity = Math.abs(Math.cos(Math.atan(dX/dY)));
-        return e('path', {
-        d: `M${connection.from.x} ${connection.from.y} Q${connection.from.x + dX / 2 * intensity } ${connection.from.y} ${midX} ${midY} T${connection.to.x} ${connection.to.y}`,
-        stroke: 'white',
-        strokeWidth: 5 / this.state.scale,
-        fill: 'transparent',
-        key: connection.key,
-      });
-      }),
+      connections.map(connection => e(Connection, {connection, scale: this.state.scale, key: connection.key})),
       )));
   }
 }

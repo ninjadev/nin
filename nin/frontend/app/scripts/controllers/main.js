@@ -1,5 +1,5 @@
 class MainCtrl {
-  constructor(socket, demo, commands, $window, $timeout) {
+  constructor(socket, demo, commands, $window, $timeout, render) {
     this.themes = [
       'dark',
       'light'

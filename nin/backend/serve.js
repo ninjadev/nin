@@ -131,7 +131,11 @@ const serve = function(
       filename += '.png';
       console.log(filename);
       var buffer = new Buffer(req.body.image.slice(22), 'base64');
-      fs.writeFile(projectPath + '/bin/render/' + filename, buffer);
+      fs.writeFile(projectPath + '/bin/render/' + filename, buffer, err => {
+        if (err) {
+          console.error(err);
+        }
+      });
       res.writeHead(200);
       res.end('OK');
     });

@@ -3,17 +3,20 @@ class Render {
     this.currentFrame;
     this.currentlyRendering = false;
     this.currentTimeout;
+    this.$http = $http;
+    this.$timeout = $timeout;
 
-    commands.on('startRendering', function() {
+    const that = this;
+    commands.on('startRendering', () => {
       demo.resize(1920, 1080);
-      this.currentlyRendering = true;
-      this.render(demo.getCurrentFrame());
+      that.currentlyRendering = true;
+      that.render(demo.getCurrentFrame());
     });
 
-    commands.on('stopRendering', function() {
+    commands.on('stopRendering', () => {
       demo.resize();
-      this.currentlyRendering = false;
-      cancelTimeout(this.currentTimeout);
+      that.currentlyRendering = false;
+      $timeout.cancel(that.currentTimeout);
     });
   }
 
@@ -23,14 +26,14 @@ class Render {
     demo.jumpToFrame(i);
     var image = demo.renderer.domElement.toDataURL('image/png');
 
-    $http.post('http://localhost:9000/', {
+    this.$http.post('http://localhost:9000/', {
       type: 'render-frame',
       image: image,
       frame: i
     });
 
     if(this.currentlyRendering) {
-      this.currentTimeout = $timeout(function() {
+      this.currentTimeout = this.$timeout(() => {
         this.render(this.currentFrame + 1);
       }, 0);
     }

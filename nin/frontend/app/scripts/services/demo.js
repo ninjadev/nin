@@ -1,3 +1,6 @@
+const Stats = require('../../lib/stats.min.js');
+
+
 function demo(commands, $rootScope, $window) {
   var demo = bootstrap({
     rootPath: '//localhost:9000/',
@@ -8,9 +11,29 @@ function demo(commands, $rootScope, $window) {
   $rootScope.globalJSErrors = $rootScope.globalJSErrors || {};
   var originalLoop = demo.looper.loop;
   var forcedPause = false;
+  const stats = [];
+  const statsContainer = document.createElement('div');
+  document.body.appendChild(statsContainer);
+  statsContainer.style.position = 'fixed';
+  statsContainer.style.bottom = '80px';
+  statsContainer.style.right = '30px';
+  for(let i = 0; i < 3; i++) {
+    stats[i] = Stats();
+    stats[i].showPanel(2 - i);
+    statsContainer.appendChild(stats[i].dom);
+    stats[i].dom.style.position = 'static';
+    stats[i].dom.style.float = 'right';
+    stats[i].dom.style.display = 'block';
+  }
   demo.looper.loop = function() {
     try {
+      for(let i = 0; i < 3; i++) {
+        stats[i].begin();
+      }
       originalLoop();
+      for(let i = 0; i < 3; i++) {
+        stats[i].end();
+      }
 
       if (forcedPause) {
         demo.music.play();

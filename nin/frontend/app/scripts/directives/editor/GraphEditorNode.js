@@ -59,7 +59,7 @@ class GraphEditorNode extends React.Component {
         height
       }),
       Object.keys(node.inputs).map(key => e(GraphEditorInputOutput, {
-        item: node.inputs[key],
+        item: this.props.node.inputs[key],
         x: GraphEditorNode.getCoordinatesForInput(node, key).x,
         y: GraphEditorNode.getCoordinatesForInput(node, key).y,
         key: key,

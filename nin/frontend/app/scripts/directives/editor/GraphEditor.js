@@ -26,6 +26,19 @@ class GraphEditor extends React.Component {
     this.isMouseDragging = false;
   }
 
+  removeConnection(output, input) {
+    const fromNodeName = output.split('.')[0];
+    const outputName = output.split('.')[1];
+    for(let i = 0; i < this.props.graph.length; i++) {
+      const nodeInfo = this.props.graph[i];
+      if(nodeInfo.id == fromNodeName && outputName in nodeInfo.connectedTo) {
+        delete nodeInfo.connectedTo[outputName];
+        this.forceUpdate();
+        break;
+      }
+    }
+  }
+
   generateDepths() {
     let deepestLevel = 0;
     let depths = {};
@@ -256,7 +269,7 @@ class GraphEditor extends React.Component {
         connections.push({
           from: outputCoordinates,
           to: inputCoordinates,
-          key: `${nodeInfo.id}.${fromIOId}:${toNodeId}.${toIOId}`
+          key: `${nodeInfo.id}.${fromIOId}|${toNodeId}.${toIOId}`
         });
       }
     }
@@ -266,7 +279,7 @@ class GraphEditor extends React.Component {
       e('g', {
         transform: `matrix(${this.state.scale},0,0,${this.state.scale},${this.state.x},${this.state.y})`,
       }, graphEditorNodes,
-      connections.map(connection => e(Connection, {connection, scale: this.state.scale, key: connection.key})),
+      connections.map(connection => e(Connection, {connection, fromPath: connection.key.split('|')[0], toPath: connection.key.split('|')[1], editor: this, scale: this.state.scale, key: connection.key})),
       )));
   }
 }

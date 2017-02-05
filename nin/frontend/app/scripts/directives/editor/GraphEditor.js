@@ -11,56 +11,128 @@ class GraphEditor extends React.Component {
       y: 0,
     };
 
-    this.mouseDownCoordinates = {
+    this.dragCoastSpeed = {
       x: 0,
       y: 0,
     };
-    this.startDragCoordinates = {
+
+    this.dragStartCoordinates = {
       x: 0,
       y: 0,
     };
-    this.isDragging = false;
+    this.lastDragEventTime = performance.now();
+    this.pinchZoomDistance = 0;
+    this.isMouseDragging = false;
+  }
+
+  coastLoop() {
+    const friction = 1 - 0.015;
+    if(this.isCoasting) {
+      requestAnimationFrame(() => this.coastLoop());
+    }
+    this.dragCoastSpeed.x *= friction;
+    this.dragCoastSpeed.y *= friction;
+    if(Math.abs(this.dragCoastSpeed.x) < 0.00001) {
+      this.dragCoastSpeed.x = 0;
+    }
+    if(Math.abs(this.dragCoastSpeed.y) < 0.00001) {
+      this.dragCoastSpeed.y = 0;
+    }
+    if(this.dragCoastSpeed.x == 0 && this.dragCoastSpeed.y == 0) {
+      this.isCoasting = false;
+    }
+    this.setState({
+      x: this.state.x + this.dragCoastSpeed.x,
+      y: this.state.y + this.dragCoastSpeed.y,
+    });
+  }
+
+  dragStart(x, y) {
+    this.dragStartCoordinates.x = x;
+    this.dragStartCoordinates.y = y;
+    this.dragCoastSpeed.x = 0;
+    this.dragCoastSpeed.y = 0;
+    this.lastDragEventTime = performance.now();
+    this.isCoasting = false;
+  }
+
+  dragMove(x, y) {
+    let xDelta = x - this.dragStartCoordinates.x;
+    let yDelta = y - this.dragStartCoordinates.y;
+    console.log(xDelta, yDelta);
+    this.setState({
+      x: this.state.x + xDelta,
+      y: this.state.y + yDelta,
+    });
+    const newLastDragEventTime = performance.now();
+    const timeDelta = newLastDragEventTime - this.lastDragEventTime;
+    this.dragCoastSpeed.x = Math.max(-50, Math.min(50, xDelta / timeDelta * 1000 / 60));
+    this.dragCoastSpeed.y = Math.max(-50, Math.min(50, yDelta / timeDelta * 1000 / 60));
+    this.lastDragEventTime = newLastDragEventTime;
+    this.dragStartCoordinates.x = x;
+    this.dragStartCoordinates.y = y;
+  }
+
+  dragEnd(x, y) {
+    this.isCoasting = true;
+    requestAnimationFrame(() => this.coastLoop());
+    if(Math.abs(this.dragCoastSpeed.x) < 0.1) {
+      this.dragCoastSpeed.x = 0;
+    }
+    if(Math.abs(this.dragCoastSpeed.y) < 0.1) {
+      this.dragCoastSpeed.y = 0;
+    }
   }
 
   componentDidMount() {
     window.addEventListener('wheel', event => this.onWheel(event));
+    let add = (a, b) => a + b;
+    let get = key => item => item[key];
+    let sum = reducable => [].reduce.call(reducable, add, 0);
     setTimeout(() => {
       this.container.addEventListener('touchstart', event => {
-        if(event.touches.length == 1) {
-          this.mouseDownCoordinates.x = event.touches[0].pageX;
-          this.mouseDownCoordinates.y = event.touches[0].pageY;
-          this.startDragCoordinates.x = this.state.x;
-          this.startDragCoordinates.y = this.state.y;
+        let x = sum([].map.call(event.touches, get('pageX'))) / event.touches.length;
+        let y = sum([].map.call(event.touches, get('pageY'))) / event.touches.length;
+        this.dragStart(x, y);
+        if(event.touches.length == 2) {
+          let xDelta = event.touches[0].pageX - event.touches[1].pageX;
+          let yDelta = event.touches[0].pageY - event.touches[1].pageY;
+          this.pinchZoomDistance = Math.sqrt(xDelta * xDelta + yDelta * yDelta);
         }
-      });
-      this.container.addEventListener('mousedown', event => {
-        this.mouseDownCoordinates.x = event.offsetX;
-        this.mouseDownCoordinates.y = event.offsetY;
-        this.startDragCoordinates.x = this.state.x;
-        this.startDragCoordinates.y = this.state.y;
-        this.isDragging = true;
       });
       this.container.addEventListener('touchmove', event => {
         event.preventDefault();
-        this.setState({
-          x: this.startDragCoordinates.x + event.touches[0].pageX - this.mouseDownCoordinates.x,
-          y: this.startDragCoordinates.y + event.touches[0].pageY - this.mouseDownCoordinates.y,
-        });
+        let x = sum([].map.call(event.touches, get('pageX'))) / event.touches.length;
+        let y = sum([].map.call(event.touches, get('pageY'))) / event.touches.length;
+        this.dragMove(x, y);
+        if(event.touches.length == 2) {
+          let xDelta = event.touches[0].pageX - event.touches[1].pageX;
+          let yDelta = event.touches[0].pageY - event.touches[1].pageY;
+          let newPinchZoomDistance = Math.sqrt(xDelta * xDelta + yDelta * yDelta);
+          this.zoom(this.state.scale * newPinchZoomDistance / this.pinchZoomDistance, x, y);
+          this.pinchZoomDistance = newPinchZoomDistance;
+        }
+      });
+      this.container.addEventListener('touchend', event => {
+        if(event.touches.length == 0) {
+          let x = sum([].map.call(event.touches, get('pageX'))) / event.touches.length;
+          let y = sum([].map.call(event.touches, get('pageY'))) / event.touches.length;
+          this.dragEnd(x, y);
+        }
+      });
+      this.container.addEventListener('mousedown', event => {
+        this.dragStart(event.offsetX, event.offsetY);
+        this.isMouseDragging = true;
       });
       this.container.addEventListener('mouseup', event => {
-        this.isDragging = false;
+        this.isMouseDragging = false;
+        this.dragEnd(event.offsetX, event.offsetY);
       });
       this.container.addEventListener('mousemove', event => {
-        if(!this.isDragging) {
+        if(!this.isMouseDragging) {
           return;
         }
-        this.setState({
-          x: this.startDragCoordinates.x + event.offsetX - this.mouseDownCoordinates.x,
-          y: this.startDragCoordinates.y + event.offsetY - this.mouseDownCoordinates.y,
-        });
-      });
-      this.container.addEventListener('mouseup', event => {
-        this.isDragging = false;
+        this.dragMove(event.offsetX, event.offsetY);
       });
     }, 1000);
   }
@@ -79,7 +151,7 @@ class GraphEditor extends React.Component {
 
   onWheel(event) {
     const wheel = event.deltaY / 120;
-    const scale = Math.max(1, this.state.scale * (1 + wheel));
+    const scale = Math.max(1, this.state.scale * (1 - wheel));
     this.zoom(scale, event.offsetX, event.offsetY);
   }
 
@@ -93,7 +165,8 @@ class GraphEditor extends React.Component {
         key: nodeInfo.id,
         scale: this.state.scale,
         node: this.props.nodes[nodeInfo.id],
-        y: i * 100,
+        x: nodeInfo.x,
+        y: nodeInfo.y,
       }));
     return e('div', {ref: ref => this.container = ref}, e('svg',
       {height: 99999, width: 99999},

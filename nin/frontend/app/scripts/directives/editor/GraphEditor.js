@@ -27,13 +27,17 @@ class GraphEditor extends React.Component {
   }
 
   removeConnection(output, input) {
+    console.log('yolo', output, input);
     const fromNodeName = output.split('.')[0];
     const outputName = output.split('.')[1];
+    const toNodeName = input.split('.')[0];
+    const inputName = input.split('.')[1];
     for(let i = 0; i < this.props.graph.length; i++) {
       const nodeInfo = this.props.graph[i];
       if(nodeInfo.id == fromNodeName && outputName in nodeInfo.connectedTo) {
         delete nodeInfo.connectedTo[outputName];
-        this.forceUpdate();
+        this.props.demo.nm.disconnect(fromNodeName, outputName, toNodeName, inputName);
+        //this.forceUpdate();
         break;
       }
     }

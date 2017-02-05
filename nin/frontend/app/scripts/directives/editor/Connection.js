@@ -26,8 +26,8 @@ class Connection extends React.Component {
 
   delete() {
     this.props.editor.removeConnection(
-      this.props.fromPath.split('|')[0],
-      this.props.toPath.split('|')[1],);
+      this.props.fromPath,
+      this.props.toPath,);
   }
 
   render() {

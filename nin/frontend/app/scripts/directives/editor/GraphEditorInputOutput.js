@@ -54,35 +54,9 @@ const previews = {
 
 class GraphEditorInputOutput extends React.Component {
 
-  constructor() {
-    super();
-    this.state = {
-      isSelected: false,
-    };
-  }
-
-  onClick() {
-    this.select();
-  }
-
-  select() {
-    this.setState({
-      isSelected: true,
-    });
-    if(this.props.item.constructor.name == 'TextureInput') {
-      this.props.demo.renderer.overrideToScreenTexture = this.props.item.getValue();
-    }
-  }
-
-  deselect() {
-    this.setState({
-      isHovering: false,
-    });
-    this.props.demo.renderer.overrideToScreenTexture = null;
-  }
-
   render() {
     const preview = previews[this.props.item.constructor.name];
+    const isConnected = !!(this.props.item.destination || this.props.item.source);
     return e('g', {
       transform: `translate(${this.props.x}, ${this.props.y}) scale(${1 / this.props.scale})`
     },
@@ -93,21 +67,20 @@ class GraphEditorInputOutput extends React.Component {
         y: -10 * this.props.scale,
         width: 20 * this.props.scale,
         height: 20 * this.props.scale,
-        onClick: event => this.onClick(event),
       }),
       e('circle', {
         cx: 0,
         cy: 0,
-        r: this.state.isSelected ? 10 : 5,
-        fill: 'white',
-        stroke: this.state.isSelected ? 'orange' : 'transparent',
-        strokeWidth: 5
+        r: 5,
+        fill: isConnected ? 'white' : 'transparent',
+        stroke: 'white',
+        strokeWidth: 2
       }),
       this.props.scale > 1.5 ? e('text', {
         x: 0,
         y: 20,
       }, this.props.id) : null,
-        preview && this.props.scale > 1.5 && e('g', {
+        preview && this.props.scale > 3 && e('g', {
           transform: `scale(${Math.min(1, this.props.scale / 40)}) translate(200, -100)`,
         }, e('foreignObject', {x: -50, y: -25, width: 100, height: 50,},
           e('div', {xmlns: 'http://www.w3.org/1999/xhtml'}, e(preview, {item: this.props.item}))),

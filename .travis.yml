@@ -9,4 +9,4 @@ install:
   - cd nin/frontend && yarn && cd -
 script:
   - cd nin/backend && ../../node_modules/.bin/eslint .
-  - cd ../frontend && node_modules/.bin/eslint app
+  - cd ../frontend && make lint

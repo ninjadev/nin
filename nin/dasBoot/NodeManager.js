@@ -5,14 +5,6 @@ class NodeManager {
     this.graphChangeListeners = [];
   }
 
-  onGraphChange(fn) {
-    this.graphChangeListeners.push(fn);
-  }
-
-  fireGraphChange() {
-    this.graphChangeListeners.map(listener => listener());
-  }
-
   createNode(nodeInfo) {
     nodeInfo.options = nodeInfo.options || {};
     var node;
@@ -46,7 +38,6 @@ class NodeManager {
       }
     }
     this.nodes[node.id] = node;
-    this.fireGraphChange();
   }
 
   connect(fromNodeId, outputName, toNodeId, inputName) {
@@ -54,7 +45,11 @@ class NodeManager {
       this.nodes[toNodeId].inputs[inputName];
     this.nodes[toNodeId].inputs[inputName].source =
       this.nodes[fromNodeId].outputs[outputName];
-    this.fireGraphChange();
+  }
+
+  disconnect(fromNodeId, outputName, toNodeId, inputName) {
+    this.nodes[fromNodeId].outputs[outputName].destination = null;
+    this.nodes[toNodeId].inputs[inputName].source = null;
   }
 
   resize() {
@@ -94,13 +89,6 @@ class NodeManager {
       node.active = true;
       node.update(frame);
     });
-
-    for(var key in this.nodes) {
-      if(this.nodes[key].oldActive != this.nodes[key].active) {
-        this.fireGraphChange();
-        break;
-      }
-    }
   }
 
   render(renderer) {

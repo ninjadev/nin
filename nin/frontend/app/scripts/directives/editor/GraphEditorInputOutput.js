@@ -3,7 +3,7 @@ const e = React.createElement;
 
 let THREEConstantMapping = {};
 for(let key in THREE) {
-  if(typeof THREE[key] === 'number') {
+  if(typeof THREE[key] === 'number') {  // eslint-disable-line angular/typecheck-number
     THREEConstantMapping[THREE[key]] = `THREE.${key}`;
   }
 }
@@ -18,7 +18,7 @@ class TextureInputPreview extends React.Component {
     }
     const items = {
       id: value.id,
-      uuid: value.uuid, 
+      uuid: value.uuid,
       name: value.name,
       mipmaps: value.mipmaps,
       mapping: THREEConstantMapping[value.mapping],
@@ -37,9 +37,9 @@ class TextureInputPreview extends React.Component {
       unpackAlignment: value.unpackAlignment,
       encoding: THREEConstantMapping[value.encoding],
       version: value.version,
-      needsUpdate: value.needsUpdate, 
-    }
-    return e('table', {}, e('tbody', {}, 
+      needsUpdate: value.needsUpdate,
+    };
+    return e('table', {}, e('tbody', {},
       Object.keys(items).map(key =>
         e('tr', {key: `${key}|${items[key]}`},
           e('td', {}, key),

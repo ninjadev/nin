@@ -75,7 +75,7 @@ class GraphEditor extends React.Component {
     }
     let fromNodeInfo;
     for(let i = 0; i < this.props.graph.length; i++) {
-      let nodeInfo = this.props.graph[i]; 
+      let nodeInfo = this.props.graph[i];
       if(this.props.nodes[nodeInfo.id] == fromNode) {
         fromNodeName = nodeInfo.id;
         fromNodeInfo = nodeInfo;
@@ -198,7 +198,7 @@ class GraphEditor extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    setTimeout(() => this.reflowGraphLayout(), 0);
+    setTimeout(() => this.reflowGraphLayout(), 0);  // eslint-disable-line angular/timeout-service
   }
 
   coastLoop() {
@@ -265,7 +265,7 @@ class GraphEditor extends React.Component {
     let add = (a, b) => a + b;
     let get = key => item => item[key];
     let sum = reducable => [].reduce.call(reducable, add, 0);
-    setTimeout(() => {
+    setTimeout(() => {  // eslint-disable-line angular/timeout-service
       this.container.addEventListener('touchstart', event => {
         let x = sum([].map.call(event.touches, get('pageX'))) / event.touches.length;
         let y = sum([].map.call(event.touches, get('pageY'))) / event.touches.length;

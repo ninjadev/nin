@@ -33,8 +33,8 @@ class GraphEditorNode extends React.Component {
     keys.sort();
     const i = keys.indexOf(key);
     return {
-        x: width - padding - heightPerInputOrOutput / 2,
-        y: height / 2 + (numberOfOutputs == 1 ? 0 : (i - (numberOfOutputs - 1) / 2) * heightPerInputOrOutput),
+      x: width - padding - heightPerInputOrOutput / 2,
+      y: height / 2 + (numberOfOutputs == 1 ? 0 : (i - (numberOfOutputs - 1) / 2) * heightPerInputOrOutput),
     };
   }
 

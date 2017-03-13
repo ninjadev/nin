@@ -42,9 +42,6 @@ bin/
 gen/
 dist/
 
-# dotfiles!
-.*
-
 # project files
 *.iml
 

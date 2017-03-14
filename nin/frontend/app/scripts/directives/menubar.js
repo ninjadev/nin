@@ -113,6 +113,12 @@ function menubar($window, commands, ninrc) {
           name: '-'
         },
         {
+          name: 'Toggle stats',
+          action: 'toggleStats',
+          defaultKeybind: 'i',
+          invoke: () => commands.toggleStats()
+        },
+        {
           name: 'Toggle fullscreen',
           action: 'toggleFullscreen',
           defaultKeybind: 'f',

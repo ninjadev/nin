@@ -27,6 +27,12 @@
     },
     "globals": {
       "NIN": true,
-      "THREE": true
+      "THREE": true,
+      "GU": true,
+      "BEAT": true,
+      "BEAN": true,
+      "BEAN_FOR_FRAME": true,
+      "FRAME_FOR_BEAN": true
+
     }
 }

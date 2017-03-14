@@ -144,7 +144,7 @@ PathController.prototype.get3Dpoint = function(frame) {
     return current.point;
   } else if (current.type == 'circle') {
     if (frame > current.endFrame) {
-      t = 0;
+      t = 1;
     }
     t += current.offset;
     t *= current.length;

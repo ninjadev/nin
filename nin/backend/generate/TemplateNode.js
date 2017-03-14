@@ -40,6 +40,10 @@
       renderer.render(this.scene, this.camera, this.renderTarget, true);
       this.outputs.render.setValue(this.renderTarget.texture);
     }
+
+    resize() {
+      this.renderTarget.setSize(16 * GU, 9 * GU);
+    }
   }
 
   global.TemplateNode = TemplateNode;

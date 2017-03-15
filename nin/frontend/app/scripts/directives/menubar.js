@@ -22,13 +22,13 @@ function menubar($window, commands, ninrc) {
         {
           name: 'Rewind one second',
           action: 'rewindOneSecond',
-          defaultKeybind: 'k',
+          defaultKeybind: 'j',
           invoke: () => commands.jog(-60)
         },
         {
           name: 'Forward one second',
           action: 'forwardOneSecond',
-          defaultKeybind: 'j',
+          defaultKeybind: 'k',
           invoke: () => commands.jog(60)
         },
         {

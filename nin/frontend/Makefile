@@ -1,11 +1,11 @@
 .PHONY: all
 all:
 	yarn install
-	webpack
+	node_modules/.bin/webpack
 
 .PHONY: run
 run:
-	webpack --watch
+	node_modules/.bin/webpack --watch
 
 .PHONY: lint
 lint:

@@ -77,9 +77,9 @@ class GraphEditorInputOutput extends React.Component {
         strokeWidth: 2,
         onClick: event => {this.props.editor.startOrCompleteConnection(this.props.item);},
       }),
-      this.props.scale > 1.5 ? e('text', {
+      this.props.scale >= 1.5 ? e('text', {
         x: 0,
-        y: 20,
+        y: 10 * this.props.scale,
       }, this.props.id) : null,
         preview && this.props.scale > 3 && e('g', {
           transform: `scale(${Math.min(1, this.props.scale / 40)}) translate(200, -100)`,

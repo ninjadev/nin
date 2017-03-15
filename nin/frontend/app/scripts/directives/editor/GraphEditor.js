@@ -7,7 +7,7 @@ class GraphEditor extends React.Component {
   constructor() {
     super();
     this.state = {
-      scale: 1,
+      scale: 1.5,
       x: 0,
       y: 0,
       connectionStart: null,

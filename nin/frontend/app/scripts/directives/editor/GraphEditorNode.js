@@ -84,7 +84,7 @@ class GraphEditorNode extends React.Component {
         y: 0,
         transform: `translate(${width / 2}, ${height / 2})`,
       }, this.props.nodeInfo.id),
-      this.props.scale > 1.5 ? e('text', {
+      this.props.scale >= 1.5 ? e('text', {
         x: 0,
         y: 0,
         className: 'monospaced',

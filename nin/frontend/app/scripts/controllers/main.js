@@ -90,11 +90,12 @@ class MainCtrl {
           }
 
           for (let nodeInfo of graph) {
-            for (let outputName in nodeInfo.connectedTo) {
-              let toNodeId = nodeInfo.connectedTo[outputName].split('.')[0];
-              let inputName = nodeInfo.connectedTo[outputName].split('.')[1];
+            for (let inputName in nodeInfo.connected) {
+              let fromNodeId = nodeInfo.connected[inputName].split('.')[0];
+              let toNodeId = nodeInfo.id;
+              let outputName = nodeInfo.connected[inputName].split('.')[1];
               demo.nm.connect(
-                nodeInfo.id,
+                fromNodeId,
                 outputName,
                 toNodeId,
                 inputName);

@@ -23,11 +23,7 @@ function init(dirname) {
     let numberOfRemainingFiles = files.length;
     function end() {
       if(--numberOfRemainingFiles == 0) {
-        generate.generate(projectPath, 'node', 'SpinningCube', {
-          connectedTo: {
-            render: 'root.screen'
-          }
-        });
+        generate.generate(projectPath, 'node', 'SpinningCube');
         projectSettings.init(projectPath);
         console.log(chalk.green(`${projectPath} is now a nin project. Run`),
                     chalk.cyan('nin run'),

@@ -44,7 +44,7 @@ class GraphEditor extends React.Component {
         seen.add(node.id);
         depths[node.id] = {
           x: level,
-          y: i
+          y: -i
         };
 
         for (let child in node.inputs) {

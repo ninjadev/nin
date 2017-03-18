@@ -25,6 +25,14 @@ function demo(commands, $rootScope, $window) {
     stats[i].dom.style.float = 'right';
     stats[i].dom.style.display = 'block';
   }
+
+  commands.on('toggleStats', () => {
+    for(let i = 0; i < 3; i++) {
+      stats[i].dom.style.display = stats[i].dom.style.display == 'none' ? 'block' : 'none';
+    }
+  });
+
+
   demo.looper.loop = function() {
     try {
       for(let i = 0; i < 3; i++) {

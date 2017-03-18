@@ -39,7 +39,7 @@ class GraphEditor extends React.Component {
       let nextLevel = [];
       deepestLevel = Math.max(deepestLevel, level);
 
-      for (let i = 0; i<currentNodes.length; i++) {
+      for (let i = 0; i < currentNodes.length; i++) {
         let node = currentNodes[i];
         seen.add(node.id);
         depths[node.id] = {

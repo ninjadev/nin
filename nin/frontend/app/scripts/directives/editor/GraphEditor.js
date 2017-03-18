@@ -28,115 +28,6 @@ class GraphEditor extends React.Component {
     this.lastDragEventTime = performance.now();
     this.pinchZoomDistance = 0;
     this.isMouseDragging = false;
-
-  }
-
-  startOrCompleteConnection(outputOrInput) {
-    if(this.state.connectionStart) {
-      this.completeConnection(outputOrInput);
-    } else {
-      this.startConnection(outputOrInput);
-    }
-  }
-
-  completeConnection(outputOrInput) {
-    let fromNode;
-    let fromNodeName;
-    let outputName;
-    let toNodeName;
-    let toNode;
-    let inputName;
-    for(let key in outputOrInput.node.outputs) {
-      if(outputOrInput == outputOrInput.node.outputs[key]) {
-        fromNode = outputOrInput.node;
-        outputName = key;
-        break;
-      }
-    }
-    for(let key in outputOrInput.node.inputs) {
-      if(outputOrInput == outputOrInput.node.inputs[key]) {
-        toNode = outputOrInput.node;
-        inputName = key;
-        break;
-      }
-    }
-    for(let key in this.currentConnector.node.outputs) {
-      if(this.currentConnector == this.currentConnector.node.outputs[key]) {
-        fromNode = this.currentConnector.node;
-        outputName = key;
-        break;
-      }
-    }
-    for(let key in this.currentConnector.node.inputs) {
-      if(this.currentConnector == this.currentConnector.node.inputs[key]) {
-        toNode = this.currentConnector.node;
-        inputName = key;
-      }
-    }
-    let fromNodeInfo;
-    for(let i = 0; i < this.props.graph.length; i++) {
-      let nodeInfo = this.props.graph[i];
-      if(this.props.nodes[nodeInfo.id] == fromNode) {
-        fromNodeName = nodeInfo.id;
-        fromNodeInfo = nodeInfo;
-      }
-      if(this.props.nodes[nodeInfo.id] == toNode) {
-        toNodeName = nodeInfo.id;
-      }
-    }
-    console.log('connect', fromNode, toNode, fromNodeName, outputName, toNodeName, inputName);
-    this.props.demo.nm.connect(fromNodeName, outputName, toNodeName, inputName);
-    fromNodeInfo.connectedTo[outputName] = `${toNodeName}.${inputName}`;
-    this.setState({
-      connectionStart: null,
-    });
-    this.currentConnector = null;
-    console.log('el completorama');
-  }
-
-  startConnection(outputOrInput) {
-    this.currentConnector = outputOrInput;
-    let coordinates;
-    for(let key in outputOrInput.node.outputs) {
-      if(outputOrInput == outputOrInput.node.outputs[key]) {
-        coordinates = GraphEditorNode.getCoordinatesForOutput(outputOrInput.node, key);
-        break;
-      }
-    }
-    for(let key in outputOrInput.node.inputs) {
-      if(outputOrInput == outputOrInput.node.inputs[key]) {
-        coordinates = GraphEditorNode.getCoordinatesForInput(outputOrInput.node, key);
-      }
-    }
-    let nodeInfo;
-    for(let i = 0; i < this.props.graph.length; i++) {
-      if(this.props.nodes[this.props.graph[i].id] == outputOrInput.node) {
-        nodeInfo = this.props.graph[i];
-        break;
-      }
-    }
-    this.setState({
-      connectionStart: {
-        x: nodeInfo.x + coordinates.x,
-        y: nodeInfo.y + coordinates.y,
-      }
-    });
-  }
-
-  removeConnection(output, input) {
-    const fromNodeName = output.split('.')[0];
-    const outputName = output.split('.')[1];
-    const toNodeName = input.split('.')[0];
-    const inputName = input.split('.')[1];
-    for(let i = 0; i < this.props.graph.length; i++) {
-      const nodeInfo = this.props.graph[i];
-      if(nodeInfo.id == fromNodeName && outputName in nodeInfo.connectedTo) {
-        delete nodeInfo.connectedTo[outputName];
-        this.props.demo.nm.disconnect(fromNodeName, outputName, toNodeName, inputName);
-        //this.forceUpdate();
-        break;
-      }
-    }
   }
 
   generateDepths() {
@@ -194,7 +85,6 @@ class GraphEditor extends React.Component {
       this.props.graph[i].y = depths[id].y * -100;
     }
     this.forceUpdate();
-    console.log('reflowGraphLayout');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -357,38 +247,32 @@ class GraphEditor extends React.Component {
     const connections = [];
     for(let i = 0; i < this.props.graph.length; i++) {
       let nodeInfo = this.props.graph[i];
-      for(let fromIOId in nodeInfo.connectedTo) {
-        let toNodeId = nodeInfo.connectedTo[fromIOId].split('.')[0];
-        let toIOId = nodeInfo.connectedTo[fromIOId].split('.')[1];
+      let toNodeInfo = nodeInfo;
+      for(let toIOId in nodeInfo.connected) {
+        let fromNodeId = nodeInfo.connected[toIOId].split('.')[0];
+        let toNodeId = toNodeInfo.id;
+        let fromIOId = nodeInfo.connected[toIOId].split('.')[1];
         let outputCoordinates = GraphEditorNode.getCoordinatesForOutput(
-          this.props.nodes[nodeInfo.id].outputs[fromIOId].node, fromIOId);
+          this.props.nodes[fromNodeId].outputs[fromIOId].node, fromIOId);
         let inputCoordinates = GraphEditorNode.getCoordinatesForInput(
           this.props.nodes[toNodeId].inputs[toIOId].node, toIOId);
-        outputCoordinates.x += nodeInfo.x;
-        outputCoordinates.y += nodeInfo.y;
-        let toNodeInfo;
+        let fromNodeInfo;
         for(let j = 0; j < this.props.graph.length; j++) {
-          if(this.props.graph[j].id == toNodeId) {
-            toNodeInfo = this.props.graph[j];
+          if(this.props.graph[j].id == fromNodeId) {
+            fromNodeInfo = this.props.graph[j];
             break;
           }
         }
+        outputCoordinates.x += fromNodeInfo.x;
+        outputCoordinates.y += fromNodeInfo.y;
         inputCoordinates.x += toNodeInfo.x;
         inputCoordinates.y += toNodeInfo.y;
         connections.push({
           from: outputCoordinates,
           to: inputCoordinates,
-          key: `${nodeInfo.id}.${fromIOId}|${toNodeId}.${toIOId}`
+          key: `${fromNodeId}.${fromIOId}|${toNodeId}.${toIOId}`
         });
       }
-    }
-
-    if(this.state.connectionStart) {
-      connections.push({
-        from: this.state.connectionStart,
-        to: this.state.connectionEnd,
-        key: `temporary`
-      });
     }
 
     return e('div', {ref: ref => this.container = ref}, e('svg',

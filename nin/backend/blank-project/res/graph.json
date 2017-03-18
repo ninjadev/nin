@@ -1,6 +1,9 @@
 [
   {
     "id": "root",
-    "type": "NIN.RootNode"
+    "type": "NIN.RootNode",
+    "connected": {
+        "screen": "spinningCube.render"
+    }
   }
 ]

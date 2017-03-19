@@ -1,19 +1,19 @@
 function camera(demo) {
-  var controls;
-  var cc;
-  var layer;
-  var clock = new THREE.Clock();
-  var active = false;
+  let controls;
+  let cc;
+  const clock = new THREE.Clock();
+  let active = false;
+  let selectedInput;
+  let camera;
 
-  var mouseclick = function(e) {
-    var camera = layer && layer.instance.camera;
+  const mouseclick = function(e) {
     e.preventDefault();
 
-    var elem = demo.renderer.domElement;
-    var boundingRect = elem.getBoundingClientRect();
-    var x = (e.clientX - boundingRect.left) * (elem.width / boundingRect.width);
-    var y = (e.clientY - boundingRect.top) * (elem.height / boundingRect.height);
-    var vector = new THREE.Vector3(
+    const elem = demo.renderer.domElement;
+    const boundingRect = elem.getBoundingClientRect();
+    const x = (e.clientX - boundingRect.left) * (elem.width / boundingRect.width);
+    const y = (e.clientY - boundingRect.top) * (elem.height / boundingRect.height);
+    const vector = new THREE.Vector3(
       (x / elem.width) * 2 - 1,
       - (y / elem.height) * 2 + 1,
       0.5
@@ -21,36 +21,35 @@ function camera(demo) {
 
     vector.unproject(camera);
 
-    var dir_vector = vector.sub(camera.position).normalize();
-    var raycaster = new THREE.Raycaster(camera.position, dir_vector);
+    const dir_vector = vector.sub(camera.position).normalize();
+    const raycaster = new THREE.Raycaster(camera.position, dir_vector);
 
-    var intersects = raycaster.intersectObjects(
-      layer.instance.scene.children,
+    const intersects = raycaster.intersectObjects(
+      selectedInput.node.scene.children,
       true
     );
 
     if (intersects.length > 0) {
-      var point = intersects[0].point;
+      const point = intersects[0].point;
       camera.lookAt(point);
     }
   };
 
-  var updateCallback = function() {
+  const updateCallback = function() {
     if (!active) return;
 
-    var delta = clock.getDelta();
+    const delta = clock.getDelta();
     controls.update(delta);
     requestAnimFrame(updateCallback);
   };
 
-  var roundify = function(n, decimals) {
-    var orders_of_magnitude = Math.pow(10, decimals); // POP! POP!
+  const roundify = function(n, decimals) {
+    const orders_of_magnitude = Math.pow(10, decimals); // POP! POP!
     return Math.round(n * orders_of_magnitude) / orders_of_magnitude;
   };
 
   return {
-    getCameraPosition: function() {
-      var camera = layer && layer.instance.camera;
+    getCameraPosition() {
       if (!camera) return;
       return JSON.stringify([
         roundify(camera.position.x, 2),
@@ -58,10 +57,9 @@ function camera(demo) {
         roundify(camera.position.z, 2)
       ]) + ',';
     },
-    getCameraLookat: function() {
-      var camera = layer && layer.instance.camera;
+    getCameraLookat() {
       if (!camera) return;
-      var scene = layer.instance.scene;
+      var scene = selectedInput.node.scene;
       var vector = new THREE.Vector3(0, 0, 0.5);
 
       vector.unproject(camera);
@@ -82,61 +80,60 @@ function camera(demo) {
         roundify(point.z, 2)
       ]) + ',';
     },
-    getCameraRoll: function() {
-      var camera = layer && layer.instance.camera;
+    getCameraRoll() {
       if (!camera) return;
       return roundify(camera.rotation.z, 2);
     },
-    getCameraFov: function() {
-      var camera = layer && layer.instance.camera;
+    getCameraFov() {
       if (!camera) return;
       return roundify(camera.fov, 2);
     },
-    toggleFlyAroundMode: function() {
+    toggleFlyAroundMode() {
       active = !active;
       if (cc) {
         cc.pause = !cc.pause;
       }
       if (active) {
-        var camera = layer.instance.camera;
+        camera = selectedInput.source.node.cameraController.camera;
         controls = new THREE.FlyControls(camera, demo.renderer.domElement.parentElement);
         controls.movementSpeed = 400;
         controls.rollSpeed = Math.PI / 4 * 16;
         controls.autoForward = false;
         controls.dragToLook = true;
         requestAnimFrame(updateCallback);
-        demo.renderer.domElement.parentElement.addEventListener("click", mouseclick);
+        demo.renderer.domElement.parentElement.addEventListener('click', mouseclick);
       } else {
         if (cc) {
-          cc.updateCamera(demo.looper.currentFrame - layer.startFrame);
+          cc.updateCamera(demo.looper.currentFrame);
         }
-        demo.renderer.domElement.parentElement.removeEventListener("click", mouseclick);
+        demo.renderer.domElement.parentElement.removeEventListener('click', mouseclick);
       }
     },
-    resetFlyFlightDynamics: function resetFlyFlightDynamics() {
-      var camera = layer.instance.camera;
+    resetFlyFlightDynamics() {
       if (!camera) return;
       camera.rotation.x = 0;
       camera.rotation.z = 0;
     },
-    deltaFov: function deltaFov(delta) {
-      var camera = layer.instance.camera;
+    deltaFov(delta) {
       if (!camera) return;
       camera.fov += delta;
       camera.updateProjectionMatrix();
     },
-    startEdit: function(newLayer) {
-      if (layer) {
+    getSelectedInput() {
+      return selectedInput;
+    },
+    startEdit(cameraInput) {
+      if (selectedInput) {
         active = false;
         if (cc) {
           cc.pause = false;
         }
-        demo.renderer.domElement.parentElement.removeEventListener("click", mouseclick);
+        demo.renderer.domElement.parentElement.removeEventListener('click', mouseclick);
       }
 
-      layer = newLayer;
+      selectedInput = cameraInput;
 
-      cc = CameraController.layers[layer.type];
+      cc = selectedInput.source.node.cameraController;
     }
   };
 }

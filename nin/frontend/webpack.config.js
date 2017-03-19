@@ -49,6 +49,7 @@ module.exports = {
       {from: 'app/views/', to: 'views'},
       {from: 'app/images/', to: 'images'},
       {from: 'app/fonts/', to: 'fonts'},
+      {from: 'app/lib/FlyControls.js', to: 'lib'},
     ]),
   ],
   devtool: ['source-map']

@@ -121,7 +121,7 @@ function menubar($window, commands, ninrc) {
         {
           name: 'Toggle fullscreen',
           action: 'toggleFullscreen',
-          defaultKeybind: 'f',
+          defaultKeybind: 'enter',
           invoke: () => commands.toggleFullscreen()
         },
         {

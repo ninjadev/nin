@@ -7,12 +7,15 @@ class FlyaroundController {
 
     this.camera.isOverriddenByFlyControls = false;
 
+    this.outputContainer = this.outputContainer || document.createElement('textarea');
+    this.outputContainer.className = 'flycontrols-output-container';
+    document.body.appendChild(this.outputContainer);
+
     this.toggleFlyAroundMode();
   }
 
   mouseclick(e) {
     e.preventDefault();
-    console.log('mouseclick');
 
     const elem = demo.renderer.domElement;
     const boundingRect = elem.getBoundingClientRect();
@@ -46,6 +49,14 @@ class FlyaroundController {
 
     const delta = this.clock.getDelta();
     this.controls.update(delta);
+
+    this.outputContainer.innerText = `
+        Position: ${this.getCameraPosition()}
+        LookAt: ${this.getCameraLookat()}
+        Roll: ${this.getCameraRoll()}
+        Fov: ${this.getCameraFov()}
+    `;
+
     requestAnimFrame(this.updateCallback.bind(this));
   }
 
@@ -56,9 +67,9 @@ class FlyaroundController {
 
   getCameraPosition() {
     return JSON.stringify([
-      roundify(this.camera.position.x, 2),
-      roundify(this.camera.position.y, 2),
-      roundify(this.camera.position.z, 2)
+      this.roundify(this.camera.position.x, 2),
+      this.roundify(this.camera.position.y, 2),
+      this.roundify(this.camera.position.z, 2)
     ]) + ',';
   }
 

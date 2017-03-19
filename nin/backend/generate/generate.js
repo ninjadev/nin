@@ -32,29 +32,31 @@ const generate = function(projectRoot, type, name, options) {
       });
       break;
 
-    case 'shader':
-      generateShader(camelizedName, projectRoot);
+    case 'shaderNode':
+      {
+        const shaderFilename = name + 'Node';
+        generateLayer(shaderFilename,
+          'TemplateShaderNode.js',
+          [[/TemplateShaderNode/g, shaderFilename],
+           [/TemplateShader/g, name]],
+          projectRoot);
+
+        generateShader(name, projectRoot);
+
+        graph.transform(projectRoot, graph => {
+          graph.push({
+            id: shaderFilename,
+            type: shaderFilename,
+          });
+        }, err => {
+          if (err) {
+            console.error(err);
+          } else {
+            console.log(`-> added ${shaderFilename} to graph.json`);
+          }
+        });
+      }
       break;
-
-    case 'shaderWithLayer': {
-      const shaderLayerName = camelizedName + 'Layer';
-
-      generateShader(camelizedName, projectRoot);
-      generateLayer(shaderLayerName, 'TemplateShaderLayer.js',
-        [[/TemplateLayer/g, shaderLayerName],
-          [/TemplateShader/g, camelizedName]],
-        projectRoot);
-
-      // NOOP. Not yet implemented
-      graph.transform(projectRoot, graph => graph, function (err) {
-        if (err) {
-          console.error(err);
-        } else {
-          console.log(`-> added ${shaderLayerName} to layers.json`);
-        }
-      });
-      break;
-    }
 
     default:
       process.stderr.write('Attempted to generate resource without generator:', type, '\n');

@@ -1,4 +1,4 @@
 {
     "tDiffuse": { "type": "t", "value": null },
-    "time": { "type": "f", "value": null }
+    "frame": { "type": "f", "value": 0.0 }
 }

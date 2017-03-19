@@ -165,6 +165,15 @@ function menubar($window, commands, ninrc) {
             const nodeName = $window.prompt("Enter a name for the node:");
             commands.generate('node', nodeName);
           }
+        },
+        {
+          name: 'Shader Node',
+          action: 'generateShaderNode',
+          invoke: () =>  {
+            commands.pause();
+            const nodeName = $window.prompt("Enter the shader's name in CamelCase, like 'SunShader':");
+            commands.generate('shaderNode', nodeName);
+          }
         }
       ]
     },

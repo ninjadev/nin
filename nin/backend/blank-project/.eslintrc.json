@@ -32,7 +32,8 @@
       "BEAT": true,
       "BEAN": true,
       "BEAN_FOR_FRAME": true,
-      "FRAME_FOR_BEAN": true
-
+      "FRAME_FOR_BEAN": true,
+      "Loader": true,
+      "SHADERS": true
     }
 }

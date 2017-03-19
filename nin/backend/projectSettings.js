@@ -17,7 +17,7 @@ const defaultSettings = {
 function init(projectPath) {
   fs.writeFileSync(
     p.join(projectPath, 'nin.json'),
-    new Buffer(JSON.stringify(defaultSettings, null, '  '))
+    new Buffer(JSON.stringify(defaultSettings, null, '  ') + '\n')
   );
 }
 

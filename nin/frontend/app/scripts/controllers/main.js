@@ -75,18 +75,18 @@ class MainCtrl {
           let graph = JSON.parse(event.content);
 
           for (let nodeInfo of graph) {
-            try {
+            let node = demo.nm.createNode(nodeInfo);
+            if (node) {
+              demo.nm.insertOrReplaceNode(node);
+              continue;
+            }
+            // This hack only works due to not-yet received
+            // nodes created through generate not having
+            // any connections / friends.
+            $timeout(() => {
               let node = demo.nm.createNode(nodeInfo);
               demo.nm.insertOrReplaceNode(node);
-            } catch (e) {
-              // This hack only works due to not-yet received
-              // nodes created through generate not having
-              // any connections / friends.
-              $timeout(function () {
-                let node = demo.nm.createNode(nodeInfo);
-                demo.nm.insertOrReplaceNode(node);
-              }, 200);
-            }
+            }, 200);
           }
 
           for (let nodeInfo of graph) {

@@ -7,19 +7,16 @@ class NodeManager {
 
   createNode(nodeInfo) {
     nodeInfo.options = nodeInfo.options || {};
-    var node;
-    try {
-      if(nodeInfo.type.slice(0, 4) == 'NIN.') {
-        node = new NIN[nodeInfo.type.slice(4)](nodeInfo.id, nodeInfo.options);
-      } else {
-        node = new window[nodeInfo.type](nodeInfo.id, nodeInfo.options);
-      }
-    } catch (e) {
-      const errorMessage = "NodeManager: Attempted to instantiate nonexisting node type: " + nodeInfo.type;
-      console.error(errorMessage);
-      throw new Error(errorMessage);
+
+    const nodeConstructor = nodeInfo.type.slice(0, 4) === 'NIN.' ?
+      NIN[nodeInfo.type.slice(4)]
+      : window[nodeInfo.type];
+
+    if (nodeConstructor === undefined) {
+      return null;
     }
-    return node;
+
+    return new nodeConstructor(nodeInfo.id, nodeInfo.options);
   }
 
   insertOrReplaceNode(node) {

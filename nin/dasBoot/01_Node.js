@@ -121,7 +121,9 @@
     }
 
     update(frame) {
-      this.cameraController.updateCamera(frame);
+      if (this.cameraController) {
+        this.cameraController.updateCamera(frame);
+      }
     }
   }
 

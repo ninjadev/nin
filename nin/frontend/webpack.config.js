@@ -12,33 +12,29 @@ module.exports = {
     path: __dirname + '/dist'
   },
   module: {
-    preLoaders: [
+    rules: [
       {
         test: /\.js$/,
         exclude: [/node_modules/, /app\/lib/],
-        loader: 'eslint-loader'
-      }
-    ],
-    loaders: [
+        use: ['ng-annotate-loader', 'babel-loader', 'eslint-loader']
+      },
       {
         test: /\.less$/,
-        loader: ExtractTextPlugin.extract("style", "css!less")
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'less-loader']
+        })
       },
       {
         test:/\.css$/,
-        loader: 'style!css?-url'
-      },
-      {
-        test: [/\.js$/],
-        exclude: [/node_modules/, /app\/lib/],
-        loader: 'babel',
-        query: {
-          presets: ['es2015']
-        }
-      },
-      {
-        test: /src.*\.js$/,
-        loaders: ['ng-annotate']
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              url: false
+            }
+          }]
       }
     ]
   },
@@ -52,5 +48,5 @@ module.exports = {
       {from: 'app/lib/FlyControls.js', to: 'lib'},
     ]),
   ],
-  devtool: ['source-map']
+  devtool: 'source-map'
 };

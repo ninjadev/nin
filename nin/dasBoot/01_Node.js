@@ -52,7 +52,7 @@
       });
 
       const {uniforms, vertexShader, fragmentShader} = options.shader;
-      const quad = new THREE.Mesh(
+      this.quad = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(2, 2),
         new THREE.ShaderMaterial({
           uniforms,
@@ -61,7 +61,7 @@
         })
       );
 
-      this.scene.add(quad);
+      this.scene.add(this.quad);
     }
 
     update() {

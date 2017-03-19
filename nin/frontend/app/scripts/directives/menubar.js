@@ -46,13 +46,13 @@ function menubar($window, commands, ninrc) {
         {
           name: 'Rewind one frame',
           action: 'rewindOneFrame',
-          defaultKeybind: 'shift-k',
+          defaultKeybind: 'shift-j',
           invoke: () => commands.jog(-1)
         },
         {
           name: 'Forward one frame',
           action: 'forwardOneFrame',
-          defaultKeybind: 'shift-j',
+          defaultKeybind: 'shift-k',
           invoke: () => commands.jog(1)
         },
         {

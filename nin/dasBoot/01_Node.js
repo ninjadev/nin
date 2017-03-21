@@ -56,6 +56,7 @@
         new THREE.ShaderMaterial(options.shader));
 
       this.scene.add(this.quad);
+      this.resize();
     }
 
     update() {

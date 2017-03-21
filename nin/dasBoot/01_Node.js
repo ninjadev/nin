@@ -51,17 +51,12 @@
         format: THREE.RGBFormat
       });
 
-      const {uniforms, vertexShader, fragmentShader} = options.shader;
       this.quad = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(2, 2),
-        new THREE.ShaderMaterial({
-          uniforms,
-          vertexShader,
-          fragmentShader,
-        })
-      );
+        new THREE.ShaderMaterial(options.shader));
 
       this.scene.add(this.quad);
+      this.resize();
     }
 
     update() {

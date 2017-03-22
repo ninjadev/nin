@@ -6,7 +6,7 @@
     }
 
     update(frame) {
-      this.quad.material.uniforms.frame.value = frame;
+      this.uniforms.frame.value = frame;
     }
   }
 

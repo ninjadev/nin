@@ -116,6 +116,9 @@ PathController.prototype.get3Dpoint = function(frame) {
   var current = this.getCurrentPath(frame);
   var duration = current.endFrame - current.startFrame;
   var t = (frame - current.startFrame) / duration;
+  if (t < 0) {
+    t = 0;
+  }
   if (current.easing == 'smoothstep') {
     t = smoothstep(0, 1, t);
   } else if (current.easing == 'easeIn') {

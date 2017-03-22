@@ -108,8 +108,8 @@ class MainCtrl {
 
         case 'camera':
           for (let key in demo.nm.nodes) {
-            if (demo.nm.nodes[key] instanceof NIN.CameraNode) {
-              if (demo.nm.nodes[key].options.path == event.path) {
+            if (demo.nm.nodes[key] instanceof NIN.THREENode) {
+              if (demo.nm.nodes[key].options.camera == event.path) {
                 demo.nm.nodes[key].initializeCamera(event.content);
               }
             }

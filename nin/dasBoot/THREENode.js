@@ -9,6 +9,7 @@
           render: new NIN.TextureOutput()
         }
       });
+      this.options = options;
 
       this.scene = new THREE.Scene();
       this.renderTarget = new THREE.WebGLRenderTarget(640, 360, {
@@ -20,13 +21,15 @@
       if (options.camera) {
         this.cameraController = new CameraController();
         this.camera = this.cameraController.camera;
-        Loader.loadAjax(options.camera, response => {
-          const rawPath = JSON.parse(response);
-          this.cameraController.parseCameraPath(rawPath);
-        });
+        Loader.loadAjax(options.camera, response => this.initializeCamera(response));
       } else {
         this.camera = new THREE.PerspectiveCamera(45, 16/9, 1, 10000);
       }
+    }
+
+    initializeCamera(rawRawPath) {
+      const rawPath = JSON.parse(rawRawPath);
+      this.cameraController.parseCameraPath(rawPath);
     }
 
     resize() {

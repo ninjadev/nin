@@ -113,6 +113,6 @@ class NodeManager {
   jumpToFrame() {
   }
 
-  refresh() {
+  refresh() {
   }
 }

@@ -47,6 +47,7 @@ const generate = function(projectRoot, type, name, options) {
           graph.push({
             id: shaderFilename,
             type: shaderFilename,
+            options: {},
           });
         }, err => {
           if (err) {

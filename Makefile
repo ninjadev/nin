@@ -5,4 +5,5 @@ all:
 
 .PHONY: publish
 publish: all
-	npm publish
+	yarn version major
+	yarn publish

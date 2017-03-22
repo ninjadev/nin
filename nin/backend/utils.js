@@ -16,9 +16,17 @@ function getProjectMetadata(projectPath) {
 function getNinMetadata() {
   let sha1, origin;
   try {
-    sha1 = execSync(`cd ${__dirname} && git rev-parse HEAD`);
-    origin = execSync(`cd ${__dirname} && git config --get remote.origin.url`);
+    sha1 = execSync('git rev-parse HEAD', {
+      cwd: __dirname,
+      stdio: ['ignore', 'pipe', 'ignore']
+    });
+    origin = execSync('git config --get remote.origin.url', {
+      cwd: __dirname,
+      stdio: ['ignore', 'pipe', 'ignore']
+    });
   } catch (e) {
+    sha1 = 'N/A';
+    origin = 'npm';
   }
   return {
     name: ninPackageJson.name,

@@ -33,7 +33,15 @@ class GraphEditor extends React.Component {
   generateDepths() {
     let deepestLevel = 0;
     let depths = {};
-    let seen = new Set();
+
+    depths.root = {
+      x: 0,
+      y: 0,
+      id: 'root',
+      counter: 0,
+    };
+
+    let counter = 1;
 
     function recurse(level, currentNodes) {
       let nextLevel = [];
@@ -41,16 +49,17 @@ class GraphEditor extends React.Component {
 
       for (let i = 0; i < currentNodes.length; i++) {
         let node = currentNodes[i];
-        seen.add(node.id);
-        depths[node.id] = {
-          x: level,
-          y: -i
-        };
 
         for (let child in node.inputs) {
           let source = node.inputs[child].source;
-          if (source && !seen.has(source.node.id)) {
-            seen.add(source.node.id);
+          if(source) {
+            depths[source.node.id] = {
+              x: level + 1,
+              y: 0,
+              id: source.node.id,
+              counter
+            };
+            counter++;
             nextLevel.push(source.node);
           }
         }
@@ -62,6 +71,21 @@ class GraphEditor extends React.Component {
     }
 
     recurse(0, [this.props.nodes.root]);
+
+    const positions = [];
+    for(let i = 0; i <= deepestLevel; i++) {
+      positions[i] = [];
+    }
+    for(let nodeId in depths) {
+      positions[depths[nodeId].x].push(depths[nodeId]);
+    }
+
+    for(let x in positions) {
+      for(let y in positions[x]) {
+        const depth = positions[x][y];
+        depths[depth.id].y = positions[x].length / 2 - y;
+      }
+    }
 
     let offset = 0;
     for (let nodeId in this.props.nodes) {

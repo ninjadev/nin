@@ -118,15 +118,12 @@ class MainCtrl {
 
         case 'shader':
           var indirectEval = eval;
-          this.fileCache[event.path] = event.content;
           indirectEval(event.content);
 
-          for (var i in this.layers) {
-            var layer = this.layers[i];
-            if (layerShaderDependencies[layer.type]) {
-              if (layerShaderDependencies[layer.type].indexOf(event.shadername) !== -1) {
-                demo.nm.refresh(layer.type);
-              }
+          for (const nodeInfo of this.graph) {
+            if (nodeInfo.options && nodeInfo.options.shader === event.shadername) {
+              var node = demo.nm.createNode(nodeInfo);
+              demo.nm.insertOrReplaceNode(node);
             }
           }
 

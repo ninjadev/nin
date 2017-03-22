@@ -18,9 +18,11 @@
         format: THREE.RGBFormat
       });
 
+      const shader = typeof options.shader === 'string'
+        ? SHADERS[options.shader] : options.shader;
       this.quad = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(2, 2),
-        new THREE.ShaderMaterial(options.shader));
+        new THREE.ShaderMaterial(shader));
       this.uniforms = this.quad.material.uniforms;
 
       this.scene.add(this.quad);

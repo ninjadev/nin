@@ -21,6 +21,7 @@
       this.quad = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(2, 2),
         new THREE.ShaderMaterial(options.shader));
+      this.uniforms = this.quad.material.uniforms;
 
       this.scene.add(this.quad);
       this.resize();

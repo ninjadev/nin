@@ -14,6 +14,11 @@ class GraphEditor extends React.Component {
       connectionEnd: {},
     };
 
+    this.loop = () => {
+      this.forceUpdate();
+      requestAnimationFrame(this.loop);
+    };
+
     this.currentConnector = null;
 
     this.dragCoastSpeed = {
@@ -175,6 +180,7 @@ class GraphEditor extends React.Component {
   }
 
   componentDidMount() {
+    this.loop();
     window.addEventListener('wheel', event => this.onWheel(event));
     let add = (a, b) => a + b;
     let get = key => item => item[key];
@@ -294,6 +300,8 @@ class GraphEditor extends React.Component {
         connections.push({
           from: outputCoordinates,
           to: inputCoordinates,
+          active: (this.props.nodes[fromNodeId].active &&
+                   this.props.nodes[toNodeId].active),
           key: `${fromNodeId}.${fromIOId}|${toNodeId}.${toIOId}`
         });
       }

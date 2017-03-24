@@ -64,6 +64,9 @@ class GraphEditorNode extends React.Component {
     return e('g', {
       className: 'node',
       transform: `translate(${this.props.x},${this.props.y})`,
+      style: {
+        opacity: 0.5 + 0.5 * node.active
+      }
     },
       e('rect', {
         className: 'background',

@@ -20,9 +20,10 @@
 
       const shader = typeof options.shader === 'string'
         ? SHADERS[options.shader] : options.shader;
+
       this.quad = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(2, 2),
-        new THREE.ShaderMaterial(shader));
+        new THREE.ShaderMaterial(shader).clone());
       this.uniforms = this.quad.material.uniforms;
 
       this.scene.add(this.quad);

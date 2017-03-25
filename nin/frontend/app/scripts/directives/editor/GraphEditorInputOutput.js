@@ -10,7 +10,7 @@ for(let key in THREE) {
 
 let vector2toString = vector2 => `(${vector2.x}, ${vector2.y})`;
 
-class TextureInputPreview extends React.Component {
+class TexturePreview extends React.Component {
   render() {
     const value = this.props.item.getValue();
     if(!value) {
@@ -49,7 +49,8 @@ class TextureInputPreview extends React.Component {
 }
 
 const previews = {
-  TextureInput: TextureInputPreview
+  TextureInput: TexturePreview,
+  TextureOutput: TexturePreview
 };
 
 class GraphEditorInputOutput extends React.Component {

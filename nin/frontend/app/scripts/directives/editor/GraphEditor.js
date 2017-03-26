@@ -53,6 +53,24 @@ class GraphEditor extends React.Component {
     this.lastDragEventTime = performance.now();
     this.pinchZoomDistance = 0;
     this.isMouseDragging = false;
+    this.inspectedItem = null;
+  }
+
+  inspect(item) {
+    if(this.inspectedItem) {
+      this.inspectedItem.__isInspected = false;
+      const value = this.inspectedItem.getValue();
+      if(value == demo.renderer.overrideToScreenTexture) {
+        demo.renderer.overrideToScreenTexture = null;
+      }
+      if(item == this.inspectedItem) {
+        item = null;
+      }
+    }
+    this.inspectedItem = item;
+    if(item) {
+      item.__isInspected = true;
+    }
   }
 
   generateDepths() {
@@ -329,6 +347,13 @@ class GraphEditor extends React.Component {
                    this.props.nodes[toNodeId].active),
           key: `${fromNodeId}.${fromIOId}|${toNodeId}.${toIOId}`
         });
+      }
+    }
+
+    if(this.inspectedItem) {
+      const value = this.inspectedItem.getValue();
+      if(value instanceof THREE.Texture) {
+        demo.renderer.overrideToScreenTexture = value;
       }
     }
 

@@ -14,8 +14,28 @@ class GraphEditor extends React.Component {
       connectionEnd: {},
     };
 
-    this.loop = () => {
+    this.scaleAnimationStart = this.state.scale;
+    this.scaleAnimationEnd = this.state.scale;
+    this.scaleAnimationStartTime = 0;
+    this.scaleAnimationEndTime = 0;
+    this.scaleAnimationX = 0;
+    this.scaleAnimationY = 0;
+    this.time = 0;
+
+    this.loop = time => {
+      this.time = time;
       this.forceUpdate();
+      if(this.state.scale != this.scaleAnimationEnd) {
+        this.zoom(
+          smoothstep(
+            this.scaleAnimationStart,
+            this.scaleAnimationEnd,
+            ((time - this.scaleAnimationStartTime) /
+             (this.scaleAnimationEndTime -
+              this.scaleAnimationStartTime))),
+          this.scaleAnimationX,
+          this.scaleAnimationY);
+      }
       requestAnimationFrame(this.loop);
     };
 
@@ -180,7 +200,7 @@ class GraphEditor extends React.Component {
   }
 
   componentDidMount() {
-    this.loop();
+    requestAnimationFrame(this.loop);
     window.addEventListener('wheel', event => this.onWheel(event));
     let add = (a, b) => a + b;
     let get = key => item => item[key];
@@ -255,7 +275,12 @@ class GraphEditor extends React.Component {
   onWheel(event) {
     const wheel = event.deltaY / 120;
     const scale = Math.max(0.5, this.state.scale * (1 - wheel));
-    this.zoom(scale, event.offsetX, event.offsetY);
+    this.scaleAnimationStart = this.state.scale;
+    this.scaleAnimationEnd = scale;
+    this.scaleAnimationStartTime = this.time;
+    this.scaleAnimationEndTime = this.time + 100;
+    this.scaleAnimationX = event.offsetX;
+    this.scaleAnimationY = event.offsetY;
   }
 
   render() {

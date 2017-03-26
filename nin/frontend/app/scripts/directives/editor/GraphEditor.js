@@ -254,7 +254,7 @@ class GraphEditor extends React.Component {
 
   onWheel(event) {
     const wheel = event.deltaY / 120;
-    const scale = Math.max(1, this.state.scale * (1 - wheel));
+    const scale = Math.max(0.5, this.state.scale * (1 - wheel));
     this.zoom(scale, event.offsetX, event.offsetY);
   }
 

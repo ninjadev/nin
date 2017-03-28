@@ -32,6 +32,26 @@ const generate = function(projectRoot, type, name, options) {
       });
       break;
 
+    case 'threeNode':
+      generateLayer(camelizedName,
+        'TemplateTHREENode.js',
+        [[/TemplateTHREENode/g, camelizedName]],
+        projectRoot);
+
+      graph.transform(projectRoot, function(g) {
+        g.push(Object.assign({
+          id: name,
+          type: camelizedName,
+        }, options));
+      }, function(err) {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log(`-> added ${name} to graph.json`);
+        }
+      });
+      break;
+
     case 'shaderNode':
       {
         const shaderFilename = name + 'Node';

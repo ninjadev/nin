@@ -167,6 +167,15 @@ function menubar($window, commands, ninrc) {
           }
         },
         {
+          name: 'THREE Node',
+          action: 'generateTHREENode',
+          invoke: () =>  {
+            commands.pause();
+            const nodeName = $window.prompt("Enter a name for the node:");
+            commands.generate('threeNode', nodeName);
+          }
+        },
+        {
           name: 'Shader Node',
           action: 'generateShaderNode',
           invoke: () =>  {

@@ -154,8 +154,8 @@ const compile = function(projectPath, options) {
         'FRAME_FOR_BEAN=function placeholder(){};' +
         'BEAN_FOR_FRAME=function placeholder(){};' +
         data +
-        'var layers = JSON.parse(atob(FILES["res/layers.json"]));' +
-        'demo=bootstrap({layers:layers, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +
+        'var graph = JSON.parse(atob(FILES["res/graph.json"]));' +
+        'demo=bootstrap({graph:graph, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +
         '</script>';
       writeDemoToFile(html, 'demo.html') +
         process.stdout.write('Successfully compiled demo.html!\n');
@@ -178,7 +178,10 @@ const compile = function(projectPath, options) {
           ];
           const jsCode = [].concat.apply(
             [], globPaths.map(globPath => glob.sync(globPath)))
-            .map(filename => fs.readFileSync(filename, 'utf8'));
+            .map(path => ({
+              src: fs.readFileSync(path, 'utf8'),
+              path
+            }));
           const out = closureCompiler.compile({
             jsCode: jsCode
           });

@@ -16,7 +16,7 @@ function loadMusic() {
   var _analyserNode = webAudioContext.createAnalyser();
   _analyserNode.fftSize = 2048;
   var bufferLength = _analyserNode.frequencyBinCount;
-  var fftBuffer = new Uint8Array(bufferLength);
+  var fftBuffer = new Float32Array(bufferLength);
   _analyserNode.connect(_gainNode);
 
   var _currentLocalTime = 0;
@@ -27,7 +27,7 @@ function loadMusic() {
     paused: true,
 
     _calculateFFT: function() {
-      _analyserNode.getByteTimeDomainData(fftBuffer);
+      _analyserNode.getFloatFrequencyData(fftBuffer);
     },
 
     getFFT: function() {

@@ -19,6 +19,28 @@ window['bootstrap'] = function(options) {
     container = c;
   };
 
+  if(options.graph) {
+    let graph = options.graph;
+    for (let nodeInfo of graph) {
+      let node = demo.nm.createNode(nodeInfo);
+      demo.nm.insertOrReplaceNode(node);
+      console.log('inserting', node);
+    }
+
+    for (let nodeInfo of graph) {
+      for (let inputName in nodeInfo.connected) {
+        let fromNodeId = nodeInfo.connected[inputName].split('.')[0];
+        let toNodeId = nodeInfo.id;
+        let outputName = nodeInfo.connected[inputName].split('.')[1];
+        demo.nm.connect(
+          fromNodeId,
+          outputName,
+          toNodeId,
+          inputName);
+      }
+    }
+  }
+
   var currentFrame = 0;
 
   demo.update = function(frame) {

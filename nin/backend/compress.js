@@ -72,15 +72,14 @@ function compress(projectPath, payload, htmlPreamble, metadata, callback) {
           'setTimeout(function(){l(offset + stride);}, 0);' +
         '} else {' +
           's=buf.join("").replace(/\\0/g, " ");' +
-          'console.log("howdyo", s.slice(0, 1000));' +
           'GU=1;' + /* hack to make sure GU exisits from the get-go */
           'BEAN=0;' + 
           'BEAT=false;' +
           'FRAME_FOR_BEAN=function placeholder(){};' +
           'BEAN_FOR_FRAME=function placeholder(){};' +
           '(1,eval)(s);' +
-          'var layers = JSON.parse(atob(FILES["res/layers.json"]));' +
-          'demo=bootstrap({layers:layers, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +
+          'var graph = JSON.parse(atob(FILES["res/graph.json"]));' +
+          'demo=bootstrap({graph:graph, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +
         '}' +
       '}' +
     '}</script>' +

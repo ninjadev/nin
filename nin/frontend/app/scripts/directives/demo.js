@@ -1,4 +1,4 @@
-function demo($interval, demo, $timeout) {
+function demo($interval, demo, $timeout, commands) {
   return {
     restrict: 'E',
     template: '<div class=demo-container></div>',
@@ -39,8 +39,6 @@ function demo($interval, demo, $timeout) {
 
       $timeout(function(){
         demo.start();
-        demo.music.pause();
-        demo.jumpToFrame(0);
       }, 0);
     }
   };

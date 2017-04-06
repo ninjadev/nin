@@ -1,5 +1,6 @@
 class BottomCtrl {
-  constructor($scope, commands, demo, $window) {
+  constructor($scope, commands, $window) {
+    this.commands = commands;
     this.xScale = 1;
 
     $scope.$watch('main.duration', () => this.updateXScale($scope));
@@ -49,7 +50,7 @@ class BottomCtrl {
 
     $scope.$watch('main.currentFrame', nextFrame => {
       if (this.loopActive && nextFrame >= this.loopEnd) {
-        demo.jumpToFrame(this.loopStart);
+        commands.jumpToFrame(this.loopStart);
       }
     });
   }
@@ -63,7 +64,7 @@ class BottomCtrl {
   }
 
   musicLayerClick($event) {
-    demo.jumpToFrame(this.getClickOffset($event).x / this.xScale | 0);
+    this.commands.jumpToFrame(this.getClickOffset($event).x / this.xScale | 0);
   }
 
   updateXScale($scope) {

@@ -19,8 +19,57 @@ window['bootstrap'] = function(options) {
     container = c;
   };
 
-  var currentFrame = 0;
+  const localTimingSrc = new TIMINGSRC.TimingObject();
+  const timingSrc = new TIMINGSRC.SkewConverter(localTimingSrc, 0);
+  const frameTimingSrc = new TIMINGSRC.ScaleConverter(
+      timingSrc, options.frameRateInHz || 60);
 
+  if (options.remoteTimingSrc) {
+    const app = MCorp.app(options.remoteTimingSrc, {
+      anon: true
+    });
+
+    app.run = () => {
+      const remoteTimingSrc = new TIMINGSRC.TimingObject({
+        provider: app.motions['nin']
+      });
+      timingSrc.timingsrc = remoteTimingSrc;
+    };
+
+    app.init();
+  }
+
+  demo.pause = () => {
+    timingSrc.update({ velocity: 0 });
+  };
+
+  demo.play = () => {
+    timingSrc.update({ velocity: 1 });
+  };
+
+  demo.playPause = () => {
+    if (timingSrc.vel != 0.0) {
+      demo.pause();
+    } else {
+      demo.play();
+    }
+  };
+
+  demo.jog = (frames) => {
+    frameTimingSrc.update({
+      position: frameTimingSrc.pos + frames
+    });
+  };
+
+  demo.jumpToFrame = (position) => {
+    frameTimingSrc.update({ position });
+  };
+
+  demo.setPlaybackRate = (velocity) => {
+    timingSrc.update({ velocity });
+  };
+
+  var currentFrame = 0;
   demo.update = function(frame) {
     currentFrame = frame;
     demo.nm.update(frame);
@@ -56,6 +105,19 @@ window['bootstrap'] = function(options) {
   demo.resize();
 
   demo.music = loadMusic();
+  timingSrc.on('change', () => {
+    demo.music.setCurrentTime(timingSrc.pos);
+
+    if (demo.music.paused) {
+      if (timingSrc.vel >= 0) {
+        demo.music.play();
+      }
+    } else {
+      if (timingSrc.vel == 0) {
+        demo.music.pause();
+      }
+    }
+  })
 
   initBeatBean();
 
@@ -63,32 +125,12 @@ window['bootstrap'] = function(options) {
     render: demo.render,
     update: demo.update,
     renderer: demo.renderer,
-    music: demo.music
+    music: demo.music,
+    timingSrc
   });
 
   demo.getCurrentFrame = function() {
     return currentFrame;
-  };
-
-  demo.jumpToFrame = function(frame) {
-    var time = (frame / 60) * 1000;
-    if (time > demo.music.getDuration() * 1000) {
-      time = demo.music.getDuration() * 1000;
-      frame = (time / 1000) * 60;
-    }
-    else if (frame < 0) {
-      frame = 0;
-      time = 0;
-    }
-    demo.music.setCurrentTime(time / 1000);
-    demo.looper.time = time;
-    demo.looper.oldTime = time;
-    demo.looper.deltaTime = 0;
-    demo.looper.currentFrame = frame;
-    updateBeatBean(frame);
-    demo.nm.jumpToFrame(frame);
-    demo.update(frame);
-    demo.render(demo.renderer, 0);
   };
 
   function progress(percent) {
@@ -99,20 +141,18 @@ window['bootstrap'] = function(options) {
     console.log('finished loading :)');
   }
 
-  Loader.start(options.onprogress || progress, options.oncomplete || finished);
-
   demo.start = function() {
     container.insertBefore(demo.renderer.domElement, container.firstChild);
     demo.resize();
     demo.warmup();
-    demo.jumpToFrame(0);
-    demo.music.play();
     demo.looper.loop();
   };
 
   demo.warmup = function() {
     demo.nm.warmup();
   }
+
+  Loader.start(options.onprogress || progress, options.oncomplete || finished);
 
   return demo;
 };

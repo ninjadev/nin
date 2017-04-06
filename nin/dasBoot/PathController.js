@@ -18,12 +18,18 @@ PathController.prototype.parse3Dkeyframes = function(keyframes) {
       easing: keyframes[i].easing
     };
     if (this_pos.type == 'circle') {
-      this_pos.radius = keyframes[i].radius;
-      this_pos.center = new THREE.Vector3(
-        keyframes[i].center[0], keyframes[i].center[1], keyframes[i].center[2]
-      );
+      this_pos.radius = new PathController([{
+        startFrame: keyframes[i].startFrame,
+        endFrame: keyframes[i].endFrame,
+        points: keyframes[i].radius,
+      }], '1D');
+      this_pos.center = new PathController([{
+        startFrame: keyframes[i].startFrame,
+        endFrame: keyframes[i].endFrame,
+        points: keyframes[i].center,
+      }], '3D');
       this_pos.offset = keyframes[i].offset || 0;
-      this_pos.length = keyframes[i].length || 0;
+      this_pos.length = keyframes[i].length || 1;
       if (keyframes[i].up) {
         var up = new THREE.Vector3(
           keyframes[i].up[0], keyframes[i].up[1], keyframes[i].up[2]
@@ -152,12 +158,12 @@ PathController.prototype.get3Dpoint = function(frame) {
     t += current.offset;
     t *= current.length;
     var point = new THREE.Vector3(
-      Math.sin(t * Math.PI * 2) * current.radius,
+      Math.sin(t * Math.PI * 2) * current.radius.getPoint(frame),
       0,
-      Math.cos(t * Math.PI * 2) * current.radius
+      Math.cos(t * Math.PI * 2) * current.radius.getPoint(frame)
     );
     point.applyAxisAngle(current.rotator, current.angle);
-    point.add(current.center);
+    point.add(current.center.get3Dpoint(frame));
     return point;
   }
 };

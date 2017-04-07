@@ -25,6 +25,7 @@ class MainCtrl {
 
     this.demo = demo;
     this.fullscreen = false;
+    this.showFramingOverlay = false;
     this.inspectedLayer = null;
     this.mute = localStorage.getItem('nin-mute') ? true : false;
     if (localStorage.hasOwnProperty('nin-volume')) {
@@ -35,6 +36,10 @@ class MainCtrl {
 
     commands.on('generate', (type, name) => {
       socket.sendEvent('generate', {type: type, name: name});
+    });
+
+    commands.on('toggleFramingOverlay', () => {
+      this.showFramingOverlay = !this.showFramingOverlay;
     });
 
     commands.on('toggleFullscreen', () => {

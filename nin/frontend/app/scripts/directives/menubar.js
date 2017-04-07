@@ -119,6 +119,12 @@ function menubar($window, commands, ninrc) {
           invoke: () => commands.toggleStats()
         },
         {
+          name: 'Toggle framing overlay',
+          action: 'toggleFramingOverlay',
+          defaultKeybind: 'o',
+          invoke: () => commands.toggleFramingOverlay()
+        },
+        {
           name: 'Toggle fullscreen',
           action: 'toggleFullscreen',
           defaultKeybind: 'enter',

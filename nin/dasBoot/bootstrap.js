@@ -13,6 +13,8 @@ window['bootstrap'] = function(options) {
 
   Loader.setRootPath(options.rootPath || '');
 
+  initBeatBean();
+
   demo.nm = new NodeManager(demo);
 
   demo.setContainer = function(c) {
@@ -78,8 +80,6 @@ window['bootstrap'] = function(options) {
   demo.resize();
 
   demo.music = loadMusic();
-
-  initBeatBean();
 
   demo.looper = createLoop({
     render: demo.render,

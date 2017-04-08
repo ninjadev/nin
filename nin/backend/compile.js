@@ -151,8 +151,6 @@ const compile = function(projectPath, options) {
         'GU=1;' + /* hack to make sure GU exisits from the get-go */
         'BEAN=0;' +
         'BEAT=false;' +
-        'FRAME_FOR_BEAN=function placeholder(){};' +
-        'BEAN_FOR_FRAME=function placeholder(){};' +
         data +
         'var graph = JSON.parse(atob(FILES["res/graph.json"]));' +
         'demo=bootstrap({graph:graph, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +

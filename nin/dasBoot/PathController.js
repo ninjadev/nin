@@ -91,8 +91,11 @@ PathController.prototype.parseKeyframes = function(keyframes) {
       easing: keyframes[i].easing
     };
 
-    var raw_points =
-      keyframes[i].value || keyframes[i].point || keyframes[i].points;
+    var raw_points = keyframes[i].hasOwnProperty('value')
+      ? keyframes[i].value
+      : keyframes[i].hasOwnProperty('point')
+        ? keyframes[i].point
+        : keyframes[i].points;
 
     if (raw_points) {
       if (typeof raw_points === 'number') {

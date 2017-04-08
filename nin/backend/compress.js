@@ -75,8 +75,6 @@ function compress(projectPath, payload, htmlPreamble, metadata, callback) {
           'GU=1;' + /* hack to make sure GU exisits from the get-go */
           'BEAN=0;' + 
           'BEAT=false;' +
-          'FRAME_FOR_BEAN=function placeholder(){};' +
-          'BEAN_FOR_FRAME=function placeholder(){};' +
           '(1,eval)(s);' +
           'var graph = JSON.parse(atob(FILES["res/graph.json"]));' +
           'demo=bootstrap({graph:graph, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +

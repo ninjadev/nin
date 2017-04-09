@@ -13,8 +13,6 @@ const stream = require('stream');
 const utils = require('./utils');
 const walk = require('walk');
 
-const pngOptimizer = new OptiPng(['-o7']);
-
 
 function moveCursorToColumn(col) {
   return '\x1B[' + col + 'G';
@@ -60,6 +58,8 @@ function res(projectPath, callback) {
       const s = new stream.Readable();
       s.push(file);
       s.push(null);
+
+      const pngOptimizer = new OptiPng(['-o7']);
       s.pipe(pngOptimizer).on('data', data => {
         chunks.push(data);
       }).on('end', () => {

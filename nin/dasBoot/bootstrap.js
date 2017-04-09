@@ -6,8 +6,8 @@ window['bootstrap'] = function(options) {
 
   var container = document.body;
 
-  demo.renderer = new THREE.WebGLRenderer({maxLights: 10, antialias: true});
-  demo.renderer.setClearColor(0x000000, 1);
+  demo.renderer = new THREE.WebGLRenderer({maxLights: 10, antialias: true, alpha: true});
+  demo.renderer.setClearColor(0x000000, 0);
   demo.renderer.sortObjects = true;
   demo.renderer.autoClear = false;
 

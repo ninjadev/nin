@@ -44,7 +44,7 @@ function watch(projectPath, cb) {
                   chalk.magenta(path));
     }
 
-    cb(event, {path: path});
+    cb(event, {path: path.replace(/\\/g,"/")});
 
     // Maintain list of files that the frontend will need to load initially
     if (event === 'add') {

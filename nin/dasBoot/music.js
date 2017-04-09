@@ -26,12 +26,18 @@ function loadMusic() {
   return {
     paused: true,
 
+    audioContext: webAudioContext,
+
     _calculateFFT: function() {
       _analyserNode.getFloatFrequencyData(fftBuffer);
     },
 
     getFFT: function() {
       return fftBuffer;
+    },
+
+    getFftSize: function() {
+      return _analyserNode.fftSize;
     },
 
     setCurrentTime: function(currentTime) {

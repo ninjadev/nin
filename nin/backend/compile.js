@@ -46,7 +46,7 @@ function res(projectPath, callback) {
     root = root.replace(/\/\//g, '/');
 
     const file = fs.readFileSync(root + stat.name);
-    process.stdout.write('- Assimilating ' + chalk.grey('res/') + chalk.magenta(stat.name));
+    process.stdout.write('- Assimilating ' + chalk.grey(root.slice(projectPath.length + 1)) + chalk.magenta(stat.name));
     function pushFinishedFile(file) {
       files.push('FILES[\'' + root.slice(projectPath.length + 1) + stat.name + '\']=\'' +
         file.toString('base64') + '\'');

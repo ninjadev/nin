@@ -29,8 +29,10 @@ program
   .command('compile')
   .description('Compile the nin project')
   .option('--no-png-compression', 'Do not use the .png.html compression trick')
+  .option('--no-optimize-png-assets', 'Do not use optipng to optimize assets')
   .action(options => compile.compile(utils.findProjectRootOrExit(process.cwd()), {
-    pngCompress: options.pngCompression
+    pngCompress: options.pngCompression,
+    optimizePngAssets: options.optimizePngAssets
   }));
 
 program

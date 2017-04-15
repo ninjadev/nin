@@ -57,8 +57,7 @@ const generate = function(projectRoot, type, name, options) {
         const shaderFilename = name + 'Node';
         generateLayer(shaderFilename,
           'TemplateShaderNode.js',
-          [[/TemplateShaderNode/g, shaderFilename],
-           [/TemplateShader/g, name]],
+          [[/TemplateShaderNode/g, shaderFilename]],
           projectRoot);
 
         generateShader(name, projectRoot);
@@ -67,7 +66,9 @@ const generate = function(projectRoot, type, name, options) {
           graph.push({
             id: name,
             type: shaderFilename,
-            options: {},
+            options: {
+              shader: name,
+            },
           });
         }, err => {
           if (err) {

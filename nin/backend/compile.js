@@ -33,7 +33,7 @@ function renderError() {
     chalk.grey('[') + chalk.red('❌ ERROR') + chalk.grey(']'));
 }
 
-function res(projectPath, callback) {
+function res(projectPath, options, callback) {
   const walker = walk.walk(projectPath + '/res/' , {followLinks: false});
   const files = [];
   console.log(chalk.yellow('\nCollecting files from res/'));
@@ -53,7 +53,7 @@ function res(projectPath, callback) {
       renderOK();
       next();
     }
-    if(stat.name.slice(-4).toLowerCase() == '.png') {
+    if(options.optimizePngAssets && stat.name.slice(-4).toLowerCase() == '.png') {
       const chunks = [];
       const s = new stream.Readable();
       s.push(file);
@@ -159,7 +159,7 @@ const compile = function(projectPath, options) {
         process.stdout.write('Successfully compiled demo.html!\n');
     }
   }
-  res(projectPath, function(data) {
+  res(projectPath, options, function(data) {
     const genPath = p.join(projectPath, '/gen/');
     rmdir(genPath, function() {
       mkdirp(genPath, function() {

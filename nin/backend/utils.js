@@ -6,10 +6,25 @@ const execSync = require('child_process').execSync;
 const ninPackageJson = require('../../package.json');
 
 function getProjectMetadata(projectPath) {
+  let projectSettings = ps.load(projectPath);
+  let projectOrigin;
+  let projectVersion;
+  try {
+    projectOrigin = execSync('git config --get remote.origin.url', {
+      stdio: ['ignore', 'pipe', 'ignore']
+    });
+    projectVersion = execSync('git rev-parse HEAD', {
+      stdio: ['ignore', 'pipe', 'ignore']
+    });
+  } catch(e) {
+    projectOrigin = 'unknown-origin';
+    projectVersion = 'unknown-version';
+  }
+
   return {
-    projectSettings: ps.load(projectPath),
-    projectVersion: execSync('git rev-parse HEAD'),
-    projectOrigin: execSync('git config --get remote.origin.url'),
+    projectSettings,
+    projectVersion,
+    projectOrigin,
   };
 }
 

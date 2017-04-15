@@ -15,9 +15,14 @@ function init(dirname) {
     console.error(chalk.red(e));
     process.exit(1);
   }
-  child_process.execSync(
-      `git init ${projectPath}`,
-      {stdio: 'inherit'});
+
+  try {
+    child_process.execSync(
+        `git init ${projectPath}`,
+        {stdio: 'inherit'});
+  } catch(e) {
+    console.log('Couldn\'t initialize git project');
+  }
 
   glob(path.join(__dirname, 'blank-project/*'), {dot: true}, function(error, files) {
     let numberOfRemainingFiles = files.length;

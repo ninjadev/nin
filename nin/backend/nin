@@ -1,8 +1,5 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const path = require('path');
-
 const compile = require('./compile');
 const generate = require('./generate/generate');
 const init = require('./init');

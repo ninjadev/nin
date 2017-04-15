@@ -1,13 +1,20 @@
 # nin
 
-![](http://i.imgur.com/ObCrMxz.jpg)
+![](https://github.com/ninjadev/nin/blob/master/nin-preview.PNG)
 
 > nin is ninjatool
 
-nin is Ninjadev's internal demo tool. It is a tool for easing development of browser-based WebGL demos.
+nin is Ninjadev's internal demo tool.
+It is a tool for easing development of browser-based WebGL demos.
+Core features include:
 
-This project has a node backend that keeps track of all files and compiles files as they are edited.
-The frontend of this project is written in Angular and displays among other the layers that the demo consists of.
+- Node-based demotool, effortlessly reuse your effects, scenes, and create crazy transitions.
+- Livereloading of shaders and scenes in the browser. No more manual recompilation!
+- Tight THREE.js integration for all your WebGL needs.
+- Compile and pack your WebGL demo to a .png.html file for easy compo delivery
+
+The backend component is written in node.js, and keeps track of and recompiles changed files.
+The frontend is a mix of react and angular components, which communicates with the backend over websockets.
 
 # User manual
 
@@ -21,20 +28,54 @@ This projects requires node version `7.1.0` or newer.
 Running `nin new <dirname>` will create the specified directory and initialize a new nin project inside.
 Running `nin run` inside the newly created project will make it accessible on http://localhost:8000.
 
-## nin is now node-based!
+## My First Node
 
-Nin just became node-based instead of layer-based.
-Here is a list of gotchas to watch out for if you are used to layer-based nin:
+Create a new node by clicking `Generate -> THREE NODE` in the frontend menu.
+The node will be placed in `src/nodeName.js` and added to the graph in `res/graph.json`.
+You must connect the node yourself to the output node.
+This is done by setting `connected.screen` to `nodeName.render` as in the example below,
+where `nodeName` is the id of the node you want to connect to the display.
 
-- Changing res/graph.json does *not* trigger updates in a running nin instance.
+```json
+{
+    "id": "root",
+        "type": "NIN.RootNode",
+        "connected": {
+            "screen": "nodeName.render"
+        }
+    }
+}
+```
+
+## Shaders
+
+Create a shader by clicking `Generate -> Shader Node` in the frontend menu.
+It will be placed in the folder `src/shaders/nameOfTheShader/`.
+To get livereload on shader change, you shader must be specified in the options object of your node in `res/graph.json`,
+the shader generator will do this for you.
+If needed, you can access the shader through the global `SHADERS` object, by writing `SHADERS.nameOfTheShader`.
 
 ## Compiling
+
 The `nin compile` command will create a single file `bin/demo.png.html` that contains all the code and resources of your demo.
 Base64 and PNG compression magic is used to achieve this.
 To compile without PNG compression, use `nin compile --no-png-compression`.
-That will yield a slightly larger file, but more browsers will be able to run it.
+That will yield a slightly larger file, but more browsers and smartphones will be able to run it.
 
-You must have java installed for the `nin compile` command to work.
+## .ninrc
+
+Many of nin's settings can be overriden by placing a .ninrc file in your home directory.
+Currently, keyboard shortcuts is the only behavior which can be changed in the .ninrc.
+The list of canonical names for keybindings can be found in
+[nin/frontend/app/scripts/directives/menubar.js](https://github.com/ninjadev/nin/blob/master/nin/frontend/app/scripts/directives/menubar.js).
+
+An example .ninrc looks like the following:
+
+```
+[keybinds]
+startRendering=left
+stopRendering=right
+```
 
 ## Rendering to video
 
@@ -73,32 +114,6 @@ See the `.eslintrc.js` file in the frontend part of this project.
 The demo itself and our own `dasBoot` uses the Google Closure Linter, please see this link for installation information.
 `https://developers.google.com/closure/utilities/docs/linter_howto`
 Use the `--nojsdoc` flag.
-
-## Shaders
-
-Every project has its own shader folder.
-This folder has a folder for each shader.
-These shaders will be compiled into the global object `SHADERS`, so to access a shader one would write for instance `SHADERS.example`.
-
-If your shader only needs for instance a vertex shader but not a fragment shader NIN will fall back to a default set of shaders.
-The only rules you need to oblige is that:
-- The uniform file needs to include `tDiffuse`
-- The vertex shader needs to pass on vUv (uv)
-
-## .ninrc
-
-Many of nin's settings can be overriden by placing a .ninrc file in your home directory.
-Currently, keyboard shortcuts is the only behavior which can be changed in the .ninrc.
-The list of canonical names for keybindings can be found in
-[nin/frontend/app/scripts/directives/menubar.js](https://github.com/ninjadev/nin/blob/master/nin/frontend/app/scripts/directives/menubar.js).
-
-An example .ninrc looks like the following:
-
-```
-[keybinds]
-startRendering=left
-stopRendering=right
-```
 
 ## Testimonials / Reviews
 

@@ -94,16 +94,22 @@ const serve = function(
     const sockets = express();
     const sockets_server = require('http').createServer(sockets);
     const sock = socket(projectPath, function(conn) {
+      const directoryPrecedence = {'lib': 0, 'src': 1, 'res': 2};
       const sortedPaths = watcher.paths.sort(function(a, b) {
-        const directoryPrecedence = {'lib': 0, 'src': 1, 'res': 2};
         const directoryAScore = directoryPrecedence[a.slice(0, 3)];
         const directoryBScore = directoryPrecedence[b.slice(0, 3)];
 
         if(directoryAScore == directoryBScore) {
-          return a > b;
+          if (a > b) {
+            return 1;
+          } else if (a < b) {
+            return -1;
+          } else {
+            return 0;
+          }
         }
 
-        return directoryAScore > directoryBScore;
+        return directoryAScore - directoryBScore;
       });
 
       for (const i in sortedPaths) {

@@ -81,7 +81,7 @@ const generate = function(projectRoot, type, name, options) {
       break;
 
     default:
-      process.stderr.write('Attempted to generate resource without generator:', type, '\n');
+      process.stderr.write(`Attempted to generate resource without generator: ${type}\n`);
   }
 };
 

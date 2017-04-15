@@ -1,7 +1,6 @@
 (function(global) {
   class TemplateShaderNode extends NIN.ShaderNode {
     constructor(id, options) {
-      options.shader = SHADERS.TemplateShader;
       super(id, options);
     }
 

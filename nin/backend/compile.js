@@ -179,6 +179,7 @@ const compile = function(projectPath, options) {
               path
             }));
           const out = closureCompiler.compile({
+            compilationLevel: options.whitespaceOnly ? 'WHITESPACE_ONLY' : 'SIMPLE',
             jsCode: jsCode
           });
           if(out.errors.length) {

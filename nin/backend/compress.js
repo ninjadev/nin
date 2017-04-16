@@ -60,9 +60,10 @@ function compress(projectPath, payload, htmlPreamble, metadata, callback) {
       'var buf=[];' +
       'var stride = 1000000;' +
       'console.log("total length", d.length);' +
-      'l(0);' + 
+      'l(0);' +
       'function l(offset) {' +
         'console.log("L", offset);' +
+        'ONPROGRESS && ONPROGRESS(offset/d.length*80);' +
         'for(i=offset;i < offset + stride && i<d.length;i+=4){' +
           'buf.push(String.fromCharCode(d[i]));' +
           'buf.push(String.fromCharCode(d[i+1]));' +
@@ -73,7 +74,7 @@ function compress(projectPath, payload, htmlPreamble, metadata, callback) {
         '} else {' +
           's=buf.join("").replace(/\\0/g, " ");' +
           'GU=1;' + /* hack to make sure GU exisits from the get-go */
-          'BEAN=0;' + 
+          'BEAN=0;' +
           'BEAT=false;' +
           '(1,eval)(s);' +
           'var graph = JSON.parse(atob(FILES["res/graph.json"]));' +

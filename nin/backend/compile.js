@@ -170,7 +170,6 @@ const compile = function(projectPath, options) {
         dasbootGen(projectPath),
       ]);
 
-      process.stdout.write(chalk.yellow('\nRunning closure compiler'));
       const globPaths = [
         projectPath + '/gen/*.js ',
         projectPath + '/lib/*.js ',
@@ -182,21 +181,26 @@ const compile = function(projectPath, options) {
           src: fs.readFileSync(path, 'utf8'),
           path
         }));
-      const out = closureCompiler.compile({
-        jsCode: jsCode
-      });
-      if(out.errors.length) {
-        renderError();
-        out.errors.map(console.error);
-        process.exit(1);
-      } else if(out.warnings.length) {
-        renderWarn();
-        out.warnings.map(console.error);
-      } else {
+      if (!options.closureCompiler) {
+        process.stdout.write(chalk.yellow('\nConcatenating source files'));
+        const sources = jsCode.map(file => file.src).join(';');
         renderOK();
+        collect(sources);
+      } else {
+        process.stdout.write(chalk.yellow('\nRunning closure compiler'));
+        const out = closureCompiler.compile({jsCode});
+        if(out.errors.length) {
+          renderError();
+          out.errors.map(console.error);
+          process.exit(1);
+        } else if(out.warnings.length) {
+          renderWarn();
+          out.warnings.map(console.error);
+        } else {
+          renderOK();
+        }
+        collect(out.compiledCode);
       }
-
-      collect(out.compiledCode);
     });
   });
 };

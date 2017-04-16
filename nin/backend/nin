@@ -26,9 +26,8 @@ program
   .command('compile')
   .description('Compile the nin project')
   .option('--no-optimize-png-assets', 'Do not use optipng to optimize assets')
-  .action(options => compile.compile(utils.findProjectRootOrExit(process.cwd()), {
-    optimizePngAssets: options.optimizePngAssets
-  }));
+  .option('--whitespace-only', 'Only remove whitespace with Google Closure Compiler (faster)')
+  .action(options => compile.compile(utils.findProjectRootOrExit(process.cwd()), options));
 
 program
   .command('run [port]')

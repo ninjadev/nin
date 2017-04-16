@@ -52,7 +52,7 @@ Loader.prototype.start = function(onprogress, oncomplete) {
   var waitingCount = maxWaitingCount;
   var that = this;
   function registerAsLoaded(item) {
-    onprogress(100 - waitingCount / maxWaitingCount * 100);
+    onprogress(100 - waitingCount / maxWaitingCount * 20);
     if(!--waitingCount) {
       that.itemsToLoad.length = 0;
       that.itemsToAjax.length = 0;

@@ -1,5 +1,4 @@
 const bodyParser = require('body-parser');
-const concat = require('concat-files');
 const express = require('express');
 const fs = require('fs');
 const ini = require('ini');
@@ -7,10 +6,10 @@ const mkdirp = require('mkdirp');
 const os = require('os');
 const p = require('path');
 const projectSettings = require('./projectSettings');
-const readDir = require('readdir');
 const socket = require('./socket');
 const utils = require('./utils');
 const watch = require('./watch');
+const dasbootGen = require('./dasbootGen');
 
 const serve = function(
     projectPath,
@@ -19,21 +18,7 @@ const serve = function(
   const genPath = p.join(projectPath, 'gen');
   mkdirp.sync(genPath);
 
-  const dasBootSourceDirectoryPath = p.join(__dirname, '../dasBoot');
-  const dasBootLibSourceFilePaths = readDir.readSync(
-    dasBootSourceDirectoryPath,
-    ['lib/*.js'],
-    readDir.ABSOLUTE_PATHS
-  ).sort();
-  let dasBootSourceFilePaths = readDir.readSync(
-    dasBootSourceDirectoryPath,
-    ['*.js'],
-    readDir.ABSOLUTE_PATHS
-  ).sort();
-
-  const dasBootDestinationFilePath = p.join(projectPath, 'gen/dasBoot.js');
-  concat(dasBootLibSourceFilePaths.concat(dasBootSourceFilePaths),
-         dasBootDestinationFilePath, function() {
+  dasbootGen(projectPath, function() {
     /* eslint-disable */
     projectSettings.generate(projectPath);
 

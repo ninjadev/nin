@@ -31,6 +31,12 @@ New project created with nin get a default .eslintrc suitable for WebGL demos wi
 Running `nin new <dirname>` will create the specified directory and initialize a new nin project inside.
 Running `nin run` inside the newly created project will make it accessible on http://localhost:8000.
 
+nin creates a manifest file called `nin.json`.
+You should fill out this file with the title of your demo, the authors, a description, song metadata, and even a google analytics tracking code to collect statistics.
+The metadata is then used to generate html meta-tags in the head of the demo,
+as well as in the metadata segment of the `.png.html` file.
+The png metadata can be viewed with a command such as `pngcheck -c -t -7 bin/demo.png.html` on linux.
+
 ## My First Node
 
 Create a new node by clicking `Generate -> THREE NODE` in the frontend menu.

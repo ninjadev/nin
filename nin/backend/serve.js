@@ -9,7 +9,7 @@ const projectSettings = require('./projectSettings');
 const socket = require('./socket');
 const utils = require('./utils');
 const watch = require('./watch');
-const dasbootGen = require('./dasbootGen');
+const dasbootGen = require('./dasbootgen');
 
 const serve = function(
     projectPath,

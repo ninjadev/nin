@@ -48,6 +48,7 @@ const serve = async function(
     };
 
     if (filename == 'graph.json') {
+      event.name = 'graph';
       event.type = 'graph';
       event.content = content;
     } else if (path.endsWith('.camera.json')) {

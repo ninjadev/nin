@@ -1,13 +1,40 @@
-class MainCtrl {
-  constructor(socket, demo, commands, $window, $timeout, render) {
+const React = require('react');
+const SocketController = require('../socket');
+const Bottom = require('./bottom');
+const MenuBar = require('./menubar');
+const GraphEditor = require('./editor/GraphEditor');
+const DemoPlayer = require('./demoplayer');
+const commands = require('../commands');
+const demo = require('../demo');
+require('../utils/render');
+
+class Main extends React.Component {
+  constructor(props) {
+    super(props);
+
     this.themes = [
       'dark',
       'light'
     ];
 
+    const socketController = new SocketController();
+
     this.fileCache = {};
 
-    this.selectedTheme = localStorage.getItem('selectedTheme') || 'dark';
+    this.state = {
+      graph: undefined,
+      selectedTheme: localStorage.getItem('selectedTheme') || 'dark',
+      fullscreen: false,
+      showFramingOverlay: false,
+      mute: localStorage.getItem('nin-mute') ? true : false,
+      volume: 1,
+      globalJSErrors: {},
+    };
+
+    if (localStorage.hasOwnProperty('nin-volume')) {
+      this.state.volume = +localStorage.getItem('nin-volume');
+    }
+
     commands.on('selectTheme', theme => {
       var foundTheme = false;
       for(var i = 0; i < this.themes.length; i++) {
@@ -19,43 +46,34 @@ class MainCtrl {
       if(!foundTheme) {
         return;
       }
-      this.selectedTheme = theme;
+      this.setState({selectedTheme: theme});
       localStorage.setItem('selectedTheme', theme);
     });
 
-    this.demo = demo;
-    this.fullscreen = false;
-    this.showFramingOverlay = false;
-    this.inspectedLayer = null;
-    this.mute = localStorage.getItem('nin-mute') ? true : false;
-    if (localStorage.hasOwnProperty('nin-volume')) {
-      this.volume = +localStorage.getItem('nin-volume');
-    } else {
-      this.volume = 1;
-    }
-
     commands.on('generate', (type, name) => {
-      socket.sendEvent('generate', {type: type, name: name});
+      socketController.sendEvent('generate', {type: type, name: name});
     });
 
     commands.on('toggleFramingOverlay', () => {
-      this.showFramingOverlay = !this.showFramingOverlay;
+      this.setState({showFramingOverlay: !this.state.showFramingOverlay});
     });
 
     commands.on('toggleFullscreen', () => {
-      this.fullscreen = !this.fullscreen;
+      this.setState({fullscreen: !this.state.fullscreen});
     });
 
     commands.on('toggleMusic', () => {
-      this.mute = !this.mute;
-      if (this.mute) {
+      this.setState({mute: !this.state.mute});
+      if (!this.state.mute) {
         localStorage.setItem('nin-mute', 1);
+        demo.music.setVolume(0);
       } else {
         localStorage.removeItem('nin-mute');
+        demo.music.setVolume(this.state.volume);
       }
     });
 
-    socket.onopen = function() {
+    socketController.socket.onopen = function() {
       console.log('nin socket connection established', arguments);
     };
 
@@ -72,8 +90,7 @@ class MainCtrl {
     }
 
     var layerShaderDependencies = {};
-    this.globalJSErrors = this.globalJSErrors || {};
-    socket.on('add change', event => {
+    socketController.on('add change', event => {
       try {
         switch (event.type) {
         case 'graph':
@@ -88,7 +105,7 @@ class MainCtrl {
             // This hack only works due to not-yet received
             // nodes created through generate not having
             // any connections / friends.
-            $timeout(() => {
+            setTimeout(() => {
               let node = demo.nm.createNode(nodeInfo);
               demo.nm.insertOrReplaceNode(node);
             }, 200);
@@ -107,7 +124,7 @@ class MainCtrl {
             }
           }
 
-          this.graph = graph;
+          this.setState({graph});
           Loader.start(function() {}, function() {});
           break;
 
@@ -125,7 +142,7 @@ class MainCtrl {
           var indirectEval = eval;
           indirectEval(event.content);
 
-          for (const nodeInfo of this.graph) {
+          for (const nodeInfo of this.state.graph) {
             if (nodeInfo.options && nodeInfo.options.shader === event.name) {
               var node = demo.nm.createNode(nodeInfo);
               demo.nm.insertOrReplaceNode(node);
@@ -141,9 +158,9 @@ class MainCtrl {
           var indirectEval = eval;
           indirectEval(event.content);
 
-          if(this.graph) {
-            for(var i = 0; i < this.graph.length; i++) {
-              var nodeInfo = this.graph[i];
+          if(this.state.graph) {
+            for(var i = 0; i < this.state.graph.length; i++) {
+              var nodeInfo = this.state.graph[i];
               if(nodeInfo.type == event.name) {
                 var node = demo.nm.createNode(nodeInfo);
                 demo.nm.insertOrReplaceNode(node);
@@ -156,20 +173,69 @@ class MainCtrl {
           break;
         }
 
-        delete this.globalJSErrors[event.type];
+        const globalJSErrors = Object.assign({}, this.state.globalJSErrors);
+        delete globalJSErrors[event.type];
+        this.setState({globalJSErrors});
       } catch (e) {
         e.context = "WS load of " + event.name + " failed";
         e.type = event.type;
         e.name = event.name;
-        this.globalJSErrors[event.type] = e;
+
+        const globalJSErrors = Object.assign({}, this.state.globalJSErrors);
+        globalJSErrors[event.type] = e;
+        this.setState({globalJSErrors});
       }
     });
 
-    socket.onclose = e => {
+    socketController.socket.onclose = e => {
       console.log('nin socket connection closed', e);
-      this.disconnected = true;
+      this.setState({disconnected: true});
     };
+  }
+
+  render() {
+    return (
+      <div>
+        <link rel="stylesheet" href={`styles/${this.state.selectedTheme}.css`} />
+
+        { this.state.disconnected
+          ? <div className="disconnect-banner">
+              Disconnected from the nin backend!
+              Try refreshing, and perhaps restarting <code>nin</code> too.
+            </div>
+          : null
+        }
+
+        <MenuBar />
+
+        <div className='top-panel'>
+          <div className='node-area-container'>
+            <div className='graph-editor'>
+              <GraphEditor
+                graph={this.state.graph}
+                demo={demo}
+                nodes={demo.nm.nodes}
+                >
+              </GraphEditor>
+            </div>
+          </div>
+
+          <DemoPlayer
+            fileCache={this.fileCache}
+            demo={demo}
+            fullscreen={this.state.fullscreen}
+            showFramingOverlay={this.state.showFramingOverlay}
+            globalJSErrors={this.state.globalJSErrors}
+            />
+        </div>
+
+        <Bottom
+          selectedTheme={this.state.selectedTheme}
+          demo={demo}
+          />
+
+      </div>);
   }
 }
 
-module.exports = MainCtrl;
+module.exports = Main;

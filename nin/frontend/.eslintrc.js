@@ -9,7 +9,6 @@ module.exports = {
     "ecmascript": 6,
   },
   "plugins": ["babel"],
-  "extends": "angular",
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 2015,
@@ -46,14 +45,5 @@ module.exports = {
       "off",
       "smart"
     ],
-    "angular/no-service-method": ["off"],
-    "angular/controller-name": ["off"],
-    "angular/window-service": ["off"],
-    "angular/document-service": ["off"],
-    "angular/di-unused": ["error"],
-    "angular/definedundefined": ["off"],
-    "angular/log": ["off"],
-    "angular/json-functions": ["off"],
-    "angular/angularelement": ["off"],
   }
 };

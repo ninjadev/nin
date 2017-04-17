@@ -1,7 +1,7 @@
 .PHONY: all
 all:
 	yarn install
-	node_modules/.bin/webpack
+	NODE_ENV=production node_modules/.bin/webpack -p
 
 .PHONY: run
 run:

@@ -149,3 +149,4 @@ To be able to publish you need access to the `ninjadev` user on npm whose passwo
 - [Inakuwa Oasis](https://github.com/ninjadev/en)
 - [Stars and boxes](https://github.com/iver56/abel-demo-14)
 - [Crankwork Steamfist](https://github.com/ninjadev/dix)
+- [What Are You Syncing About?](https://github.com/ninjadev/re)

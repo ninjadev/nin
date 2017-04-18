@@ -115,7 +115,7 @@ const serve = function(
     files.use(express.static(projectPath));
     files.use(bodyParser.json({limit: '50mb'}));
     files.post('/', function(req, res){
-      const filename = '' + req.body.frame;
+      let filename = '' + req.body.frame;
       while(filename.length < 7) {
         filename = '0' + filename;
       }

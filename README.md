@@ -1,5 +1,8 @@
 # nin
 
+*DISCLAIMER*: This is a tool created for internal use by Ninjadev, and is open sourced to share ideas with and get feedback from the community.
+You are free to use it, according to the License, but we will not necessarily provide support and may at any time add, change or remove features as we require for our productions.
+
 ![](https://github.com/ninjadev/nin/blob/master/nin-preview.PNG)
 
 > nin is ninjatool

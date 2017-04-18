@@ -3,7 +3,7 @@
     "id": "root",
     "type": "NIN.RootNode",
     "connected": {
-        "screen": "spinningCube.render"
+        "screen": "SpinningCube.render"
     }
   }
 ]

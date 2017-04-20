@@ -7,6 +7,12 @@ class BottomCtrl {
       $scope.$apply(() => this.updateXScale($scope));
     });
 
+    $scope.getBarNumberDisplay = () => {
+      const quaver = (BEAN / PROJECT.music.subdivision | 0) % 4;
+      const bar = BEAN / PROJECT.music.subdivision / 4 | 0;
+      return `${bar}:${quaver}`;
+    };
+
     this.$window = $window;
 
     this.loopStart = null;

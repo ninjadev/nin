@@ -44,7 +44,7 @@ const serve = async function(
     const content = fs.readFileSync(p.join(projectPath, path), 'utf-8');
 
     const event = {
-      path: path
+      path: path.replace(path.sep, '/'),
     };
 
     if (filename == 'graph.json') {
@@ -52,22 +52,22 @@ const serve = async function(
       event.content = content;
     } else if (path.endsWith('.camera.json')) {
       event.type = 'camera';
-      event.path = path;
       event.content = content;
-    } else if (path.indexOf('/shaders/') !== -1) {
+    } else if (path.split(p.sep).includes('shaders')) {
       event.type = 'shader';
       event.content = data.out;
-      event.shadername = p.basename(p.dirname(path));
+      event.name = p.basename(p.dirname(path));
     } else {
       event.type = 'node';
       event.content = content;
+      event.name = p.parse(path).name;
     }
 
     return event;
   };
 
   const watcher = watch(projectPath, function(event, data) {
-    if (event !== 'add' && event !== 'change') {
+    if (!['add', 'change'].includes(event)) {
       return;
     }
 
@@ -95,8 +95,8 @@ const serve = async function(
       return directoryAScore - directoryBScore;
     });
 
-    for (const i in sortedPaths) {
-      conn.send('add', eventFromPath({path: sortedPaths[i]}));
+    for (const path of sortedPaths) {
+      conn.send('add', eventFromPath({path}));
     }
   });
 

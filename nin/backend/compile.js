@@ -164,35 +164,36 @@ const compile = function(projectPath, options) {
       mkdirp(genPath, function() {
         fs.writeFileSync(projectPath + '/gen/files.js', new Buffer(data));
         projectSettings.generate(projectPath);
-        shaderGen(projectPath, function() {
-          dasbootGen(projectPath, function() {
-            process.stdout.write(chalk.yellow('\nRunning closure compiler'));
-            const globPaths = [
-              projectPath + '/gen/*.js ',
-              projectPath + '/lib/*.js ',
-              projectPath + '/src/*.js',
-            ];
-            const jsCode = [].concat.apply(
-              [], globPaths.map(globPath => glob.sync(globPath)))
-              .map(path => ({
-                src: fs.readFileSync(path, 'utf8'),
-                path
-              }));
-            const out = closureCompiler.compile({
-              jsCode: jsCode
-            });
-            if(out.errors.length) {
-              renderError();
-              out.errors.map(console.error);
-              process.exit(1);
-            } else if(out.warnings.length) {
-              renderWarn();
-              out.warnings.map(console.error);
-            } else {
-              renderOK();
-            }
-            collect(out.compiledCode);
+        shaderGen(projectPath, async function() {
+          await dasbootGen(projectPath);
+
+          process.stdout.write(chalk.yellow('\nRunning closure compiler'));
+          const globPaths = [
+            projectPath + '/gen/*.js ',
+            projectPath + '/lib/*.js ',
+            projectPath + '/src/*.js',
+          ];
+          const jsCode = [].concat.apply(
+            [], globPaths.map(globPath => glob.sync(globPath)))
+            .map(path => ({
+              src: fs.readFileSync(path, 'utf8'),
+              path
+            }));
+          const out = closureCompiler.compile({
+            jsCode: jsCode
           });
+          if(out.errors.length) {
+            renderError();
+            out.errors.map(console.error);
+            process.exit(1);
+          } else if(out.warnings.length) {
+            renderWarn();
+            out.warnings.map(console.error);
+          } else {
+            renderOK();
+          }
+
+          collect(out.compiledCode);
         });
       });
     });

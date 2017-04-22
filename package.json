@@ -27,6 +27,9 @@
     "sockjs": "0.3.16",
     "walk": "2.3.9"
   },
+  "engines" : {
+    "node" : ">=7.9.0"
+  },
   "scripts": {
     "lint": "cd nin/backend && eslint . || true"
   },

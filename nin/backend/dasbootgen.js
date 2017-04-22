@@ -3,7 +3,7 @@ const readDir = require('readdir');
 const concat = require('concat-files');
 
 
-function dasbootGen(projectPath, cb) {
+async function dasbootGen(projectPath) {
   const dasBootSourceDirectoryPath = p.join(__dirname, '../dasBoot');
   const dasBootLibSourceFilePaths = readDir.readSync(
     dasBootSourceDirectoryPath,
@@ -17,9 +17,12 @@ function dasbootGen(projectPath, cb) {
   ).sort();
 
   const dasBootDestinationFilePath = p.join(projectPath, 'gen/dasBoot.js');
-  concat(dasBootLibSourceFilePaths.concat(dasBootSourceFilePaths),
-         dasBootDestinationFilePath,
-         cb);
+
+  return new Promise(resolve => {
+    concat(dasBootLibSourceFilePaths.concat(dasBootSourceFilePaths),
+           dasBootDestinationFilePath,
+           resolve);
+  });
 }
 
 module.exports = dasbootGen;

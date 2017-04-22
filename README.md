@@ -24,7 +24,8 @@ The frontend is a mix of react and angular components, which communicates with t
 ## Installing nin
 
 To install nin simply run the command `npm install -g ninjadev-nin`.
-This projects requires node version `7.1.0` or newer.
+This projects requires node version `7.9.0` or newer.
+You can install node from packaging [here](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions) or download zipped source from [this page](https://nodejs.org/en/download/current/) and verify signatures with the guide [here](https://github.com/nodejs/node/#verifying-binaries);
 
 You will also need `git` installed for project generation to work.
 New project created with nin get a default .eslintrc suitable for WebGL demos with THREE.js.

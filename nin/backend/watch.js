@@ -1,7 +1,7 @@
 const p = require('path');
 const chalk = require('chalk');
 const chokidar = require('chokidar');
-const sg = require('./shadergen');
+const shaderGen = require('./shadergen');
 
 
 function watch(projectPath, cb) {
@@ -69,15 +69,15 @@ function watch(projectPath, cb) {
     if (event === 'add' || event === 'change') {
       const pathParts = path.split(p.sep);
       console.log(chalk.yellow('Recompiling shaders:'), chalk.magenta(pathParts[2]));
-      sg.shaderGen(projectPath, function(out) {
+      shaderGen(projectPath, function(out) {
         cb(event, {path, out});
       });
     }
   });
 
-  sg.shaderGen(projectPath, function() {});
+  shaderGen(projectPath, function() {});
 
-  return {paths: paths};
+  return {paths};
 }
 
 module.exports = watch;

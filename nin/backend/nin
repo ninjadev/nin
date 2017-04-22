@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
 const compile = require('./compile');
-const generate = require('./generate/generate');
 const newProject = require('./new-project');
 const program = require('commander');
 const render = require('./render');
@@ -39,14 +38,6 @@ program
   .command('render')
   .description('Render recorded pngs to a video file')
   .action(() => render.render(utils.findProjectRootOrExit(process.cwd())));
-
-program
-  .command('generate [resource] [name]')
-  .description('Generate resources')
-  .action((resource, name) => {
-    const projectRoot = utils.findProjectRootOrExit(process.cwd());
-    generate.generate(projectRoot, resource, name);
-  });
 
 const result = program.parse(process.argv);
 

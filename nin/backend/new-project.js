@@ -6,7 +6,7 @@ const path = require('path');
 const projectSettings = require('./projectSettings');
 
 
-async function init(dirname) {
+module.exports = async function newProject(dirname) {
   const projectPath = path.join(process.cwd(), dirname);
 
   try {
@@ -24,6 +24,4 @@ async function init(dirname) {
     console.log(chalk.red(e));
     process.exit(1);
   }
-}
-
-module.exports = {init: init};
+};

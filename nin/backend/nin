@@ -2,7 +2,7 @@
 
 const compile = require('./compile');
 const generate = require('./generate/generate');
-const init = require('./init');
+const newProject = require('./new-project');
 const program = require('commander');
 const render = require('./render');
 const serve = require('./serve');
@@ -20,7 +20,7 @@ program
   .command('new')
   .description('Turns <dirname> into a nin project')
   .arguments('<dirname>', 'Where to create the new project')
-  .action(dirname => init.init(dirname));
+  .action(newProject);
 
 program
   .command('compile')

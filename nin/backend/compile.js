@@ -2,12 +2,10 @@ const chalk = require('chalk');
 const glob = require('glob');
 const closureCompiler = require('google-closure-compiler-js');
 const compress = require('./compress').compress;
-const fs = require('fs');
-const mkdirp = require('mkdirp');
+const fs = require('fs-promise');
 const OptiPng = require('optipng');
 const p = require('path');
 const projectSettings = require('./projectSettings');
-const rmdir = require('rimraf');
 const shaderGen = require('./shadergen').shaderGen;
 const stream = require('stream');
 const utils = require('./utils');
@@ -38,7 +36,7 @@ function res(projectPath, options, callback) {
   const walker = walk.walk(projectPath + '/res/' , {followLinks: false});
   const files = [];
   console.log(chalk.yellow('\nCollecting files from res/'));
-  walker.on('file', function(root, stat, next) {
+  walker.on('file', async function(root, stat, next) {
 
     /* hacks to ensure slashes in path are correct.
      * TODO: is there a bug in walker that causes
@@ -46,7 +44,7 @@ function res(projectPath, options, callback) {
     root += '/';
     root = root.replace(/\/\//g, '/');
 
-    const file = fs.readFileSync(root + stat.name);
+    const file = await fs.readFile(root + stat.name);
     process.stdout.write('- Assimilating ' + chalk.grey(root.slice(projectPath.length + 1)) + chalk.magenta(stat.name));
     function pushFinishedFile(file) {
       files.push('FILES[\'' + root.slice(projectPath.length + 1) + stat.name + '\']=\'' +
@@ -67,7 +65,7 @@ function res(projectPath, options, callback) {
         const newFile = Buffer.concat(chunks);
         const percentage = (((file.length / newFile.length - 1) * 10000) | 0) / 100;
         process.stdout.write(
-            `\n    OptiPng: saved ` +
+            '\n    OptiPng: saved ' +
             chalk.cyan(`${(file.length - newFile.length) / 1024 | 0}KB`) + 
             ' (' +
             chalk.green(`${percentage}%`) + ' reduction)');
@@ -85,14 +83,7 @@ function res(projectPath, options, callback) {
 }
 
 const compile = function(projectPath, options) {
-  function collect(data) {
-    function writeDemoToFile(data, filename) {
-      const binPath = p.join(projectPath, '/bin/');
-      mkdirp(binPath, function() {
-        fs.writeFileSync(projectPath + '/bin/' + filename, data);
-      });
-    }
-
+  async function collect(data) {
     const {
       projectSettings,
       projectVersion,
@@ -133,9 +124,9 @@ const compile = function(projectPath, options) {
         ogTags);
 
     process.stdout.write(chalk.yellow('\nCompressing demo to .png.html'));
-    compress(projectPath, data, htmlPreamble, metadata, function(data) {
+    compress(projectPath, data, htmlPreamble, metadata, async function(data) {
       renderOK();
-      writeDemoToFile(data, 'demo.png.html');
+      await fs.outputFile(p.join(projectPath, 'bin', 'demo.png.html'), data);
       console.log(chalk.white('\n★ ---------------------------------------- ★'));
       console.log(chalk.white('| ') +
         chalk.green('Successfully compiled ') +
@@ -155,47 +146,46 @@ const compile = function(projectPath, options) {
       'var graph = JSON.parse(atob(FILES["res/graph.json"]));' +
       'demo=bootstrap({graph:graph, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +
       '</script>';
-    writeDemoToFile(html, 'demo.html') +
-      process.stdout.write('Successfully compiled demo.html!\n');
+    await fs.outputFile(p.join(projectPath, 'bin', 'demo.html'), html);
+    process.stdout.write('Successfully compiled demo.html!\n');
   }
-  res(projectPath, options, function(data) {
+
+  res(projectPath, options, async function(data) {
     const genPath = p.join(projectPath, '/gen/');
-    rmdir(genPath, function() {
-      mkdirp(genPath, function() {
-        fs.writeFileSync(projectPath + '/gen/files.js', new Buffer(data));
-        projectSettings.generate(projectPath);
-        shaderGen(projectPath, async function() {
-          await dasbootGen(projectPath);
+    await fs.remove(genPath);
+    await fs.outputFile(p.join(genPath, 'files.js'), data);
 
-          process.stdout.write(chalk.yellow('\nRunning closure compiler'));
-          const globPaths = [
-            projectPath + '/gen/*.js ',
-            projectPath + '/lib/*.js ',
-            projectPath + '/src/*.js',
-          ];
-          const jsCode = [].concat.apply(
-            [], globPaths.map(globPath => glob.sync(globPath)))
-            .map(path => ({
-              src: fs.readFileSync(path, 'utf8'),
-              path
-            }));
-          const out = closureCompiler.compile({
-            jsCode: jsCode
-          });
-          if(out.errors.length) {
-            renderError();
-            out.errors.map(console.error);
-            process.exit(1);
-          } else if(out.warnings.length) {
-            renderWarn();
-            out.warnings.map(console.error);
-          } else {
-            renderOK();
-          }
+    projectSettings.generate(projectPath);
+    shaderGen(projectPath, async function() {
+      await dasbootGen(projectPath);
 
-          collect(out.compiledCode);
-        });
+      process.stdout.write(chalk.yellow('\nRunning closure compiler'));
+      const globPaths = [
+        projectPath + '/gen/*.js ',
+        projectPath + '/lib/*.js ',
+        projectPath + '/src/*.js',
+      ];
+      const jsCode = [].concat.apply(
+        [], globPaths.map(globPath => glob.sync(globPath)))
+        .map(path => ({
+          src: fs.readFileSync(path, 'utf8'),
+          path
+        }));
+      const out = closureCompiler.compile({
+        jsCode: jsCode
       });
+      if(out.errors.length) {
+        renderError();
+        out.errors.map(console.error);
+        process.exit(1);
+      } else if(out.warnings.length) {
+        renderWarn();
+        out.warnings.map(console.error);
+      } else {
+        renderOK();
+      }
+
+      collect(out.compiledCode);
     });
   });
 };

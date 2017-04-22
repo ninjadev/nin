@@ -1,10 +1,9 @@
-const fs = require('fs');
+const fs = require('fs-promise');
 const path = require('path');
 const utils = require('../utils');
 const graph = require('../graph');
-const mkdirp = require('mkdirp');
 
-const generate = function(projectRoot, type, name, options) {
+const generate = async function(projectRoot, type, name, options) {
   if (type == '' || name == '') {
     return;
   }
@@ -13,7 +12,7 @@ const generate = function(projectRoot, type, name, options) {
 
   switch (type) {
     case 'node':
-      generateLayer(camelizedName,
+      generateNode(camelizedName,
         'TemplateNode.js',
         [[/TemplateNode/g, camelizedName]],
         projectRoot);
@@ -33,7 +32,7 @@ const generate = function(projectRoot, type, name, options) {
       break;
 
     case 'threeNode':
-      generateLayer(camelizedName,
+      generateNode(camelizedName,
         'TemplateTHREENode.js',
         [[/TemplateTHREENode/g, camelizedName]],
         projectRoot);
@@ -55,12 +54,16 @@ const generate = function(projectRoot, type, name, options) {
     case 'shaderNode':
       {
         const shaderFilename = name + 'Node';
-        generateLayer(shaderFilename,
+        generateNode(shaderFilename,
           'TemplateShaderNode.js',
           [[/TemplateShaderNode/g, shaderFilename]],
           projectRoot);
 
-        generateShader(name, projectRoot);
+        await fs.copy(
+          path.join(__dirname, 'templateShader'),
+          path.join(projectRoot, 'src', 'shaders', name)
+        );
+        console.log(`-> added ${name} to src`);
 
         graph.transform(projectRoot, graph => {
           graph.push({
@@ -85,39 +88,16 @@ const generate = function(projectRoot, type, name, options) {
   }
 };
 
-const generateShader = function(shaderName, projectRoot) {
-  const targetShaderPath = path.join(projectRoot, 'src', 'shaders', shaderName),
-    templateShaderPath = path.join(__dirname, 'templateShader');
+const generateNode = async function(nodeName, templateFile, filters, projectRoot) {
+  const nodeFilename = nodeName + '.js';
+  let templateNode = await fs.readFile(path.join(__dirname, templateFile), 'utf-8');
 
-  mkdirp.sync(targetShaderPath);
-  fs.readdirSync(templateShaderPath).forEach(function (fileName) {
-    const from = path.join(templateShaderPath, fileName),
-      to = path.join(targetShaderPath, fileName);
-    fs.createReadStream(from).pipe(fs.createWriteStream(to));
-  });
-
-  console.log(`-> added ${shaderName} to src`);
-};
-
-const generateLayer = function(layerName, templateFile, filters, projectRoot) {
-  const layerFileName = layerName + '.js';
-  const newLayer = path.join(projectRoot, 'src', layerFileName);
-
-  mkdirp.sync(path.join(projectRoot, 'src'));
-  if (fs.existsSync(newLayer)) {
-    process.stderr.write('Layer ' + layerFileName + ' already exists\n');
-    process.exit(1);
+  for (let [from, to] of filters) {
+    templateNode = templateNode.replace(from, to);
   }
 
-  templateFile = path.join(__dirname, templateFile);
-  let templateLayer = fs.readFileSync(templateFile, 'utf-8');
-
-  for (let i=0; i<filters.length; i++) {
-    templateLayer = templateLayer.replace(filters[i][0], filters[i][1]);
-  }
-
-  fs.writeFileSync(newLayer, templateLayer);
-  console.log(`-> added ${layerFileName} to src`);
+  await fs.outputFile(path.join(projectRoot, 'src', nodeFilename), templateNode);
+  console.log(`-> added ${nodeFilename} to src`);
 };
 
 module.exports = {generate};

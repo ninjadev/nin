@@ -1,8 +1,7 @@
 const bodyParser = require('body-parser');
 const express = require('express');
-const fs = require('fs');
+const fs = require('fs-promise');
 const ini = require('ini');
-const mkdirp = require('mkdirp');
 const os = require('os');
 const p = require('path');
 const projectSettings = require('./projectSettings');
@@ -16,8 +15,7 @@ const serve = async function(
     frontendPort=8000,
     backendPort=9000) {
   const genPath = p.join(projectPath, 'gen');
-  mkdirp.sync(genPath);
-
+  await fs.emptyDir(genPath);
   await dasbootGen(projectPath);
   /* eslint-disable */
   projectSettings.generate(projectPath);
@@ -130,7 +128,7 @@ const serve = async function(
     res.writeHead(200);
     res.end('OK');
   });
-  mkdirp.sync(projectPath + '/bin/render/');
+  await fs.ensureDir(p.join(projectPath, 'bin', 'render'));
   files.listen(backendPort);
 
   const pm = utils.getProjectMetadata(projectPath);

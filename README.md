@@ -3,7 +3,7 @@
 *DISCLAIMER*: This is a tool created for internal use by Ninjadev, and is open sourced to share ideas with and get feedback from the community.
 You are free to use it, according to the License, but we will not necessarily provide support and may at any time add, change or remove features as we require for our productions.
 
-![](https://github.com/ninjadev/nin/blob/master/nin-preview.PNG)
+![](https://github.com/ninjadev/nin/raw/master/nin-preview.PNG)
 
 > nin is ninjatool
 
@@ -17,7 +17,7 @@ Core features include:
 - Compile and pack your WebGL demo to a .png.html file for easy compo delivery
 
 The backend component is written in node.js, and keeps track of and recompiles changed files.
-The frontend is a mix of react and angular components, which communicates with the backend over websockets.
+The frontend is created using React, and communicates with the backend over websockets.
 
 # User manual
 

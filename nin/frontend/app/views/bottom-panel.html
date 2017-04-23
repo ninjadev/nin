@@ -12,6 +12,15 @@
       </span>
     </div>
     <div class="beat-bean-panel">
+      <label>BEAT</label>
+      <span
+        class=value
+        title="Global music BEAT boolean for frame"
+        >
+        {{ bottom.$window.BEAT }}
+      </span>
+    </div>
+    <div class="beat-bean-panel">
       <label>BEAN</label>
       <span
         class=value
@@ -19,7 +28,16 @@
         >
         {{ bottom.$window.BEAN }}
       </span>
-      </div>
+    </div>
+    <div class="beat-bean-panel">
+      <label>Bar</label>
+      <span
+        class=value
+        title="Global music bar:quaver number for frame"
+        >
+        {{ getBarNumberDisplay() }}
+      </span>
+    </div>
   </div>
 
   <div
@@ -68,9 +86,11 @@
     <div
       waveform
       duration="{{main.duration}}"
+      xScale="{{bottom.xScale}}"
       class="layer musiclayer"
       ng-click="bottom.musicLayerClick($event)"
-      style="width: {{ main.duration * bottom.xScale }}px">
+      style="width: {{ main.duration * bottom.xScale }}px"
+      >
       &nbsp;
     </div>
 

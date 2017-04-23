@@ -1,7 +1,6 @@
 const demo = require('../demo');
 const commands = require('../commands');
 
-let currentFrame;
 let currentlyRendering = false;
 let currentTimeout;
 
@@ -19,8 +18,13 @@ commands.on('stopRendering', () => {
 
 function render(i) {
   i = i || 0;
-  currentFrame = i;
   demo.jumpToFrame(i);
+  const currentFrame = demo.getCurrentFrame();
+  if (currentFrame < i) {
+    currentlyRendering = false;
+    return;
+  }
+
   const image = demo.renderer.domElement.toDataURL('image/png');
 
   fetch('/render', {
@@ -31,7 +35,7 @@ function render(i) {
     body: JSON.stringify({
       type: 'render-frame',
       image: image,
-      frame: i
+      frame: currentFrame,
     })
   });
 

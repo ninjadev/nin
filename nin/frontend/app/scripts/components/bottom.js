@@ -52,7 +52,7 @@ class BottomPanel extends React.Component {
       if (this.loopActive && props.demo.getCurrentFrame() >= this.loopEnd) {
         demo.jumpToFrame(this.loopStart);
       }
-      var rect = $('body')[0].getBoundingClientRect();
+      var rect = document.body.getBoundingClientRect();
       this.setState({
         xScale: rect.width / (this.props.demo.music.getDuration() * 60),
         currentFrame: props.demo.getCurrentFrame(),
@@ -65,7 +65,7 @@ class BottomPanel extends React.Component {
   }
 
   getClickOffset(e) {
-    var target = $('.layers-bar-container')[0];
+    var target = document.querySelector('.layers-bar-container');
     var rect = target.getBoundingClientRect();
     var offsetX = (e.clientX - rect.left) | 0;
     var offsetY = (e.clientY - rect.top) | 0;

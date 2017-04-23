@@ -1,7 +1,3 @@
-const $ = require('jquery');
-window.$ = $;
-window.jQuery = $;
-
 const React = require('react');
 const ReactDOM = require('react-dom');
 

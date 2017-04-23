@@ -96,7 +96,7 @@ window['bootstrap'] = function(options) {
     var time = (frame / 60) * 1000;
     if (time > demo.music.getDuration() * 1000) {
       time = demo.music.getDuration() * 1000;
-      frame = (time / 1000) * 60;
+      frame = (time / 1000) * 60 | 0;
     }
     else if (frame < 0) {
       frame = 0;

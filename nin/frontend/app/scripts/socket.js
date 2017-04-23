@@ -2,7 +2,7 @@ const SockJS = require('sockjs-client');
 
 class SocketController {
   constructor() {
-    this.socket = new SockJS('//localhost:1337/socket');
+    this.socket = new SockJS('/socket');
 
     this.handlers = {};
 

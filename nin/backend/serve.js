@@ -12,15 +12,14 @@ const dasbootGen = require('./dasbootgen');
 
 const serve = async function(
     projectPath,
-    frontendPort=8000,
-    backendPort=9000) {
+    frontendPort=8000) {
   const genPath = p.join(projectPath, 'gen');
   await fs.emptyDir(genPath);
   await dasbootGen(projectPath);
-  /* eslint-disable */
   projectSettings.generate(projectPath);
 
   const frontend = express();
+  const server = require('http').createServer(frontend);
   frontend.use(express.static(p.join(__dirname, '../frontend/dist')));
   frontend.get('/.ninrc', (req, res) => {
     let content = {};
@@ -36,7 +35,6 @@ const serve = async function(
 
     res.send(JSON.stringify(content));
   });
-  frontend.listen(frontendPort);
 
   const eventFromPath = function(data) {
     const path = data.path;
@@ -75,8 +73,6 @@ const serve = async function(
     sock.broadcast(event, eventFromPath(data));
   });
 
-  const sockets = express();
-  const sockets_server = require('http').createServer(sockets);
   const sock = socket(projectPath, function(conn) {
     const directoryPrecedence = {'lib': 0, 'src': 1, 'res': 2};
     const sortedPaths = watcher.paths.sort(function(a, b) {
@@ -101,19 +97,11 @@ const serve = async function(
     }
   });
 
-  sock.server.installHandlers(sockets_server, {prefix: '/socket'});
-  sockets_server.listen(1337, '0.0.0.0');
+  sock.server.installHandlers(server, {prefix: '/socket'});
 
-  const files = express();
-  files.use(function(req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers',
-               'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-  });
-  files.use(express.static(projectPath));
-  files.use(bodyParser.json({limit: '50mb'}));
-  files.post('/', function(req, res){
+  frontend.use('/project/', express.static(projectPath));
+  frontend.use(bodyParser.json({limit: '50mb'}));
+  frontend.post('/render', function(req, res){
     let filename = '' + req.body.frame;
     while(filename.length < 7) {
       filename = '0' + filename;
@@ -130,13 +118,13 @@ const serve = async function(
     res.end('OK');
   });
   await fs.ensureDir(p.join(projectPath, 'bin', 'render'));
-  files.listen(backendPort);
+
+  server.listen(frontendPort, '0.0.0.0');
 
   const pm = utils.getProjectMetadata(projectPath);
   const {name, version} = utils.getNinMetadata(projectPath);
 
-  console.log(`${name}@${version} serving ${pm.projectSettings.title} on port 8000`);
-/* eslint-enable*/
+  console.log(`${name}@${version} serving ${pm.projectSettings.title} on port ${frontendPort}`);
 };
 
 module.exports = {serve: serve};

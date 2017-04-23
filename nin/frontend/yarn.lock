@@ -662,7 +662,7 @@ babel-traverse@^6.15.0, babel-traverse@^6.22.0, babel-traverse@^6.23.0, babel-tr
     invariant "^2.2.0"
     lodash "^4.2.0"
 
-babel-types@^6.15.0, babel-types@^6.22.0, babel-types@^6.23.0:
+babel-types@^6.15.0, babel-types@^6.19.0, babel-types@^6.22.0, babel-types@^6.23.0:
   version "6.23.0"
   resolved "https://registry.yarnpkg.com/babel-types/-/babel-types-6.23.0.tgz#bb17179d7538bad38cd0c9e115d340f77e7e9acf"
   dependencies:
@@ -671,7 +671,7 @@ babel-types@^6.15.0, babel-types@^6.22.0, babel-types@^6.23.0:
     lodash "^4.2.0"
     to-fast-properties "^1.0.1"
 
-babel-types@^6.19.0, babel-types@^6.24.1:
+babel-types@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-types/-/babel-types-6.24.1.tgz#a136879dc15b3606bda0d90c1fc74304c2ff0975"
   dependencies:
@@ -1415,10 +1415,6 @@ eslint-loader@^1.6.3:
     object-assign "^4.0.1"
     object-hash "^1.1.4"
 
-eslint-plugin-angular@^1.6.2:
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-angular/-/eslint-plugin-angular-1.6.2.tgz#c22fe4339e4a847391d9ffafd03c46ffaf352b3a"
-
 eslint-plugin-babel@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/eslint-plugin-babel/-/eslint-plugin-babel-4.1.1.tgz#ef285c87039b67beb3bbd227f5b0eed4fb376b87"
@@ -2148,10 +2144,6 @@ jodid25519@^1.0.0:
 jquery-ui@1.12.1:
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/jquery-ui/-/jquery-ui-1.12.1.tgz#bcb4045c8dd0539c134bc1488cdd3e768a7a9e51"
-
-jquery@3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.1.1.tgz#347c1c21c7e004115e0a4da32cece041fad3c8a3"
 
 js-base64@^2.1.9:
   version "2.1.9"
@@ -3592,20 +3584,6 @@ supports-color@^3.1.0, supports-color@^3.1.2:
   dependencies:
     has-flag "^1.0.0"
 
-svg-pan-zoom@3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/svg-pan-zoom/-/svg-pan-zoom-3.3.0.tgz#da7235fe8bdd99189efea725cfed4ed547b4bf17"
-
-svg.draggable.js@2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/svg.draggable.js/-/svg.draggable.js-2.2.1.tgz#83b00ff6b9babf10fbd1c6f86e83f1ddb0204cbf"
-  dependencies:
-    svg.js "^2.0.1"
-
-svg.js@2.3.6, svg.js@^2.0.1:
-  version "2.3.6"
-  resolved "https://registry.yarnpkg.com/svg.js/-/svg.js-2.3.6.tgz#11ada72d942ff188fe88ae0127fa7c26ebb6a43f"
-
 svgo@^0.7.0:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/svgo/-/svgo-0.7.1.tgz#287320fed972cb097e72c2bb1685f96fe08f8034"
@@ -3815,10 +3793,6 @@ vm-browserify@0.0.4:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-0.0.4.tgz#5d7ea45bbef9e4a6ff65f95438e0a87c357d5a73"
   dependencies:
     indexof "0.0.1"
-
-w2ui@1.4.3:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/w2ui/-/w2ui-1.4.3.tgz#f87fb001b4ff9445b63d6ef35559a47779a12669"
 
 watchpack@^1.2.0:
   version "1.3.1"

@@ -155,7 +155,9 @@ class GraphEditor extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    setTimeout(() => this.reflowGraphLayout(), 0);  // eslint-disable-line angular/timeout-service
+    if (nextProps.graph) {
+      setTimeout(() => this.reflowGraphLayout(), 0);
+    }
   }
 
   coastLoop() {
@@ -223,7 +225,7 @@ class GraphEditor extends React.Component {
     let add = (a, b) => a + b;
     let get = key => item => item[key];
     let sum = reducable => [].reduce.call(reducable, add, 0);
-    setTimeout(() => {  // eslint-disable-line angular/timeout-service
+    setTimeout(() => {
       this.container.addEventListener('touchstart', event => {
         let x = sum([].map.call(event.touches, get('pageX'))) / event.touches.length;
         let y = sum([].map.call(event.touches, get('pageY'))) / event.touches.length;

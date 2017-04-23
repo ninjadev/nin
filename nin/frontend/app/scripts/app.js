@@ -1,21 +1,12 @@
 const $ = require('jquery');
 window.$ = $;
 window.jQuery = $;
-const angular = require('angular');
 
-const controllers = require('./controllers');
-const services = require('./services');
-const directives = require('./directives');
-const filters = require('./filters');
+const React = require('react');
+const ReactDOM = require('react-dom');
+
+const Main = require('./components/main');
+
+ReactDOM.render(<Main />, document.getElementById('root'));
 
 require('jquery-ui/themes/base/all.css');
-
-angular
-  .module('nin', [
-    require('angular-ui-bootstrap'),
-    require('angular-ui-layout'),
-    services,
-    controllers,
-    directives,
-    filters
-  ]);

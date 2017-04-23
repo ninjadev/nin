@@ -14,9 +14,9 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: [/node_modules/, /app\/lib/],
-        use: ['ng-annotate-loader', 'babel-loader', 'eslint-loader']
+        use: ['babel-loader', 'eslint-loader']
       },
       {
         test: /\.less$/,
@@ -42,7 +42,6 @@ module.exports = {
     new ExtractTextPlugin("styles/[name].css"),
     new CopyWebpackPlugin([
       {from: 'app/index.html'},
-      {from: 'app/views/', to: 'views'},
       {from: 'app/images/', to: 'images'},
       {from: 'app/fonts/', to: 'fonts'},
       {from: 'app/lib/FlyControls.js', to: 'lib'},

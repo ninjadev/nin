@@ -126,7 +126,7 @@ class MainCtrl {
           indirectEval(event.content);
 
           for (const nodeInfo of this.graph) {
-            if (nodeInfo.options && nodeInfo.options.shader === event.shadername) {
+            if (nodeInfo.options && nodeInfo.options.shader === event.name) {
               var node = demo.nm.createNode(nodeInfo);
               demo.nm.insertOrReplaceNode(node);
             }
@@ -137,17 +137,14 @@ class MainCtrl {
           break;
 
         case 'node':
-          this.fileCache[event.path] = event.content;
+          this.fileCache[event.name] = event.content;
           var indirectEval = eval;
           indirectEval(event.content);
 
-          var splitted = event.path.split('/');
-          var filename = splitted[splitted.length - 1];
-          var typename = filename.slice(0, -3);
           if(this.graph) {
             for(var i = 0; i < this.graph.length; i++) {
               var nodeInfo = this.graph[i];
-              if(nodeInfo.type == typename) {
+              if(nodeInfo.type == event.name) {
                 var node = demo.nm.createNode(nodeInfo);
                 demo.nm.insertOrReplaceNode(node);
               }
@@ -161,9 +158,9 @@ class MainCtrl {
 
         delete this.globalJSErrors[event.type];
       } catch (e) {
-        e.context = "WS load of " + event.path + " failed";
+        e.context = "WS load of " + event.name + " failed";
         e.type = event.type;
-        e.path = event.path;
+        e.name = event.name;
         this.globalJSErrors[event.type] = e;
       }
     });

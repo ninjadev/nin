@@ -45,7 +45,7 @@ function watch(projectPath, cb) {
                   chalk.magenta(path));
     }
 
-    cb(event, {path: path});
+    cb(event, {path});
 
     // Maintain list of files that the frontend will need to load initially
     if (event === 'add') {
@@ -70,7 +70,7 @@ function watch(projectPath, cb) {
       const pathParts = path.split(p.sep);
       console.log(chalk.yellow('Recompiling shaders:'), chalk.magenta(pathParts[2]));
       sg.shaderGen(projectPath, function(out) {
-        cb(event, {path: path, out: out});
+        cb(event, {path, out});
       });
     }
   });

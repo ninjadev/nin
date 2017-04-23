@@ -64,6 +64,12 @@ class BottomPanel extends React.Component {
     this.musicLayerClick = this.musicLayerClick.bind(this);
   }
 
+  getBarNumberDisplay() {
+    const quaver = (BEAN / PROJECT.music.subdivision | 0) % 4;
+    const bar = (BEAN / PROJECT.music.subdivision / 4) | 0;
+    return `${bar}:${quaver}`;
+  }
+
   getClickOffset(e) {
     var target = $('.layers-bar-container')[0];
     var rect = target.getBoundingClientRect();
@@ -89,6 +95,17 @@ class BottomPanel extends React.Component {
               { this.state.currentFrame }
             </span>
           </div>
+
+          <div className="beat-bean-panel">
+            <label>BEAT</label>
+            <span
+              className='value'
+              title="Global music BEAT boolean for frame"
+              >
+              { window.BEAT }
+            </span>
+          </div>
+
           <div className="beat-bean-panel">
             <label>BEAN</label>
             <span
@@ -96,6 +113,16 @@ class BottomPanel extends React.Component {
               title="Global music BEAT number for frame"
               >
               { window.BEAN }
+            </span>
+          </div>
+
+          <div className="beat-bean-panel">
+            <label>Bar</label>
+            <span
+              className='value'
+              title="Global music bar:quaver number for frame"
+              >
+              { this.getBarNumberDisplay() }
             </span>
           </div>
         </div>

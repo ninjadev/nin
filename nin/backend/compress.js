@@ -22,7 +22,7 @@ function chunk(type, data) {
   ]);
 }
 
-function compress(projectPath, payload, htmlPreamble, metadata, callback) {
+async function compress(projectPath, payload, htmlPreamble, metadata) {
 
   payload = new Buffer(payload, 'binary');
 
@@ -104,20 +104,22 @@ function compress(projectPath, payload, htmlPreamble, metadata, callback) {
     return Buffer.concat([new Buffer([0]), scanline]);
   }));
 
-  zlib.deflate(scanlinesBuffer, function(err, buffer){
-    let IDATData = Buffer.concat([
-      buffer,
-      positiveNumberToBytes(crc(scanlinesBuffer), 4)
-    ]);
-    let IDATChunk = chunk('IDAT', IDATData);
-    callback(Buffer.concat([
-      fileSignature,
-      IHDRChunk,
-      metadataChunks,
-      htMlChunk,
-      IDATChunk,
-      IENDChunk
-    ]));
+  return new Promise(resolve => {
+    zlib.deflate(scanlinesBuffer, function(err, buffer){
+      let IDATData = Buffer.concat([
+        buffer,
+        positiveNumberToBytes(crc(scanlinesBuffer), 4)
+      ]);
+      let IDATChunk = chunk('IDAT', IDATData);
+      resolve(Buffer.concat([
+        fileSignature,
+        IHDRChunk,
+        metadataChunks,
+        htMlChunk,
+        IDATChunk,
+        IENDChunk
+      ]));
+    });
   });
 }
 

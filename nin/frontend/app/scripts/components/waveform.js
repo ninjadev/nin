@@ -17,7 +17,7 @@ class WaveformWrapper extends React.Component {
     if(innerColor) {
       var waveform;
       var request = new XMLHttpRequest();
-      request.open('GET', '//localhost:9000/' + PROJECT.music.path, true);
+      request.open('GET', '/project/' + PROJECT.music.path, true);
       request.responseType = 'arraybuffer';
       request.onload = () => {
         context.decodeAudioData(request.response, buffer => {

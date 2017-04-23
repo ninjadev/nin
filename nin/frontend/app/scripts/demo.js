@@ -2,7 +2,7 @@ const Stats = require('../lib/stats.min.js');
 const commands = require('./commands');
 
 const demo = bootstrap({
-  rootPath: '//localhost:9000/',
+  rootPath: '/project/',
 });
 
 window.demo = demo;

@@ -23,7 +23,7 @@ function render(i) {
   demo.jumpToFrame(i);
   const image = demo.renderer.domElement.toDataURL('image/png');
 
-  fetch('http://localhost:9000/', {
+  fetch('/render', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

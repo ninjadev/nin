@@ -17,7 +17,7 @@ Core features include:
 - Compile and pack your WebGL demo to a .png.html file for easy compo delivery
 
 The backend component is written in node.js, and keeps track of and recompiles changed files.
-The frontend is a mix of react and angular components, which communicates with the backend over websockets.
+The frontend is created using React, and communicates with the backend over websockets.
 
 # User manual
 

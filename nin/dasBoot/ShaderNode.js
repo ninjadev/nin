@@ -1,6 +1,6 @@
-const Node = require('./node');
+const NIN = require('./NIN');
 
-class ShaderNode extends Node {
+class ShaderNode extends NIN.Node {
   constructor(id, options) {
     super(id, {
       inputs: options.inputs,

@@ -1,8 +1,8 @@
 const CameraController = require('./CameraController');
 const Loader = require('./Loader');
-const Node = require('./node');
+const NIN = require('./NIN');
 
-class THREENode extends Node {
+class THREENode extends NIN.Node {
   constructor(id, options) {
     super(id, {
       inputs: options.inputs,

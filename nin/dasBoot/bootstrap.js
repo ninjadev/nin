@@ -11,15 +11,7 @@ require('./lib/OBJLoader');
 require('./lib/RenderPass');
 require('./lib/ShaderPass');
 
-const NIN = window['NIN'] = window['NIN'] || {}; 
-NIN.Input = require('./input');
-NIN.TextureInput = require('./TextureInput');
-
-NIN.Output = require('./output');
-NIN.TextureOutput = require('./TextureOutput');
-
-NIN.Node = require('./node');
-NIN.TextureNode = require('./TextureNode');
+const NIN = window['NIN'] = require('./NIN');
 NIN.RootNode = require('./RootNode');
 NIN.THREENode = require('./THREENode');
 NIN.ShaderNode = require('./ShaderNode');

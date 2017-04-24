@@ -1,5 +1,4 @@
 class NodeManager {
-
   constructor() {
     this.nodes = {};
     this.graphChangeListeners = [];
@@ -116,3 +115,5 @@ class NodeManager {
   refresh() {
   }
 }
+
+module.exports = NodeManager;

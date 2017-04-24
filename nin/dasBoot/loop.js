@@ -30,3 +30,5 @@ function createLoop(options) {
 
   return new Looper();
 }
+
+module.exports = createLoop;

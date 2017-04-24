@@ -99,3 +99,5 @@ function loadMusic() {
     }
   }
 }
+
+module.exports = loadMusic;

@@ -1,3 +1,53 @@
+window.THREE = require('./lib/00_three');
+require('./lib/01_EffectComposer');
+require('./lib/BloomPass');
+require('./lib/ClearPass');
+require('./lib/ConvolutionShader');
+require('./lib/CopyShader');
+require('./lib/ImprovedNoise');
+require('./lib/MaskPass');
+require('./lib/MTLLoader');
+require('./lib/OBJLoader');
+require('./lib/RenderPass');
+require('./lib/ShaderPass');
+
+const NIN = window['NIN'] = window['NIN'] || {}; 
+NIN.Input = require('./input');
+NIN.TextureInput = require('./TextureInput');
+
+NIN.Output = require('./output');
+NIN.TextureOutput = require('./TextureOutput');
+
+NIN.Node = require('./node');
+NIN.TextureNode = require('./TextureNode');
+NIN.RootNode = require('./RootNode');
+NIN.THREENode = require('./THREENode');
+NIN.ShaderNode = require('./ShaderNode');
+
+const {initBeatBean, updateBeatBean} = require('./BEATBEAN');
+window.initBeatBean = initBeatBean;
+window.updateBeatBean = updateBeatBean;
+
+const {lerp, clamp, smoothstep, easeIn, easeOut} = require('./interpolations');
+window.lerp = lerp;
+window.clamp = clamp;
+window.smoothstep = smoothstep;
+window.easeIn = easeIn;
+window.easeOut = easeOut;
+
+const {requestAnimFrame, makeFullscreen, audioContext} = require('./shims.js');
+window.requestAnimFrame = requestAnimFrame;
+window.makeFullscreen = makeFullscreen;
+window.audioContext = audioContext;
+
+window.Random = require('./Random');
+window.PathController = require('./PathController');
+window.CameraController = require('./CameraController');
+window.Loader = require('./Loader');
+window.createLoop = require('./loop');
+window.loadMusic = require('./music');
+window.NodeManager = require('./NodeManager');
+
 window['bootstrap'] = function(options) {
   options = options || {};
 

@@ -11,3 +11,5 @@ function Random(seed){
         return result + 0.5;
     }
 }
+
+module.exports = Random;

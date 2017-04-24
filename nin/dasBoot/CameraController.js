@@ -108,3 +108,5 @@ CameraController.prototype.updateCamera = function(frame) {
     //this.visualization.position.add(amount);
   }
 };
+
+module.exports = CameraController;

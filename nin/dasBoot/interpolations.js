@@ -21,3 +21,11 @@ function easeOut(a, b, t) {
   t = (--t)*t*t+1;
   return lerp(a, b, t);
 }
+
+module.exports = {
+  lerp,
+  clamp,
+  smoothstep,
+  easeIn,
+  easeOut,
+};

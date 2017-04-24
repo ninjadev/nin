@@ -9,13 +9,17 @@ const socket = require('./socket');
 const utils = require('./utils');
 const watch = require('./watch');
 const dasbootGen = require('./dasbootgen');
+const fontGen = require('./fontgen');
 
 const serve = async function(
     projectPath,
     frontendPort=8000) {
   const genPath = p.join(projectPath, 'gen');
   await fs.emptyDir(genPath);
-  await dasbootGen(projectPath);
+  await Promise.all([
+    fontGen(projectPath),
+    dasbootGen(projectPath),
+  ]);
   projectSettings.generate(projectPath);
 
   const frontend = express();

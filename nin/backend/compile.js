@@ -10,6 +10,7 @@ const shaderGen = require('./shadergen').shaderGen;
 const stream = require('stream');
 const utils = require('./utils');
 const dasbootGen = require('./dasbootgen');
+const fontGen = require('./fontgen');
 const walk = require('walk');
 
 
@@ -44,7 +45,14 @@ function res(projectPath, options, callback) {
     root += '/';
     root = root.replace(/\/\//g, '/');
 
-    const file = await fs.readFile(root + stat.name);
+    const filename = root + stat.name;
+    const file = await fs.readFile(filename);
+    if(p.extname(filename) == '.otf') {
+      process.stdout.write('- Skipping ' + chalk.grey(root.slice(projectPath.length + 1)) + chalk.magenta(stat.name) + chalk.grey(', (it is a font)'));
+      renderOK();
+      next();
+      return;
+    }
     process.stdout.write('- Assimilating ' + chalk.grey(root.slice(projectPath.length + 1)) + chalk.magenta(stat.name));
     function pushFinishedFile(file) {
       files.push('FILES[\'' + root.slice(projectPath.length + 1) + stat.name + '\']=\'' +
@@ -157,7 +165,10 @@ const compile = function(projectPath, options) {
 
     projectSettings.generate(projectPath);
     shaderGen(projectPath, async function() {
-      await dasbootGen(projectPath);
+      await Promise.all([
+        fontGen(projectPath),
+        dasbootGen(projectPath),
+      ]);
 
       process.stdout.write(chalk.yellow('\nRunning closure compiler'));
       const globPaths = [

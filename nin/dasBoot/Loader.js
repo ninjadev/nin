@@ -1,3 +1,5 @@
+const THREE = require('./lib/00_three');
+
 function Loader() {
   this.eventNames = {
     VIDEO: 'canplaythrough',
@@ -78,8 +80,8 @@ Loader.prototype.start = function(onprogress, oncomplete) {
         'webm': 'data:video/webm;base64,',
         'svg': 'data:image/svg+xml;base64,',
       }[item.filepath.slice(-3)];
-      console.log(that.id, item.filepath, prefix + (FILES[item.filepath] && FILES[item.filepath].slice(0, 10)));
-      item.element.src = prefix + FILES[item.filepath];
+      console.log(that.id, item.filepath, prefix + (window.FILES[item.filepath] && window.FILES[item.filepath].slice(0, 10)));
+      item.element.src = prefix + window.FILES[item.filepath];
     } else {
       item.element.crossOrigin = 'Anonymous';
       item.element.src = Loader.rootPath + item.filepath + '?_=' + Math.random();
@@ -88,8 +90,8 @@ Loader.prototype.start = function(onprogress, oncomplete) {
 
   this.itemsToAjax.forEach(function(item) {
     if(window.FILES) {
-      console.log(that.id, item.filepath, FILES[item.filepath] && atob(FILES[item.filepath]).slice(0, 10));
-      var bytes = atob(FILES[item.filepath]);
+      console.log(that.id, item.filepath, window.FILES[item.filepath] && atob(window.FILES[item.filepath]).slice(0, 10));
+      var bytes = atob(window.FILES[item.filepath]);
       if(item.options.responseType == 'arraybuffer') {
         var buffer = new ArrayBuffer(bytes.length);
         var bufferView = new Uint8Array(buffer);

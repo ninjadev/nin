@@ -1,7 +1,10 @@
-class RootNode extends NIN.Node {
+const Node = require('./node');
+const TextureInput = require('./TextureInput');
+
+class RootNode extends Node {
   constructor(id, options) {
     super(id, {
-      inputs: {screen: new NIN.TextureInput()}
+      inputs: {screen: new TextureInput()}
     });
 
     this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1); 

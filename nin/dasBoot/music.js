@@ -1,9 +1,12 @@
+const Loader = require('./Loader');
+const {audioContext} = require('./shims');
+
 function loadMusic() {
   var webAudioContext = new audioContext();
   var _bufferSource;
   var _buffer;
   var _loaded = false;
-  Loader.loadAjax(PROJECT.music.path, {responseType: 'arraybuffer'}, function(data, registerAsLoaded) {
+  Loader.loadAjax(window.PROJECT.music.path, {responseType: 'arraybuffer'}, function(data, registerAsLoaded) {
     webAudioContext.decodeAudioData(data, function(buffer) {
       _buffer = buffer;
       _loaded = true;

@@ -1,9 +1,13 @@
-class TextureNode extends NIN.Node {
+const Loader = require('./Loader');
+const Node = require('./node');
+const TextureOutput = require('./TextureOutput');
+
+class TextureNode extends Node {
   constructor(id, options) {
     super(id, {
       inputs: {},
       outputs: {
-        A: new NIN.TextureOutput()
+        A: new TextureOutput()
       }
     });
     var that = this;

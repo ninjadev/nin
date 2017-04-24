@@ -1,4 +1,8 @@
-class THREENode extends NIN.Node {
+const CameraController = require('./CameraController');
+const Loader = require('./Loader');
+const Node = require('./node');
+
+class THREENode extends Node {
   constructor(id, options) {
     super(id, {
       inputs: options.inputs,
@@ -30,7 +34,7 @@ class THREENode extends NIN.Node {
   }
 
   resize() {
-    this.renderTarget.setSize(16 * GU, 9 * GU);
+    this.renderTarget.setSize(16 * window.GU, 9 * window.GU);
   }
 
   render(renderer) {

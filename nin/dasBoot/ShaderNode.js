@@ -1,4 +1,6 @@
-class ShaderNode extends NIN.Node {
+const Node = require('./node');
+
+class ShaderNode extends Node {
   constructor(id, options) {
     super(id, {
       inputs: options.inputs,
@@ -16,7 +18,7 @@ class ShaderNode extends NIN.Node {
     });
 
     const shader = typeof options.shader === 'string'
-      ? SHADERS[options.shader] : options.shader;
+      ? window.SHADERS[options.shader] : options.shader;
 
     this.quad = new THREE.Mesh(
       new THREE.PlaneBufferGeometry(2, 2),
@@ -31,7 +33,7 @@ class ShaderNode extends NIN.Node {
   }
 
   resize() {
-    this.renderTarget.setSize(16 * GU, 9 * GU);
+    this.renderTarget.setSize(16 * window.GU, 9 * window.GU);
   }
 
   render(renderer) {

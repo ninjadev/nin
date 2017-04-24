@@ -27,13 +27,10 @@ class Main extends React.Component {
       fullscreen: false,
       showFramingOverlay: false,
       mute: localStorage.getItem('nin-mute') ? true : false,
-      volume: 1,
       globalJSErrors: {},
     };
 
-    if (localStorage.hasOwnProperty('nin-volume')) {
-      this.state.volume = +localStorage.getItem('nin-volume');
-    }
+    demo.music.setVolume(1 - this.state.mute);
 
     commands.on('selectTheme', theme => {
       var foundTheme = false;
@@ -63,14 +60,14 @@ class Main extends React.Component {
     });
 
     commands.on('toggleMusic', () => {
-      this.setState({mute: !this.state.mute});
       if (!this.state.mute) {
         localStorage.setItem('nin-mute', 1);
         demo.music.setVolume(0);
       } else {
         localStorage.removeItem('nin-mute');
-        demo.music.setVolume(this.state.volume);
+        demo.music.setVolume(1);
       }
+      this.setState({mute: !this.state.mute});
     });
 
     socketController.socket.onopen = function() {

@@ -22,7 +22,7 @@
     "glob": "7.0.3",
     "glsl-deparser": "^1.0.0",
     "glsl-parser": "^2.0.0",
-    "google-closure-compiler-js": "20161201.0.0",
+    "google-closure-compiler-js": "^20170409.0.0",
     "ini": "1.3.4",
     "optipng": "1.0.0",
     "readdir": "0.0.13",

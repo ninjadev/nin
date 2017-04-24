@@ -388,9 +388,17 @@ cli-width@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/cli-width/-/cli-width-2.1.0.tgz#b234ca209b29ef66fc518d9b98d5847b00edf00a"
 
+clone-buffer@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/clone-buffer/-/clone-buffer-1.0.0.tgz#e3e25b207ac4e701af721e2cb5a16792cac3dc58"
+
 clone-stats@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/clone-stats/-/clone-stats-0.0.1.tgz#b88f94a82cf38b8791d58046ea4029ad88ca99d1"
+
+clone-stats@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/clone-stats/-/clone-stats-1.0.0.tgz#b3782dff8bb5474e18b9b6bf0fdfe782f8777680"
 
 clone@^0.2.0:
   version "0.2.0"
@@ -399,6 +407,14 @@ clone@^0.2.0:
 clone@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.2.tgz#260b7a99ebb1edfe247538175f783243cb19d149"
+
+cloneable-readable@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/cloneable-readable/-/cloneable-readable-1.0.0.tgz#a6290d413f217a61232f95e458ff38418cfb0117"
+  dependencies:
+    inherits "^2.0.1"
+    process-nextick-args "^1.0.6"
+    through2 "^2.0.1"
 
 co@3.1.0:
   version "3.1.0"
@@ -1286,11 +1302,12 @@ glsl-tokenizer@^2.0.0:
   dependencies:
     through2 "^0.6.3"
 
-google-closure-compiler-js@20161201.0.0:
-  version "20161201.0.0"
-  resolved "https://registry.yarnpkg.com/google-closure-compiler-js/-/google-closure-compiler-js-20161201.0.0.tgz#777d789fb8aa170d9b0269a41206d9810845556d"
+google-closure-compiler-js@^20170409.0.0:
+  version "20170409.0.0"
+  resolved "https://registry.yarnpkg.com/google-closure-compiler-js/-/google-closure-compiler-js-20170409.0.0.tgz#e71063ab2bf26db794732222ec76ba07403df854"
   dependencies:
-    gulp-util "^3.0.7"
+    minimist "^1.2.0"
+    vinyl "^2.0.1"
     webpack-core "^0.6.8"
 
 got@^5.0.0:
@@ -1344,7 +1361,7 @@ gulp-sourcemaps@1.6.0:
     through2 "^2.0.0"
     vinyl "^1.0.0"
 
-gulp-util@^3.0.1, gulp-util@^3.0.7:
+gulp-util@^3.0.1:
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/gulp-util/-/gulp-util-3.0.8.tgz#0054e1e744502e27c04c187c3ecc505dd54bbb4f"
   dependencies:
@@ -1657,7 +1674,7 @@ is-retry-allowed@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-retry-allowed/-/is-retry-allowed-1.1.0.tgz#11a060568b67339444033d0125a61a20d564fb34"
 
-is-stream@^1.0.0, is-stream@^1.0.1:
+is-stream@^1.0.0, is-stream@^1.0.1, is-stream@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-stream/-/is-stream-1.1.0.tgz#12d4a3dd4e68e0b79ceb8dbc84173ae80d91ca44"
 
@@ -2275,7 +2292,7 @@ preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
 
-process-nextick-args@~1.0.6:
+process-nextick-args@^1.0.6, process-nextick-args@~1.0.6:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-1.0.7.tgz#150e20b756590ad3f91093f25a4f2ad8bff30ba3"
 
@@ -2445,6 +2462,10 @@ regex-cache@^0.4.2:
     is-equal-shallow "^0.1.3"
     is-primitive "^2.0.0"
 
+remove-trailing-separator@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.0.1.tgz#615ebb96af559552d4bf4057c8436d486ab63cc4"
+
 repeat-element@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/repeat-element/-/repeat-element-1.1.2.tgz#ef089a178d1483baae4d93eb98b4f9e4e11d990a"
@@ -2462,6 +2483,10 @@ repeating@^2.0.0:
 replace-ext@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/replace-ext/-/replace-ext-0.0.1.tgz#29bbd92078a739f0bcce2b4ee41e837953522924"
+
+replace-ext@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/replace-ext/-/replace-ext-1.0.0.tgz#de63128373fcbf7c3ccfa4de5a480c45a67958eb"
 
 request@^2.79.0:
   version "2.79.0"
@@ -2872,7 +2897,7 @@ through2@^0.6.0, through2@^0.6.1, through2@^0.6.3:
     readable-stream ">=1.0.33-1 <1.1.0-0"
     xtend ">=4.0.0 <4.1.0-0"
 
-through2@^2.0.0, through2@~2.0.0:
+through2@^2.0.0, through2@^2.0.1, through2@~2.0.0:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/through2/-/through2-2.0.3.tgz#0004569b37c7c74ba39c43f3ced78d1ad94140be"
   dependencies:
@@ -3075,6 +3100,18 @@ vinyl@^1.0.0:
     clone "^1.0.0"
     clone-stats "^0.0.1"
     replace-ext "0.0.1"
+
+vinyl@^2.0.1:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/vinyl/-/vinyl-2.0.2.tgz#0a3713d8d4e9221c58f10ca16c0116c9e25eda7c"
+  dependencies:
+    clone "^1.0.0"
+    clone-buffer "^1.0.0"
+    clone-stats "^1.0.0"
+    cloneable-readable "^1.0.0"
+    is-stream "^1.1.0"
+    remove-trailing-separator "^1.0.1"
+    replace-ext "^1.0.0"
 
 walk@2.3.9:
   version "2.3.9"

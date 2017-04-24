@@ -30,6 +30,12 @@ class Main extends React.Component {
       globalJSErrors: {},
     };
 
+    if(!this.state.mute) {
+      this.startupSound = new Audio();
+      this.startupSound.autoplay = true;
+      this.startupSound.src = '/audio/nin.wav';
+    }
+
     demo.music.setVolume(1 - this.state.mute);
 
     commands.on('selectTheme', theme => {

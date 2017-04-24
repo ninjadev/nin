@@ -44,6 +44,7 @@ module.exports = {
       {from: 'app/index.html'},
       {from: 'app/images/', to: 'images'},
       {from: 'app/fonts/', to: 'fonts'},
+      {from: 'app/audio/', to: 'audio'},
       {from: 'app/lib/FlyControls.js', to: 'lib'},
     ]),
   ],

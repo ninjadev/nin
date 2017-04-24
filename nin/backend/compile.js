@@ -6,7 +6,7 @@ const fs = require('fs-promise');
 const OptiPng = require('optipng');
 const p = require('path');
 const projectSettings = require('./projectSettings');
-const shaderGen = require('./shadergen').shaderGen;
+const shaderGen = require('./shadergen');
 const stream = require('stream');
 const utils = require('./utils');
 const dasbootGen = require('./dasbootgen');
@@ -201,7 +201,7 @@ const compile = function(projectPath, options) {
         }
         collect(out.compiledCode);
       }
-    });
+    }, true);
   });
 };
 

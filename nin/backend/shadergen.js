@@ -1,67 +1,74 @@
 let fs = require('fs');
 let walk = require('walk');
+const p = require('path');
 
+const tokenStream = require('glsl-tokenizer/stream');
+const ParseStream = require('glsl-parser/stream');
+const deparser = require('glsl-deparser');
 
-let shaderGen = function(pathPrefix, cb) {
-
-  function getShaderData(path, type) {
-    let data = '';
-    if(fs.existsSync(path)) {
-      data = fs.readFileSync(path, 'utf8');
-    } else {
-      data = fs.readFileSync(__dirname + '/../dasBoot/shaders/default' + type, 'utf8');
+function optimizeGlsl(glsl) {
+  return new Promise((resolve, reject) => {
+    try {
+      const chunks = [];
+      fs.createReadStream(glsl)
+        .pipe(tokenStream())
+        .pipe(ParseStream())
+        .pipe(deparser(false))
+        .on('data', chunk => chunks.push(chunk))
+        .on('end', () => resolve(chunks.join('')));
+    } catch(e) {
+      reject(e);
     }
+  });
+}
 
-    return data;
-  }
+function shaderGen(pathPrefix, cb, optimize=false) {
+  function traversePath(shaderPath, callback) {
+    const directories = [];
 
-  function traversePath(pathPrefix, callback) {
-    let walker = walk.walk(pathPrefix, {followLinks: false});
+    const walker = walk.walk(shaderPath, {followLinks: false});
     walker.on('directories', function(root, stat, next) {
-      for(let i = 0; i < stat.length; i++) {
-        directories.push(stat[i].name);
+      for (let s of stat) {
+        directories.push(s.name);
       }
+
       next();
     });
 
-    walker.on('end', function() {
-      let path = '';
-      let tmpData = '';
-      let type = '';
-      for(let i = 0; i < directories.length; i++) {
-        out += 'SHADERS.' + directories[i] + ' = {';
+    walker.on('end', async function() {
+      const out = {};
 
-        type = '/uniforms.json';
-        path = pathPrefix + directories[i] + type;
-        tmpData = getShaderData(path, type);
-        out += 'uniforms: ' + tmpData + ',';
+      for (let directory of directories) {
+        const basePath = p.join(shaderPath, directory);
 
-        type = '/vertex.glsl';
-        path = pathPrefix + directories[i] + type;
-        tmpData = getShaderData(path, type);
-        out += 'vertexShader: ' + JSON.stringify(tmpData) + ',';
+        const uniformPath = p.join(basePath, 'uniforms.json');
+        const vertexPath = p.join(basePath, 'vertex.glsl');
+        const fragmentPath = p.join(basePath, 'fragment.glsl');
 
-        type = '/fragment.glsl';
-        path = pathPrefix + directories[i] + type;
-        tmpData = getShaderData(path, type);
-        out += 'fragmentShader: ' + JSON.stringify(tmpData) + '';
+        const uniforms = JSON.parse(fs.readFileSync(uniformPath));
+        const vertexShader = optimize ?
+          await optimizeGlsl(vertexPath) :
+          fs.readFileSync(vertexPath, 'utf8');
+        const fragmentShader = optimize ?
+          await optimizeGlsl(fragmentPath) :
+          fs.readFileSync(fragmentPath, 'utf8');
 
-        out += '};\n';
+        out[directory] = {
+          uniforms,
+          vertexShader,
+          fragmentShader,
+        };
       }
-      directories = [];
-      callback();
+
+      callback('SHADERS=' + JSON.stringify(out));
     });
   }
 
-  let directories = [];
-  let out = 'SHADERS={};';
-
-  traversePath(pathPrefix + '/src/shaders/', function() {
-    traversePath(__dirname + '/../dasBoot/shaders/', function() {
-      fs.writeFileSync(pathPrefix + '/gen/shaders.js', out);
-      cb(out);
-    });
+  traversePath(p.join(pathPrefix, 'src', 'shaders'), out => {
+    fs.writeFileSync(p.join(pathPrefix, 'gen', 'shaders.js'),
+                     out);
+    cb(out);
   });
-};
+}
 
-module.exports = { shaderGen: shaderGen };
+module.exports = shaderGen;

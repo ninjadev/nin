@@ -490,6 +490,24 @@ cryptiles@2.x.x:
   dependencies:
     boom "2.x.x"
 
+cssauron-glsl@X.X.X, cssauron-glsl@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/cssauron-glsl/-/cssauron-glsl-1.0.0.tgz#9873641442b52bae08b9103f8546885af69c74cc"
+  dependencies:
+    cssauron "~1.0.0"
+
+cssauron@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/cssauron/-/cssauron-1.4.0.tgz#a6602dff7e04a8306dc0db9a551e92e8b5662ad8"
+  dependencies:
+    through X.X.X
+
+cssauron@~1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/cssauron/-/cssauron-1.0.0.tgz#3c9891541075be90ee59c0c2a3d400e4fffec42d"
+  dependencies:
+    through X.X.X
+
 currently-unhandled@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/currently-unhandled/-/currently-unhandled-0.4.1.tgz#988df33feab191ef799a61369dd76c17adf957ea"
@@ -1246,6 +1264,27 @@ glogg@^1.0.0:
   resolved "https://registry.yarnpkg.com/glogg/-/glogg-1.0.0.tgz#7fe0f199f57ac906cf512feead8f90ee4a284fc5"
   dependencies:
     sparkles "^1.0.0"
+
+glsl-deparser@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/glsl-deparser/-/glsl-deparser-1.0.0.tgz#5e7eb363ec54af92916ccffc82ed03e9bfe33e0c"
+  dependencies:
+    cssauron-glsl X.X.X
+    through "~1.1.2"
+
+glsl-parser@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/glsl-parser/-/glsl-parser-2.0.0.tgz#30a6a70aedf49a5a774e2ca85edb63bf34a869a4"
+  dependencies:
+    glsl-tokenizer "^2.0.0"
+    through "2.3.4"
+    through2 "^0.6.3"
+
+glsl-tokenizer@^2.0.0:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/glsl-tokenizer/-/glsl-tokenizer-2.1.2.tgz#720307522e03c57af35c00551950c4a70ef2dfb9"
+  dependencies:
+    through2 "^0.6.3"
 
 google-closure-compiler-js@20161201.0.0:
   version "20161201.0.0"
@@ -2826,7 +2865,7 @@ through2-filter@^2.0.0:
     through2 "~2.0.0"
     xtend "~4.0.0"
 
-through2@^0.6.0, through2@^0.6.1:
+through2@^0.6.0, through2@^0.6.1, through2@^0.6.3:
   version "0.6.5"
   resolved "https://registry.yarnpkg.com/through2/-/through2-0.6.5.tgz#41ab9c67b29d57209071410e1d7a7a968cd3ad48"
   dependencies:
@@ -2840,9 +2879,17 @@ through2@^2.0.0, through2@~2.0.0:
     readable-stream "^2.1.5"
     xtend "~4.0.1"
 
-through@^2.3.6:
+through@2.3.4:
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/through/-/through-2.3.4.tgz#495e40e8d8a8eaebc7c275ea88c2b8fc14c56455"
+
+through@X.X.X, through@^2.3.6:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
+
+through@~1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/through/-/through-1.1.2.tgz#344a5425a3773314ca7e0eb6512fbafaf76c0bfe"
 
 time-stamp@^1.0.0:
   version "1.0.1"

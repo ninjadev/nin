@@ -23,8 +23,6 @@ function optimizeGlsl(glsl) {
 }
 
 function shaderGen(pathPrefix, cb, optimize=false) {
-  const out = {};
-
   function traversePath(shaderPath, callback) {
     const directories = [];
 
@@ -38,6 +36,8 @@ function shaderGen(pathPrefix, cb, optimize=false) {
     });
 
     walker.on('end', async function() {
+      const out = {};
+
       for (let directory of directories) {
         const basePath = p.join(shaderPath, directory);
 
@@ -60,14 +60,14 @@ function shaderGen(pathPrefix, cb, optimize=false) {
         };
       }
 
-      callback();
+      callback('SHADERS=' + JSON.stringify(out));
     });
   }
 
-  traversePath(p.join(pathPrefix, 'src', 'shaders'), () => {
+  traversePath(p.join(pathPrefix, 'src', 'shaders'), out => {
     fs.writeFileSync(p.join(pathPrefix, 'gen', 'shaders.js'),
-      'SHADERS='+JSON.stringify(out));
-    cb();
+                     out);
+    cb(out);
   });
 }
 

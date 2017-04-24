@@ -168,44 +168,43 @@ const compile = async function(projectPath, options) {
 
   projectSettings.generate(projectPath);
 
-  shaderGen(projectPath, async function() {
-    await Promise.all([
-      fontGen(projectPath),
-      dasbootGen(projectPath),
-    ]);
+  await Promise.all([
+    shaderGen(projectPath, true),
+    fontGen(projectPath),
+    dasbootGen(projectPath),
+  ]);
 
-    const globPaths = [
-      projectPath + '/gen/*.js ',
-      projectPath + '/lib/*.js ',
-      projectPath + '/src/*.js',
-    ];
-    const jsCode = [].concat.apply(
-      [], globPaths.map(globPath => glob.sync(globPath)))
-      .map(path => ({
-        src: fs.readFileSync(path, 'utf8'),
-        path
-      }));
-    if (!options.closureCompiler) {
-      process.stdout.write(chalk.yellow('\nConcatenating source files'));
-      const sources = jsCode.map(file => file.src).join(';');
-      renderOK();
-      await collect(projectPath, sources);
+  const globPaths = [
+    projectPath + '/gen/*.js ',
+    projectPath + '/lib/*.js ',
+    projectPath + '/src/*.js',
+  ];
+  const jsCode = [].concat.apply(
+    [], globPaths.map(globPath => glob.sync(globPath)))
+    .map(path => ({
+      src: fs.readFileSync(path, 'utf8'),
+      path
+    }));
+  if (!options.closureCompiler) {
+    process.stdout.write(chalk.yellow('\nConcatenating source files'));
+    const sources = jsCode.map(file => file.src).join(';');
+    renderOK();
+    await collect(projectPath, sources);
+  } else {
+    process.stdout.write(chalk.yellow('\nRunning closure compiler'));
+    const out = closureCompiler.compile({jsCode});
+    if(out.errors.length) {
+      renderError();
+      out.errors.map(console.error);
+      process.exit(1);
+    } else if(out.warnings.length) {
+      renderWarn();
+      out.warnings.map(console.error);
     } else {
-      process.stdout.write(chalk.yellow('\nRunning closure compiler'));
-      const out = closureCompiler.compile({jsCode});
-      if(out.errors.length) {
-        renderError();
-        out.errors.map(console.error);
-        process.exit(1);
-      } else if(out.warnings.length) {
-        renderWarn();
-        out.warnings.map(console.error);
-      } else {
-        renderOK();
-      }
-      await collect(projectPath, out.compiledCode);
+      renderOK();
     }
-  }, true);
+    await collect(projectPath, out.compiledCode);
+  }
 };
 
 

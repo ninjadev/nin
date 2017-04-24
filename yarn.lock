@@ -148,7 +148,7 @@ async-each@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/async-each/-/async-each-1.0.1.tgz#19d386a1d9edc6e7c1c85d388aedbcc56d33602d"
 
-async@>=0.2.9, async@~0.2.6:
+async@>=0.2.9:
   version "0.2.10"
   resolved "https://registry.yarnpkg.com/async/-/async-0.2.10.tgz#b6bbe0b0674b9d719708ca38de8c237cb526c3d1"
 
@@ -429,12 +429,6 @@ commander@~2.8.1:
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.8.1.tgz#06be367febfda0c330aa1e2a072d3dc9762425d4"
   dependencies:
     graceful-readlink ">= 1.0.0"
-
-concat-files@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/concat-files/-/concat-files-0.1.0.tgz#e61710a00433243e7315e38674066c0b7fe95e6d"
-  dependencies:
-    async "~0.2.6"
 
 concat-map@0.0.1:
   version "0.0.1"

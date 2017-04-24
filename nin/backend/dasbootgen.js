@@ -1,6 +1,6 @@
 const p = require('path');
 const readDir = require('readdir');
-const concat = require('concat-files');
+const fs = require('fs-promise');
 
 
 async function dasbootGen(projectPath) {
@@ -10,19 +10,16 @@ async function dasbootGen(projectPath) {
     ['lib/*.js'],
     readDir.ABSOLUTE_PATHS
   ).sort();
-  let dasBootSourceFilePaths = readDir.readSync(
+  const dasBootSourceFilePaths = readDir.readSync(
     dasBootSourceDirectoryPath,
     ['*.js'],
     readDir.ABSOLUTE_PATHS
   ).sort();
 
-  const dasBootDestinationFilePath = p.join(projectPath, 'gen/dasBoot.js');
-
-  return new Promise(resolve => {
-    concat(dasBootLibSourceFilePaths.concat(dasBootSourceFilePaths),
-           dasBootDestinationFilePath,
-           resolve);
-  });
+  const dasBootDestinationFilePath = p.join(projectPath, 'gen', 'dasBoot.js');
+  const allFiles = dasBootLibSourceFilePaths.concat(dasBootSourceFilePaths);
+  Promise.all(allFiles.map(file => fs.readFile(file)))
+    .then(files => fs.writeFile(dasBootDestinationFilePath, Buffer.concat(files)));
 }
 
 module.exports = dasbootGen;

@@ -1,7 +1,6 @@
 const keymage = require('keymage');
 const React = require('react');
 const commands = require('../commands');
-const ninrc = require('../utils/ninrc');
 
 class Menubar extends React.Component {
   constructor(props) {
@@ -224,16 +223,20 @@ class Menubar extends React.Component {
       }
     ];
 
-    this.menu.forEach(category => {
-      category.items.forEach(item => {
-        item.keybind =
-          ninrc.keybinds && ninrc.keybinds[item.action]
-          || item.defaultKeybind;
-        if (item.keybind) {
-          keymage(item.keybind, item.invoke);
-        }
+    fetch('/.ninrc')
+      .then(res => res.json())
+      .then(ninrc => {
+        this.menu.forEach(category => {
+          category.items.forEach(item => {
+            item.keybind =
+              ninrc.keybinds && ninrc.keybinds[item.action]
+              || item.defaultKeybind;
+            if (item.keybind) {
+              keymage(item.keybind, item.invoke);
+            }
+          });
+        });
       });
-    });
 
     this.state = {
       open: false,

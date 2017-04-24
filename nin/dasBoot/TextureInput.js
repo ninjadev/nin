@@ -1,8 +1,3 @@
-(function(NIN) {
-  'use strict';
+class TextureInput extends NIN.Input {}
 
-  class TextureInput extends NIN.Input {
-  }
-
-  NIN.TextureInput = TextureInput;
-})(this.NIN);
+module.exports = TextureInput;

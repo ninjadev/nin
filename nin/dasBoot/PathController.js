@@ -314,3 +314,5 @@ PathControllerVisualizer.prototype.generateVisualization = function(spline) {
 
   this.generateJoinSegments();
 };
+
+module.exports = PathController;

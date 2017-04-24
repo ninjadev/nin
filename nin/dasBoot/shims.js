@@ -23,3 +23,5 @@ var audioContext = (function() {
   return window.AudioContext ||
     window.webkitAudioContext;
 })();
+
+module.exports = {requestAnimFrame, makeFullscreen, audioContext};

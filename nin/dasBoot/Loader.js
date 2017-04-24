@@ -139,3 +139,5 @@ Loader.start = function(onprogress, oncomplete) {
   Loader.nextLoader.start(onprogress, oncomplete); 
   Loader.nextLoader = new Loader();
 };
+
+module.exports = Loader;

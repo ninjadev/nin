@@ -9,7 +9,8 @@ const defaultSettings = {
   music: {
     path: 'res/music.mp3',
     bpm: 125,
-    subdivision: 4
+    subdivision: 4,
+    BEANOffset: 0,
   },
   googleAnalyticsID: 'Your GA ID'
 };

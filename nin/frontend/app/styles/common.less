@@ -94,15 +94,17 @@ body.fullscreen .bottom {
 .frame-panel,
 .beat-bean-panel {
   margin-left: 15px;
-  padding: 3px 6px;
-  height: 30px;
+  padding: 6px;
+  width: 90px;
   background: @fixed-panel-bg-color;
   display: inline-block;
+  border-radius: 2px;
+  box-shadow: rgba(0, 0, 0, 0.5) 1px 0px 2px;
 }
 
 .fixed-panel {
     position: fixed;
-    bottom: 10px;
+    bottom: 65px;
     text-align: left;
     z-index: 999999;
     color: @fixed-panel-text-color;
@@ -113,11 +115,13 @@ body.fullscreen .bottom {
     opacity: @fixed-panel-label-opacity;
     padding: 1px 2px;
     font-weight: normal;
+    float: left;
 }
 
 .fixed-panel .value {
     padding: 1px 2px;
     font-weight: bold;
+    float: right;
 }
 
 .marker-line {

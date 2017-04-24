@@ -22,7 +22,7 @@ function optimizeGlsl(glsl) {
   });
 }
 
-function shaderGen(pathPrefix, cb, optimize=true) {
+function shaderGen(pathPrefix, cb, optimize=false) {
   const out = {};
 
   function traversePath(shaderPath, callback) {

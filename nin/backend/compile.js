@@ -201,7 +201,7 @@ const compile = function(projectPath, options) {
         }
         collect(out.compiledCode);
       }
-    });
+    }, true);
   });
 };
 

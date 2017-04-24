@@ -47,7 +47,7 @@ function res(projectPath, options, callback) {
 
     const filename = root + stat.name;
     const file = await fs.readFile(filename);
-    if(p.extname(filename) == '.otf') {
+    if(p.extname(filename) == '.woff2') {
       process.stdout.write('- Skipping ' + chalk.grey(root.slice(projectPath.length + 1)) + chalk.magenta(stat.name) + chalk.grey(', (it is a font)'));
       renderOK();
       next();

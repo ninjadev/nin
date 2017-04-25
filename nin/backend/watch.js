@@ -65,17 +65,17 @@ function watch(projectPath, cb) {
     cwd: projectPath
   });
 
-  shaderWatcher.on('all', function(event, path) {
+  shaderWatcher.on('all', async function(event, path) {
     if (event === 'add' || event === 'change') {
       const pathParts = path.split(p.sep);
       console.log(chalk.yellow('Recompiling shaders:'), chalk.magenta(pathParts[2]));
-      shaderGen(projectPath, function(out) {
-        cb(event, {path, out});
-      });
+
+      const out = await shaderGen(projectPath);
+      cb(event, {path, out});
     }
   });
 
-  shaderGen(projectPath, function() {});
+  shaderGen(projectPath);
 
   return {paths};
 }

@@ -20,7 +20,7 @@ async function dasbootGen(projectPath) {
             languageOut: 'ECMASCRIPT5',
             compilationLevel: 'SIMPLE',
             warningLevel: 'VERBOSE',
-            externs: ['GU', 'FILES', 'PROJECT', 'SHADERS'],
+            externs: ['GU', 'FILES', 'PROJECT', 'SHADERS', 'THREE'],
           },
         })
       ]

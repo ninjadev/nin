@@ -1,4 +1,5 @@
 const NIN = require('./NIN');
+const THREE = require('./lib/three.module.js');
 
 class ShaderNode extends NIN.Node {
   constructor(id, options) {

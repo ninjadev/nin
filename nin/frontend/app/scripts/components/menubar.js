@@ -212,6 +212,17 @@ class Menubar extends React.Component {
         ]
       },
       {
+        name: 'Truck',
+        items: [
+          {
+            name: 'nin',
+            action: 'playSplashScreen',
+            defaultKeybind: 'n',
+            invoke: () => commands.playSplashScreen()
+          }
+        ]
+      },
+      {
         name: 'Help',
         items: [
           {

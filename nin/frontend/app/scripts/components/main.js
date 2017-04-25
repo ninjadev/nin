@@ -30,13 +30,17 @@ class Main extends React.Component {
       globalJSErrors: {},
     };
 
-    if(!this.state.mute) {
+    demo.music.setVolume(1 - this.state.mute);
+
+    commands.on('playSplashScreen', () => {
       this.startupSound = new Audio();
       this.startupSound.autoplay = true;
       this.startupSound.src = '/audio/nin.wav';
-    }
+    });
 
-    demo.music.setVolume(1 - this.state.mute);
+    if (!this.state.mute) {
+      commands.playSplashScreen();
+    }
 
     commands.on('selectTheme', theme => {
       var foundTheme = false;

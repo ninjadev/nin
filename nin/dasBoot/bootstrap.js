@@ -1,4 +1,4 @@
-const THREE = window['THREE'] = require('./lib/00_three');
+const THREE = window['THREE'] = require('./lib/three.module.js');
 require('./lib/01_EffectComposer');
 require('./lib/BloomPass');
 require('./lib/ClearPass');

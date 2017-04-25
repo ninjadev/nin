@@ -1,4 +1,4 @@
-const THREE = require('./lib/00_three');
+const THREE = require('./lib/three.module.js');
 
 function Loader() {
   this.eventNames = {

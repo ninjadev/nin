@@ -1,6 +1,7 @@
 const CameraController = require('./CameraController');
 const Loader = require('./Loader');
 const NIN = require('./NIN');
+const THREE = require('./lib/three.module.js');
 
 class THREENode extends NIN.Node {
   constructor(id, options) {

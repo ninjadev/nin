@@ -1,15 +1,5 @@
 const THREE = window['THREE'] = require('./lib/three.module.js');
-require('./lib/01_EffectComposer');
-require('./lib/BloomPass');
-require('./lib/ClearPass');
 require('./lib/ConvolutionShader');
-require('./lib/CopyShader');
-require('./lib/ImprovedNoise');
-require('./lib/MaskPass');
-require('./lib/MTLLoader');
-require('./lib/OBJLoader');
-require('./lib/RenderPass');
-require('./lib/ShaderPass');
 
 const NIN = window['NIN'] = require('./NIN');
 NIN.RootNode = require('./RootNode');

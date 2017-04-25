@@ -1,5 +1,7 @@
 // Polyfills
 
+const WebGL2RenderingContext = window['WebGL2RenderingContext'];
+
 if ( Number.EPSILON === undefined ) {
 
 	Number.EPSILON = Math.pow( 2, - 52 );

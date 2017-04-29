@@ -1,8 +1,6 @@
 class FlyaroundController {
   constructor(node) {
-    this.scene = node.scene;
-    this.camera = node.camera;
-    this.cameraController = node.cameraController;
+    this.updateNodeInstance(node);
     this.clock = new THREE.Clock();
 
     this.camera.isOverriddenByFlyControls = false;
@@ -12,6 +10,12 @@ class FlyaroundController {
     document.body.appendChild(this.outputContainer);
 
     this.toggleFlyAroundMode();
+  }
+
+  updateNodeInstance(node) {
+    this.scene = node.scene;
+    this.camera = node.camera;
+    this.cameraController = node.cameraController;
   }
 
   mouseclick(e) {

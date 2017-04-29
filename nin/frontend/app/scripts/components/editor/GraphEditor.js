@@ -59,7 +59,7 @@ class GraphEditor extends React.Component {
   inspect(item) {
     if(this.inspectedItem) {
       this.inspectedItem.__isInspected = false;
-      const value = this.inspectedItem.getValue();
+      const value = this.inspectedItem.props.item.getValue();
       if(value == demo.renderer.overrideToScreenTexture) {
         demo.renderer.overrideToScreenTexture = null;
       }
@@ -353,7 +353,7 @@ class GraphEditor extends React.Component {
     }
 
     if(this.inspectedItem) {
-      const value = this.inspectedItem.getValue();
+      const value = this.inspectedItem.props.item.getValue();
       if(value instanceof THREE.Texture) {
         demo.renderer.overrideToScreenTexture = value;
       }

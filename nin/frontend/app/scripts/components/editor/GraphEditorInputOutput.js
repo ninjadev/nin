@@ -29,14 +29,14 @@ class GraphEditorInputOutput extends React.Component {
       e('circle', {
         cx: 0,
         cy: 0,
-        r: this.props.item.__isInspected ? 10 : 5,
+        r: this.__isInspected ? 10 : 5,
         fill: isConnected ? 'white' : 'transparent',
-        stroke: this.props.item.__isInspected ? 'orange' : 'white',
-        strokeWidth: this.props.item.__isInspected ? 5 : 2,
+        stroke: this.__isInspected ? 'orange' : 'white',
+        strokeWidth: this.__isInspected ? 5 : 2,
         style: {
           cursor: 'pointer',
         },
-        onClick: event => {this.props.editor.inspect(this.props.item);},
+        onClick: event => {this.props.editor.inspect(this);},
       }),
       this.props.scale >= 1.5 ? e('text', {
         x: 0,

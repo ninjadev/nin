@@ -72,8 +72,8 @@ If needed, you can access the shader through the global `SHADERS` object, by wri
 
 The `nin compile` command will create a single file `bin/demo.png.html` that contains all the code and resources of your demo.
 Base64 and PNG compression magic is used to achieve this.
-To compile without PNG compression, use `nin compile --no-png-compression`.
-That will yield a slightly larger file, but more browsers and smartphones will be able to run it.
+It will at the same time output a file without PNG compression, `bin/demo.html`, which will be slightly larger, but compatible with a wider range of devices (especially smartphones).
+For faster compiles, pass the flag `--no-closure-compiler`. This will only concatenate js files, without any minifying.
 
 ## .ninrc
 

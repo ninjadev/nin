@@ -72,6 +72,10 @@ function loadMusic() {
       _gainNode.gain.value = volume;
     },
 
+    getVolume: function() {
+      return _gainNode.gain.value;
+    },
+
     play: function() {
       if(!_loaded) {
         return;

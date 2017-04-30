@@ -62,6 +62,7 @@ class BottomPanel extends React.Component {
     requestAnimationFrame(updateLoop);
 
     this.musicLayerClick = this.musicLayerClick.bind(this);
+    this.musicLayerScroll = this.musicLayerScroll.bind(this);
   }
 
   getBarNumberDisplay() {
@@ -80,6 +81,25 @@ class BottomPanel extends React.Component {
 
   musicLayerClick(e) {
     demo.jumpToFrame(this.getClickOffset(e).x / this.state.xScale | 0);
+  }
+
+  musicLayerScroll(a) {
+    a.preventDefault();
+    let multiplier = 50;
+
+    if (a.nativeEvent.shiftKey) {
+      multiplier *= 100;
+    }
+
+    if (a.nativeEvent.ctrlKey) {
+      multiplier /= 10;
+    }
+
+    if (a.nativeEvent.wheelDelta < 0) {
+      demo.jumpToFrame(Math.round(this.state.currentFrame -= multiplier / this.props.demo.music.getDuration() * 60 * this.state.xScale));
+    } else {
+      demo.jumpToFrame(Math.round(this.state.currentFrame += multiplier / this.props.demo.music.getDuration() * 60 * this.state.xScale));
+    }
   }
 
   render() {
@@ -130,6 +150,7 @@ class BottomPanel extends React.Component {
         <div
           className='layers-bar-container'
           onClick={this.musicLayerClick}
+          onWheel={this.musicLayerScroll}
           >
           <div
             className="marker-line play"
@@ -171,6 +192,7 @@ class BottomPanel extends React.Component {
           <div
             className="layer musiclayer"
             onClick={this.musicLayerClick}
+            onWheel={this.musicLayerScroll}
             style={{width: `${this.props.demo.music.getDuration() * 60 * this.state.xScale}px`}}
             >
             <Waveform

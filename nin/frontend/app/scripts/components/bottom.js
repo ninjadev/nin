@@ -88,7 +88,7 @@ class BottomPanel extends React.Component {
     let multiplier = 50;
 
     if (a.nativeEvent.shiftKey) {
-      multiplier *= 100;
+      multiplier *= 25;
     }
 
     if (a.nativeEvent.ctrlKey) {

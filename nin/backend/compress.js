@@ -1,5 +1,5 @@
 let crc = require('crc').crc32;
-let zlib = require('zlib');
+let zopfli = require('node-zopfli');
 
 
 function positiveNumberToBytes(number, bytes) {
@@ -105,7 +105,7 @@ async function compress(projectPath, payload, htmlPreamble, metadata) {
   }));
 
   return new Promise(resolve => {
-    zlib.deflate(scanlinesBuffer, function(err, buffer){
+    zopfli.zlib(scanlinesBuffer, {}, function(err, buffer){
       let IDATData = Buffer.concat([
         buffer,
         positiveNumberToBytes(crc(scanlinesBuffer), 4)

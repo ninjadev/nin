@@ -127,6 +127,7 @@ class WaveformWrapper extends React.Component {
           style={{
             position: 'absolute',
             top: '0px',
+            width: 'calc(100% - 50px)',
           }}
           >
         </canvas>

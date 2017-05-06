@@ -221,11 +221,12 @@ class GraphEditor extends React.Component {
 
   componentDidMount() {
     requestAnimationFrame(this.loop);
-    window.addEventListener('wheel', event => this.onWheel(event));
     let add = (a, b) => a + b;
     let get = key => item => item[key];
     let sum = reducable => [].reduce.call(reducable, add, 0);
     setTimeout(() => {
+      this.container.addEventListener('wheel', event => this.onWheel(event));
+
       this.container.addEventListener('touchstart', event => {
         let x = sum([].map.call(event.touches, get('pageX'))) / event.touches.length;
         let y = sum([].map.call(event.touches, get('pageY'))) / event.touches.length;

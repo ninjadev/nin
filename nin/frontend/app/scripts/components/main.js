@@ -26,6 +26,7 @@ class Main extends React.Component {
       selectedTheme: localStorage.getItem('selectedTheme') || 'dark',
       fullscreen: false,
       showFramingOverlay: false,
+      volume: localStorage.getItem('nin-mute') ? localStorage.getItem('nin-mute') : 0,
       mute: localStorage.getItem('nin-mute') ? true : false,
       globalJSErrors: {},
     };
@@ -71,11 +72,12 @@ class Main extends React.Component {
 
     commands.on('toggleMusic', () => {
       if (!this.state.mute) {
+        this.setState({volume: demo.music.getVolume()});
         localStorage.setItem('nin-mute', 1);
         demo.music.setVolume(0);
       } else {
         localStorage.removeItem('nin-mute');
-        demo.music.setVolume(1);
+        demo.music.setVolume(this.state.volume);
       }
       this.setState({mute: !this.state.mute});
     });

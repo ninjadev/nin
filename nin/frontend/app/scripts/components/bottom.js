@@ -1,6 +1,7 @@
 const React = require('react');
 const commands = require('../commands');
 const Waveform = require('./waveform');
+const Volumebar = require('./volumebar');
 
 class BottomPanel extends React.Component {
   constructor(props) {
@@ -54,7 +55,7 @@ class BottomPanel extends React.Component {
       }
       var rect = document.body.getBoundingClientRect();
       this.setState({
-        xScale: rect.width / (this.props.demo.music.getDuration() * 60),
+        xScale: (rect.width - 50) / (this.props.demo.music.getDuration() * 60),
         currentFrame: props.demo.getCurrentFrame(),
       });
       requestAnimationFrame(updateLoop);
@@ -62,6 +63,7 @@ class BottomPanel extends React.Component {
     requestAnimationFrame(updateLoop);
 
     this.musicLayerClick = this.musicLayerClick.bind(this);
+    this.musicLayerScroll = this.musicLayerScroll.bind(this);
   }
 
   getBarNumberDisplay() {
@@ -82,6 +84,25 @@ class BottomPanel extends React.Component {
     demo.jumpToFrame(this.getClickOffset(e).x / this.state.xScale | 0);
   }
 
+  musicLayerScroll(a) {
+    a.preventDefault();
+    let multiplier = 50;
+
+    if (a.nativeEvent.shiftKey) {
+      multiplier *= 25;
+    }
+
+    if (a.nativeEvent.ctrlKey) {
+      multiplier /= 10;
+    }
+
+    if (a.nativeEvent.wheelDelta < 0) {
+      demo.jumpToFrame(Math.round(this.state.currentFrame -= multiplier / this.props.demo.music.getDuration() * 60 * this.state.xScale));
+    } else {
+      demo.jumpToFrame(Math.round(this.state.currentFrame += multiplier / this.props.demo.music.getDuration() * 60 * this.state.xScale));
+    }
+  }
+
   render() {
     return (
       <div className='bottom'>
@@ -91,7 +112,7 @@ class BottomPanel extends React.Component {
             <span
               className='value'
               title="Global frame for demo"
-              >
+            >
               { this.state.currentFrame }
             </span>
           </div>
@@ -101,7 +122,7 @@ class BottomPanel extends React.Component {
             <span
               className='value'
               title="Global music BEAT boolean for frame"
-              >
+            >
               { '' + window.BEAT }
             </span>
           </div>
@@ -111,7 +132,7 @@ class BottomPanel extends React.Component {
             <span
               className='value'
               title="Global music BEAT number for frame"
-              >
+            >
               { window.BEAN }
             </span>
           </div>
@@ -121,69 +142,83 @@ class BottomPanel extends React.Component {
             <span
               className='value'
               title="Global music bar:quaver number for frame"
-              >
+            >
               { this.getBarNumberDisplay() }
             </span>
           </div>
         </div>
 
-        <div
-          className='layers-bar-container'
-          onClick={this.musicLayerClick}
-          >
+        <footer>
           <div
-            className="marker-line play"
-            style={{
-              marginLeft: `${this.state.currentFrame * this.state.xScale}px`,
-              height: '50px',
-            }}
+            className='layers-bar-container'
+            onClick={this.musicLayerClick}
+            onWheel={this.musicLayerScroll}
+          >
+            <div
+              className="marker-line play"
+              style={{
+                marginLeft: `${this.state.currentFrame * this.state.xScale}px`,
+                height: '50px',
+              }}
             >
-            <div className={`glow glow-play ${!this.props.demo.music.paused ? 'glow-visible' : ''}`}>
+              <div className={`glow glow-play ${!this.props.demo.music.paused ? 'glow-visible' : ''}`}>
+              </div>
             </div>
-          </div>
 
-          { this.loopStart
-            ? <div
+            { this.loopStart
+              ? <div
                 className="marker-line loop"
                 style={{
                   marginLeft: `${this.loopStart * this.state.xScale}px`,
                   height: '50px',
                 }}
-                >
+              >
                 <div className="glow glow-loop"></div>
               </div>
-            : null
-          }
+              : null
+            }
 
-          { this.loopEnd
-            ? <div
+            { this.loopEnd
+              ? <div
                 className="marker-line loop"
                 style={{
                   marginLeft: `${this.loopEnd * this.state.xScale}px`,
                   height: '50px',
                 }}
-                >
+              >
                 <div className="glow glow-loop"></div>
               </div>
-            : null
-          }
+              : null
+            }
 
-          <div
-            className="layer musiclayer"
-            onClick={this.musicLayerClick}
-            style={{width: `${this.props.demo.music.getDuration() * 60 * this.state.xScale}px`}}
+            : null
+            }
+
+            <div
+              className="layer musiclayer"
+              onClick={this.musicLayerClick}
+              onWheel={this.musicLayerScroll}
+              style={{width: `${this.props.demo.music.getDuration() * 60 * this.state.xScale}px`}}
             >
-            <Waveform
-              selectedTheme={this.props.selectedTheme}
-              demo={this.props.demo}
-              xScale={this.state.xScale}
+              <Waveform
+                selectedTheme={this.props.selectedTheme}
+                demo={this.props.demo}
+                xScale={this.state.xScale}
               >
-              &nbsp;
-            </Waveform>
+                &nbsp;
+              </Waveform>
+            </div>
           </div>
 
-        </div>
-
+          <div
+            className="volumebar-container"
+            style={{height: '50px', width: '50px', bottom: 0, right: 0, position: 'absolute'}}
+          >
+            <Volumebar
+              demo={this.props.demo}
+            />
+          </div>
+        </footer>
       </div>
     );
   }

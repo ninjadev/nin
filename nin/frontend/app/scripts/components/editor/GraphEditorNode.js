@@ -52,6 +52,21 @@ class GraphEditorNode extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.node !== this.props.node) {
+      if (this.flyaroundController) {
+        this.flyaroundController.updateNodeInstance(nextProps.node);
+        if (this.props.node.camera.isOverriddenByFlyControls) {
+          const cameraCopy = this.props.node.camera.clone();
+          setTimeout(() => {
+            nextProps.node.camera.copy(cameraCopy);
+          });
+          this.flyaroundController.toggleFlyAroundMode();
+        }
+      }
+    }
+  }
+
   render() {
     const node = this.props.node;
     const width = 200;

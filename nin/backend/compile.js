@@ -114,11 +114,13 @@ async function collect(projectPath, data) {
     .map(key => `<!-- ${key}: ${metadata[key]} -->`)
     .join('\n');
 
+  const escapedTitle = utils.unsafeHTMLEscape(metadata.Title);
   const ogTags =
-    `<meta property="og:title" content="${utils.unsafeHTMLEscape(metadata.Title)}" />
+    `<meta property="og:title" content="${escapedTitle}" />
     <meta property="og:description" content="${utils.unsafeHTMLEscape(metadata.Description)}" />
     <meta property="og:image" content="${metadata.previewImage}" />
-    <meta name="author" content="${utils.unsafeHTMLEscape(metadata.Author)}" />`;
+    <meta name="author" content="${utils.unsafeHTMLEscape(metadata.Author)}" />
+    <title>${escapedTitle}</title>`;
 
   const htmlPreamble =
     fs.readFileSync(projectPath + '/index.html', {encoding: 'utf8'})

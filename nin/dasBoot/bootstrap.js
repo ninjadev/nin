@@ -1,58 +1,37 @@
-window.THREE = require('./lib/00_three');
-require('./lib/01_EffectComposer');
-require('./lib/BloomPass');
-require('./lib/ClearPass');
+const THREE = window['THREE'] = require('./lib/three.module.js');
 require('./lib/ConvolutionShader');
-require('./lib/CopyShader');
-require('./lib/ImprovedNoise');
-require('./lib/MaskPass');
-require('./lib/MTLLoader');
-require('./lib/OBJLoader');
-require('./lib/RenderPass');
-require('./lib/ShaderPass');
 
-const NIN = window['NIN'] = window['NIN'] || {}; 
-NIN.Input = require('./input');
-NIN.TextureInput = require('./TextureInput');
-
-NIN.Output = require('./output');
-NIN.TextureOutput = require('./TextureOutput');
-
-NIN.Node = require('./node');
-NIN.TextureNode = require('./TextureNode');
+const NIN = window['NIN'] = require('./NIN');
 NIN.RootNode = require('./RootNode');
 NIN.THREENode = require('./THREENode');
 NIN.ShaderNode = require('./ShaderNode');
 
 const {initBeatBean, updateBeatBean} = require('./BEATBEAN');
-window.initBeatBean = initBeatBean;
-window.updateBeatBean = updateBeatBean;
+window['initBeatBean'] = initBeatBean;
+window['updateBeatBean'] = updateBeatBean;
 
 const {lerp, clamp, smoothstep, easeIn, easeOut} = require('./interpolations');
-window.lerp = lerp;
-window.clamp = clamp;
-window.smoothstep = smoothstep;
-window.easeIn = easeIn;
-window.easeOut = easeOut;
+window['lerp'] = lerp;
+window['clamp'] = clamp;
+window['smoothstep'] = smoothstep;
+window['easeIn'] = easeIn;
+window['easeOut'] = easeOut;
 
-const {requestAnimFrame, makeFullscreen, audioContext} = require('./shims.js');
-window.requestAnimFrame = requestAnimFrame;
-window.makeFullscreen = makeFullscreen;
-window.audioContext = audioContext;
+const {requestAnimFrame, makeFullscreen} = require('./shims.js');
+window['requestAnimFrame'] = requestAnimFrame;
+window['makeFullscreen'] = makeFullscreen;
 
-window.Random = require('./Random');
-window.PathController = require('./PathController');
-window.CameraController = require('./CameraController');
-window.Loader = require('./Loader');
-window.createLoop = require('./loop');
-window.loadMusic = require('./music');
-window.NodeManager = require('./NodeManager');
+window['Random'] = require('./Random');
+window['PathController'] = require('./PathController');
+const Loader = window['Loader'] = require('./Loader');
+const loadMusic = require('./music');
+const NodeManager = window['NodeManager'] = require('./NodeManager');
 
 window['bootstrap'] = function(options) {
   options = options || {};
 
   var demo = {};
-  window.demo = demo;
+  window['demo'] = demo;
 
   var container = document.body;
 
@@ -110,15 +89,15 @@ window['bootstrap'] = function(options) {
     width = width || rect.width;
     height = height || rect.height;
     if (width / height > 16 / 9) {
-      GU = (height / 9);
+      window.GU = (height / 9);
     } else {
-      GU = (width / 16);
+      window.GU = (width / 16);
     }
-    demo.renderer.setSize(16 * GU, 9 * GU);
+    demo.renderer.setSize(16 * window.GU, 9 * window.GU);
     demo.renderer.domElement.style.zIndex = 10;
     demo.renderer.domElement.style.position = 'absolute';
-    demo.renderer.domElement.style.margin = ((rect.height - 9 * GU) / 2) +
-      'px 0 0 ' + ((rect.width - 16 * GU) / 2) + 'px';
+    demo.renderer.domElement.style.margin = ((rect.height - 9 * window.GU) / 2) +
+      'px 0 0 ' + ((rect.width - 16 * window.GU) / 2) + 'px';
     demo.nm.resize();
     demo.update(currentFrame);
     demo.render(demo.renderer, 0);
@@ -130,6 +109,39 @@ window['bootstrap'] = function(options) {
   demo.resize();
 
   demo.music = loadMusic();
+
+  function createLoop(options) {
+    var frameLength = 1000 / (options.frameRateInHz || 60);
+    var render = options.render;
+    var update = options.update;
+    var renderer = options.renderer;
+    var music = options.music;
+
+    function Looper() {
+      this.time = 0;
+      this.oldTime = 0;
+      this.deltaTime = 0;
+      this.currentFrame = 0;
+      this.frameLength = frameLength;
+
+      var that = this;
+      this.loop = function() {
+        that.time = music.getCurrentTime() * 1000;
+        that.deltaTime += that.time - that.oldTime;
+        that.oldTime = that.time;
+        while (that.deltaTime >= frameLength) {
+          that.deltaTime -= frameLength;
+          demo.music._calculateFFT();
+          updateBeatBean(that.currentFrame);
+          update(that.currentFrame++);
+        }
+        render(renderer, that.deltaTime / frameLength);
+        requestAnimFrame(that.loop);
+      };
+    }
+
+    return new Looper();
+  }
 
   demo.looper = createLoop({
     render: demo.render,

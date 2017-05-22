@@ -8,7 +8,7 @@ class NodeManager {
     nodeInfo.options = nodeInfo.options || {};
 
     const nodeConstructor = nodeInfo.type.slice(0, 4) === 'NIN.' ?
-      NIN[nodeInfo.type.slice(4)]
+      window['NIN'][nodeInfo.type.slice(4)]
       : window[nodeInfo.type];
 
     if (nodeConstructor === undefined) {

@@ -6,7 +6,7 @@ const initBeatBean = function() {
   window.BEAN = 0;
   window.BEAT = false;
 
-  var BEATsPerMinute = PROJECT.music.bpm * PROJECT.music.subdivision;
+  var BEATsPerMinute = window.PROJECT.music.bpm * window.PROJECT.music.subdivision;
   var BEATsPerSecond = BEATsPerMinute / 60;
   var framesPerSecond = 60;
   framesPerBEAT = framesPerSecond / BEATsPerSecond;

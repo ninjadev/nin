@@ -6,6 +6,8 @@
  * http://o3d.googlecode.com/svn/trunk/samples/convolution.html
  */
 
+const THREE = window['THREE'];
+
 THREE.ConvolutionShader = {
 
 	defines: {

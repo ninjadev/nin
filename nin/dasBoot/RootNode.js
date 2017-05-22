@@ -1,3 +1,6 @@
+const NIN = require('./NIN');
+const THREE = require('./lib/three.module.js');
+
 class RootNode extends NIN.Node {
   constructor(id, options) {
     super(id, {

@@ -1,3 +1,6 @@
+const PathController = require('./PathController');
+const THREE = require('./lib/three.module.js');
+
 function CameraController(rawPath) {
   this.camera = new THREE.PerspectiveCamera(45, 16/9, 1, 50000);
   this.rotVector = new THREE.Vector3(0, 0, 1);

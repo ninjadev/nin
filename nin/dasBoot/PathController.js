@@ -1,3 +1,6 @@
+const {lerp, smoothstep, easeIn, easeOut} = require('./interpolations');
+const THREE = require('./lib/three.module.js');
+
 function PathController(raw_path, path_type) {
   this.path_type = path_type || '3D';
 

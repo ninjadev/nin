@@ -69,3 +69,5 @@ var ImprovedNoise = function () {
 		}
 	}
 };
+
+module.exports = ImprovedNoise;

@@ -4,7 +4,6 @@ require('./lib/BloomPass');
 require('./lib/ClearPass');
 require('./lib/ConvolutionShader');
 require('./lib/CopyShader');
-require('./lib/ImprovedNoise');
 require('./lib/MaskPass');
 require('./lib/MTLLoader');
 require('./lib/OBJLoader');
@@ -23,6 +22,8 @@ NIN.TextureNode = require('./TextureNode');
 NIN.RootNode = require('./RootNode');
 NIN.THREENode = require('./THREENode');
 NIN.ShaderNode = require('./ShaderNode');
+
+NIN.ImprovedNoise = require('./lib/ImprovedNoise');
 
 const {initBeatBean, updateBeatBean} = require('./BEATBEAN');
 window.initBeatBean = initBeatBean;

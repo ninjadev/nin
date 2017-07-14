@@ -106,7 +106,10 @@ class NodeManager {
   hardReset() {
   }
 
-  warmup() {
+  warmup(renderer) {
+    for(let id in this.nodes) {
+      this.nodes[id].warmup(renderer);
+    }
   }
 
   jumpToFrame() {

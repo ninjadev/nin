@@ -184,7 +184,7 @@ window['bootstrap'] = function(options) {
   };
 
   demo.warmup = function() {
-    demo.nm.warmup();
+    demo.nm.warmup(demo.renderer);
   }
 
   return demo;

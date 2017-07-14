@@ -23,6 +23,9 @@ class Node {
 
   update() {
   }
+
+  warmup() {
+  }
 }
 
 module.exports = Node;

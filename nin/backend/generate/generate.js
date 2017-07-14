@@ -51,6 +51,27 @@ const generate = async function(projectRoot, type, name, options) {
       });
       break;
 
+    case 'canvasNode':
+      generateNode(camelizedName,
+        'TemplateCanvasNode.js',
+        [[/TemplateCanvasNode/g, camelizedName]],
+        projectRoot);
+
+      graph.transform(projectRoot, g => {
+        g.push(Object.assign({
+          id: name,
+          type: camelizedName,
+
+        }, options));
+      }, err => {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log(`-> added ${name} to graph.json`);
+        }
+      });
+      break;
+
     case 'shaderNode':
       {
         const shaderFilename = name + 'Node';

@@ -186,6 +186,15 @@ class Menubar extends React.Component {
             }
           },
           {
+            name: 'Canvas Node',
+            action: 'generateCanvasNode',
+            invoke: () =>  {
+              commands.pause();
+              const nodeName = window.prompt("Enter a name for the canvas node:");
+              commands.generate('canvasNode', nodeName);
+            }
+          },
+          {
             name: 'Shader Node',
             action: 'generateShaderNode',
             invoke: () =>  {

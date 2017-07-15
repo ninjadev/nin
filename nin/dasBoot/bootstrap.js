@@ -29,12 +29,13 @@ const {initBeatBean, updateBeatBean} = require('./BEATBEAN');
 window.initBeatBean = initBeatBean;
 window.updateBeatBean = updateBeatBean;
 
-const {lerp, clamp, smoothstep, easeIn, easeOut} = require('./interpolations');
+const {lerp, clamp, smoothstep, easeIn, easeOut, elasticOut} = require('./interpolations');
 window.lerp = lerp;
 window.clamp = clamp;
 window.smoothstep = smoothstep;
 window.easeIn = easeIn;
 window.easeOut = easeOut;
+window.elasticOut = elasticOut;
 
 const {requestAnimFrame, makeFullscreen, audioContext} = require('./shims.js');
 window.requestAnimFrame = requestAnimFrame;

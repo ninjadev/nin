@@ -22,10 +22,18 @@ function easeOut(a, b, t) {
   return lerp(a, b, t);
 }
 
+function elasticOut(b, c, d, t) {
+  t = clamp(0, t, 1);
+  const ts = (t /= d) * t;
+  const tc = ts * t;
+  return b+c*(33*tc*ts + -106*ts*ts + 126*tc + -67*ts + 15*t);
+}
+
 module.exports = {
   lerp,
   clamp,
   smoothstep,
   easeIn,
   easeOut,
+  elasticOut,
 };

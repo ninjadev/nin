@@ -171,7 +171,7 @@ const compile = async function(projectPath, options) {
   projectSettings.generate(projectPath);
 
   await Promise.all([
-    shaderGen(projectPath, true),
+    shaderGen(projectPath, options.optimizeShaders),
     fontGen(projectPath),
     dasbootGen(projectPath),
   ]);

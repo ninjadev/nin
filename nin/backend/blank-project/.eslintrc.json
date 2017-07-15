@@ -40,6 +40,7 @@
       "lerp": true,
       "easeOut": true,
       "easeIn": true,
-      "smoothstep": true
+      "smoothstep": true,
+      "elasticOut": true
     }
 }

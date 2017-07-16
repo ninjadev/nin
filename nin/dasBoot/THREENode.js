@@ -1,5 +1,8 @@
 class THREENode extends NIN.Node {
   constructor(id, options) {
+    if(!('outputs' in options)) {
+      options.outputs = {};
+    }
     if(!('render' in options.outputs)) {
       options.outputs.render = new NIN.TextureOutput();
     }

@@ -11,12 +11,20 @@ module.exports = {
     filename: '[name].bundle.js',
     path: __dirname + '/dist'
   },
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.jsx']
+  },
   module: {
     rules: [
       {
+        test: /\.tsx?$/,
+        exclude: [/node_modules/, /app\/lib/],
+        use: ['awesome-typescript-loader']
+      },
+      {
         test: /\.jsx?$/,
         exclude: [/node_modules/, /app\/lib/],
-        use: ['babel-loader', 'eslint-loader']
+        use: ['babel-loader', 'eslint-loader'],
       },
       {
         test: /\.less$/,

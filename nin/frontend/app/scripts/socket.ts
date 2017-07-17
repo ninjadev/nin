@@ -1,6 +1,35 @@
 const SockJS = require('sockjs-client');
 
-class SocketController {
+interface GraphEvent {
+  type: 'graph',
+  content: string,
+  name: string,
+}
+
+interface CameraEvent {
+  type: 'camera',
+  content: string,
+  name: string,
+}
+
+interface ShaderEvent {
+  type: 'shader',
+  content: string,
+  name: string,
+}
+
+interface NodeEvent {
+  type: 'node',
+  content: string,
+  name: string,
+}
+
+export type WebSocketEvent = GraphEvent | CameraEvent | ShaderEvent | NodeEvent;
+
+export class SocketController {
+  handlers: object;
+  socket: any;
+
   constructor() {
     this.socket = new SockJS('/socket');
 
@@ -9,13 +38,12 @@ class SocketController {
     this.socket.onmessage = message => {
       var event = JSON.parse(message.data);
       for(var i = 0; i < this.handlers[event.type].length; i++) {
-        this.handlers[event.type][i](event.data);
+        this.handlers[event.type][i](<WebSocketEvent> event.data);
       }
     };
   }
 
-  on(event, handler) {
-    console.log('adding handler to', event);
+  on(event: string, handler: (WebSocketEvent) => void): void {
     if (event.indexOf(' ') != -1) {
       const events = event.split(' ');
       for (const event of events) {
@@ -45,5 +73,3 @@ class SocketController {
     }));
   }
 }
-
-module.exports = SocketController;

@@ -1,7 +1,6 @@
 const GraphEditorNode = require('./GraphEditorNode');
 const Connection = require('./Connection');
 const React = require('react');
-const e = React.createElement;
 
 class GraphEditor extends React.Component {
   constructor() {
@@ -306,19 +305,19 @@ class GraphEditor extends React.Component {
 
   render() {
     if(!this.props.graph) {
-      return e('svg');
+      return <svg />;
     }
     const graphEditorNodes = this.props.graph.map((nodeInfo, i) =>
-      e(GraphEditorNode, {
-        nodeInfo,
-        key: nodeInfo.id,
-        scale: this.state.scale,
-        node: this.props.nodes[nodeInfo.id],
-        x: nodeInfo.x,
-        y: nodeInfo.y,
-        demo: this.props.demo,
-        editor: this,
-      }));
+      <GraphEditorNode
+        nodeInfo={nodeInfo}
+        key={nodeInfo.id}
+        scale={this.state.scale}
+        node={this.props.nodes[nodeInfo.id]}
+        x={nodeInfo.x}
+        y={nodeInfo.y}
+        demo={this.props.demo}
+        editor={this}
+      />);
 
     const connections = [];
     for(let i = 0; i < this.props.graph.length; i++) {
@@ -360,13 +359,26 @@ class GraphEditor extends React.Component {
       }
     }
 
-    return e('div', {ref: ref => this.container = ref}, e('svg',
-      {height: 99999, width: 99999},
-      e('g', {
-        transform: `matrix(${this.state.scale},0,0,${this.state.scale},${this.state.x},${this.state.y})`,
-      }, graphEditorNodes,
-      connections.map(connection => e(Connection, {connection, fromPath: connection.key.split('|')[0], toPath: connection.key.split('|')[1], editor: this, scale: this.state.scale, key: connection.key})),
-      )));
+    const connectionNodes = connections.map(connection =>
+      <Connection
+        connection={connection}
+        fromPath={connection.key.split('|')[0]}
+        fromPath={connection.key.split('|')[1]}
+        editor={this}
+        scale={this.state.scale}
+        key={connection.key}
+      />);
+
+    const transform = `matrix(${this.state.scale},0,0,${this.state.scale},${this.state.x},${this.state.y})`;
+    return (
+      <div ref={ref => this.container = ref}>
+        <svg height="99999" width="99999">
+          <g transform={transform}>
+            {graphEditorNodes}
+            {connectionNodes}
+          </g>
+        </svg>
+      </div>);
   }
 }
 

@@ -25,7 +25,6 @@ program
   .command('compile')
   .description('Compile the nin project')
   .option('--no-optimize-shaders', 'Skip compressing shaders')
-  .option('--no-optimize-png-assets', 'Do not use optipng to optimize assets')
   .option('--no-closure-compiler', 'Bypass Google Closure Compiler (faster)')
   .action(options => compile.compile(utils.findProjectRootOrExit(process.cwd()), options));
 

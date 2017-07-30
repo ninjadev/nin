@@ -3,6 +3,7 @@ const glob = require('glob');
 const closureCompiler = require('google-closure-compiler-js');
 const compress = require('./compress').compress;
 const fs = require('fs-promise');
+const archiver = require('archiver');
 const p = require('path');
 const projectSettings = require('./projectSettings');
 const shaderGen = require('./shadergen');
@@ -29,6 +30,20 @@ function renderWarn() {
 function renderError() {
   console.log(moveCursorToColumn(69) +
     chalk.grey('[') + chalk.red('❌ ERROR') + chalk.grey(']'));
+}
+
+function createArchive() {
+  process.stdout.write(chalk.yellow('\nCreating zip archive'));
+  const outputStream = fs.createWriteStream('bin/demo.zip');
+  const archive = archiver('zip');
+  archive.pipe(outputStream);
+  archive.file('screenshot.png');
+  archive.glob('*.nfo');
+  archive.file('bin/demo.png.html', {
+    name: 'demo.png.html',
+  });
+  archive.finalize();
+  renderOK();
 }
 
 async function res(projectPath) {
@@ -182,6 +197,8 @@ const compile = async function(projectPath, options) {
     }
     await collect(projectPath, out.compiledCode);
   }
+
+  createArchive();
 };
 
 

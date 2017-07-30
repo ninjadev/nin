@@ -1,14 +1,5 @@
 window.THREE = require('./lib/00_three');
-require('./lib/01_EffectComposer');
-require('./lib/BloomPass');
-require('./lib/ClearPass');
-require('./lib/ConvolutionShader');
-require('./lib/CopyShader');
-require('./lib/MaskPass');
-require('./lib/MTLLoader');
 require('./lib/OBJLoader');
-require('./lib/RenderPass');
-require('./lib/ShaderPass');
 
 const NIN = window['NIN'] = window['NIN'] || {}; 
 NIN.Input = require('./input');
@@ -22,8 +13,6 @@ NIN.TextureNode = require('./TextureNode');
 NIN.RootNode = require('./RootNode');
 NIN.THREENode = require('./THREENode');
 NIN.ShaderNode = require('./ShaderNode');
-
-NIN.ImprovedNoise = require('./lib/ImprovedNoise');
 
 const {initBeatBean, updateBeatBean} = require('./BEATBEAN');
 window.initBeatBean = initBeatBean;

@@ -11,6 +11,7 @@ const utils = require('./utils');
 const dasbootGen = require('./dasbootgen');
 const fontGen = require('./fontgen');
 const walk = require('walk');
+const slugify = require('slugify');
 
 
 function moveCursorToColumn(col) {
@@ -32,18 +33,44 @@ function renderError() {
     chalk.grey('[') + chalk.red('❌ ERROR') + chalk.grey(']'));
 }
 
-function createArchive() {
-  process.stdout.write(chalk.yellow('\nCreating zip archive'));
-  const outputStream = fs.createWriteStream('bin/demo.zip');
-  const archive = archiver('zip');
-  archive.pipe(outputStream);
-  archive.file('screenshot.png');
-  archive.glob('*.nfo');
-  archive.file('bin/demo.png.html', {
-    name: 'demo.png.html',
+function slugifyTitle(title) {
+  return slugify(title).toLowerCase();
+}
+
+async function createArchive(projectPath) {
+  return new Promise(resolve => {
+    process.stdout.write(chalk.yellow('\nCreating zip archive'));
+    const metadata = utils.getProjectMetadata(projectPath);
+    const slug = slugifyTitle(metadata.projectSettings.title);
+    const outputStream = fs.createWriteStream(p.join('bin', slug + '.zip'));
+    const archive = archiver('zip');
+    archive.pipe(outputStream);
+    let foundErrors = false;
+    archive.on('warning', e => {
+      process.stdout.write(
+        chalk.white((foundErrors ? '- ' : '\n- ') + e.message));
+      renderWarn();
+      foundErrors = true;
+    });
+    archive.on('error', e => {
+      process.stdout.write(
+        chalk.white((foundErrors ? '- ' : '\n- ') + e.message));
+      renderError();
+      foundErrors = true;
+    });
+    archive.file('screenshot.png');
+    archive.file(slug + '.nfo');
+    archive.file(p.join('bin', slug + '.png.html'), {
+      name: slug + '.png.html',
+    });
+    archive.on('finish', () => {
+      if(!foundErrors) {
+        renderOK();
+      }
+      resolve();
+    });
+    archive.finalize();
   });
-  archive.finalize();
-  renderOK();
 }
 
 async function res(projectPath) {
@@ -83,12 +110,14 @@ async function res(projectPath) {
 }
 
 async function collect(projectPath, data) {
-  process.stdout.write(chalk.yellow('\nGenerating demo.html'));
+  const projectMetadata = utils.getProjectMetadata(projectPath);
+  const slug = slugifyTitle(projectMetadata.projectSettings.title);
+  process.stdout.write(chalk.yellow('\nGenerating ' + slug + '.html'));
   const {
     projectSettings,
     projectVersion,
     projectOrigin,
-  } = utils.getProjectMetadata(projectPath);
+  } = projectMetadata;
 
   const ninMeta = utils.getNinMetadata();
 
@@ -135,12 +164,12 @@ async function collect(projectPath, data) {
     'var graph = JSON.parse(atob(FILES["res/graph.json"]));' +
     'demo=bootstrap({graph:graph, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +
     '</script>';
-  await fs.outputFile(p.join(projectPath, 'bin', 'demo.html'), html);
+  await fs.outputFile(p.join(projectPath, 'bin', slug + '.html'), html);
   renderOK();
 
   process.stdout.write(chalk.yellow('\nCompressing demo to .png.html'));
   const compressed = await compress(projectPath, data, htmlPreamble, metadata);
-  await fs.outputFile(p.join(projectPath, 'bin', 'demo.png.html'), compressed);
+  await fs.outputFile(p.join(projectPath, 'bin', slug + '.png.html'), compressed);
   renderOK();
 }
 
@@ -191,16 +220,16 @@ const compile = async function(projectPath, options) {
     await collect(projectPath, out.compiledCode);
   }
 
-  createArchive();
-  const metadata = utils.getProjectMetadata(projectPath);
+  await createArchive(projectPath);
+  const projectMetadata = utils.getProjectMetadata(projectPath);
   let dashedLine = '';
-  while(dashedLine.length < metadata.projectSettings.title.length + 23) {
+  while(dashedLine.length < projectMetadata.projectSettings.title.length + 23) {
     dashedLine += '-';
   }
   console.log(chalk.white('\n★ ' + dashedLine + ' ★'));
   console.log(chalk.white('| ') +
     chalk.green('Successfully compiled ') +
-    chalk.white(metadata.projectSettings.title) +
+    chalk.white(projectMetadata.projectSettings.title) +
     chalk.green('!') +
     chalk.white(' |'));
   console.log(chalk.white('★ ' + dashedLine + ' ★\n'));

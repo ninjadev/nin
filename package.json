@@ -28,6 +28,7 @@
     "imagemin-jpegtran": "5.0.2",
     "imagemin-zopfli": "5.1.0",
     "ini": "1.3.4",
+    "slugify": "^1.1.0",
     "sockjs": "0.3.16",
     "walk": "2.3.9",
     "webpack": "^2.4.1"

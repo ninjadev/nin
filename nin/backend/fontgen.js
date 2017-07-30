@@ -7,14 +7,14 @@ async function fontGen(pathPrefix) {
 
   let resolver;
   let promise = new Promise(resolve => {
-    resolver = resolve; 
+    resolver = resolve;
   });
 
-  glob(path.join(pathPrefix, 'res/**/*.otf'), {}, async (error, filenames) => {
+  glob(path.join(pathPrefix, 'res/**/*.woff2'), {}, async (error, filenames) => {
     let fonts = {};
     for(const filename of filenames) {
       const file = fs.readFileSync(filename);
-      const name = path.basename(filename, '.otf');
+      const name = path.basename(filename, '.woff2');
       fonts[name] = file.toString('base64');
     }
 
@@ -28,7 +28,7 @@ async function fontGen(pathPrefix) {
         s.innerHTML = [
           '@font-face {',
           'font-family: "' + name + '";',
-          'src: url(data:application/x-font-opentype;charset=utf-8;base64,' + font + ') format("opentype");',
+          'src: url(data:application/x-font-woff2;charset=utf-8;base64,' + font + ') format("woff2");',
           '}'
         ].join('\\n');
         document.body.appendChild(s);

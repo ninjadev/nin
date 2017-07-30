@@ -1,5 +1,3 @@
-const React = require('react');
-const SocketController = require('../socket');
 const Bottom = require('./bottom');
 const MenuBar = require('./menubar');
 const GraphEditor = require('./editor/GraphEditor');
@@ -8,7 +6,17 @@ const commands = require('../commands');
 const demo = require('../demo');
 require('../utils/render');
 
-class Main extends React.Component {
+import * as React from "react";
+import {SocketController, WebSocketEvent} from '../socket';
+
+declare const Loader: any;
+declare const NIN: any;
+
+export default class Main extends React.Component<any, any> {
+  themes: string[];
+  fileCache: Object;
+  startupSound: any;
+
   constructor(props) {
     super(props);
 
@@ -73,7 +81,7 @@ class Main extends React.Component {
     commands.on('toggleMusic', () => {
       if (!this.state.mute) {
         this.setState({volume: demo.music.getVolume()});
-        localStorage.setItem('nin-mute', 1);
+        localStorage.setItem('nin-mute', '1');
         demo.music.setVolume(0);
       } else {
         localStorage.removeItem('nin-mute');
@@ -99,7 +107,7 @@ class Main extends React.Component {
     }
 
     var layerShaderDependencies = {};
-    socketController.on('add change', event => {
+    socketController.on('add change', (event: WebSocketEvent) => {
       try {
         switch (event.type) {
         case 'graph':
@@ -140,7 +148,7 @@ class Main extends React.Component {
         case 'camera':
           for (let key in demo.nm.nodes) {
             if (demo.nm.nodes[key] instanceof NIN.THREENode) {
-              if (demo.nm.nodes[key].options.camera == event.path) {
+              if (demo.nm.nodes[key].options.camera == event.name) {
                 demo.nm.nodes[key].initializeCamera(event.content);
               }
             }
@@ -182,15 +190,14 @@ class Main extends React.Component {
           break;
         }
 
-        const globalJSErrors = Object.assign({}, this.state.globalJSErrors);
-        delete globalJSErrors[event.type];
+        const globalJSErrors = (Object as any).assign({}, this.state.globalJSErrors);
+        delete globalJSErrors[event.name];
         this.setState({globalJSErrors});
       } catch (e) {
         e.context = "WS load of " + event.name + " failed";
-        e.type = event.type;
         e.name = event.name;
 
-        const globalJSErrors = Object.assign({}, this.state.globalJSErrors);
+        const globalJSErrors = (Object as any).assign({}, this.state.globalJSErrors);
         globalJSErrors[event.type] = e;
         this.setState({globalJSErrors});
       }
@@ -246,5 +253,3 @@ class Main extends React.Component {
       </div>);
   }
 }
-
-module.exports = Main;

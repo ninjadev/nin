@@ -42,31 +42,34 @@ const serve = async function(
 
   const eventFromPath = function(data) {
     const path = data.path;
-    const filename = p.basename(path);
     const content = fs.readFileSync(p.join(projectPath, path), 'utf-8');
+    const normalizedPath = path.replace(path.sep, '/');
 
-    const event = {
-      path: path.replace(path.sep, '/'),
-    };
-
-    if (filename == 'graph.json') {
-      event.name = 'graph';
-      event.type = 'graph';
-      event.content = content;
+    if (p.basename(path) == 'graph.json') {
+      return {
+        type: 'graph',
+        content: content,
+        name: 'graph',
+      };
     } else if (path.endsWith('.camera.json')) {
-      event.type = 'camera';
-      event.content = content;
+      return {
+        type: 'camera',
+        content: content,
+        name: normalizedPath,
+      };
     } else if (path.split(p.sep).includes('shaders')) {
-      event.type = 'shader';
-      event.content = data.out;
-      event.name = p.basename(p.dirname(path));
+      return {
+        type: 'shader',
+        content: data.out,
+        name: p.basename(p.dirname(path)),
+      };
     } else {
-      event.type = 'node';
-      event.content = content;
-      event.name = p.parse(path).name;
+      return {
+        type: 'node',
+        content: content,
+        name: p.parse(path).name,
+      };
     }
-
-    return event;
   };
 
   const watcher = watch(projectPath, function(event, data) {

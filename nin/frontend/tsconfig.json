@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "target": "es5",
+    "jsx": "react"
+  },
+  "include": [
+    "./app/**/*"
+  ]
+}

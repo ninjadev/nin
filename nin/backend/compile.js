@@ -83,6 +83,7 @@ async function res(projectPath) {
 }
 
 async function collect(projectPath, data) {
+  process.stdout.write(chalk.yellow('\nGenerating demo.html'));
   const {
     projectSettings,
     projectVersion,
@@ -135,20 +136,12 @@ async function collect(projectPath, data) {
     'demo=bootstrap({graph:graph, onprogress: ONPROGRESS, oncomplete: ONCOMPLETE});' +
     '</script>';
   await fs.outputFile(p.join(projectPath, 'bin', 'demo.html'), html);
-  process.stdout.write('Successfully compiled demo.html!\n');
+  renderOK();
 
   process.stdout.write(chalk.yellow('\nCompressing demo to .png.html'));
-
   const compressed = await compress(projectPath, data, htmlPreamble, metadata);
-  renderOK();
   await fs.outputFile(p.join(projectPath, 'bin', 'demo.png.html'), compressed);
-  console.log(chalk.white('\n★ ---------------------------------------- ★'));
-  console.log(chalk.white('| ') +
-    chalk.green('Successfully compiled ') +
-      chalk.grey('bin/') +
-      chalk.green('demo.png.html!') +
-      chalk.white(' |'));
-  console.log(chalk.white('★ ---------------------------------------- ★\n'));
+  renderOK();
 }
 
 const compile = async function(projectPath, options) {
@@ -199,6 +192,18 @@ const compile = async function(projectPath, options) {
   }
 
   createArchive();
+  const metadata = utils.getProjectMetadata(projectPath);
+  let dashedLine = '';
+  while(dashedLine.length < metadata.projectSettings.title.length + 23) {
+    dashedLine += '-';
+  }
+  console.log(chalk.white('\n★ ' + dashedLine + ' ★'));
+  console.log(chalk.white('| ') +
+    chalk.green('Successfully compiled ') +
+    chalk.white(metadata.projectSettings.title) +
+    chalk.green('!') +
+    chalk.white(' |'));
+  console.log(chalk.white('★ ' + dashedLine + ' ★\n'));
 };
 
 

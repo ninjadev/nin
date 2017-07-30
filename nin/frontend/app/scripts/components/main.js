@@ -159,6 +159,7 @@ class Main extends React.Component {
           }
 
           demo.nm.update(demo.looper.currentFrame);
+          demo.nm.render(demo.renderer);
           Loader.start(function() {}, function() {});
           break;
 
@@ -178,6 +179,7 @@ class Main extends React.Component {
           }
 
           demo.nm.update(demo.looper.currentFrame);
+          demo.nm.render(demo.renderer);
           Loader.start(function() {}, function() {});
           break;
         }

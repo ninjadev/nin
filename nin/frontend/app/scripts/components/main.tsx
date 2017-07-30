@@ -94,19 +94,6 @@ export default class Main extends React.Component<any, any> {
       console.log('nin socket connection established', arguments);
     };
 
-    /* http://stackoverflow.com/a/7616484 */
-    function hash(string) {
-      var h = 0, i, chr, len;
-      if (string.length === 0) return h;
-      for (i = 0, len = string.length; i < len; i++) {
-        chr   = string.charCodeAt(i);
-        h = ((h << 5) - h) + chr;
-        h |= 0; // Convert to 32bit integer
-      }
-      return h;
-    }
-
-    var layerShaderDependencies = {};
     socketController.on('add change', (event: WebSocketEvent) => {
       try {
         switch (event.type) {

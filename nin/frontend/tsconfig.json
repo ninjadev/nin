@@ -3,7 +3,9 @@
     "outDir": "./dist/",
     "sourceMap": true,
     "target": "es5",
-    "jsx": "react"
+    "jsx": "react",
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedLocals": true
   },
   "include": [
     "./app/**/*"

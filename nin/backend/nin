@@ -5,6 +5,7 @@ const newProject = require('./new-project');
 const program = require('commander');
 const render = require('./render');
 const serve = require('./serve');
+const optimize = require('./optimize');
 const utils = require('./utils');
 
 program
@@ -25,7 +26,6 @@ program
   .command('compile')
   .description('Compile the nin project')
   .option('--no-optimize-shaders', 'Skip compressing shaders')
-  .option('--no-optimize-png-assets', 'Do not use optipng to optimize assets')
   .option('--no-closure-compiler', 'Bypass Google Closure Compiler (faster)')
   .action(options => compile.compile(utils.findProjectRootOrExit(process.cwd()), options));
 
@@ -38,6 +38,11 @@ program
   .command('render')
   .description('Render recorded pngs to a video file')
   .action(() => render.render(utils.findProjectRootOrExit(process.cwd())));
+
+program
+  .command('optimize')
+  .description('Optimize png and jpg assets')
+  .action(() => optimize.optimize(utils.findProjectRootOrExit(process.cwd())));
 
 const result = program.parse(process.argv);
 

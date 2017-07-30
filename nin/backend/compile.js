@@ -3,11 +3,9 @@ const glob = require('glob');
 const closureCompiler = require('google-closure-compiler-js');
 const compress = require('./compress').compress;
 const fs = require('fs-promise');
-const OptiPng = require('optipng');
 const p = require('path');
 const projectSettings = require('./projectSettings');
 const shaderGen = require('./shadergen');
-const stream = require('stream');
 const utils = require('./utils');
 const dasbootGen = require('./dasbootgen');
 const fontGen = require('./fontgen');
@@ -33,7 +31,7 @@ function renderError() {
     chalk.grey('[') + chalk.red('❌ ERROR') + chalk.grey(']'));
 }
 
-async function res(projectPath, options) {
+async function res(projectPath) {
   const walker = walk.walk(projectPath + '/res/' , {followLinks: false});
   const files = [];
   console.log(chalk.yellow('\nCollecting files from res/'));
@@ -54,34 +52,11 @@ async function res(projectPath, options) {
       return;
     }
     process.stdout.write('- Assimilating ' + chalk.grey(root.slice(projectPath.length + 1)) + chalk.magenta(stat.name));
-    function pushFinishedFile(file) {
-      files.push('FILES[\'' + root.slice(projectPath.length + 1) + stat.name + '\']=\'' +
-        file.toString('base64') + '\'');
-      renderOK();
-      next();
-    }
-    if(options.optimizePngAssets && stat.name.slice(-4).toLowerCase() == '.png') {
-      const chunks = [];
-      const s = new stream.Readable();
-      s.push(file);
-      s.push(null);
 
-      const pngOptimizer = new OptiPng(['-o7']);
-      s.pipe(pngOptimizer).on('data', data => {
-        chunks.push(data);
-      }).on('end', () => {
-        const newFile = Buffer.concat(chunks);
-        const percentage = (((file.length / newFile.length - 1) * 10000) | 0) / 100;
-        process.stdout.write(
-            '\n    OptiPng: saved ' +
-            chalk.cyan(`${(file.length - newFile.length) / 1024 | 0}KB`) +
-            ' (' +
-            chalk.green(`${percentage}%`) + ' reduction)');
-        pushFinishedFile(newFile);
-      });
-    } else {
-      pushFinishedFile(file);
-    }
+    files.push('FILES[\'' + root.slice(projectPath.length + 1) + stat.name + '\']=\'' +
+      file.toString('base64') + '\'');
+    renderOK();
+    next();
   });
   return new Promise(resolve => {
     walker.on('end', function(){
@@ -165,7 +140,7 @@ const compile = async function(projectPath, options) {
   const genPath = p.join(projectPath, '/gen/');
   await fs.remove(genPath);
 
-  const data = await res(projectPath, options);
+  const data = await res(projectPath);
   await fs.outputFile(p.join(genPath, 'files.js'), data);
 
   projectSettings.generate(projectPath);

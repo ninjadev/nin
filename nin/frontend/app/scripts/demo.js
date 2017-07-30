@@ -80,6 +80,26 @@ commands.on('jog', function(amount) {
   demo.jumpToFrame(demo.getCurrentFrame() + amount);
 });
 
+commands.on('quantizedJog', function(bars, beats) {
+  beats = beats || 0;
+  let offset = BEAN % PROJECT.music.subdivision;
+  let barOffset = BEAN % (PROJECT.music.subdivision * 4);
+  if(bars == 0) {
+    barOffset = 0;
+  } else {
+    offset = 0;
+  }
+  if(barOffset > 0 && bars < 0) {
+    bars += 1;
+  }
+  if(offset > 0 && beats < 0) {
+    beats += 1;
+  }
+  beats += bars * 4;
+  const targetBean = BEAN - offset - barOffset + beats * PROJECT.music.subdivision;
+  demo.jumpToFrame(FRAME_FOR_BEAN(targetBean));
+});
+
 commands.on('jumpToFrame', function(frame) {
   demo.jumpToFrame(frame);
 });

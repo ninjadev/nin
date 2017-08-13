@@ -24,28 +24,29 @@ class Menubar extends React.Component {
             invoke: () => commands.jumpToFrame(0)
           },
           {
-            name: 'Rewind one second',
-            action: 'rewindOneSecond',
+            name: 'Rewind one beat',
+            action: 'rewindOneBeat',
             defaultKeybind: 'j',
-            invoke: () => commands.jog(-60)
+            invoke: () => commands.quantizedJog(0, -1)
+
           },
           {
-            name: 'Forward one second',
-            action: 'forwardOneSecond',
+            name: 'Forward one beat',
+            action: 'forwardOneBeat',
             defaultKeybind: 'k',
-            invoke: () => commands.jog(60)
+            invoke: () => commands.quantizedJog(0, 1)
           },
           {
-            name: 'Rewind 10 seconds',
-            action: 'rewindTenSeconds',
+            name: 'Rewind one bar',
+            action: 'rewindOneBar',
             defaultKeybind: 'h',
-            invoke: () => commands.jog(-60 * 10)
+            invoke: () => commands.quantizedJog(-1)
           },
           {
-            name: 'Forward 10 seconds',
-            action: 'forwardTenSeconds',
+            name: 'Forward one bar',
+            action: 'forwardOneBar',
             defaultKeybind: 'l',
-            invoke: () => commands.jog(60 * 10)
+            invoke: () => commands.quantizedJog(1)
           },
           {
             name: 'Rewind one frame',

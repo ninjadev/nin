@@ -36,7 +36,10 @@ class GraphEditorInputOutput extends React.Component {
         style: {
           cursor: 'pointer',
         },
-        onClick: event => {this.props.editor.inspect(this);},
+        onClick: event => {
+          this.props.editor.connectClick(event, this);
+          //this.props.editor.inspect(this);
+        },
       }),
       this.props.scale >= 1.5 ? e('text', {
         x: 0,

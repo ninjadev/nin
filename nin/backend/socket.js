@@ -37,6 +37,20 @@ function socket(projectPath, onConnectionCallback) {
     conn.on('data', function (message) {
       let event = JSON.parse(message);
       switch (event.type) {
+        case 'graph-disconnect':
+          graph.transform(projectPath, g => {
+            const index = g.findIndex(nodeInfo => nodeInfo.id === event.data.toNode);
+            delete g[index].connected[event.data.toInput];
+          });
+          break;
+
+        case 'graph-connect':
+          graph.transform(projectPath, g => {
+            const index = g.findIndex(nodeInfo => nodeInfo.id === event.data.toNode);
+            g[index].connected[event.data.toInput] = event.data.fromNode + '.' + event.data.fromOutput;
+          });
+          break;
+
         case 'set':
           // TODO: Untested, nothing uses this yet
           graph.transform(projectPath, function(g) {

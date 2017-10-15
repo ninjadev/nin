@@ -72,14 +72,6 @@ const serve = async function(
     }
   };
 
-  const watcher = watch(projectPath, function(event, data) {
-    if (!['add', 'change'].includes(event)) {
-      return;
-    }
-
-    sock.broadcast(event, eventFromPath(data));
-  });
-
   const sock = socket(projectPath, function(conn) {
     const directoryPrecedence = {'lib': 0, 'src': 1, 'res': 2};
     const sortedPaths = watcher.paths.sort(function(a, b) {
@@ -103,8 +95,8 @@ const serve = async function(
       conn.send('add', eventFromPath({path}));
     }
   });
-
   sock.server.installHandlers(server, {prefix: '/socket'});
+
 
   frontend.use('/project/', express.static(projectPath));
   frontend.use(bodyParser.json({limit: '50mb'}));
@@ -127,6 +119,15 @@ const serve = async function(
   await fs.ensureDir(p.join(projectPath, 'bin', 'render'));
 
   server.listen(frontendPort, '0.0.0.0');
+
+  const watcher = watch(projectPath, function(event, data) {
+    console.log('getting event in watcher cb', event, data);
+    if (!['add', 'change'].includes(event)) {
+      return;
+    }
+
+    sock.broadcast(event, eventFromPath(data));
+  });
 
   const pm = utils.getProjectMetadata(projectPath);
   const {name, version} = utils.getNinMetadata(projectPath);

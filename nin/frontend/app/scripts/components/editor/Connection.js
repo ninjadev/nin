@@ -8,12 +8,12 @@ class Connection extends React.Component {
     this.state = {
       showDeleteButton: true
     };
-  }
 
-  delete() {
-    this.props.editor.removeConnection(
-      this.props.fromPath,
-      this.props.toPath,);
+    this.delete = () => {
+      this.props.editor.removeConnection(
+        this.props.fromPath,
+        this.props.toPath,);
+    };
   }
 
   render() {
@@ -33,6 +33,24 @@ class Connection extends React.Component {
           pointerEvents="none"
           strokeDasharray={this.props.connection.active ? undefined : '20, 10'}
         />
+
+        <circle
+          className="graph-editor-line-x"
+          cx={midX}
+          cy={midY}
+          r={10 / this.props.scale}
+          onClick={this.delete}
+          style={{
+            cursor: 'pointer',
+          }}
+        >
+          <circle
+            cx={midX}
+            cy={midY}
+            r={3 / this.props.scale}
+            fill="white"
+          />
+      </circle>
       </g>
     );
   }

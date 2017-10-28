@@ -1,6 +1,7 @@
 const React = require('react');
 const commands = require('../commands');
 const errorExcerpt = require('../utils/errorExcerpt');
+const errorExcerptShader = require('../utils/errorExcerptShader');
 const stackFormat = require('../utils/stackFormat');
 
 class DemoPlayer extends React.Component {
@@ -81,6 +82,20 @@ class DemoPlayer extends React.Component {
   render() {
     return (
       <div className="floating-viewer-container">
+        { Object.keys(this.props.globalShaderErrors).map(errorKey => {
+          const error = this.props.globalShaderErrors[errorKey];
+          const stack = error.diagnostics.fragmentShader.log || error.diagnostics.vertexShader.log;
+          const html = errorExcerptShader(error);
+          return (
+            <div className='global-error-overlay' key={errorKey}>
+              <div className='context'>⛄ {error.diagnostics.programLog} ⛄</div>
+              <div className="bg">
+                <div className="header"><strong>{ stack.split('\n')[0] }</strong></div>
+                <div className="excerpt" dangerouslySetInnerHTML={{__html: html}}></div>
+              </div>
+            </div>
+          );
+        })}
         { Object.keys(this.props.globalJSErrors).map(errorKey => {
           const error = this.props.globalJSErrors[errorKey];
           return (

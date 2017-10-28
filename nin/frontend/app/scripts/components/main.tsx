@@ -37,6 +37,7 @@ export default class Main extends React.Component<any, any> {
       volume: localStorage.getItem('nin-mute') ? localStorage.getItem('nin-mute') : 0,
       mute: localStorage.getItem('nin-mute') ? true : false,
       globalJSErrors: {},
+      globalShaderErrors: {},
     };
 
     demo.music.setVolume(1 - this.state.mute);
@@ -144,6 +145,9 @@ export default class Main extends React.Component<any, any> {
           break;
 
         case 'shader':
+          /* kill all info about all previous programs so that we can clear errors */
+          demo.renderer.info.programs.splice(0, demo.renderer.info.programs.length);
+
           var indirectEval = eval;
           indirectEval(event.content);
 
@@ -230,6 +234,7 @@ export default class Main extends React.Component<any, any> {
             fullscreen={this.state.fullscreen}
             showFramingOverlay={this.state.showFramingOverlay}
             globalJSErrors={this.state.globalJSErrors}
+            globalShaderErrors={this.state.globalShaderErrors}
             />
         </div>
 

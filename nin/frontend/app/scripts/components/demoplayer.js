@@ -68,7 +68,13 @@ class DemoPlayer extends React.Component {
       // exit fullscreen
       document.body.classList.remove('fullscreen');
     }
-    this.props.demo.resize();
+    try {
+      this.props.demo.resize();
+    } catch(e) {
+      /* just ignoring any crashes here since they will be caught in the next
+       * render loop anyway, and we have a nicer error formatting setup over
+       * there. */
+    }
     this.resizeOverlay();
   }
 

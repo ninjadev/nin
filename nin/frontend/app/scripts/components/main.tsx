@@ -40,6 +40,7 @@ export default class Main extends React.Component<any, any> {
     };
 
     demo.music.setVolume(1 - this.state.mute);
+    demo.registerMainComponent(this);
 
     commands.on('playSplashScreen', () => {
       this.startupSound = new Audio();
@@ -185,7 +186,7 @@ export default class Main extends React.Component<any, any> {
         e.name = event.name;
 
         const globalJSErrors = (Object as any).assign({}, this.state.globalJSErrors);
-        globalJSErrors[event.type] = e;
+        globalJSErrors[event.name] = e;
         this.setState({globalJSErrors});
       }
     });

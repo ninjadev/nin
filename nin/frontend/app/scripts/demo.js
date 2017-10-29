@@ -7,7 +7,6 @@ const demo = bootstrap({
 
 window.demo = demo;
 
-demo.globalJSErrors = demo.globalJSErrors || {};
 var originalLoop = demo.looper.loop;
 var forcedPause = false;
 const stats = [];
@@ -31,6 +30,12 @@ commands.on('toggleStats', () => {
   }
 });
 
+let main;
+
+demo.registerMainComponent = function(mainComponent) {
+  main = mainComponent;
+};
+
 
 demo.looper.loop = function() {
   try {
@@ -47,10 +52,16 @@ demo.looper.loop = function() {
       forcedPause = false;
     }
 
-    delete demo.globalJSErrors.looper;
+    if(main.state.globalJSErrors.looper) {
+      const globalJSErrors = Object.assign({}, main.state.globalJSErrors);
+      delete globalJSErrors.looper;
+      main.setState({globalJSErrors});
+    }
   } catch(e) {
     e.context = "Error during looping of demo";
-    demo.globalJSErrors.looper = e;
+    const globalJSErrors = Object.assign({}, main.state.globalJSErrors);
+    globalJSErrors.looper = e;
+    main.setState({globalJSErrors});
 
     demo.looper.deltaTime += demo.looper.frameLength;
     demo.looper.currentFrame -= 1;

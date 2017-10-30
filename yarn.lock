@@ -1661,9 +1661,9 @@ glsl-tokenizer@^2.0.0:
   dependencies:
     through2 "^0.6.3"
 
-google-closure-compiler-js@^20170409.0.0:
-  version "20170409.0.0"
-  resolved "https://registry.yarnpkg.com/google-closure-compiler-js/-/google-closure-compiler-js-20170409.0.0.tgz#e71063ab2bf26db794732222ec76ba07403df854"
+google-closure-compiler-js@^20170910.0.1:
+  version "20170910.0.1"
+  resolved "https://registry.yarnpkg.com/google-closure-compiler-js/-/google-closure-compiler-js-20170910.0.1.tgz#06c93b215092f4ad57928a8a1b0f129566d2af78"
   dependencies:
     minimist "^1.2.0"
     vinyl "^2.0.1"

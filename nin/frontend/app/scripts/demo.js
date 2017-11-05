@@ -52,6 +52,27 @@ demo.looper.loop = function() {
       forcedPause = false;
     }
 
+    /* Since we have no nice way of figuring out which shader on disk this is,
+     * we only support a single shader error called 'shader'. Luckily, this
+     * covers 99.9% percent of all use-cases, where we only have one shader
+     * error at a time anyway. */
+    const globalShaderErrors = Object.assign({}, main.state.globalShaderErrors);
+    let shaderErrorsChanged = false;
+    if(globalShaderErrors.shader) {
+      delete globalShaderErrors.shader;
+      shaderErrorsChanged = true;
+    }
+    for(let i = 0; i < demo.renderer.info.programs.length; i++) {
+      const program = demo.renderer.info.programs[i];
+      if(program.diagnostics && !program.diagnostics.runnable) {
+        globalShaderErrors.shader = program;
+        shaderErrorsChanged = true;
+      }
+    }
+    if(shaderErrorsChanged) {
+      main.setState({globalShaderErrors});
+    }
+
     if(main.state.globalJSErrors.looper) {
       const globalJSErrors = Object.assign({}, main.state.globalJSErrors);
       delete globalJSErrors.looper;

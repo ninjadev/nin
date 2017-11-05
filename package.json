@@ -23,7 +23,7 @@
     "glob": "7.0.3",
     "glsl-deparser": "^1.0.0",
     "glsl-parser": "^2.0.0",
-    "google-closure-compiler-js": "^20170409.0.0",
+    "google-closure-compiler-js": "^20170910.0.1",
     "imagemin": "5.3.1",
     "imagemin-jpegtran": "5.0.2",
     "imagemin-zopfli": "5.1.0",

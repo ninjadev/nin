@@ -14,7 +14,7 @@ class GraphEditorInputOutput extends React.Component {
         valueType = typeof value;
       }
     }
-    const isConnected = !!(this.props.item.destination || this.props.item.source);
+    const isConnected = !!this.props.item.source;
     return e('g', {
       transform: `translate(${this.props.x}, ${this.props.y}) scale(${1 / this.props.scale})`
     },

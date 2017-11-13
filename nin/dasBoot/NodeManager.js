@@ -19,17 +19,20 @@ class NodeManager {
   }
 
   insertOrReplaceNode(node) {
-    if(this.nodes[node.id]) {
-      for(var key in this.nodes[node.id].inputs) {
-        if(this.nodes[node.id].inputs[key].source) {
-          node.inputs[key].source = this.nodes[node.id].inputs[key].source;
-          node.inputs[key].source.destination = node.inputs[key];
-        }
-      }
-      for(var key in this.nodes[node.id].outputs) {
-        if(this.nodes[node.id].outputs[key].destination) {
-          node.outputs[key].destination = this.nodes[node.id].outputs[key].destination;
-          node.outputs[key].destination.source = node.outputs[key];
+    const nodeToReplace = this.nodes[node.id];
+    if(nodeToReplace) {
+      for(let key in this.nodes) {
+        const currentNode = this.nodes[key];
+        for(let inputKey in currentNode.inputs) {
+          const input = currentNode.inputs[inputKey];
+          if(input.source && input.source.node === nodeToReplace) {
+            for(let k in nodeToReplace.outputs) {
+              if(nodeToReplace.outputs[k] === input.source) {
+                input.source = node.outputs[k];
+                break;
+              }
+            }
+          }
         }
       }
     }

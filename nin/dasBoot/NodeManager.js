@@ -5,22 +5,29 @@ class NodeManager {
   }
 
   createNode(nodeInfo) {
-    nodeInfo.options = nodeInfo.options || {};
+    const deepClonedNodeInfo = JSON.parse(JSON.stringify(nodeInfo));
+    deepClonedNodeInfo.options = deepClonedNodeInfo.options || {};
 
-    const nodeConstructor = nodeInfo.type.slice(0, 4) === 'NIN.' ?
-      NIN[nodeInfo.type.slice(4)]
-      : window[nodeInfo.type];
+    const nodeConstructor = deepClonedNodeInfo.type.slice(0, 4) === 'NIN.' ?
+      NIN[deepClonedNodeInfo.type.slice(4)]
+      : window[deepClonedNodeInfo.type];
 
     if (nodeConstructor === undefined) {
       return null;
     }
 
-    return new nodeConstructor(nodeInfo.id, nodeInfo.options);
+    return new nodeConstructor(deepClonedNodeInfo.id, deepClonedNodeInfo.options);
   }
 
   insertOrReplaceNode(node) {
     const nodeToReplace = this.nodes[node.id];
     if(nodeToReplace) {
+      for(let inputKey in nodeToReplace.inputs) {
+        const input = nodeToReplace.inputs[inputKey];
+        if(input.source) {
+          node.inputs[inputKey].source = input.source;
+        }
+      }
       for(let key in this.nodes) {
         const currentNode = this.nodes[key];
         for(let inputKey in currentNode.inputs) {
@@ -40,14 +47,11 @@ class NodeManager {
   }
 
   connect(fromNodeId, outputName, toNodeId, inputName) {
-    this.nodes[fromNodeId].outputs[outputName].destination =
-      this.nodes[toNodeId].inputs[inputName];
     this.nodes[toNodeId].inputs[inputName].source =
       this.nodes[fromNodeId].outputs[outputName];
   }
 
   disconnect(fromNodeId, outputName, toNodeId, inputName) {
-    this.nodes[fromNodeId].outputs[outputName].destination = null;
     this.nodes[toNodeId].inputs[inputName].source = null;
   }
 

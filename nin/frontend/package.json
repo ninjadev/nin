@@ -38,7 +38,8 @@
     "node": ">=4.0.0"
   },
   "scripts": {
-    "start": "yarn install && webpack -p",
+    "start": "yarn install && yarn build",
+    "build": "webpack -p",
     "webpack-watch": "webpack --watch --display-error-details",
     "lint": "eslint app",
     "fix-lint": "eslint --fix app"

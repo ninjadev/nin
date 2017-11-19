@@ -151,12 +151,46 @@ class GraphEditor extends React.Component {
       this.props.graph[i].y = depths[id].y * -100;
     }
     this.forceUpdate();
+    this.fitGraphOnScreen();
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.graph) {
       setTimeout(() => this.reflowGraphLayout(), 0);
     }
+  }
+
+  fitGraphOnScreen() {
+    this.isCoasting = false;
+    this.dragCoastSpeed.x = 0;
+    this.dragCoastSpeed.y = 0;
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+    function getHeightForNode(node) {
+      const numberOfInputs = node.inputs ? Object.keys(node.inputs).length : 0;
+      const numberOfOutputs = node.outputs ? Object.keys(node.outputs).length : 0;
+      const heightPerInputOrOutput = 20;
+      const padding = 10;
+      return Math.max(numberOfInputs, numberOfOutputs) * heightPerInputOrOutput + padding * 2;
+    }
+    for(let node of this.props.graph) {
+      const width = 200;
+      const height = getHeightForNode(node);
+      minX = Math.min(minX, node.x);
+      maxX = Math.max(maxX, node.x + width);
+      minY = Math.min(minY, node.y);
+      maxY = Math.max(maxY, node.y + height);
+    }
+
+    const x = (maxX + minX) / 2;
+    const y = (maxY + minY) / 2;
+    let scale = (window.innerWidth - 50) / (maxX - minX);
+    scale = Math.min(scale, (window.innerHeight - 50 * 2) / (maxY - minY));
+    this.scaleAnimationStart = scale;
+    this.scaleAnimationEnd = scale;
+    this.setState({x: -x * scale, y: -y * scale, scale});
   }
 
   coastLoop() {
@@ -299,8 +333,8 @@ class GraphEditor extends React.Component {
     this.scaleAnimationEnd = scale;
     this.scaleAnimationStartTime = this.time;
     this.scaleAnimationEndTime = this.time + 100;
-    this.scaleAnimationX = event.offsetX;
-    this.scaleAnimationY = event.offsetY;
+    this.scaleAnimationX = event.offsetX - window.innerWidth / 2;
+    this.scaleAnimationY = event.offsetY - (window.innerHeight - 50) / 2;
   }
 
   render() {
@@ -372,10 +406,12 @@ class GraphEditor extends React.Component {
     const transform = `matrix(${this.state.scale},0,0,${this.state.scale},${this.state.x},${this.state.y})`;
     return (
       <div ref={ref => this.container = ref}>
-        <svg height="99999" width="99999">
-          <g transform={transform}>
-            {graphEditorNodes}
-            {connectionNodes}
+        <svg height={window.innerHeight - 50} width={window.innerWidth}>
+          <g transform={`matrix(1,0,0,1,${window.innerWidth / 2},${(window.innerHeight - 50) / 2})`}>
+            <g transform={transform}>
+              {graphEditorNodes}
+              {connectionNodes}
+            </g>
           </g>
         </svg>
       </div>);

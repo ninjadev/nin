@@ -21,6 +21,9 @@ class Node {
   render() {
   }
 
+  beforeUpdate() {
+  }
+
   update() {
   }
 

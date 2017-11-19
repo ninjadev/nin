@@ -107,7 +107,6 @@ Expect to render maybe a frame or two per second.
 
 You will need to have node and yarn installed.
 Yarn installation guide is available [here](https://yarnpkg.com/en/docs/install).
-If you already have npm installed you can bootstrap to yarn by running `npm install -g yarn`.
 
 Running `make` in the nin folder will build and compile the entire project.
 Running `npm link` will add nin to your node binaries path, making it available globally.

@@ -112,7 +112,7 @@ class WaveformWrapper extends React.Component {
 
   render() {
 
-    const canvasWidth = (window.innerWidth - 50) * window.devicePixelRatio;
+    const canvasWidth = window.innerWidth * window.devicePixelRatio;
     const canvasHeight = 50;
 
     /* defer this so that we can get a reference to the canvas */
@@ -127,7 +127,6 @@ class WaveformWrapper extends React.Component {
           style={{
             position: 'absolute',
             top: '0px',
-            width: 'calc(100% - 50px)',
           }}
           >
         </canvas>

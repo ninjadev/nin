@@ -84,6 +84,10 @@ class BottomPanel extends React.Component {
     demo.jumpToFrame(this.getClickOffset(e).x / this.state.xScale | 0);
   }
 
+  labelClick(label) {
+    demo.jumpToFrame(FRAME_FOR_BEAN(label.BEAN));
+  }
+
   musicLayerScroll(a) {
     a.preventDefault();
     let multiplier = 50;
@@ -149,6 +153,21 @@ class BottomPanel extends React.Component {
         </div>
 
         <footer>
+
+          <div className="labels-container">
+            {PROJECT.labels && PROJECT.labels.map(label => (
+              <div
+                className="label"
+                style={{
+                  left: (FRAME_FOR_BEAN(label.BEAN) * this.state.xScale) + 'px'
+                }}
+                onClick={() => this.labelClick(label)}
+              >
+                {label.name}
+              </div>
+            ))}
+          </div>
+
           <div
             className='layers-bar-container'
             onClick={this.musicLayerClick}
@@ -189,9 +208,6 @@ class BottomPanel extends React.Component {
                 <div className="glow glow-loop"></div>
               </div>
               : null
-            }
-
-            : null
             }
 
             <div

@@ -37,6 +37,7 @@
     "node": ">=7.9.0"
   },
   "scripts": {
+    "start": "yarn install && (cd nin/frontend && yarn build)",
     "lint": "cd nin/backend && eslint . || true"
   },
   "bin": {

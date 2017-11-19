@@ -12,7 +12,11 @@ const defaultSettings = {
     subdivision: 4,
     BEANOffset: 0,
   },
-  googleAnalyticsID: 'Your GA ID'
+  googleAnalyticsID: 'Your GA ID',
+  labels: [{
+    name: 'Start',
+    BEAN: 0
+  }],
 };
 
 function init(projectPath) {

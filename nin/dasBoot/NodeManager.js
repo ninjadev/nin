@@ -74,6 +74,15 @@ class NodeManager {
     fn(node);
   }
 
+  beforeUpdate(frame) {
+    if(!this.nodes.root) {
+      return;
+    }
+    this.traverseNodeGraphPostOrderDfs(this.nodes.root, node => {
+      node.beforeUpdate(frame);
+    });
+  }
+
   update(frame) {
     if(!this.nodes.root) {
       return;

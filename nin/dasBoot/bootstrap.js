@@ -88,6 +88,7 @@ window['bootstrap'] = function(options) {
 
   demo.update = function(frame) {
     currentFrame = frame;
+    demo.nm.beforeUpdate(frame);
     demo.nm.update(frame);
   };
 
@@ -124,6 +125,7 @@ window['bootstrap'] = function(options) {
 
   demo.looper = createLoop({
     render: demo.render,
+    beforeUpdate: demo.beforeUpdate,
     update: demo.update,
     renderer: demo.renderer,
     music: demo.music

@@ -13,7 +13,7 @@ function watch(projectPath, cb) {
       'res/graph.json',
       'res/*.camera.json'],
     {
-      ignored: [/[\/\\]\./, /\/shaders\//],
+      ignored: [/[\/\\]\./, /\/shaders\//, /___jb_tmp___/],
       persistent: true,
       ignoreInitial: false,
       cwd: projectPath,

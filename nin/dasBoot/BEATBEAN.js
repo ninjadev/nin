@@ -26,7 +26,12 @@ const updateBeatBean = function(frame) {
       ((frame + 0.5) / framesPerBEAT) | 0) {
     window.BEAT = true;
   }
-  window.BEAN = (frame + 1.5) / framesPerBEAT | 0;
+  var bean = (frame + 1.5) / framesPerBEAT | 0;
+  window.BEAN = bean;
+
+  var f = (frame - FRAME_FOR_BEAN(bean))
+        / (FRAME_FOR_BEAN(bean+1) - FRAME_FOR_BEAN(bean));
+  window.INTERBEAN = lerp(bean, bean+1, f);
 };
 
 module.exports = {initBeatBean, updateBeatBean};

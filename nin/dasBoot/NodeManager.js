@@ -61,17 +61,18 @@ class NodeManager {
     }
   }
 
-  traverseNodeGraphPostOrderDfs(node, fn, visitedSet={}) {
+  traverseNodeGraphPostOrderDfs(node, fn, fullTraversal=false, visitedSet={}) {
     if(node.id in visitedSet) {
       return;
     }
     visitedSet[node.id] = true;
     for(var key in node.inputs) {
       var input = node.inputs[key];
-      if(input.source && input.enabled) {
+      if(input.source && (fullTraversal || input.enabled)) {
         this.traverseNodeGraphPostOrderDfs(
             input.source.node,
             fn,
+            fullTraversal,
             visitedSet);
       }
     }
@@ -84,7 +85,7 @@ class NodeManager {
     }
     this.traverseNodeGraphPostOrderDfs(this.nodes.root, node => {
       node.beforeUpdate(frame);
-    });
+    }, true);
   }
 
   update(frame) {

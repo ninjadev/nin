@@ -12,7 +12,7 @@ program
   .version(utils.getNinMetadata().version);
 
 program.Command.prototype._outputHelp = program.Command.prototype.outputHelp;
-program.Command.prototype.outputHelp = function() {
+program.Command.prototype.outputHelp = function () {
   return this._outputHelp(utils.colorizeCommanderHelpText);
 };
 
@@ -27,6 +27,7 @@ program
   .description('Compile the nin project')
   .option('--no-optimize-shaders', 'Skip compressing shaders')
   .option('--no-closure-compiler', 'Bypass Google Closure Compiler (faster)')
+  .option('--no-tracking', 'Skip injecting google analytics tracking ID')
   .action(options => compile.compile(utils.findProjectRootOrExit(process.cwd()), options));
 
 program
@@ -46,6 +47,6 @@ program
 
 const result = program.parse(process.argv);
 
-if(typeof result.args[result.args.length - 1] != 'object') {
+if (typeof result.args[result.args.length - 1] != 'object') {
   program.outputHelp();
 }

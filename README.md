@@ -150,3 +150,4 @@ To be able to publish you need access to the `ninjadev` user on npm whose passwo
 - [Crankwork Steamfist](https://github.com/ninjadev/dix)
 - [What Are You Syncing About?](https://github.com/ninjadev/re)
 - [Zeven](https://github.com/ninjadev/zeven)
+- [No Invitation](https://github.com/ninjadev/revision-invite-2018)

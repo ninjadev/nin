@@ -2607,10 +2607,6 @@ node-status-codes@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/node-status-codes/-/node-status-codes-1.0.0.tgz#5ae5541d024645d32a58fcddc9ceecea7ae3ac2f"
 
-node-uuid@^1.4.1:
-  version "1.4.7"
-  resolved "https://registry.yarnpkg.com/node-uuid/-/node-uuid-1.4.7.tgz#6da5a17668c4b3dd59623bda11cf7fa4c1f60a6f"
-
 nopt@~3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/nopt/-/nopt-3.0.6.tgz#c6465dbf08abcd4db359317f79ac68a646b28ff9"
@@ -3288,12 +3284,12 @@ sntp@1.x.x:
   dependencies:
     hoek "2.x.x"
 
-sockjs@0.3.16:
-  version "0.3.16"
-  resolved "https://registry.yarnpkg.com/sockjs/-/sockjs-0.3.16.tgz#2bf5b90eb681b5216dfb98b8cf3e01a33ca271bc"
+sockjs@0.3.19:
+  version "0.3.19"
+  resolved "https://registry.yarnpkg.com/sockjs/-/sockjs-0.3.19.tgz#d976bbe800af7bd20ae08598d582393508993c0d"
   dependencies:
     faye-websocket "^0.10.0"
-    node-uuid "^1.4.1"
+    uuid "^3.0.1"
 
 source-list-map@^1.1.1:
   version "1.1.1"

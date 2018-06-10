@@ -29,7 +29,7 @@
     "imagemin-zopfli": "5.1.0",
     "ini": "1.3.4",
     "slugify": "^1.1.0",
-    "sockjs": "0.3.16",
+    "sockjs": "0.3.19",
     "walk": "2.3.9",
     "webpack": "^2.4.1"
   },

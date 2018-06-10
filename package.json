@@ -11,7 +11,7 @@
     "archiver": "^2.0.0",
     "body-parser": "1.15.0",
     "chalk": "1.1.3",
-    "chokidar": "1.4.3",
+    "chokidar": "2.0.3",
     "commander": "2.9.0",
     "crc": "3.4.0",
     "cssauron": "^1.4.0",
@@ -31,7 +31,7 @@
     "slugify": "^1.1.0",
     "sockjs": "0.3.19",
     "walk": "2.3.9",
-    "webpack": "^2.4.1"
+    "webpack": "4.12.0"
   },
   "engines": {
     "node": ">=7.9.0"

@@ -1,4 +1,4 @@
-const fs = require('fs-promise');
+const fs = require('fs-extra');
 const glob = require('glob');
 const path = require('path');
 

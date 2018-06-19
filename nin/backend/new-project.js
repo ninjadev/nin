@@ -1,6 +1,6 @@
 const chalk = require('chalk');
 const child_process = require('child_process');
-const fs = require('fs-promise');
+const fs = require('fs-extra');
 const generate = require('./generate/generate');
 const path = require('path');
 const projectSettings = require('./projectSettings');

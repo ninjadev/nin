@@ -7,10 +7,6 @@ varying vec2 vUv;
 void main() {
   vec4 overlay = texture2D(overlay, vUv);
   vec4 background = texture2D(background, vUv);
-
-  if (overlay == vec4(0.)) {
-      gl_FragColor = background;
-  } else {
-      gl_FragColor = overlay;
-  }
+  
+  gl_FragColor = mix(background, vec4(overlay.rgb, 1.0), overlay.a);
 }

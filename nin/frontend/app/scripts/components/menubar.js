@@ -203,6 +203,15 @@ class Menubar extends React.Component {
               const nodeName = window.prompt("Enter the shader's name in CamelCase, like 'SunShader':");
               commands.generate('shaderNode', nodeName);
             }
+          },
+          {
+            name: 'Overlay Node',
+            action: 'generateOverlayNode',
+            invoke: () =>  {
+              commands.pause();
+              const nodeName = window.prompt("Enter the overlayShader's name in CamelCase, like 'SunOverlayShader':");
+              commands.generate('overlayNode', nodeName);
+            }
           }
         ]
       },

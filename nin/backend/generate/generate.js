@@ -104,6 +104,42 @@ const generate = async function(projectRoot, type, name, options) {
       }
       break;
 
+    case 'overlayNode':
+      {
+        const shaderFilename = name + 'Node';
+        generateNode(shaderFilename,
+          'TemplateOverlayNode.js',
+          [[/TemplateOverlayNode/g, shaderFilename]],
+          projectRoot);
+
+        await fs.copy(
+          path.join(__dirname, 'templateOverlayShader'),
+          path.join(projectRoot, 'src', 'shaders', name)
+        );
+        console.log(`-> added ${name} to src`);
+
+        graph.transform(projectRoot, graph => {
+          graph.push({
+            id: name,
+            type: shaderFilename,
+            options: {
+              shader: name,
+            },
+            connected: {
+              overlay: '',
+              background: '',
+            },
+          });
+        }, err => {
+          if (err) {
+            console.error(err);
+          } else {
+            console.log(`-> added ${shaderFilename} to graph.json`);
+          }
+        });
+      }
+      break;
+
     default:
       process.stderr.write(`Attempted to generate resource without generator: ${type}\n`);
   }

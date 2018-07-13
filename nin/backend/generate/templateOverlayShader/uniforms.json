@@ -1,0 +1,14 @@
+{
+    "overlay": {
+        "type": "t",
+        "value": null
+    },
+    "background": {
+        "type": "t",
+        "value": null
+    },
+    "frame": {
+        "type": "f",
+        "value": 0.0
+    }
+}

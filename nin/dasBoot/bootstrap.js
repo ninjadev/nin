@@ -54,7 +54,7 @@ window['bootstrap'] = function(options) {
 
   Loader.setRootPath(options.rootPath || '');
 
-  initBeatBean();
+  window.initBeatBean();
 
   demo.nm = new NodeManager(demo);
 
@@ -150,7 +150,7 @@ window['bootstrap'] = function(options) {
     demo.looper.oldTime = time;
     demo.looper.deltaTime = 0;
     demo.looper.currentFrame = frame;
-    updateBeatBean(frame);
+    window.updateBeatBean(frame);
     demo.nm.jumpToFrame(frame);
     demo.update(frame);
     demo.render(demo.renderer, 0);

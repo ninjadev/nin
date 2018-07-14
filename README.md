@@ -117,6 +117,107 @@ First, run `nin run` inside your project.
 If you wish to develop on the frontend, running `make run` inside `nin/frontend/` makes webpack rebuild the frontend on file change.
 You only need to rerun `nin run` if you change files in either `nin/dasBoot` or `nin/backend`.
 
+### Working with scenes
+
+Usually, your demo will be a series of connected scenes. This section covers how to work with them.
+
+#### Adding scenes
+
+Adding a scene is quite straight forward, once you become good friends with graph.json!
+
+##### How to add the first scene to a demo
+
+This is what you need to to do get your first scene wired up and ready to go!
+
+##### How to add a scene at the end of the demo
+
+Here is an example of how to prolong the demo by adding a new scene at the end.
+
+#### How to add a new scene between two existing scenes
+
+Sometimes you want to squeeze in a new scene between two other scenes that you already have in your demo.
+Often you will perhaps only shorten down on the length of the preceeding scene and leave the start of the following scene intact.
+But for completenes, here is an example where we both shorten the previous scene, and chop down the beginning of the following scene.
+
+### Time and timed events
+
+A lot of making a demo is syncing what's happening on the screen with the music.
+
+A `BEAN` can be described as the smallest possible resoluton of the beat.
+If your musician is exiting the beat of your music could be something like every 4th, 6th, 4th, 6th, 10th, 2nd, bean.
+
+Working with `BEAN`s directly will usually not give you a smooth 60 FPS animation.
+`BEAN`s are incremented less often than 60 fps. A common approach is using `frame` with `FRAME_FOR_BEAN` instead.
+E.g. Instead of doing
+```js
+var startBean = 1;
+var endBean = 20;
+var fractionIn = (BEAN - startBean) / (endBean - startBean);
+```
+do
+```js
+var startFrame = FRAME_FOR_BEAN(1);
+var endFrame = FRAME_FOR_BEAN(20);
+var fractionIn = (this.frame - startFrame) / (endFrame - startFrame);
+```
+
+|Counter|Description|Typical way to access|
+| ----- |-----------| ------------------- |
+| Bean | The smallest possible resoluton of the beat. | `BEAN` |
+| Frame | Monotonously counts upwards. Usually what you want to use in your `update()`-function. | `this.frame` |
+| Beat | ToDo | ToDo |
+| Bar | ToDo | ToDo |
+
+#### Notes on the `update(frame)`-function
+
+In your scene-function, you can define an update function.
+
+```js
+update(frame) {
+  // The coolest of code
+}
+```
+
+This will run for every frame.
+
+### Movement
+
+You might have defined an object in your scene, such as a box, the camera, or a light source, which you want to move within your scene. To aid you in doing this smoothly, there are some predefined functions you can utilize.
+
+The most important ones are:
+
+* smoothstep
+* lerp
+
+#### smoothstep
+
+For more details, check out http://en.wikipedia.org/wiki/Smoothstep .
+
+#### lerp
+
+### Music
+
+#### How to add music to your demo
+
+In the `nin.json`-file you can define the `music`-section directly in the root.
+Here you can specify
+
+* where your music file is located in the `path`-field
+* how many beats per minute you music supposedly is in the `bpm`-field
+
+Sample music configuration:
+
+```json
+"music": {
+  "path": "res/music.mp3",
+  "bpm": 190,
+  "subdivision": 12,
+  "BEANOffset": 0
+},
+```
+
+For details on how this section is processed further you can check out `nin/dasBoot/BEATBEAN.js`.
+
 ## Linting
 
 The frontend part of this project uses ESLint for linting.

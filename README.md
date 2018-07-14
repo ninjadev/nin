@@ -168,6 +168,18 @@ var fractionIn = (this.frame - startFrame) / (endFrame - startFrame);
 | Beat | ToDo | ToDo |
 | Bar | ToDo | ToDo |
 
+#### Notes on the `update(frame)`-function
+
+In your scene-function, you can define an update function.
+
+```js
+update(frame) {
+  // The coolest of code
+}
+```
+
+This will run for every frame.
+
 ### Movement
 
 You might have defined an object in your scene, such as a box, the camera, or a light source, which you want to move within your scene. To aid you in doing this smoothly, there are some predefined functions you can utilize.

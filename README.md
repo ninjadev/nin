@@ -158,13 +158,13 @@ do
 ```js
 var startFrame = FRAME_FOR_BEAN(1);
 var endFrame = FRAME_FOR_BEAN(20);
-var fractionIn = (this.frame - startFrame) / (endFrame - startFrame);
+var fractionIn = (frame - startFrame) / (endFrame - startFrame);
 ```
 
 |Counter|Description|Typical way to access|
 | ----- |-----------| ------------------- |
 | Bean | The smallest possible resoluton of the beat. | `BEAN` |
-| Frame | Monotonously counts upwards. Usually what you want to use in your `update()`-function. | `this.frame` |
+| Frame | Monotonously counts upwards. Usually what you want to use in your `update()`-function. | `frame` (if you need frame inside your `render` method, you can store it on `this` inside the `update` method) |
 | Beat | ToDo | ToDo |
 | Bar | ToDo | ToDo |
 
@@ -188,6 +188,13 @@ The most important ones are:
 
 * smoothstep
 * lerp
+
+They all have the same API:
+`lerp(startValue, endValue, t)`
+
+When `t` is smaller than or equal to 0, `startValue` is returned.
+When `t` is between 0 and 1, a value between startValue and endValue is returned, depending on which interpolation function you're using.
+When `t` is larger than 1, `endValue` is returned.
 
 #### smoothstep
 

@@ -143,6 +143,9 @@ But for completenes, here is an example where we both shorten the previous scene
 
 A lot of making a demo is syncing what's happening on the screen with the music.
 
+A `BEAN` can be described as the smallest possible resoluton of the beat.
+If your musician is exiting the beat of your music could be something like every 4th, 6th, 4th, 6th, 10th, 2nd, bean.
+
 Working with `BEAN`s directly will usually not give you a smooth 60 FPS animation.
 `BEAN`s are incremented less often than 60 fps. A common approach is using `frame` with `FRAME_FOR_BEAN` instead.
 E.g. Instead of doing
@@ -160,7 +163,7 @@ var fractionIn = (this.frame - startFrame) / (endFrame - startFrame);
 
 |Counter|Description|Typical way to access|
 | ----- |-----------| ------------------- |
-| Bean | ToDo | `BEAN` |
+| Bean | The smallest possible resoluton of the beat. | `BEAN` |
 | Frame | Monotonously counts upwards. Usually what you want to use in your `update()`-function. | `this.frame` |
 | Beat | ToDo | ToDo |
 | Bar | ToDo | ToDo |

@@ -183,6 +183,29 @@ For more details, check out http://en.wikipedia.org/wiki/Smoothstep .
 
 #### lerp
 
+### Music
+
+#### How to add music to your demo
+
+In the `nin.json`-file you can define the `music`-section directly in the root.
+Here you can specify
+
+* where your music file is located in the `path`-field
+* how many beats per minute you music supposedly is in the `bpm`-field
+
+Sample music configuration:
+
+```json
+"music": {
+  "path": "res/music.mp3",
+  "bpm": 190,
+  "subdivision": 12,
+  "BEANOffset": 0
+},
+```
+
+For details on how this section is processed further you can check out `nin/dasBoot/BEATBEAN.js`.
+
 ## Linting
 
 The frontend part of this project uses ESLint for linting.

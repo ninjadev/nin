@@ -1,6 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
-const fs = require('fs-promise');
+const fs = require('fs-extra');
 const ini = require('ini');
 const os = require('os');
 const p = require('path');

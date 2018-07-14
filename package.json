@@ -19,7 +19,7 @@
     "eslint": "3.10.0",
     "express": "4.13.4",
     "fluent-ffmpeg": "2.0.1",
-    "fs-promise": "^2.0.2",
+    "fs-extra": "6.0.1",
     "glob": "7.0.3",
     "glsl-deparser": "^1.0.0",
     "glsl-parser": "^2.0.0",

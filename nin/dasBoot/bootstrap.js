@@ -48,9 +48,9 @@ window['bootstrap'] = function(options) {
   var container = document.body;
 
   demo.renderer = new THREE.WebGLRenderer({maxLights: 10, antialias: true, alpha: true});
-  demo.renderer.setClearColor(0x000000, 0);
-  demo.renderer.sortObjects = true;
-  demo.renderer.autoClear = false;
+  //demo.renderer.setClearColor(0x000000, 0);
+  //demo.renderer.sortObjects = true;
+  //demo.renderer.autoClear = false;
 
   Loader.setRootPath(options.rootPath || '');
 
@@ -93,7 +93,6 @@ window['bootstrap'] = function(options) {
   };
 
   demo.render = function(renderer) {
-    renderer.clear(true, true, true);
     demo.nm.render(renderer);
   };
 
@@ -172,7 +171,7 @@ window['bootstrap'] = function(options) {
     demo.warmup();
     demo.jumpToFrame(0);
     demo.music.play();
-    demo.looper.loop();
+    requestAnimFrame(demo.looper.loop);
   };
 
   demo.warmup = function() {

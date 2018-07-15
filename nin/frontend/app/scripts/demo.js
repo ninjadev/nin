@@ -37,12 +37,12 @@ demo.registerMainComponent = function(mainComponent) {
 };
 
 
-demo.looper.loop = function() {
+demo.looper.loop = function(time) {
   try {
     for(let i = 0; i < 3; i++) {
       stats[i].begin();
     }
-    originalLoop();
+    originalLoop(time);
     for(let i = 0; i < 3; i++) {
       stats[i].end();
     }
@@ -79,6 +79,7 @@ demo.looper.loop = function() {
       main.setState({globalJSErrors});
     }
   } catch(e) {
+    console.log('error', e);
     e.context = "Error during looping of demo";
     const globalJSErrors = Object.assign({}, main.state.globalJSErrors);
     globalJSErrors.looper = e;

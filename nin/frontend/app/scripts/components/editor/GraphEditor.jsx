@@ -13,6 +13,173 @@ class GraphEditor extends React.Component {
       connectionEnd: {},
     };
 
+    this.scene = new THREE.Scene();
+    this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1000);
+    this.camera.position.z = 1000;
+    this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+    this.renderer = demo.renderer;
+    this.renderer.setClearColor(0, 0);
+    this.renderer.sortObjects = true;
+    this.renderer.autoClear = false;
+    this.renderer.domElement.style = "width: 100%; height: 100%";
+    this.oldContainer = undefined;
+    const noop = () => undefined;
+
+    const planeGeometry = new THREE.PlaneBufferGeometry(16, 9);
+
+    const nameTextures = {};
+
+    const makeNameTexture = name => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 160;
+      canvas.height = 90;
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.font = '16px Arial';
+      ctx.fillStyle = '#1e2930';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'white';
+      ctx.fillText(name, canvas.width / 2, canvas.height / 2);
+      return new THREE.CanvasTexture(canvas);
+    };
+
+    this.rebuildScene = () => {
+      this.reflowGraphLayout();
+
+      /* hacky clearing */
+      while(this.scene.children.length > 0) {
+        this.scene.remove(this.scene.children[this.scene.children.length - 1]);
+      }
+
+      this.quad = new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2), new THREE.MeshBasicMaterial({
+        color: 0x596267,
+      }));
+      this.scene.add(this.quad);
+
+      this.display = new THREE.Mesh(new THREE.PlaneBufferGeometry(2, 2), new THREE.MeshBasicMaterial({
+        map: this.props.demo.nm.nodes.root && this.props.demo.nm.nodes.root.inputs.screen.getValue()
+      }));
+      this.display.scale.x = 1 / 3;
+      this.display.scale.y = 1 / 3;
+      this.display.position.x = 0.5;
+      this.display.position.y = 0.5;
+      this.display.position.z = 20;
+      this.scene.add(this.display);
+
+      this.graphContainer = new THREE.Object3D();
+      this.scene.add(this.graphContainer);
+      const scale = 1 / 100;
+      this.graphContainer.scale.set(scale, scale * 16 / 9, 1);
+
+      this.graphContainer.scale.x = this.graphContainer.scale.x * this.state.scale;
+      this.graphContainer.scale.y = this.graphContainer.scale.y * this.state.scale;
+      this.graphContainer.scale.z = this.graphContainer.scale.z * this.state.scale;
+
+      this.graphContainer.position.x = this.state.x / 100;
+      this.graphContainer.position.y = -this.state.y / 100;
+
+      this.graphContainer.nodeObjects = {};
+
+      for(let nodeInfo of this.props.graph) {
+        const nodeObject = new THREE.Object3D();
+        this.graphContainer.nodeObjects[nodeInfo.id] = nodeObject;
+        this.graphContainer.add(nodeObject);
+        nameTextures[nodeInfo.id] = nameTextures[nodeInfo.id] || makeNameTexture(nodeInfo.id);
+        const mesh = new THREE.Mesh(
+          planeGeometry,
+          new THREE.MeshBasicMaterial({
+            map: nameTextures[nodeInfo.id],
+          }));
+
+        nodeObject.add(mesh);
+        nodeObject.position.x = nodeInfo.x * -25;
+        nodeObject.position.y = nodeInfo.y * -10;
+        nodeObject.position.z = 10;
+
+        nodeObject.outputMeshes = {};
+
+        const node = demo.nm.nodes[nodeInfo.id];
+        let i = 0;
+        for(let outputName in node.outputs) {
+          const outputMesh = new THREE.Mesh(
+            planeGeometry,
+            new THREE.MeshBasicMaterial({
+              color: 0xff0000,
+            }));
+          nodeObject.outputMeshes[outputName] = outputMesh;
+          outputMesh.position.x = 5;
+          outputMesh.position.y = 3 * i;
+          outputMesh.position.z = 20;
+          outputMesh.scale.set(0.2, 0.2, 1);
+          nodeObject.add(outputMesh);
+          const output = node.outputs[outputName];
+          if(output instanceof NIN.TextureOutput) {
+            const potentiallyATexture = output.getValue();
+            outputMesh.material.map = potentiallyATexture;
+            outputMesh.material.color = new THREE.Color(1, 1, 1);
+          }
+          i++;
+        }
+      }
+
+    };
+
+
+    this.registeredListener = false;
+
+    this.renderLoop = time => {
+      if(!this.registeredListener && this.props.demo && this.props.demo.nm) {
+        this.rebuildScene();
+        this.props.demo.nm.addEventListener('graphchange', this.rebuildScene);
+        this.registeredListener = true;
+      }
+
+      if(this.graphContainer) {
+        const scale = 1 / 100;
+        this.graphContainer.scale.set(scale, scale * 16 / 9, 1);
+        this.graphContainer.scale.x = this.graphContainer.scale.x * this.state.scale;
+        this.graphContainer.scale.y = this.graphContainer.scale.y * this.state.scale;
+        this.graphContainer.scale.z = this.graphContainer.scale.z * this.state.scale;
+        this.graphContainer.position.x = this.state.x / 100;
+        this.graphContainer.position.y = -this.state.y / 100;
+      }
+
+      if(demo.nm.nodes.root) {
+        //demo.nm.nodes.root.render = noop;
+      }
+
+      if(demo && demo.nm && demo.nm.nodes) {
+        for(let nodeId in this.graphContainer.nodeObjects) {
+          const nodeObject = this.graphContainer.nodeObjects[nodeId];
+          const node = demo.nm.nodes[nodeId];
+          for(let outputName in nodeObject.outputMeshes) {
+            const outputMesh = nodeObject.outputMeshes[outputName];
+            const output = node.outputs[outputName];
+            if(output instanceof NIN.TextureOutput) {
+              const potentiallyATexture = output.getValue();
+              outputMesh.material.map = potentiallyATexture;
+              outputMesh.material.color = new THREE.Color(1, 1, 1);
+            }
+          }
+        }
+      }
+
+      if(this.display && demo && demo.nm && demo.nm.nodes && demo.nm.nodes.root) {
+        this.display.material.map = demo.nm.nodes.root.inputs.screen.getValue();
+      }
+
+      this.renderer.clear(true, true, true);
+      this.renderer.render(this.scene, this.camera);
+    };
+
+
+    const originalLoop = demo.looper.loop;
+    demo.looper.loop = time => {
+      originalLoop(time);
+      this.renderLoop(time);
+    };
+
     this.scaleAnimationStart = this.state.scale;
     this.scaleAnimationEnd = this.state.scale;
     this.scaleAnimationStartTime = 0;
@@ -23,7 +190,6 @@ class GraphEditor extends React.Component {
 
     this.loop = time => {
       this.time = time;
-      this.forceUpdate();
       if(this.state.scale != this.scaleAnimationEnd) {
         this.zoom(
           smoothstep(
@@ -147,11 +313,11 @@ class GraphEditor extends React.Component {
     let depths = this.generateDepths();
     for(let i = 0; i < this.props.graph.length; i++) {
       const id = this.props.graph[i].id;
-      this.props.graph[i].x = depths[id].x * -250;
-      this.props.graph[i].y = depths[id].y * -100;
+      this.props.graph[i].x = depths[id].x;
+      this.props.graph[i].y = depths[id].y;
     }
-    this.forceUpdate();
-    this.fitGraphOnScreen();
+    //this.forceUpdate();
+    //this.fitGraphOnScreen();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -253,6 +419,7 @@ class GraphEditor extends React.Component {
   }
 
   componentDidMount() {
+
     requestAnimationFrame(this.loop);
     let add = (a, b) => a + b;
     let get = key => item => item[key];
@@ -405,7 +572,26 @@ class GraphEditor extends React.Component {
 
     const transform = `matrix(${this.state.scale},0,0,${this.state.scale},${this.state.x},${this.state.y})`;
     return (
-      <div ref={ref => this.container = ref}>
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+        }}
+        ref={ref => {
+          this.container = ref;
+          if(this.container && this.oldContainer != this.container) {
+            this.oldContainer = this.container;
+            demo.setContainer(this.container);
+            demo.resize();
+            setTimeout(() => {
+              this.props.demo.start();
+              this.props.demo.music.pause();
+              this.props.demo.jumpToFrame(0);
+            }, 0);
+          }
+        }}
+      >
+        {/*
         <svg height={window.innerHeight - 50} width={window.innerWidth}>
           <g transform={`matrix(1,0,0,1,${window.innerWidth / 2},${(window.innerHeight - 50) / 2})`}>
             <g transform={transform}>
@@ -414,6 +600,7 @@ class GraphEditor extends React.Component {
             </g>
           </g>
         </svg>
+        */}
       </div>);
   }
 }

@@ -19,7 +19,7 @@ class DemoPlayer extends React.Component {
     });
 
     setTimeout(() => {
-      this.props.demo.resize();
+      //this.props.demo.resize();
     });
 
     this.resizeOverlay = () => {
@@ -52,13 +52,7 @@ class DemoPlayer extends React.Component {
 
     window.addEventListener('resize', this.resizeOverlay);
 
-    setTimeout(() => {
-      this.props.demo.start();
-      this.props.demo.music.pause();
-      this.props.demo.jumpToFrame(0);
-    }, 0);
-
-    this.props.demo.setContainer(this.container);
+    //this.props.demo.setContainer(this.container);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -70,7 +64,7 @@ class DemoPlayer extends React.Component {
       document.body.classList.remove('fullscreen');
     }
     try {
-      this.props.demo.resize();
+      //this.props.demo.resize();
     } catch(e) {
       /* just ignoring any crashes here since they will be caught in the next
        * render loop anyway, and we have a nicer error formatting setup over
@@ -81,7 +75,7 @@ class DemoPlayer extends React.Component {
 
   render() {
     return (
-      <div className="floating-viewer-container">
+      <div className="floating-viewer-container" style={{display: 'none'}}>
         { Object.keys(this.props.globalShaderErrors).map(errorKey => {
           const error = this.props.globalShaderErrors[errorKey];
           const stack = error.diagnostics.fragmentShader.log || error.diagnostics.vertexShader.log;

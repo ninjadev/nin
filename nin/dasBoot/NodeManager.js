@@ -4,6 +4,21 @@ class NodeManager {
     this.graphChangeListeners = [];
   }
 
+  fireEvent(type) {
+    if(type === 'graphchange') {
+      for(let listener of this.graphChangeListeners) {
+        listener();
+      }
+    }
+  }
+
+  addEventListener(type, listener) {
+    if(type !== 'graphchange') {
+      throw Error('Unsopported type');
+    }
+    this.graphChangeListeners.push(listener);
+  }
+
   createNode(nodeInfo) {
     const deepClonedNodeInfo = JSON.parse(JSON.stringify(nodeInfo));
     deepClonedNodeInfo.options = deepClonedNodeInfo.options || {};
@@ -44,15 +59,18 @@ class NodeManager {
       }
     }
     this.nodes[node.id] = node;
+    this.fireEvent('graphchange');
   }
 
   connect(fromNodeId, outputName, toNodeId, inputName) {
     this.nodes[toNodeId].inputs[inputName].source =
       this.nodes[fromNodeId].outputs[outputName];
+    this.fireEvent('graphchange');
   }
 
   disconnect(fromNodeId, outputName, toNodeId, inputName) {
     this.nodes[toNodeId].inputs[inputName].source = null;
+    this.fireEvent('graphchange');
   }
 
   resize() {
@@ -108,10 +126,7 @@ class NodeManager {
     if(!this.nodes.root) {
       return;
     }
-    var clearColorBuffer = true;
-    var clearDepthBuffer = true;
-    var clearStencilBuffer = true;
-    renderer.clear(clearColorBuffer, clearDepthBuffer, clearStencilBuffer);
+    renderer.clear(true, true, true);
     this.traverseNodeGraphPostOrderDfs(this.nodes.root, function(node) {
       node.render(renderer);
     });

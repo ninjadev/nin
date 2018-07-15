@@ -13,7 +13,7 @@ function createLoop(options) {
     this.frameLength = frameLength;
 
     var that = this;
-    this.loop = function() {
+    this.loop = function(time) {
       that.time = music.getCurrentTime() * 1000;
       that.deltaTime += that.time - that.oldTime;
       that.oldTime = that.time;

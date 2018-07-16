@@ -279,3 +279,4 @@ Alternatively you can use the `psNin.ps1` script from your demo, or call it from
 - [What Are You Syncing About?](https://github.com/ninjadev/re)
 - [Zeven](https://github.com/ninjadev/zeven)
 - [No Invitation](https://github.com/ninjadev/revision-invite-2018)
+- [Pinky Frinky](https://github.com/ninjadev/pluss)

@@ -1,5 +1,5 @@
 (function(global) {
-  class TemplateCanvasNode extends NIN.THREENode {
+  class TemplateCanvasNode extends NIN.Node {
     constructor(id) {
       super(id, {
         outputs: {
@@ -17,21 +17,7 @@
 
     update(frame) {
       super.update(frame);
-
-      // This clears the canvas
-      this.canvas.width += 0;
-
-      this.ctx.save();
-      this.ctx.scale(GU, GU);
-
-      this.ctx.fillStyle = 'red';
-      this.ctx.fillRect(
-        16 / 4 + Math.sin(frame / 60) * 16 / 4,
-        9 / 4 + Math.sin(frame / 60) * 9 / 4,
-        16 / 2,
-        9 / 2);
-
-      this.ctx.restore();
+      this.frame = frame;
     }
 
     resize() {
@@ -40,6 +26,20 @@
     }
 
     render() {
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+      this.ctx.save();
+      this.ctx.scale(GU, GU);
+
+      this.ctx.fillStyle = 'red';
+      this.ctx.fillRect(
+        16 / 4 + Math.sin(this.frame / 60) * 16 / 4,
+        9 / 4 + Math.sin(this.frame / 60) * 9 / 4,
+        16 / 2,
+        9 / 2);
+
+      this.ctx.restore();
+
       this.output.needsUpdate = true;
       this.outputs.render.setValue(this.output);
     }

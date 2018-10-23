@@ -280,3 +280,5 @@ Alternatively you can use the `psNin.ps1` script from your demo, or call it from
 - [Zeven](https://github.com/ninjadev/zeven)
 - [No Invitation](https://github.com/ninjadev/revision-invite-2018)
 - [Pinky Frinky](https://github.com/ninjadev/pluss)
+- [Look Closer](https://github.com/ninjadev/zoo)
+- [Neon Fantasy](https://github.com/iver56/neon-fantasy)

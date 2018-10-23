@@ -98,19 +98,20 @@ window['bootstrap'] = function(options) {
   };
 
   demo.resize = function(width, height) {
+    const [x, y] = PROJECT.aspectRatio.split(':').map(n => +n);
     var rect = container.getBoundingClientRect();
     width = width || rect.width;
     height = height || rect.height;
-    if (width / height > 16 / 9) {
-      GU = (height / 9);
+    if (width / height > x / y) {
+      GU = (height / y);
     } else {
-      GU = (width / 16);
+      GU = (width / x);
     }
-    demo.renderer.setSize(16 * GU, 9 * GU);
+    demo.renderer.setSize(x * GU, y * GU);
     demo.renderer.domElement.style.zIndex = 10;
     demo.renderer.domElement.style.position = 'absolute';
-    demo.renderer.domElement.style.margin = ((rect.height - 9 * GU) / 2) +
-      'px 0 0 ' + ((rect.width - 16 * GU) / 2) + 'px';
+    demo.renderer.domElement.style.margin = ((rect.height - y * GU) / 2) +
+      'px 0 0 ' + ((rect.width - x * GU) / 2) + 'px';
     demo.nm.resize();
     demo.update(currentFrame);
     demo.render(demo.renderer, 0);

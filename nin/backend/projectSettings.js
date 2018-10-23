@@ -6,6 +6,7 @@ const defaultSettings = {
   authors: ['Your demoscene handle'],
   description: 'This is my project',
   previewImage: 'https://raw.githubusercontent.com/ninjadev/nin/master/nin/frontend/app/images/nin-dark.png',
+  aspectRatio: '16:9',
   music: {
     path: 'res/music.mp3',
     bpm: 125,

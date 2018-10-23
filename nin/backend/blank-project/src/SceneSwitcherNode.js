@@ -12,7 +12,7 @@
       });
     }
 
-    update() {
+    beforeUpdate() {
       this.inputs.A.enabled = false;
       this.inputs.B.enabled = false;
 
@@ -24,7 +24,11 @@
       }
 
       selectedScene.enabled = true;
-      this.outputs.render.setValue(selectedScene.getValue());
+      this.selectedScene = selectedScene;
+    }
+
+    render() {
+      this.outputs.render.setValue(this.selectedScene.getValue());
     }
   }
 

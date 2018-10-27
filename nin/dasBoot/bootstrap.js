@@ -13,6 +13,8 @@ NIN.TextureNode = require('./TextureNode');
 NIN.RootNode = require('./RootNode');
 NIN.THREENode = require('./THREENode');
 NIN.ShaderNode = require('./ShaderNode');
+const FullscreenRenderTargetPool = require('./FullscreenRenderTargetPool');
+NIN.FullscreenRenderTargetPool = new FullscreenRenderTargetPool();
 
 const {initBeatBean, updateBeatBean} = require('./BEATBEAN');
 window.initBeatBean = initBeatBean;

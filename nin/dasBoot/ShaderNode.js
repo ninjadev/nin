@@ -9,11 +9,6 @@ class ShaderNode extends NIN.Node {
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 100);
-    this.renderTarget = new THREE.WebGLRenderTarget(640, 360, {
-      minFilter: THREE.LinearFilter,
-      magFilter: THREE.LinearFilter,
-      format: THREE.RGBFormat
-    });
 
     const shader = typeof options.shader === 'string'
       ? SHADERS[options.shader] : options.shader;
@@ -31,12 +26,12 @@ class ShaderNode extends NIN.Node {
   }
 
   resize() {
-    this.renderTarget.setSize(16 * GU, 9 * GU);
   }
 
   render(renderer) {
-    renderer.render(this.scene, this.camera, this.renderTarget, true);
-    this.outputs.render.setValue(this.renderTarget.texture);
+    const renderTarget = NIN.FullscreenRenderTargetPool.getFullscreenRenderTarget();
+    renderer.render(this.scene, this.camera, renderTarget, true);
+    this.outputs.render.setValue(renderTarget.texture);
   }
 }
 

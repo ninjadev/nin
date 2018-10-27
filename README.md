@@ -70,7 +70,7 @@ where `nodeName` is the id of the node you want to connect to the display.
 ## Shader Nodes
 
 Create a shader node by clicking `Generate -> Shader Node` in the frontend menu.
-It generate the files `src/nameOfTheShaderNode.js` and the folder `src/shaders/nameOfTheShaderNode/`.
+It generates the file `src/nameOfTheShaderNode.js` and the folder `src/shaders/nameOfTheShaderNode/`.
 To get livereload on shader change, you shader must be specified in the options object of your node in `res/graph.json`,
 the shader generator will do this for you.
 If needed, you can access the shader through the global `SHADERS` object, by writing `SHADERS.nameOfTheShader`.

@@ -11,6 +11,10 @@ class RootNode extends NIN.Node {
     this.material = new THREE.MeshBasicMaterial();
   }
 
+  resize() {
+    NIN.FullscreenRenderTargetPool.resize();
+  }
+
   render(renderer) {
     if(renderer.overrideToScreenTexture) {
       this.quad.material = new THREE.MeshBasicMaterial({
@@ -23,6 +27,8 @@ class RootNode extends NIN.Node {
       });
     }
     renderer.render(this.scene, this.camera);
+
+    NIN.FullscreenRenderTargetPool.withdrawFullscreenRenderTargets();
   }
 }
 

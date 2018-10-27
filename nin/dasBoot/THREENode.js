@@ -11,14 +11,7 @@ class THREENode extends NIN.Node {
       outputs: options.outputs,
     });
     this.options = options;
-
     this.scene = new THREE.Scene();
-    this.renderTarget = new THREE.WebGLRenderTarget(640, 360, {
-      minFilter: THREE.LinearFilter,
-      magFilter: THREE.LinearFilter,
-      format: THREE.RGBFormat
-    });
-
     if (options.camera) {
       this.cameraController = new CameraController();
       this.camera = this.cameraController.camera;
@@ -34,12 +27,12 @@ class THREENode extends NIN.Node {
   }
 
   resize() {
-    this.renderTarget.setSize(16 * GU, 9 * GU);
   }
 
   render(renderer) {
-    renderer.render(this.scene, this.camera, this.renderTarget, true);
-    this.outputs.render.setValue(this.renderTarget.texture);
+    const renderTarget = NIN.FullscreenRenderTargetPool.getFullscreenRenderTarget();
+    renderer.render(this.scene, this.camera, renderTarget, true);
+    this.outputs.render.setValue(renderTarget.texture);
   }
 
   update(frame) {

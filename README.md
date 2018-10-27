@@ -105,8 +105,7 @@ Expect to render maybe a frame or two per second.
 
 ## Setup
 
-You will need to have node and yarn installed.
-Yarn installation guide is available [here](https://yarnpkg.com/en/docs/install).
+You will need to have node installed.
 
 Running `make` in the nin folder will build and compile the entire project.
 Running `npm link` will add nin to your node binaries path, making it available globally.
@@ -241,9 +240,9 @@ To be able to publish you need access to the `ninjadev` user on npm whose passwo
 
 ## Notes on working in windows
 
-The prerequisites remain the same, you at least need Yarn and Node.
+The prerequisites remain the same, you at least need Node.
 
-To build and compile the entire project, for now, you need only run `yarn start` in the root of the nin-repo.
+To build and compile the entire project, for now, you need only run `npm start` in the root of the nin-repo.
 To run nin without linking up through npm you can replace the `nin`-command with `node path-to-ninrepo/nin/backend/nin`.
 E.g. when you are in a project folder of a demo, and you want to run it with your freshly compiled nin directly, you can run `node path-to-ninrepo/nin/backend/nin run` instead of `nin run`.
 

@@ -1,11 +1,11 @@
 .PHONY: all
 all:
-	yarn start
+	npm start
 
 .PHONY: run
 run:
-	yarn run webpack-watch
+	npm run webpack-watch
 
 .PHONY: lint
 lint:
-	yarn lint
+	npm run lint

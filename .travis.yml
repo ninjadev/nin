@@ -4,9 +4,8 @@ node_js:
 notifications:
   email: false
 install:
-  - npm install -g yarn
-  - yarn
-  - cd nin/frontend && yarn && cd -
+  - npm install
+  - cd nin/frontend && npm install && cd -
 script:
   - cd nin/backend && ../../node_modules/.bin/eslint .
   - cd ../frontend && make lint

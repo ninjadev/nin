@@ -1,4 +1,3 @@
-const Stats = require('../lib/stats.min.js');
 const commands = require('./commands');
 
 const demo = bootstrap({
@@ -9,26 +8,71 @@ window.demo = demo;
 
 var originalLoop = demo.looper.loop;
 var forcedPause = false;
-const stats = [];
-const statsContainer = document.createElement('div');
-document.body.appendChild(statsContainer);
-statsContainer.style.position = 'fixed';
-statsContainer.style.bottom = '80px';
-statsContainer.style.right = '30px';
-for(let i = 0; i < 3; i++) {
-  stats[i] = Stats();
-  stats[i].showPanel(2 - i);
-  statsContainer.appendChild(stats[i].dom);
-  stats[i].dom.style.position = 'static';
-  stats[i].dom.style.float = 'right';
-  stats[i].dom.style.display = 'block';
+
+let updateTime = 0;
+let renderTime = 0;
+
+class Stats {
+  constructor() {
+    const canvas = document.createElement('canvas');
+    canvas.height = 64;
+    canvas.width = 128;
+    canvas.classList.add('frame-panel');
+    canvas.style.position = 'fixed';
+    canvas.style.right = '30px';
+    canvas.style.bottom = '85px';
+    canvas.setAttribute('title', 'Green: update. Gray: render. Target: 1000/60 ms.');
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+  }
+
+  render() {
+    this.ctx.drawImage(this.canvas, -1, 0);
+    this.ctx.fillStyle = 'rgb(30, 41, 48)';
+    this.ctx.fillRect(this.canvas.width - 1, 0, 1, this.canvas.height);
+
+    this.ctx.fillStyle = 'rgb(52, 68, 78)';
+    this.ctx.fillRect(this.canvas.width - 1, this.canvas.height - (1000 / 60 * 3 | 0), 1, 1);
+
+    let updateColor = '#4cd964';
+    let renderColor = '#596267';
+    if((updateTime + renderTime) > 1000 / 60 | 0) {
+      updateColor = '#ff3b30';
+      renderColor = '#ff2d55';
+    }
+
+    this.ctx.fillStyle = updateColor;
+    this.ctx.fillRect(this.canvas.width - 1, this.canvas.height - updateTime * 3, 1, updateTime * 3);
+
+    this.ctx.fillStyle = renderColor;
+    this.ctx.fillRect(this.canvas.width - 1, this.canvas.height - (renderTime + updateTime) * 3, 1, renderTime * 3);
+  }
 }
 
+const stats = new Stats();
+document.body.appendChild(stats.canvas);
+
+
 commands.on('toggleStats', () => {
-  for(let i = 0; i < 3; i++) {
-    stats[i].dom.style.display = stats[i].dom.style.display == 'none' ? 'block' : 'none';
-  }
+  stats.canvas.style.display = stats.canvas.style.display === 'none' ? 'block' : 'none';
 });
+
+
+
+const originalUpdate = demo.update;
+const originalRender = demo.render;
+demo.update = function(frame) {
+  const now = performance.now();
+  originalUpdate(frame);
+  updateTime = performance.now() - now;
+};
+
+demo.render = function(renderer) {
+  const now = performance.now();
+  originalRender(renderer);
+  renderTime = performance.now() - now;
+  stats.render();
+};
 
 let main;
 
@@ -39,13 +83,7 @@ demo.registerMainComponent = function(mainComponent) {
 
 demo.looper.loop = function() {
   try {
-    for(let i = 0; i < 3; i++) {
-      stats[i].begin();
-    }
     originalLoop();
-    for(let i = 0; i < 3; i++) {
-      stats[i].end();
-    }
 
     if (forcedPause) {
       demo.music.play();

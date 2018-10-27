@@ -1,9 +1,5 @@
-function createLoop(options) {
-  var frameLength = 1000 / (options.frameRateInHz || 60);
-  var render = options.render;
-  var update = options.update;
-  var renderer = options.renderer;
-  var music = options.music;
+function createLoop(demo) {
+  var frameLength = 1000 / 60;
 
   function Looper() {
     this.time = 0;
@@ -14,16 +10,16 @@ function createLoop(options) {
 
     var that = this;
     this.loop = function() {
-      that.time = music.getCurrentTime() * 1000;
+      that.time = demo.music.getCurrentTime() * 1000;
       that.deltaTime += that.time - that.oldTime;
       that.oldTime = that.time;
       while (that.deltaTime >= frameLength) {
         that.deltaTime -= frameLength;
         demo.music._calculateFFT();
         updateBeatBean(that.currentFrame);
-        update(that.currentFrame++);
+        demo.update(that.currentFrame++);
       }
-      render(renderer, that.deltaTime / frameLength);
+      demo.render(demo.renderer, that.deltaTime / frameLength);
       requestAnimFrame(that.loop);
     };
   }

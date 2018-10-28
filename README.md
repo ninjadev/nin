@@ -1,9 +1,13 @@
-# nin
+<h1 align=center>n i n</h1>
 
-*DISCLAIMER*: This is a tool created for internal use by Ninjadev, and is open sourced to share ideas with and get feedback from the community.
-You are free to use it, according to the License, but we will not necessarily provide support and may at any time add, change or remove features as we require for our productions.
+<p align=center> <a href="#user-manual">User manual</a> • <a href="#developer-manual">Developer manual</a> • <a href="#testimonials--reviews">Testimonials / Reviews</a> • <a href="#list-of-known-nin-projects">List of known nin projects</a></p>
+
+
+> <sup>*DISCLAIMER*: This is a tool created for internal use by Ninjadev, and is open sourced to share ideas with and get feedback from the community.
+You are free to use it, according to the License, but we will not necessarily provide support and may at any time add, change or remove features as we require for our productions.</sup>
 
 ![](https://github.com/ninjadev/nin/raw/master/nin-preview.PNG)
+
 
 > nin is ninjatool
 
@@ -23,7 +27,10 @@ The frontend is created using React, and communicates with the backend over webs
 
 ## Installing nin
 
-To install nin simply run the command `npm install -g ninjadev-nin`.
+To install nin simply run the command:
+```bash
+npm install -g ninjadev-nin
+```
 This projects requires node version `7.9.0` or newer.
 You can install node from packaging [here](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions) or download zipped source from [this page](https://nodejs.org/en/download/current/) and verify signatures with the guide [here](https://github.com/nodejs/node/#verifying-binaries);
 
@@ -60,10 +67,10 @@ where `nodeName` is the id of the node you want to connect to the display.
 }
 ```
 
-## Shaders
+## Shader Nodes
 
-Create a shader by clicking `Generate -> Shader Node` in the frontend menu.
-It will be placed in the folder `src/shaders/nameOfTheShader/`.
+Create a shader node by clicking `Generate -> Shader Node` in the frontend menu.
+It generates the file `src/nameOfTheShaderNode.js` and the folder `src/shaders/nameOfTheShaderNode/`.
 To get livereload on shader change, you shader must be specified in the options object of your node in `res/graph.json`,
 the shader generator will do this for you.
 If needed, you can access the shader through the global `SHADERS` object, by writing `SHADERS.nameOfTheShader`.
@@ -77,7 +84,7 @@ For faster compiles, pass the flag `--no-closure-compiler`. This will only conca
 
 ## .ninrc
 
-Many of nin's settings can be overriden by placing a .ninrc file in your home directory.
+Some of nin's settings can be overriden by placing a .ninrc file in your home directory.
 Currently, keyboard shortcuts is the only behavior which can be changed in the .ninrc.
 The list of canonical names for keybindings can be found in
 [nin/frontend/app/scripts/directives/menubar.js](https://github.com/ninjadev/nin/blob/master/nin/frontend/app/scripts/directives/menubar.js).

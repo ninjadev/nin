@@ -1,6 +1,6 @@
 .PHONY: all
 all:
-	yarn start
+	npm start
 
 .PHONY: publish
 publish: all

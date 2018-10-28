@@ -126,12 +126,7 @@ window['bootstrap'] = function(options) {
 
   demo.music = loadMusic();
 
-  demo.looper = createLoop({
-    render: demo.render,
-    update: demo.update,
-    renderer: demo.renderer,
-    music: demo.music
-  });
+  demo.looper = createLoop(demo);
 
   demo.getCurrentFrame = function() {
     return currentFrame;

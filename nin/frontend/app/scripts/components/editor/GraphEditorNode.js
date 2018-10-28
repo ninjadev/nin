@@ -76,61 +76,80 @@ class GraphEditorNode extends React.Component {
     const padding = 10;
     const height = Math.max(numberOfInputs, numberOfOutputs) * heightPerInputOrOutput + padding * 2;
 
-    return e('g', {
-      className: 'node',
-      transform: `translate(${this.props.x},${this.props.y})`,
-      style: {
-        opacity: 0.5 + 0.5 * node.active
-      }
-    },
-      e('rect', {
-        className: 'background',
-        x: 0,
-        y: 0,
-        width,
-        height
-      }),
-      Object.keys(node.inputs).map(key => e(GraphEditorInputOutput, {
-        item: this.props.node.inputs[key],
-        x: GraphEditorNode.getCoordinatesForInput(node, key).x,
-        y: GraphEditorNode.getCoordinatesForInput(node, key).y,
-        key: key,
-        id: key,
-        scale: this.props.scale,
-        demo: this.props.demo,
-        editor: this.props.editor,
-        node: this,
-      })),
-      Object.keys(node.outputs).map((key, i) => e(GraphEditorInputOutput, {
-        item: node.outputs[key],
-        x: GraphEditorNode.getCoordinatesForOutput(node, key).x,
-        y: GraphEditorNode.getCoordinatesForOutput(node, key).y,
-        key: key,
-        id: key,
-        scale: this.props.scale,
-        demo: this.props.demo,
-        editor: this.props.editor,
-        node: this,
-      })),
-      e('text', {
-        className: 'name',
-        x: 0,
-        y: 0,
-        transform: `translate(${width / 2}, ${height / 2})`,
-      }, this.props.nodeInfo.id),
-      this.props.scale >= 1.5 ? e('text', {
-        x: 0,
-        y: 0,
-        className: 'monospaced',
-        transform: `translate(${width / 2}, ${height / 2 + 11}) scale(0.3)`,
-      }, this.props.nodeInfo.type) : null,
-      node.constructor.prototype instanceof NIN.THREENode ? e('text', {
-        x: 0,
-        y: 0,
-        className: 'start-fly-around',
-        transform: `translate(${width / 2}, ${height / 2 - 11}) scale(0.3)`,
-        onClick: this.startFlyControl,
-      }, node.camera.isOverriddenByFlyControls ? 'Exit fly-around mode' : 'Start fly-around mode') : null,
+    return (
+      <g
+        className="node"
+        transform={`translate(${this.props.x},${this.props.y})`}
+        style={{
+          opacity: 0.5 + 0.5 * node.active
+        }}
+      >
+        <rect
+          className="background"
+          x="0"
+          y="0"
+          width={width}
+          height={height}
+        />
+        {Object.keys(node.inputs).map(key => (
+          <GraphEditorInputOutput
+            item={this.props.node.inputs[key]}
+            x={GraphEditorNode.getCoordinatesForInput(node, key).x}
+            y={GraphEditorNode.getCoordinatesForInput(node, key).y}
+            key={key}
+            id={key}
+            scale={this.props.scale}
+            demo={this.props.demo}
+            editor={this.props.editor}
+            node={this}
+          />
+        ))}
+        {Object.keys(node.outputs).map((key, i) => (
+          <GraphEditorInputOutput
+            item={node.outputs[key]}
+            x={GraphEditorNode.getCoordinatesForOutput(node, key).x}
+            y={GraphEditorNode.getCoordinatesForOutput(node, key).y}
+            key={key}
+            id={key}
+            scale={this.props.scale}
+            demo={this.props.demo}
+            editor={this.props.editor}
+            node={this}
+          />
+        ))}
+
+        <text
+          className="name"
+          x="0"
+          y="0"
+          transform={`translate(${width / 2}, ${height / 2})`}
+        >
+          {this.props.nodeInfo.id}
+        </text>
+
+        {this.props.scale >= 1.5 &&
+          <text
+            x="0"
+            y="0"
+            className="monospaced"
+            transform={`translate(${width / 2}, ${height / 2 + 11}) scale(0.3)`}
+          >
+            {this.props.nodeInfo.type}
+          </text>
+        }
+
+        {node.constructor.prototype instanceof NIN.THREENode &&
+          <text
+            x="0"
+            y="0"
+            className="start-fly-around"
+            transform={`translate(${width / 2}, ${height / 2 - 11}) scale(0.3)`}
+            onClick={this.startFlyControl}
+          >
+            {node.camera.isOverriddenByFlyControls ? 'Exit fly-around mode' : 'Start fly-around mode'}
+          </text>
+        }
+      </g>
     );
   }
 }

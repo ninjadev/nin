@@ -143,18 +143,17 @@ Here is an example of how to prolong the demo by adding a new scene at the end.
 #### How to add a new scene between two existing scenes
 
 Sometimes you want to squeeze in a new scene between two other scenes that you already have in your demo.
-Often you will perhaps only shorten down on the length of the preceeding scene and leave the start of the following scene intact.
-But for completenes, here is an example where we both shorten the previous scene, and chop down the beginning of the following scene.
+Often you will perhaps only shorten the preceding scene and leave the start of the following scene intact.
+But for completeness, here is an example where we both shorten the previous scene, and chop down the beginning of the following scene.
 
 ### Time and timed events
 
 A lot of making a demo is syncing what's happening on the screen with the music.
 
 A `BEAN` can be described as the smallest possible resoluton of the beat.
-If your musician is exiting the beat of your music could be something like every 4th, 6th, 4th, 6th, 10th, 2nd, bean.
 
 Working with `BEAN`s directly will usually not give you a smooth 60 FPS animation.
-`BEAN`s are incremented less often than 60 fps. A common approach is using `frame` with `FRAME_FOR_BEAN` instead.
+`BEAN`s are incremented less often than 60 FPS. A common approach is using `frame` with `FRAME_FOR_BEAN` instead.
 E.g. Instead of doing
 ```js
 var startBean = 1;
@@ -216,8 +215,8 @@ For more details, check out http://en.wikipedia.org/wiki/Smoothstep .
 In the `nin.json`-file you can define the `music`-section directly in the root.
 Here you can specify
 
-* where your music file is located in the `path`-field
-* how many beats per minute you music supposedly is in the `bpm`-field
+* `path`: relative path to the music file
+* `bpm`: the tempo of your music in beats per minute
 
 Sample music configuration:
 
@@ -254,7 +253,7 @@ To build and compile the entire project, for now, you need only run `yarn start`
 To run nin without linking up through npm you can replace the `nin`-command with `node path-to-ninrepo/nin/backend/nin`.
 E.g. when you are in a project folder of a demo, and you want to run it with your freshly compiled nin directly, you can run `node path-to-ninrepo/nin/backend/nin run` instead of `nin run`.
 
-If you want to run it from powershell regurairly you might want to make an alias in your profile akin to this:
+If you want to run it from powershell regularly, you might want to make an alias in your profile akin to this:
 
 ```powershell
 function nin

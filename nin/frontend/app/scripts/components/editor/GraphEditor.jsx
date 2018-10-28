@@ -2,6 +2,7 @@ const GraphEditorNode = require('./GraphEditorNode');
 const Connection = require('./Connection');
 const React = require('react');
 
+
 class GraphEditor extends React.Component {
   constructor() {
     super();
@@ -11,6 +12,7 @@ class GraphEditor extends React.Component {
       y: 0,
       connectionStart: null,
       connectionEnd: {},
+      connectionMouseStart: null,
     };
 
     this.scaleAnimationStart = this.state.scale;
@@ -53,6 +55,69 @@ class GraphEditor extends React.Component {
     this.pinchZoomDistance = 0;
     this.isMouseDragging = false;
     this.inspectedItem = null;
+  }
+
+  removeConnection(from, to) {
+    const fromNode = from.split('.')[0];
+    const fromOutput = from.split('.')[1];
+    const toNode = to.split('.')[0];
+    const toInput = to.split('.')[1];
+    for(let i = 0; i < this.props.graph.length; i++) {
+      const nodeInfo = this.props.graph[i];
+      if(nodeInfo.id === toNode) {
+        demo.nm.disconnect(fromNode, fromOutput, toNode, toInput);
+        delete nodeInfo.connected[toInput];
+        this.props.socket.sendEvent('graph-disconnect', {
+          fromNode,
+          fromOutput,
+          toNode,
+          toInput,
+        });
+        break;
+      }
+    }
+  }
+
+  connectClick(event, io) {
+    if(!this.state.connectionStart) {
+      const connectionStart = {
+        x: io.props.node.props.x + io.props.x,
+        y: io.props.node.props.y + io.props.y,
+      };
+      const connectionMouseStart = {
+        x: (event.pageX - (io.props.node.props.x + io.props.x)) / this.state.scale,
+        y: (event.pageY - (io.props.node.props.y + io.props.y)) / this.state.scale,
+      };
+      this.setState({
+        connectionStart,
+        connectionMouseStart,
+        connectionStartIo: io,
+      });
+    } else {
+      const fromNode = this.state.connectionStartIo.props.node.props.id;
+      const fromOutput = this.state.connectionStartIo.props.id;
+      const toNode = io.props.node.props.id;
+      const toInput = io.props.id;
+      demo.nm.connect(fromNode, fromOutput, toNode, toInput);
+      this.props.socket.sendEvent('graph-connect', {
+        fromNode,
+        fromOutput,
+        toNode,
+        toInput,
+      });
+      this.setState({
+        connectionStart: undefined,
+        connectionMouseStart: undefined,
+        connectionStartIo: undefined,
+      });
+      for(let i = 0; i < this.props.graph.length; i++) {
+        const nodeInfo = this.props.graph[i];
+        if(nodeInfo.id === toNode) {
+          nodeInfo.connected[toInput] = fromNode + '.' + fromOutput;
+          break;
+        }
+      }
+    }
   }
 
   inspect(item) {
@@ -302,8 +367,8 @@ class GraphEditor extends React.Component {
         if(this.state.connectionStart) {
           this.setState({
             connectionEnd: {
-              x: event.offsetX - this.state.x,
-              y: event.offsetY - this.state.y,
+              x: event.pageX / this.state.scale - this.state.connectionMouseStart.x,
+              y: event.pageY / this.state.scale - this.state.connectionMouseStart.y,
             }
           });
         }
@@ -345,6 +410,7 @@ class GraphEditor extends React.Component {
       <GraphEditorNode
         nodeInfo={nodeInfo}
         key={nodeInfo.id}
+        id={nodeInfo.id}
         scale={this.state.scale}
         node={this.props.nodes[nodeInfo.id]}
         x={nodeInfo.x}
@@ -385,6 +451,15 @@ class GraphEditor extends React.Component {
         });
       }
     }
+    if(this.state.connectionStart) {
+      connections.push({
+        from: this.state.connectionStart,
+        to: this.state.connectionEnd,
+        active: true,
+        key: 'new-connection',
+      });
+      //console.log(this.state.connectionEnd);
+    }
 
     if(this.inspectedItem) {
       const value = this.inspectedItem.props.item.getValue();
@@ -397,7 +472,7 @@ class GraphEditor extends React.Component {
       <Connection
         connection={connection}
         fromPath={connection.key.split('|')[0]}
-        fromPath={connection.key.split('|')[1]}
+        toPath={connection.key.split('|')[1]}
         editor={this}
         scale={this.state.scale}
         key={connection.key}

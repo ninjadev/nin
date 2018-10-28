@@ -16,6 +16,7 @@ export default class Main extends React.Component<any, any> {
   themes: string[];
   fileCache: Object;
   startupSound: any;
+  socketController: any;
 
   constructor(props) {
     super(props);
@@ -26,6 +27,7 @@ export default class Main extends React.Component<any, any> {
     ];
 
     const socketController = new SocketController();
+    this.socketController = socketController;
 
     this.fileCache = {};
 
@@ -223,6 +225,7 @@ export default class Main extends React.Component<any, any> {
                 graph={this.state.graph}
                 demo={demo}
                 nodes={demo.nm.nodes}
+                socket={this.socketController}
                 >
               </GraphEditor>
             </div>

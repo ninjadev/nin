@@ -4,4 +4,4 @@ all:
 
 .PHONY: bump-version-and-tag-commit-for-release
 bump-version-and-tag:
-	npm version major
+	npm --no-git-tag-version version major

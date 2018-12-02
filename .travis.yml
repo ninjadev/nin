@@ -23,4 +23,4 @@ deploy:
     secure: iWwXLzno47upqZ0qETbuc+sWEDf9drr/KYulsjWJMCuTdeWj4HuF4NcMSENR43ngeEBO34+NxiAjC0yKe+qPJ6bmq06fYPjobPHUhI9tfWRUsuxxkxhZUnTsR2FaOz7vVe1GTECcqKtR1OAeJH7IPWvanKHNMOyXjUrvSKWPtmo=
   on:
     branch: master
-    condition: "$PACKAGE_VERSION != $LATEST_TAG"
+    condition: "\"$PACKAGE_VERSION\" != \"$LATEST_TAG\""

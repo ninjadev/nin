@@ -11,6 +11,10 @@ script:
 before_deploy:
   - export PACKAGE_VERSION=$(node -p "require('./package.json').version")
   - export LATEST_TAG=$(git tag | sed 's/^v\(.*\)/\1/' | sort -g | tail -n 1)
+  - git config --local user.name "Travis"
+  - git config --local user.email "post@ninjadev.org"
+  - git tag v$PACKAGE_VERSION
+  - git push --tags
 deploy:
   provider: npm
   skip_cleanup: true
@@ -18,5 +22,4 @@ deploy:
   api_key:
     secure: iWwXLzno47upqZ0qETbuc+sWEDf9drr/KYulsjWJMCuTdeWj4HuF4NcMSENR43ngeEBO34+NxiAjC0yKe+qPJ6bmq06fYPjobPHUhI9tfWRUsuxxkxhZUnTsR2FaOz7vVe1GTECcqKtR1OAeJH7IPWvanKHNMOyXjUrvSKWPtmo=
   on:
-    condition: $PACKAGE_VERSION != $LATEST_TAG
-  tag: v$PACKAGE_VERSION
+    condition: env(PACKAGE_VERSION) != env(LATEST_TAG)

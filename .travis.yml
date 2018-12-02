@@ -8,11 +8,15 @@ install:
 script:
 - cd nin/backend && ../../node_modules/.bin/eslint .
 - cd ../frontend && make lint
+before_deploy:
+  - export PACKAGE_VERSION=$(node -p "require('./package.json').version")
+  - export LATEST_TAG=$(git tag | sed 's/^v\(.*\)/\1/' | sort -g | tail -n 1)
 deploy:
   provider: npm
+  skip_cleanup: true
   email: post@ninjadev.org
   api_key:
     secure: iWwXLzno47upqZ0qETbuc+sWEDf9drr/KYulsjWJMCuTdeWj4HuF4NcMSENR43ngeEBO34+NxiAjC0yKe+qPJ6bmq06fYPjobPHUhI9tfWRUsuxxkxhZUnTsR2FaOz7vVe1GTECcqKtR1OAeJH7IPWvanKHNMOyXjUrvSKWPtmo=
   on:
-    tags: true
-    repo: ninjadev/nin
+    condition: $PACKAGE_VERSION != $LATEST_TAG
+  tag: v$PACKAGE_VERSION

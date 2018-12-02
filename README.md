@@ -242,7 +242,7 @@ Use the `--nojsdoc` flag.
 ## Publishing nin
 
 To publish nin, checkout a new branch, run `make
-bump-version-and-tag-commit-for-release`, `git push --tags`, get it merged, and
+bump-version-and-tag-commit-for-release`, `git push && git push --tags`, get it merged, and
 Travis will automatically publish a new release after master has finished
 building.
 

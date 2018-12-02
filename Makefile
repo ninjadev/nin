@@ -2,6 +2,6 @@
 all:
 	npm start
 
-.PHONY: bump-version-and-tag-commit-for-release
-bump-version-and-tag:
+.PHONY: bump-version
+bump-version:
 	npm --no-git-tag-version version major

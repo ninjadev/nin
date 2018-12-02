@@ -241,8 +241,10 @@ Use the `--nojsdoc` flag.
 
 ## Publishing nin
 
-To publish nin type the command `make publish`.
-To be able to publish you need access to the `ninjadev` user on npm whose password will be given through secure channels.
+To publish nin, checkout a new branch, run `make
+bump-version-and-tag-commit-for-release`, `git push && git push --tags`, get it merged, and
+Travis will automatically publish a new release after master has finished
+building.
 
 ## Notes on working in windows
 

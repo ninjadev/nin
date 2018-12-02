@@ -1,11 +1,18 @@
 language: node_js
 node_js:
-  - "node"
+- node
 notifications:
   email: false
 install:
-  - npm install
-  - cd nin/frontend && npm install && cd -
+- npm start
 script:
-  - cd nin/backend && ../../node_modules/.bin/eslint .
-  - cd ../frontend && make lint
+- cd nin/backend && ../../node_modules/.bin/eslint .
+- cd ../frontend && make lint
+deploy:
+  provider: npm
+  email: post@ninjadev.org
+  api_key:
+    secure: iWwXLzno47upqZ0qETbuc+sWEDf9drr/KYulsjWJMCuTdeWj4HuF4NcMSENR43ngeEBO34+NxiAjC0yKe+qPJ6bmq06fYPjobPHUhI9tfWRUsuxxkxhZUnTsR2FaOz7vVe1GTECcqKtR1OAeJH7IPWvanKHNMOyXjUrvSKWPtmo=
+  on:
+    tags: true
+    repo: ninjadev/nin

@@ -2,7 +2,6 @@
 all:
 	npm start
 
-.PHONY: publish
-publish: all
+.PHONY: bump-version-and-tag-commit-for-release
+bump-version-and-tag:
 	npm version major
-	npm publish

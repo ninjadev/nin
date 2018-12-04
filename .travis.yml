@@ -8,7 +8,7 @@ install:
 script:
 - cd nin/backend && ../../node_modules/.bin/eslint .
 - cd ../frontend && make lint
-before_deploy:
+after_success:
   - export PACKAGE_VERSION=$(node -p "require('./package.json').version")
   - export LATEST_TAG=$(git tag | sed 's/^v\(.*\)/\1/' | sort -g | tail -n 1)
   - git config --local user.name "Travis"

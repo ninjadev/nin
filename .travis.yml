@@ -11,6 +11,8 @@ script:
 before_deploy:
   - export PACKAGE_VERSION=$(node -p "require('./package.json').version")
   - export LATEST_TAG=$(git tag | sed 's/^v\(.*\)/\1/' | sort -g | tail -n 1)
+  - echo $PACKAGE_VERSION
+  - echo $LATEST_TAG
   - git config --local user.name "Travis"
   - git config --local user.email "post@ninjadev.org"
   - git tag v$PACKAGE_VERSION

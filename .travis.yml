@@ -14,15 +14,19 @@ after_success:
   - git config --local user.name "Travis"
   - git config --local user.email "post@ninjadev.org"
   - git tag v$PACKAGE_VERSION
-  - git push --tags
 before_deploy:
   - cd $TRAVIS_BUILD_DIR
 deploy:
-  provider: npm
-  skip_cleanup: true
-  email: post@ninjadev.org
-  api_key:
-    secure: iWwXLzno47upqZ0qETbuc+sWEDf9drr/KYulsjWJMCuTdeWj4HuF4NcMSENR43ngeEBO34+NxiAjC0yKe+qPJ6bmq06fYPjobPHUhI9tfWRUsuxxkxhZUnTsR2FaOz7vVe1GTECcqKtR1OAeJH7IPWvanKHNMOyXjUrvSKWPtmo=
-  on:
-    branch: master
-    condition: "\"$PACKAGE_VERSION\" != \"$LATEST_TAG\""
+  - provider: npm
+    skip_cleanup: true
+    email: post@ninjadev.org
+    api_key:
+      secure: iWwXLzno47upqZ0qETbuc+sWEDf9drr/KYulsjWJMCuTdeWj4HuF4NcMSENR43ngeEBO34+NxiAjC0yKe+qPJ6bmq06fYPjobPHUhI9tfWRUsuxxkxhZUnTsR2FaOz7vVe1GTECcqKtR1OAeJH7IPWvanKHNMOyXjUrvSKWPtmo=
+    on:
+      branch: master
+      condition: "\"$PACKAGE_VERSION\" != \"$LATEST_TAG\""
+  - provider: releases
+    api_key:
+      secure: "HTbYTMO/Me+AlcGfh2+1UMUSvirmnLHn940VzyzYhJT15HEHGLPl/m9f8+JuWSJs27twdMG2/DDWc5A6FypaiATA3hUaymfgsjKkOW7ozaQ4dV+Fw9lo/DsqbP+mlMRwMIL5+FawCJzgIcHUxytzwFxb+GfIoIfT72vjWiaGTUM="
+    name: v$PACKAGE_VERSION
+    skip_cleanup: true

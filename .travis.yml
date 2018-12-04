@@ -16,7 +16,7 @@ after_success:
   - git tag v$PACKAGE_VERSION
   - git push --tags
 before_deploy:
-  - cd ~
+  - cd $TRAVIS_BUILD_DIR
 deploy:
   provider: npm
   skip_cleanup: true

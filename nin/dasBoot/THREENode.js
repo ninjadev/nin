@@ -35,6 +35,8 @@ class THREENode extends NIN.Node {
     renderer.clear();
     renderer.render(this.scene, this.camera);
     renderer.setRenderTarget(null);
+    renderTarget.repeat.set(1, 1);
+    renderTarget.offset.set(0, 0);
     this.outputs.render.setValue(renderTarget.texture);
   }
 

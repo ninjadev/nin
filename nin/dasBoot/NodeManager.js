@@ -57,7 +57,7 @@ class NodeManager {
 
   resize() {
     for(var key in this.nodes) {
-      this.nodes[key].resize(); 
+      this.nodes[key].resize();
     }
   }
 

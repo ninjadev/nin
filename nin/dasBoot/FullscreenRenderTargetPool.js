@@ -21,6 +21,8 @@ class FullscreenRenderTargetPool {
       this.renderTargets[this.used] = renderTarget;
     }
     this.used++;
+    renderTarget.repeat.set(1, 1);
+    renderTarget.offset.set(0, 0);
     return renderTarget;
   }
 

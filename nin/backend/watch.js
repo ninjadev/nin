@@ -40,6 +40,10 @@ function watch(projectPath, cb) {
       return;
     }
 
+    if(path.endsWith('~')) {
+      return;
+    }
+
     if (logFileChanges) {
       console.log(chalk.yellow('Change in project detected: ') +
                   chalk.cyan(event) +

@@ -288,3 +288,4 @@ Alternatively you can use the `psNin.ps1` script from your demo, or call it from
 - [Pinky Frinky](https://github.com/ninjadev/pluss)
 - [Look Closer](https://github.com/ninjadev/zoo)
 - [Neon Fantasy](https://github.com/iver56/neon-fantasy)
+- [Flat Shade Society](https://github.com/ninjadev/si)

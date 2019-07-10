@@ -26,6 +26,8 @@ class RootNode extends NIN.Node {
         map: A
       });
     }
+    renderer.setRenderTarget(null);
+    renderer.clear();
     renderer.render(this.scene, this.camera);
 
     NIN.FullscreenRenderTargetPool.withdrawFullscreenRenderTargets();

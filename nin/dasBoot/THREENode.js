@@ -31,7 +31,10 @@ class THREENode extends NIN.Node {
 
   render(renderer) {
     const renderTarget = NIN.FullscreenRenderTargetPool.getFullscreenRenderTarget();
-    renderer.render(this.scene, this.camera, renderTarget, true);
+    renderer.setRenderTarget(renderTarget);
+    renderer.clear();
+    renderer.render(this.scene, this.camera);
+    renderer.setRenderTarget(null);
     this.outputs.render.setValue(renderTarget.texture);
   }
 

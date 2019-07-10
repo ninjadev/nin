@@ -3,6 +3,7 @@
     "outDir": "./dist/",
     "sourceMap": true,
     "target": "es5",
+    "lib": ["es5", "es6", "dom"],
     "jsx": "react",
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true

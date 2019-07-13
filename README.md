@@ -178,7 +178,7 @@ If you want to render your background on a canvas the content should be somethin
     this.output.minFilter = THREE.LinearFilter;
     this.output.magFilter = THREE.LinearFilter;
 
-    // ... other constructor comment
+    // ... other constructor content, such as initializing your Random.
   }
 
   update(frame) {

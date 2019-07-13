@@ -247,6 +247,20 @@ Sample music configuration:
 
 For details on how this section is processed further you can check out `nin/dasBoot/BEATBEAN.js`.
 
+### Text
+
+How to write text, or letters in general, to your 2D canvas.
+
+Out of the box you can write text to your canvas like this:
+
+```js
+this.canvas.getContext('2d').fillStyle = '#ffffff'; // The color of the text you are going to be displaying
+this.canvas.getContext('2d').font = 'bold ' + (24) + 'pt Arial'; // Pattern: weight [size]size_unit font_name
+this.canvas.getContext('2d').textAlign = 'center';
+this.canvas.getContext('2d').textBaseline = 'middle';
+this.canvas.getContext('2d').fillText('Hello Nin!', x_position_on_canvas, y_position_on_canvas);
+```
+
 ## Linting
 
 The frontend part of this project uses ESLint for linting.

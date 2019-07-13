@@ -145,6 +145,23 @@ Sometimes you want to squeeze in a new scene between two other scenes that you a
 Often you will perhaps only shorten the preceding scene and leave the start of the following scene intact.
 But for completeness, here is an example where we both shorten the previous scene, and chop down the beginning of the following scene.
 
+### Randomness
+
+To ensure that random things happen consistently across runs it is recommended to use the `Random`-class rather than `Math.random()`.
+Set up `Random` by initializing it in your constructor like so:
+```
+constructor(id, options) {
+  ...
+  this.random = new Random('seedString');
+  ...
+}
+```
+
+Then use the random generator you just created like this:
+```
+var randomNumber = this.random();
+```
+
 ### Time and timed events
 
 A lot of making a demo is syncing what's happening on the screen with the music.

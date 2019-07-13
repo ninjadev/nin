@@ -422,6 +422,8 @@ this.canvas.getContext('2d').textBaseline = 'middle';
 this.canvas.getContext('2d').fillText('Hello Nin!', x_position_on_canvas, y_position_on_canvas);
 ```
 
+Beware that this will not replace any text previously drawn. To obtain a blank slate you have to either clear or draw over previously shown text.
+
 ## Linting
 
 The frontend part of this project uses ESLint for linting.

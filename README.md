@@ -241,13 +241,16 @@ This recquires a couple of things.
 
 First, you need to take make sure the background class is declared as an input in your constructors call to super.
 Then, in your constructor, you need to define the mesh your background class will draw on, its size and location, and add it to your scene.
+
 At this point you should be mindfull of whether you make your background render from both sides, or only the front or back side.
 If you make a background in the form of a "sky box" that engulfs the scene in front of the camera, you'll likely want to set the drawing side to `side: THREE.BackSide`.
 (This is handy if you have a lot of camera movement and can't guarantee that that anything in your scene wil neccessarily be infront of any given plane that you might have wanted to use as a background.)
-This should prevent your background from loading in front of th
+Doing so should prevent your background from rendering in front of the scene you are trying to display and blocking the view of it.
+
 After that, in your scenes `update`-function, you need to ensure that your background also gets updated.
 That is done by setting assigning materials' (mesh you declared in the constructors') map to the background-input.
 Note that you at this point probably should also set the flag for that it needs updating.
+
 Lastly, you should be aware that in regards to the camera and general movement in the scene, the backgound can be considered just like any other object.
 This implies that for a scene with a lot of camera movement, you can both make the background an object that moves together with the camera and appears static, or you can make it rotate wildly.
 
@@ -270,7 +273,7 @@ Example:
     }
     // more constructor input
     this.background = new THREE.Mesh(
-      new THREE.BoxGeometry(10000,10000,10000),
+      new THREE.BoxGeometry(skybox_x_size_in_scene, skybox_y_size_in_scene, skybox_z_size_in_scene), // Note that these are independent of the dimentions you declare for the canvas in the background. E.g. you can work on a 1024 x 1024 x 1 canvas in your background that is spread out on a 3440 x 1440 x 2048 surface in the scene. You'd probably want to make the aspect ratios equivalent or draw one flat surface on each side of a 3d box in your scene though)
       new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.BackSide})
     );
     this.scene.add(this.background);

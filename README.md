@@ -211,7 +211,7 @@ Once you've decided on a name for the background-class, you should add it to the
 It has to be added both as a separate node, and as an input to the scene you wish to use it in.
 Example:
 
-```json
+```jsonc
 [
   // loads of graph.json content
   // ...

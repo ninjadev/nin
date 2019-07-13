@@ -150,7 +150,9 @@ But for completeness, here is an example where we both shorten the previous scen
 Adding backgrounds ain't all that hard, once you have an overweiv of whats needed!
 
 First of all, make sure there is an actual existing file containing the code for your background.
-If you want to render your background on a canvas the content should be something like:
+If you want to render your background on a canvas the content should be something like the example below.
+Note that to actuall work with the content, you will probably want to be able to see it first.
+To make the content visible, you should go through the steps with adding it the scene and in graph.json, as described below the example.
 
 ```js
 (function(global) {
@@ -205,11 +207,107 @@ If you want to render your background on a canvas the content should be somethin
 })(this);
 ```
 
+Once you've decided on a name for the background-class, you should add it to the graph.json (`.../demo_repository/res/graph.json`).
+It has to be added both as a separate node, and as an input to the scene you wish to use it in.
+Example:
+
+```json
+[
+  // loads of graph.json content
+  // ...
+  // },
+  {
+    "id": "the_scene",
+    "type": "the_scene",
+    "connected": {
+      "param_name": "background_class_name.render"
+    }
+  },
+  // more graph.js
+  // ...
+  // },
+  {
+    "id": "background_class_name",
+    "type": "background_class_name"
+  }
+  // possibly more graph.json, but you've just added this, right? =P
+]
+```
+
+Note the `.render` after the backgrounds class name in the `connected` section!
+
+Finally, you need to add the new background to your scene.
+This recquires a couple of things.
+
+First, you need to take make sure the background class is declared as an input in your constructors call to super.
+Then, in your constructor, you need to define the mesh your background class will draw on, its size and location, and add it to your scene.
+At this point you should be mindfull of whether you make your background render from both sides, or only the front or back side.
+If you make a background in the form of a "sky box" that engulfs the scene in front of the camera, you'll likely want to set the drawing side to `side: THREE.BackSide`.
+(This is handy if you have a lot of camera movement and can't guarantee that that anything in your scene wil neccessarily be infront of any given plane that you might have wanted to use as a background.)
+This should prevent your background from loading in front of th
+After that, in your scenes `update`-function, you need to ensure that your background also gets updated.
+That is done by setting assigning materials' (mesh you declared in the constructors') map to the background-input.
+Note that you at this point probably should also set the flag for that it needs updating.
+Lastly, you should be aware that in regards to the camera and general movement in the scene, the backgound can be considered just like any other object.
+This implies that for a scene with a lot of camera movement, you can both make the background an object that moves together with the camera and appears static, or you can make it rotate wildly.
+
+Example:
+
+```js
+(function(global) {
+  class the_scene extends NIN.THREENode {
+    constructor(id, options) {
+      super(id, {
+        camera: options.camera,
+        outputs: {
+          render: new NIN.TextureOutput()
+        },
+        inputs: {
+          background: new NIN.TextureInput()
+        }
+        // Other inputs to super
+      });
+    }
+    // more constructor input
+    this.background = new THREE.Mesh(
+      new THREE.BoxGeometry(10000,10000,10000),
+      new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.BackSide})
+    );
+    this.scene.add(this.background);
+    // other constructor code
+  }
+
+  update(frame) {
+      super.update(frame);
+      this.background.material.map = this.inputs.background.getValue();
+      this.background.material.needsUpdate = true;
+      // ...
+      // The actual focus of your scene!
+      // ...
+      // If this is the camera movement in your scene
+      var camera_angle = frame * related + math / expression;
+      var this.camera.position.x = initial_position_x + Math.sin(camera_angle) * speed_multiplier;
+      var this.camera.position.y = initial_position_y + Math.cos(camera_angle) * speed_multiplier;
+      var this.camera.position.z = initial_position_z;
+      this.camera.lookAt(new THREE.Vector3(initial_position_x, initial_position_y, poi_z));
+      // Note that the initial_position_... above ^ can be linear expressions related to the frame
+      // Then you can do like this to to keep the background still relative to the camera:
+      this.background.rotation.z = -cameraAngle;
+
+      // Or move it relative to the camere at a pace independently of the cameras movement relative to the point it is directed at:
+      this.background.rotation.z = -cameraAngle + Math.sin(frame_related * constants + and_or_bean_related_movement_params / Math.PI * related_becuase_radians) * factor_controllong_intensity + other_linear_offsets;
+
+      // You can also apply transforms to the background relative to the camera here:
+      this.background.scale.x = -1; // Inverts / mirrors the background along the x-axis
+  }
+})(this);
+```
+
 ### Randomness
 
 To ensure that random things happen consistently across runs it is recommended to use the `Random`-class rather than `Math.random()`.
 Set up `Random` by initializing it in your constructor like so:
-```
+```js
 constructor(id, options) {
   ...
   this.random = new Random('seedString');

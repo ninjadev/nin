@@ -139,7 +139,7 @@ This is what you need to to do get your first scene wired up and ready to go!
 
 Here is an example of how to prolong the demo by adding a new scene at the end.
 
-#### How to add a new scene between two existing scenes
+##### How to add a new scene between two existing scenes
 
 Sometimes you want to squeeze in a new scene between two other scenes that you already have in your demo.
 Often you will perhaps only shorten the preceding scene and leave the start of the following scene intact.

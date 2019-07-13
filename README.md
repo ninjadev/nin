@@ -145,6 +145,66 @@ Sometimes you want to squeeze in a new scene between two other scenes that you a
 Often you will perhaps only shorten the preceding scene and leave the start of the following scene intact.
 But for completeness, here is an example where we both shorten the previous scene, and chop down the beginning of the following scene.
 
+#### Adding backgrounds to scenes
+
+Adding backgrounds ain't all that hard, once you have an overweiv of whats needed!
+
+First of all, make sure there is an actual existing file containing the code for your background.
+If you want to render your background on a canvas the content should be something like:
+
+```js
+(function(global) {
+  const F = (frame, from, delta) => (
+    frame - FRAME_FOR_BEAN(from)) / (FRAME_FOR_BEAN(from + delta) - FRAME_FOR_BEAN(from)
+  );
+
+  constructor(id) {
+    super(id, {
+      outputs: {
+        render: new NIN.TextureOutput()
+      }
+    });
+
+    this.canvas = document.createElement('canvas');
+    this.ctx = this.canvas.getContext('2d');
+
+    this.width = 1024;
+    this.height = 1024;
+
+    this.canvas.width = this.width;
+    this.canvas.height = this.height;
+
+    this.output = new THREE.VideoTexture(this.canvas);
+    this.output.minFilter = THREE.LinearFilter;
+    this.output.magFilter = THREE.LinearFilter;
+
+    // ... other constructor comment
+  }
+
+  update(frame) {
+    super.update(frame);
+    // Other stuff you want to do each frame
+  }
+
+  // The warmup block exsist to prevent stutter related to compiling shaders when the scene starts.
+  // Usually shaders are compield for your GPU just in time at the moment they are first called.
+  // This can take some time, and result in perceived jitter at the start of your scene.
+  // To prevent this, when NIN starts running a demo, before the playback looks like it begins, it will run through each scene and call its `warmup`.
+  // In practice, this is like rendering one frame from each scene, so that all shaders are loaded before the smooth playback you want to show off.
+  warmup(renderer) {
+    this.update(6710); // the first frame in this scene cointaining the shaders you want pre-loaded.
+    this.render(renderer);
+  }
+
+  render() {
+    this.output.needsUpdate = true;
+    this.outputs.render.setValue(this.output);
+  }
+
+  global.greetsBackgroundCanvas = greetsBackgroundCanvas;
+})(this);
+```
+
 ### Randomness
 
 To ensure that random things happen consistently across runs it is recommended to use the `Random`-class rather than `Math.random()`.

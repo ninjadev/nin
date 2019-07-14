@@ -417,12 +417,14 @@ Out of the box you can write text to your canvas like this:
 ```js
 this.canvas.getContext('2d').fillStyle = '#ffffff'; // The color of the text you are going to be displaying
 this.canvas.getContext('2d').font = 'bold ' + (24) + 'pt Arial'; // Pattern: weight [size]size_unit font_name
-this.canvas.getContext('2d').textAlign = 'center';
-this.canvas.getContext('2d').textBaseline = 'middle';
+this.canvas.getContext('2d').textAlign = 'center'; // possible values: left, right, center, start (locale dependent), end (locale dependent)
+this.canvas.getContext('2d').textBaseline = 'middle'; // possible values: middle, top, bottom, alphabetic, hanging, ideographic
 this.canvas.getContext('2d').fillText('Hello Nin!', x_position_on_canvas, y_position_on_canvas);
 ```
 
 Beware that this will not replace any text previously drawn. To obtain a blank slate you have to either clear or draw over previously shown text.
+
+Reference for styling of text drawn with `fillText`: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_text#Styling_text .
 
 ## Linting
 

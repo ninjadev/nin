@@ -319,7 +319,7 @@ constructor(id, options) {
 ```
 
 Then use the random generator you just created like this:
-```
+```js
 var randomNumber = this.random();
 ```
 

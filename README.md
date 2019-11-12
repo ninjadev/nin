@@ -147,7 +147,7 @@ But for completeness, here is an example where we both shorten the previous scen
 
 #### Adding backgrounds to scenes
 
-Adding backgrounds ain't all that hard, once you have an overweiv of whats needed!
+Adding backgrounds ain't all that hard, once you have an overview of whats needed!
 
 First of all, make sure there is an actual existing file containing the code for your background.
 If you want to render your background on a canvas the content should be something like the example below.

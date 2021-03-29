@@ -17,7 +17,9 @@ function errorExcerpt(error, fileCache) {
   }
 
   function hilightError(line, columnNumber) {
-    console.log(line, columnNumber);
+    if (!line) {
+      return `Error compiling file on unknown line`;
+    }
     return line.replace(new RegExp('(.{' + (columnNumber - 1) + '})(.[a-zA-Z0-9_]*)'), '$1<strong>$2</strong>');
   }
   if(lineNumber > 1) {

@@ -161,6 +161,7 @@ export default class Main extends React.Component<any, any> {
           }
 
           demo.nm.update(demo.looper.currentFrame);
+          demo.nm.render(demo.renderer);
           Loader.start(function() {}, function() {});
           break;
 
@@ -180,6 +181,7 @@ export default class Main extends React.Component<any, any> {
           }
 
           demo.nm.update(demo.looper.currentFrame);
+          demo.nm.render(demo.renderer);
           Loader.start(function() {}, function() {});
           break;
         }
